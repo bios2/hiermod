@@ -103,5 +103,166 @@
     "title": "Template for presentations",
     "section": "Or we can present the code and results separately",
     "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/template.html#un-beau-titre",
+    "href": "slides/template.html#un-beau-titre",
+    "title": "Template for presentations",
+    "section": "Un beau titre",
+    "text": "Un beau titre\nthis is the first slide"
+  },
+  {
+    "objectID": "slides/template.html#second",
+    "href": "slides/template.html#second",
+    "title": "Template for presentations",
+    "section": "second",
+    "text": "second\n\nTest your model"
+  },
+  {
+    "objectID": "slides/template.html#section",
+    "href": "slides/template.html#section",
+    "title": "Template for presentations",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/template.html#section-1",
+    "href": "slides/template.html#section-1",
+    "title": "Template for presentations",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/template.html#section-2",
+    "href": "slides/template.html#section-2",
+    "title": "Template for presentations",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/template.html#choose-parameters",
+    "href": "slides/template.html#choose-parameters",
+    "title": "Template for presentations",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/template.html#make-up-an-x-variable",
+    "href": "slides/template.html#make-up-an-x-variable",
+    "title": "Template for presentations",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/template.html#calculate-the-average",
+    "href": "slides/template.html#calculate-the-average",
+    "title": "Template for presentations",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/template.html#simulate-some-observations",
+    "href": "slides/template.html#simulate-some-observations",
+    "title": "Template for presentations",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/template.html#finally-visualize",
+    "href": "slides/template.html#finally-visualize",
+    "title": "Template for presentations",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/template.html#here-it-is-all-on-one-slide",
+    "href": "slides/template.html#here-it-is-all-on-one-slide",
+    "title": "Template for presentations",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/template.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/template.html#or-we-can-present-the-code-and-results-separately",
+    "title": "Template for presentations",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/template.html#the-equation",
+    "href": "slides/template.html#the-equation",
+    "title": "Template for presentations",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/template.html#write-it-in-stan",
+    "href": "slides/template.html#write-it-in-stan",
+    "title": "Template for presentations",
+    "section": "Write it in Stan",
+    "text": "Write it in Stan\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#another-equation",
+    "href": "slides/template.html#another-equation",
+    "title": "Template for presentations",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/template.html#write-it-in-stan-1",
+    "href": "slides/template.html#write-it-in-stan-1",
+    "title": "Template for presentations",
+    "section": "Write it in Stan",
+    "text": "Write it in Stan\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#declare-data",
+    "href": "slides/template.html#declare-data",
+    "title": "Template for presentations",
+    "section": "Declare data",
+    "text": "Declare data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#the-model",
+    "href": "slides/template.html#the-model",
+    "title": "Template for presentations",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#declare-data-1",
+    "href": "slides/template.html#declare-data-1",
+    "title": "Template for presentations",
+    "section": "Declare data",
+    "text": "Declare data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#write-it-in-stan-2",
+    "href": "slides/template.html#write-it-in-stan-2",
+    "title": "Template for presentations",
+    "section": "Write it in Stan",
+    "text": "Write it in Stan\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#declare-the-data",
+    "href": "slides/template.html#declare-the-data",
+    "title": "Template for presentations",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#state-parameters",
+    "href": "slides/template.html#state-parameters",
+    "title": "Template for presentations",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template.html#write-the-likelihood-and-priors",
+    "href": "slides/template.html#write-the-likelihood-and-priors",
+    "title": "Template for presentations",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
   }
 ]

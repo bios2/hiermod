@@ -123,14 +123,90 @@ plot(y_obs ~ x)
 ```
 :::
 
+## another equation
+
+$$
+2 + 4 = 6
+$$
 
 ## The equation
 
 $$
 \begin{align}
 y  &\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &= a + bx
+\mu &= a + bx \\
 \end{align}
 $$
 
+## The model {auto-animate="TRUE"}
+
+``` stan
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## Declare the data {auto-animate="TRUE"} 
+
+```{.stan code-line-numbers="1-4"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## State parameters {auto-animate="TRUE"}
+
+```{.stan code-line-numbers="5-8"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## Write the likelihood and priors {auto-animate="TRUE"} 
+
+```{.stan code-line-numbers="9-13"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
 
