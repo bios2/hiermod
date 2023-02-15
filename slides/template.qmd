@@ -19,53 +19,61 @@ format:
 
 this is the first slide
 
-## second 
+## second
 
-::: {.r-fit-text}
+::: r-fit-text
 Test your model
 :::
 
 ## 
-img: 
+
+img:
 
 ![](img/bg.jpg)
 
 it is a landscape
 
-## {auto-animate=true}
+##  {auto-animate="true"}
 
 ::: {style="margin-top: 100px;"}
 check with simulations
 :::
 
-## {auto-animate=true}
+##  {auto-animate="true"}
 
 ::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
 check with simulations
 :::
 
-## choose parameters {auto-animate=TRUE}
-```r
+## choose parameters {auto-animate="TRUE"}
+
+``` r
 yintercept <- 4
 slope <- 1.3
 obs_error <- .5
 ```
-## make up an X variable {auto-animate=TRUE}
-```r
+
+## make up an X variable {auto-animate="TRUE"}
+
+``` r
 yintercept <- 4
 slope <- 1.3
 obs_error <- .5
 x <- runif(200, min = -1, max = 1)
 ```
-## calculate the average {auto-animate=TRUE}
-```r
+
+## calculate the average {auto-animate="TRUE"}
+
+``` r
 yintercept <- 4
 slope <- 1.3
 obs_error <- .5
 x <- runif(200, min = -1, max = 1)
 y_mean <- yintercept + slope * x
 ```
-## simulate some observations {auto-animate=TRUE}
+
+## simulate some observations {auto-animate="TRUE"}
+
 ```{r}
 yintercept <- 4
 slope <- 1.3
@@ -74,7 +82,9 @@ x <- runif(200, min = -1, max = 1)
 y_mean <- yintercept + slope * x
 y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
 ```
-## finally, visualize 
+
+## finally, visualize
+
 ```{r}
 plot(y_obs ~ x)
 ```
@@ -94,8 +104,7 @@ plot(y_obs, x)
 
 ## Or we can present the code and results separately
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ### The code
 
 ```{r}
@@ -112,5 +121,16 @@ y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
 ```{r}
 plot(y_obs ~ x)
 ```
-
 :::
+
+
+## The equation
+
+$$
+\begin{align}
+y  &\sim \text{N}(\mu, \sigma_{obs}) \\
+\mu &= a + bx
+\end{align}
+$$
+
+
