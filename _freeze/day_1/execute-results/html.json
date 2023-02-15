@@ -1,0 +1,14 @@
+{
+  "hash": "51963e373791c9d1e4edd025d5b0fbca",
+  "result": {
+    "markdown": "---\ntitle: \"Day1\"\nexecute:\n  freeze: true\nformat:\n  html:\n    code-tools: true\n---\n\n\n\n<div>\n\n\n```{=html}\n<iframe class=\"slide-deck\" src=\"slides/template/\"></iframe>\n```\n\n\n</div>\n\n## Resampling\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Set seed\nset.seed(42) # The answer !\n\n# Basic objects\npredVal <- 0:5000 # A value of 5000 m was used as extreme elevation to define the limit. If a threshold was not reach after reaching this elevation, it was considered that the underlying model was too extreme\n\nnboot <- 1000\n\n# Result object\nbootModel <- array(NA, dim = c(length(predVal), nboot, length(xBase)))\n\n# Resample model parameters and calculate model predictions\nfor(i in 1:length(xBase)){\n  # Model parameters used for the resampling\n  paramMean <- summary(modelTrans[[1]])$coefficients[,1]\n  paramCov <- summary(modelTrans[[1]])$cov.unscaled\n \n  # Resample model parameters\n  paramSmpl <- MASS::mvrnorm(nboot, paramMean, paramCov)\n \n  # Calculate model predictions using the resampled model parameters\n  for(j in 1:nboot){\n    bootModel[,j,i] <- binomial(link = \"logit\")$linkinv(paramSmpl[j,1] +\n                                                        paramSmpl[j,2] * predVal)\n  }\n}\n```\n:::\n\n\n## Plot one model\n\n\n::: {.cell}\n\n```{.r .cell-code}\nplot(expla,\n     acsa,\n     pch = 19,\n     cex = pointCode$count/4,\n     xlab = \"Gradient\",\n     ylab = \"Species occurrences\",\n     xaxt = \"n\",\n     yaxt = \"n\",\n     cex.lab = 1.5)\n\naxis(2,\n     at = c(0, 1),\n     las = 1,\n     cex.axis = 1.25)\n\nfor(i in 1:nboot){\n  lines(bootModel[1:1001,i,1], col = rgb(0,0,1, 0.05))\n}\n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
