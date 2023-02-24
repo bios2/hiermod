@@ -135,27 +135,27 @@ $$
 
 First we compile the model, then we'll look at the Stan code:
 
+
 ```{r stan_workflow}
 #| class.output: stan
 library(cmdstanr)
-logistic_stan <- cmdstan_model(stan_file = "stan/logistic.stan", 
+logistic_glm_stan <- cmdstan_model(stan_file = "stan/logistic_bern_logit.stan", 
                                pedantic = TRUE)
 
-logistic_stan
+logistic_glm_stan
 ```
 
 ```{r sample_and_plot}
-logistic_samples <- logistic_stan$sample(
-  data = list(N = nrow(lrug_water),
+logistic_glm_stan_samples <- logistic_glm_stan$sample(
+  data = list(n = nrow(lrug_water),
               y = lrug_water$pa,
-              x = matrix(lrug_water$water))
-  )
+              x = lrug_water$water))
 
 coef(lrug_glm)
 
 library(tidybayes)
 
-spread_rvars(logistic_samples, intercept, slope[]) |> 
+spread_rvars(logistic_glm_stan_samples, intercept, slope[]) |> 
   bind_cols(predVal = predVal) |> 
   mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |> 
   ggplot(aes(x = predVal, ydist = pred)) + 
@@ -164,4 +164,10 @@ spread_rvars(logistic_samples, intercept, slope[]) |>
   ylim(c(0,1))
 
 ```
+
+### Alternative parameterization
+
+Stan contains many functions intended to facilitate writing statistical models. 
+Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale.[This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]. Stan also provides an even more efficient function that we can use, it is especially good when we have more than one predictor variable and a vector of slopes:
+
 
