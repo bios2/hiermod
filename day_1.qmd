@@ -1,5 +1,8 @@
 ---
 title: "Day1"
+description: |
+  Introduction to simulation, model checking, and Stan workflows.
+image: assets/plot_resampModel-1.png
 execute:
   freeze: auto
 format:
@@ -7,7 +10,10 @@ format:
     code-tools: true
 ---
 
-Here is some text, to introduce the subject of the day
+## Slides from the day
+
+### Morning theory slides
+
 
 <div>
 
@@ -16,6 +22,18 @@ Here is some text, to introduce the subject of the day
 ```
 
 </div>
+
+
+### Afternoon practical exercises
+
+## Course setup information
+
+* site information
+* plagiarism
+
+## Simulation
+
+## Quantifying uncertainty
 
 # Worked examples and activities
 
@@ -87,7 +105,7 @@ matplot(predVal, resampModel, type = "l", col = "grey", lty = 1)
 
 If we want to find some kind of confidence interval for this line, we can take the quantiles of this resampling:
 
-```{r plot_resampModel}
+```{r plot_resampModel, fig.path = "assets/"}
 low <- apply(resampModel, 1, quantile, probs = .015)
 high <- apply(resampModel, 1, quantile, probs = .985)
 
@@ -152,8 +170,7 @@ Here we see the same three parts of a Stan model that we have reviewed already:
 As you can see, we are using a handy Stan function called `bernoulli_logit`. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.
 
 ::: column-margin
-As a quick review, the logit equation, or inverse-log-odds, is written as 
-$$
+As a quick review, the logit equation, or inverse-log-odds, is written as $$
 \frac{e^\mu}{1 + e^\mu}
 $$ Which is also written as
 
@@ -187,8 +204,7 @@ spread_rvars(logistic_glm_stan_samples, intercept, slope[]) |>
 
 ### Alternative parameterization
 
-Stan contains many functions intended to facilitate writing statistical models.
-Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale. [This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]{.aside} Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:
+Stan contains many functions intended to facilitate writing statistical models. Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale. [This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]{.aside} Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:
 
 ```{r}
 #| class.output: stan
