@@ -12,7 +12,7 @@ Here is some text, to introduce the subject of the day
 <div>
 
 ```{=html}
-<iframe width=100% height=500px class="slide-deck" src="slides/template/"></iframe>
+<iframe width=100% height=500pxaside class="slide-deck" src="slides/template/"></iframe>
 ```
 
 </div>
@@ -38,7 +38,6 @@ mite_water |>
 
 ```
 
-
 ## Resampling
 
 In frequentist models, we can use the variance covariance matrix of parameters to resample new parameters values. This lets us propagate uncertainty from the estimated parameters to the predicted relationship.
@@ -52,7 +51,7 @@ lrug_water <- mite_water |>
 lrug_glm <- glm(pa ~ water, data = lrug_water, family = "binomial")
 ```
 
-Now, with our model object, we can create the resampling distribution of the model predicitons: 
+Now, with our model object, we can create the resampling distribution of the model predicitons:
 
 ```{r resample_model}
 # Set seed
@@ -118,7 +117,7 @@ tibble(predVal) |>
   ylim(c(0,1))
 ```
 
-## bayesian approach
+## Bayesian approach
 
 here is a simple bayesian model to generate the same inference:
 
@@ -135,7 +134,6 @@ $$
 
 First we compile the model, then we'll look at the Stan code:
 
-
 ```{r stan_workflow}
 #| class.output: stan
 library(cmdstanr)
@@ -145,11 +143,33 @@ logistic_glm_stan <- cmdstan_model(stan_file = "stan/logistic_bern_logit.stan",
 logistic_glm_stan
 ```
 
+Here we see the same three parts of a Stan model that we have reviewed already:
+
+-   data
+-   parameters
+-   probability statements
+
+As you can see, we are using a handy Stan function called `bernoulli_logit`. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.
+
+::: column-margin
+As a quick review, the logit equation, or inverse-log-odds, is written as 
+$$
+\frac{e^\mu}{1 + e^\mu}
+$$ Which is also written as
+
+$$
+\frac{1}{1 + e^{-\mu}}
+$$
+:::
+
+Stan expects our data as a list.
+
 ```{r sample_and_plot}
 logistic_glm_stan_samples <- logistic_glm_stan$sample(
   data = list(n = nrow(lrug_water),
               y = lrug_water$pa,
-              x = lrug_water$water))
+              x = lrug_water$water),
+  refresh = 0)
 
 coef(lrug_glm)
 
@@ -167,7 +187,15 @@ spread_rvars(logistic_glm_stan_samples, intercept, slope[]) |>
 
 ### Alternative parameterization
 
-Stan contains many functions intended to facilitate writing statistical models. 
-Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale.[This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]. Stan also provides an even more efficient function that we can use, it is especially good when we have more than one predictor variable and a vector of slopes:
+Stan contains many functions intended to facilitate writing statistical models.
+Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale. [This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]{.aside} Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:
 
+```{r}
+#| class.output: stan
+suppressPackageStartupMessages(library(cmdstanr))
 
+logistic_bern_glm <- cmdstan_model(stan_file = "stan/logistic.stan", 
+                               pedantic = TRUE)
+
+logistic_bern_glm
+```
