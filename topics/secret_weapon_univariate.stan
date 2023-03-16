@@ -6,9 +6,12 @@ data {
   array[Nsites, S] int<lower=0, upper=1> y;  // species presence or absence
 }
 parameters {
-  matrix[K, S] z;               // species departures from the average
-  vector[K] gamma;              // AVERAGE of slopes and intercepts
-  vector<lower=0>[K] sd_params;          // standard deviations of species departures
+  // species departures from the average
+  matrix[K, S] z;               
+  // AVERAGE of slopes and intercepts
+  vector[K] gamma;              
+  // standard deviations of species departures
+  vector<lower=0>[K] sd_params; 
 }
 transformed parameters {
   matrix[K, S] beta = rep_matrix(gamma, S) + diag_pre_multiply(sd_params, z);
