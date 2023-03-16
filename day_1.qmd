@@ -216,7 +216,15 @@ spread_rvars(logistic_glm_stan_samples, intercept, slope[]) |>
 
 ### Alternative parameterization
 
-Stan contains many functions intended to facilitate writing statistical models. Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale. [This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]{.aside} Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:
+Stan contains many functions intended to facilitate writing statistical models.
+Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale. [This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]{.aside} Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:
+
+:::{.callout-warning}
+PLEASE NOTE below you will see the relative path to the stan file (`stan/logistic.stan`).
+Immediately below you will see the Stan file content. 
+You can copy and paste this to your own computer!
+:::
+
 
 ```{r}
 #| class.output: stan
@@ -227,3 +235,8 @@ logistic_bern_glm <- cmdstan_model(stan_file = "stan/logistic.stan",
 
 logistic_bern_glm
 ```
+
+
+
+
+
