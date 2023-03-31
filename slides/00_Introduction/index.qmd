@@ -1,0 +1,162 @@
+---
+title: "Introduction"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "F. Guillaume Blanchet -- Andrew MacDonald -- Vincent Tolon "
+date: "2023-02-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+# The very basic
+
+
+## Internet
+
+**Network : **
+
+**Password : **
+
+
+## Dos and don'ts at the Station biologique des Laurentides
+
+## Course material
+
+### Website : 
+
+On it, you will find the slides but also Rmarkdown files with practical examples.
+
+You will also find course syllabus
+
+Let's take a look...
+
+
+## General daily schedule
+
+9h00 - Start of the day
+
+9h00 to 12h00 - Lecture/Practice
+
+12h00 to 13h00 - Lunch
+
+13h00 to 17h00 - Lecture/Practice
+
+17h00 to 18h00 - Project presentations
+
+# The course basics
+
+## What are hierarchical models ?
+
+For this course, hierarchical models are regression models in which the parameters (the regression coefficients) are themselves given a probability model (Gelman and Hill 2007). 
+
+## Particularities of hierarchical models
+
+Hierarchical models are
+
+- A challenging bit of technology (probably more than you might think!). 
+- Very flexible models (in many more ways that are usually expected!)
+- Constrained to the same particularities as (generalized) (non) linear models (sometimes to a more severe extent)
+
+## A bit of vocabulary
+
+Hierarchical models, as we will see them in this course, are also known under different names
+
+  - Random effect models
+  - Mixed models
+  - Multilevel models
+  - Variance component models
+  - Error component models
+
+## A bit of vocabulary
+  
+We decided to use the term hierachical model to prevent confusions that sometimes arises in the litterature about *random* and *fixed* effects, which are terms commonly used when referring to mixed effect models. 
+
+Actually, *random* and *fixed* effects have multiple definitions, which leads to confusion
+
+## A bit of vocabulary
+### Multiple Definition of *fixed* and *random* effects
+
+::: {style="font-size: 0.8em"}
+[(Kreft and De Leeuw 1998)](https://methods.sagepub.com/book/introducing-multilevel-modeling) *Fixed* effects are constant and *random* effect vary
+
+[(Searl et al. 1992)](https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316856) Effects are *fixed* if they are interesting in themselves or *random* if there is interest in the underlying population
+
+[(Green and Tukey 1960)](https://link.springer.com/article/10.1007/BF02288577) When a sample exhausts the population, the corresponding variable is *fixed*; when the sample is a small (i.e., negligible) part of the population the corresponding variable is *random*
+
+[(Roy LaMotte 2014)](https://doi.org/10.1002/9781118445112.stat03169) If an effect is assumed to be a realized value of a random variable, it is called a *random* effect
+
+[(Robinson 1991)](https://www.jstor.org/stable/2245695) *Fixed* effects are estimated using least squares (or, more generally, maximum likelihood) and *random* effects are estimated with shrinkage. 
+:::
+
+## A bit of history
+
+Because of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably
+
+```{r echo=FALSE, out.width="10%", fig.align='center'}
+knitr::include_graphics("https://www.bibmath.net/bios/images/fisher.jpg")
+```
+
+::: {style="font-size: 0.5em"}
+Fisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. *Transactions of the Royal Society of Edinburgh*, **52** 399--433.
+:::
+
+## Implementation
+
+- Hierarchical models have been implemented in many software packages,
+  - in R 
+    - `lme4`, `brms`, `nlme`, `glmmTMB`, `MCMCglmm`, ...
+  - in SAS
+    - `MIXED`, `HPMIXED`, `GLMMIX`, ...
+  - in julia
+    - `MixedModels.jl`
+  - ...
+
+## Implementation
+
+### What we will use 
+
+We will not use any of these software packages... because under specific circumstances, what may seem like the same implementation of a model may lead to different answers... and both can actually be right ! 
+
+This is because the underlying model implemented in the software package may actually be slightly different.
+
+Instead we will implement our own models from scratch using Stan.
+
+## Good reference
+
+```{r echo=FALSE, out.width="30%", fig.align='center'}
+knitr::include_graphics("https://xcelab.net/rm/wp-content/uploads/2019/12/sr2edcover-1-508x815.png")
+```
+
+A good portion of this course material is based on this book.
+
+
+## Great technical references
+
+```{r echo=FALSE, out.width="30%", fig.align='center'}
+knitr::include_graphics("http://www.stat.columbia.edu/~gelman/arm/cover.gif")
+```
+
+Everything is there but it can gets technical !
+
+
+## R and Stan
+
+All of the practical aspect of the course will be done with R and Stan.
+
+### RStudio
+
+We strongly (!) encourage you to use RStudio and to start a project for the course.
+
+
+## R package to install
+
+```{r, eval = FALSE}
+install.packages(c("vegan"))
+```

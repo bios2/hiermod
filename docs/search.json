@@ -53,7 +53,7 @@
     "href": "day_1.html#bayesian-approach",
     "title": "Day 1",
     "section": "Bayesian approach",
-    "text": "Bayesian approach\nhere is a simple bayesian model to generate the same inference:\n\\[\n\\begin{align}\ny &\\sim \\text{Bernoulli}(p)\\\\\n\\text{logit}(p) &= \\alpha + X\\beta\\\\\n\\alpha &\\sim \\text{Normal}(-2.5, .5)\\\\\n\\beta &\\sim \\text{Normal}(0, .5)\\\\\n\\end{align}\n\\]\nnormally we would go through a careful process of checking our priors here. At this time we won’t because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.\nFirst we compile the model, then we’ll look at the Stan code:\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: C:/Users/Utilisateur/Documents/.cmdstan/cmdstan-2.30.1\n\n\n- CmdStan version: 2.30.1\n\n\n\nA newer version of CmdStan is available. See ?install_cmdstan() to install it.\nTo disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.\n\nlogistic_glm_stan <- cmdstan_model(stan_file = \"stan/logistic_bern_logit.stan\", \n                               pedantic = TRUE)\n\nlogistic_glm_stan\n\ndata {\n  int<lower=0> n;\n  vector[n] x;\n  array[n] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  real slope;\n}\nmodel {\n  y ~ bernoulli_logit(intercept + slope * x);\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n}\n\n\nHere we see the same three parts of a Stan model that we have reviewed already:\n\ndata\nparameters\nprobability statements\n\nAs you can see, we are using a handy Stan function called bernoulli_logit. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.\n\n\nAs a quick review, the logit equation, or inverse-log-odds, is written as \\[\n\\frac{e^\\mu}{1 + e^\\mu}\n\\] Which is also written as\n\\[\n\\frac{1}{1 + e^{-\\mu}}\n\\]\nStan expects our data as a list.\n\nlogistic_glm_stan_samples <- logistic_glm_stan$sample(\n  data = list(n = nrow(lrug_water),\n              y = lrug_water$pa,\n              x = lrug_water$water),\n  refresh = 0)\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 finished in 0.3 seconds.\nChain 2 finished in 0.3 seconds.\nChain 3 finished in 0.3 seconds.\nChain 4 finished in 0.3 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.3 seconds.\nTotal execution time: 1.6 seconds.\n\ncoef(lrug_glm)\n\n(Intercept)       water \n-2.48153943  0.00874349 \n\nlibrary(tidybayes)\n\nspread_rvars(logistic_glm_stan_samples, intercept, slope[]) |> \n  bind_cols(predVal = predVal) |> \n  mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |> \n  ggplot(aes(x = predVal, ydist = pred)) + \n  stat_dist_lineribbon() + \n  guides(fill = \"none\") + \n  ylim(c(0,1))\n\n\n\n\n\nAlternative parameterization\nStan contains many functions intended to facilitate writing statistical models. Above, we used the function bernoulli_logit so that we could provide the expression for the average on the logit scale.  Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints – only some values are “allowed”. For example, the only parameter of a Bernoulli distribution is \\(p\\), the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for \\(p\\).\n\n\n\n\n\n\nWarning\n\n\n\nPLEASE NOTE below you will see the relative path to the stan file (stan/logistic.stan). Immediately below you will see the Stan file content. You can copy and paste this to your own computer!\n\n\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nlogistic_bern_glm <- cmdstan_model(stan_file = \"stan/logistic.stan\", \n                               pedantic = TRUE)\n\nlogistic_bern_glm\n\ndata {\n  int<lower=0> N;\n  matrix[N, 1] x;\n  array[N] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  vector[1] slope;\n}\nmodel {\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n  y ~ bernoulli_logit_glm(x, intercept, slope);\n}"
+    "text": "Bayesian approach\nhere is a simple bayesian model to generate the same inference:\n\\[\n\\begin{align}\ny &\\sim \\text{Bernoulli}(p)\\\\\n\\text{logit}(p) &= \\alpha + X\\beta\\\\\n\\alpha &\\sim \\text{Normal}(-2.5, .5)\\\\\n\\beta &\\sim \\text{Normal}(0, .5)\\\\\n\\end{align}\n\\]\nnormally we would go through a careful process of checking our priors here. At this time we won’t because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.\nFirst we compile the model, then we’ll look at the Stan code:\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: /Users/blag1404/.cmdstan/cmdstan-2.31.0\n\n\n- CmdStan version: 2.31.0\n\nlogistic_glm_stan <- cmdstan_model(stan_file = \"stan/logistic_bern_logit.stan\", \n                               pedantic = TRUE)\n\nlogistic_glm_stan\n\ndata {\n  int<lower=0> n;\n  vector[n] x;\n  array[n] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  real slope;\n}\nmodel {\n  y ~ bernoulli_logit(intercept + slope * x);\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n}\n\n\nHere we see the same three parts of a Stan model that we have reviewed already:\n\ndata\nparameters\nprobability statements\n\nAs you can see, we are using a handy Stan function called bernoulli_logit. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.\n\n\nAs a quick review, the logit equation, or inverse-log-odds, is written as \\[\n\\frac{e^\\mu}{1 + e^\\mu}\n\\] Which is also written as\n\\[\n\\frac{1}{1 + e^{-\\mu}}\n\\]\nStan expects our data as a list.\n\nlogistic_glm_stan_samples <- logistic_glm_stan$sample(\n  data = list(n = nrow(lrug_water),\n              y = lrug_water$pa,\n              x = lrug_water$water),\n  refresh = 0)\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 finished in 0.2 seconds.\nChain 2 finished in 0.1 seconds.\nChain 3 finished in 0.2 seconds.\nChain 4 finished in 0.1 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.2 seconds.\nTotal execution time: 1.1 seconds.\n\ncoef(lrug_glm)\n\n(Intercept)       water \n-2.48153943  0.00874349 \n\nlibrary(tidybayes)\n\nspread_rvars(logistic_glm_stan_samples, intercept, slope[]) |> \n  bind_cols(predVal = predVal) |> \n  mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |> \n  ggplot(aes(x = predVal, ydist = pred)) + \n  stat_dist_lineribbon() + \n  guides(fill = \"none\") + \n  ylim(c(0,1))\n\n\n\n\n\nAlternative parameterization\nStan contains many functions intended to facilitate writing statistical models. Above, we used the function bernoulli_logit so that we could provide the expression for the average on the logit scale.  Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints – only some values are “allowed”. For example, the only parameter of a Bernoulli distribution is \\(p\\), the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for \\(p\\).\n\n\n\n\n\n\nWarning\n\n\n\nPLEASE NOTE below you will see the relative path to the stan file (stan/logistic.stan). Immediately below you will see the Stan file content. You can copy and paste this to your own computer!\n\n\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nlogistic_bern_glm <- cmdstan_model(stan_file = \"stan/logistic.stan\", \n                               pedantic = TRUE)\n\nlogistic_bern_glm\n\ndata {\n  int<lower=0> N;\n  matrix[N, 1] x;\n  array[N] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  vector[1] slope;\n}\nmodel {\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n  y ~ bernoulli_logit_glm(x, intercept, slope);\n}"
   },
   {
     "objectID": "day_2.html#convergence-diagnostics",
@@ -222,5 +222,383 @@
     "title": "Template for presentations",
     "section": "Un beau titre",
     "text": "Un beau titre\nthis is the first slide"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#internet",
+    "href": "slides/Introduction/index.html#internet",
+    "title": "Introduction",
+    "section": "Internet",
+    "text": "Internet\nNetwork : \nPassword :"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
+    "href": "slides/Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
+    "title": "Introduction",
+    "section": "Dos and don’ts at the Station biologique des Laurentides",
+    "text": "Dos and don’ts at the Station biologique des Laurentides"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#course-material",
+    "href": "slides/Introduction/index.html#course-material",
+    "title": "Introduction",
+    "section": "Course material",
+    "text": "Course material\nWebsite :\nOn it, you will find the slides but also Rmarkdown files with practical examples.\nYou will also find course syllabus\nLet’s take a look…"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#general-daily-schedule",
+    "href": "slides/Introduction/index.html#general-daily-schedule",
+    "title": "Introduction",
+    "section": "General daily schedule",
+    "text": "General daily schedule\n9h00 - Start of the day\n9h00 to 12h00 - Lecture/Practice\n12h00 to 13h00 - Lunch\n13h00 to 17h00 - Lecture/Practice\n17h00 to 18h00 - Project presentations"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#a-bit-of-history",
+    "href": "slides/Introduction/index.html#a-bit-of-history",
+    "title": "Introduction",
+    "section": "A bit of history",
+    "text": "A bit of history\nBecause of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
+  },
+  {
+    "objectID": "slides/Introduction/index.html#good-reference",
+    "href": "slides/Introduction/index.html#good-reference",
+    "title": "Introduction",
+    "section": "Good reference",
+    "text": "Good reference\n\nA good portion of this course material is based on this book."
+  },
+  {
+    "objectID": "slides/Introduction/index.html#great-technical-references",
+    "href": "slides/Introduction/index.html#great-technical-references",
+    "title": "Introduction",
+    "section": "Great technical references",
+    "text": "Great technical references\n\nEverything is there but it can gets technical !"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#r-and-stan",
+    "href": "slides/Introduction/index.html#r-and-stan",
+    "title": "Introduction",
+    "section": "R and Stan",
+    "text": "R and Stan\nAll of the practical aspect of the course will be done with R and Stan.\nRStudio\nWe strongly (!) encourage you to use RStudio and to start a projectforthe course."
+  },
+  {
+    "objectID": "slides/Introduction/index.html#r-package-to-install",
+    "href": "slides/Introduction/index.html#r-package-to-install",
+    "title": "Introduction",
+    "section": "R package to install",
+    "text": "R package to install\n\ninstall.packages(c(\"rstan\"))\n\nimg:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#section",
+    "href": "slides/Introduction/index.html#section",
+    "title": "Introduction",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#section-1",
+    "href": "slides/Introduction/index.html#section-1",
+    "title": "Introduction",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#choose-parameters",
+    "href": "slides/Introduction/index.html#choose-parameters",
+    "title": "Introduction",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#make-up-an-x-variable",
+    "href": "slides/Introduction/index.html#make-up-an-x-variable",
+    "title": "Introduction",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#calculate-the-average",
+    "href": "slides/Introduction/index.html#calculate-the-average",
+    "title": "Introduction",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#simulate-some-observations",
+    "href": "slides/Introduction/index.html#simulate-some-observations",
+    "title": "Introduction",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#finally-visualize",
+    "href": "slides/Introduction/index.html#finally-visualize",
+    "title": "Introduction",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#here-it-is-all-on-one-slide",
+    "href": "slides/Introduction/index.html#here-it-is-all-on-one-slide",
+    "title": "Introduction",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/Introduction/index.html#or-we-can-present-the-code-and-results-separately",
+    "title": "Introduction",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#another-equation",
+    "href": "slides/Introduction/index.html#another-equation",
+    "title": "Introduction",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#the-equation",
+    "href": "slides/Introduction/index.html#the-equation",
+    "title": "Introduction",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#the-model",
+    "href": "slides/Introduction/index.html#the-model",
+    "title": "Introduction",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#declare-the-data",
+    "href": "slides/Introduction/index.html#declare-the-data",
+    "title": "Introduction",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#state-parameters",
+    "href": "slides/Introduction/index.html#state-parameters",
+    "title": "Introduction",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#write-the-likelihood-and-priors",
+    "href": "slides/Introduction/index.html#write-the-likelihood-and-priors",
+    "title": "Introduction",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#what-are-hierarchical-models",
+    "href": "slides/Introduction/index.html#what-are-hierarchical-models",
+    "title": "Introduction",
+    "section": "What are hierarchical models ?",
+    "text": "What are hierarchical models ?\nFor this course, hierarchical models are regression models in which the parameters (the regression coefficients) are themselves given a probability model (Gelman and Hill 2007)."
+  },
+  {
+    "objectID": "slides/Introduction/index.html#particularities-of-hierarchical-models",
+    "href": "slides/Introduction/index.html#particularities-of-hierarchical-models",
+    "title": "Introduction",
+    "section": "Particularities of hierarchical models",
+    "text": "Particularities of hierarchical models\nHierarchical models are\n\nA challenging bit of technology (probably more than you might think!).\nVery flexible models (in many more ways that are usually expected!)\nConstrained to the same particularities as (generalized) (non) linear models (sometimes to a more severe extent)"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#implementation-of-hierarchical-models",
+    "href": "slides/Introduction/index.html#implementation-of-hierarchical-models",
+    "title": "Introduction",
+    "section": "Implementation of hierarchical models",
+    "text": "Implementation of hierarchical models"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#a-bit-of-vocabulary",
+    "href": "slides/Introduction/index.html#a-bit-of-vocabulary",
+    "title": "Introduction",
+    "section": "A bit of vocabulary",
+    "text": "A bit of vocabulary\nHierarchical models, as we will see them in this course, are also known under different names\n\nRandom effect models\nMixed models\nMultilevel models\nVariance component models\nError component models"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#a-bit-of-vocabulary-1",
+    "href": "slides/Introduction/index.html#a-bit-of-vocabulary-1",
+    "title": "Introduction",
+    "section": "A bit of vocabulary",
+    "text": "A bit of vocabulary\nWe decided to use the term hierachical model to prevent confusions that sometimes arises in the litterature about random and fixed effects, which are terms commonly used when referring to mixed effect models.\nActually, random and fixed effects have multiple definitions, which leads to confusion"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#ronald-fisher",
+    "href": "slides/Introduction/index.html#ronald-fisher",
+    "title": "Introduction",
+    "section": "Ronald Fisher",
+    "text": "Ronald Fisher\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
+  },
+  {
+    "objectID": "slides/Introduction/index.html#implementation",
+    "href": "slides/Introduction/index.html#implementation",
+    "title": "Introduction",
+    "section": "Implementation",
+    "text": "Implementation\n\nHierarchical models have been implemented in many software packages,\n\nin R\n\nlme4, brms, nlme, glmmTMB, MCMCglmm, …\n\nin SAS\n\nMIXED, HPMIXED, GLMMIX, …\n\nin julia\n\nMixedModels.jl\n\n…"
+  },
+  {
+    "objectID": "slides/Introduction/index.html#a-bit-of-vocabulary-2",
+    "href": "slides/Introduction/index.html#a-bit-of-vocabulary-2",
+    "title": "Introduction",
+    "section": "A bit of vocabulary",
+    "text": "A bit of vocabulary\nMultiple Definition of fixed and random effects\n\n(Kreft and De Leeuw 1998) Fixed effects are constant and random effect vary\n(Searl et al. 1992) Effects are fixed if they are interesting in themselves or random if there is interest in the underlying population\n(Green and Tukey 1960) When a sample exhausts the population, the corresponding variable is fixed; when the sample is a small (i.e., negligible) part of the population the corresponding variable is random\n(Roy LaMotte 2014) If an effect is assumed to be a realized value of a random variable, it is called a random effect\n(Robinson 1991) Fixed effects are estimated using least squares (or, more generally, maximum likelihood) and random effects are estimated with shrinkage."
+  },
+  {
+    "objectID": "slides/Introduction/index.html#implementation-1",
+    "href": "slides/Introduction/index.html#implementation-1",
+    "title": "Introduction",
+    "section": "Implementation",
+    "text": "Implementation\nWhat we will use\nWe will not use any of these software packages… because under specific circumstances, what may seem like the same implementation of a model may lead to different answers… and both can actually be right !\nThis is because the underlying model implemented in the software package may actually be slightly different.\nInstead we will implement our own models from scratch using stan."
+  },
+  {
+    "objectID": "slides/01_Data/index.html#un-beau-titre",
+    "href": "slides/01_Data/index.html#un-beau-titre",
+    "title": "Data used for this course",
+    "section": "Un beau titre",
+    "text": "Un beau titre\nthis is the first slide"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#second",
+    "href": "slides/01_Data/index.html#second",
+    "title": "Data used for this course",
+    "section": "second",
+    "text": "second\n\nTest your model"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#section",
+    "href": "slides/01_Data/index.html#section",
+    "title": "Data used for this course",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#section-1",
+    "href": "slides/01_Data/index.html#section-1",
+    "title": "Data used for this course",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#section-2",
+    "href": "slides/01_Data/index.html#section-2",
+    "title": "Data used for this course",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#choose-parameters",
+    "href": "slides/01_Data/index.html#choose-parameters",
+    "title": "Data used for this course",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#make-up-an-x-variable",
+    "href": "slides/01_Data/index.html#make-up-an-x-variable",
+    "title": "Data used for this course",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#calculate-the-average",
+    "href": "slides/01_Data/index.html#calculate-the-average",
+    "title": "Data used for this course",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#simulate-some-observations",
+    "href": "slides/01_Data/index.html#simulate-some-observations",
+    "title": "Data used for this course",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#finally-visualize",
+    "href": "slides/01_Data/index.html#finally-visualize",
+    "title": "Data used for this course",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#here-it-is-all-on-one-slide",
+    "href": "slides/01_Data/index.html#here-it-is-all-on-one-slide",
+    "title": "Data used for this course",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/01_Data/index.html#or-we-can-present-the-code-and-results-separately",
+    "title": "Data used for this course",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#another-equation",
+    "href": "slides/01_Data/index.html#another-equation",
+    "title": "Data used for this course",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#the-equation",
+    "href": "slides/01_Data/index.html#the-equation",
+    "title": "Data used for this course",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#the-model",
+    "href": "slides/01_Data/index.html#the-model",
+    "title": "Data used for this course",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#declare-the-data",
+    "href": "slides/01_Data/index.html#declare-the-data",
+    "title": "Data used for this course",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#state-parameters",
+    "href": "slides/01_Data/index.html#state-parameters",
+    "title": "Data used for this course",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#write-the-likelihood-and-priors",
+    "href": "slides/01_Data/index.html#write-the-likelihood-and-priors",
+    "title": "Data used for this course",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#illustrative-datasets",
+    "href": "slides/01_Data/index.html#illustrative-datasets",
+    "title": "Data used for this course",
+    "section": "Illustrative datasets",
+    "text": "Illustrative datasets\nTo illustrate the different models and methods we will discuss in this course, we will rely on a few data sets, which are directly available in different R package\n\nmite, mite.env and mite.xy available in the vegan R package\npenguins available in the palmerpenguins R package\n\nThese datasets are practical because they are manageable in size and will allow you to see how to work out the different example presented in this course.\nLet’s look at them in more details"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#oribatid-mite-data",
+    "href": "slides/01_Data/index.html#oribatid-mite-data",
+    "title": "Data used for this course",
+    "section": "Oribatid mite data",
+    "text": "Oribatid mite data\nAside from being a very interesting datasets this data has been sample on the southern shore of Lac Geai (a few minutes walk from here ! We will go see it this week)\nSampling was carried out in June 1989 on the partially floating vegetation mat surrounding the lake from the forest border to the free water by Daniel Borcard"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#oribatid-mite-data-1",
+    "href": "slides/01_Data/index.html#oribatid-mite-data-1",
+    "title": "Data used for this course",
+    "section": "Oribatid mite data",
+    "text": "Oribatid mite data\nOribatid mites are small (usually ranging in size from 0.2 to 1.4 mm) invertebrates that are part of the Arachnida class (so they have 8 legs).\n In the mite data, 35 morphospecies were identified and counted across 70 samples."
   }
 ]
