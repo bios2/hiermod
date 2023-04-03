@@ -1,82 +1,5 @@
 [
   {
-    "objectID": "topics/secret_weapon.html",
-    "href": "topics/secret_weapon.html",
-    "title": "Summarizing many univariate models",
-    "section": "",
-    "text": "We’ve already looked at univariate models. When we fit the same model to multiple different groups, we don’t expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.\nHierarchial models represent a way to model this variation, in ways that range from simple to complex.\nBefore we dive in with hierarchical structure, let’s build a bridge between these two approaches.\nThis is useful to help us understand what a hierarchical model does.\nHowever it is also useful from a strict model-building perspective – so useful that Andrew Gelman calls it a “Secret Weapon” tk link\nTo keep things simple and univariate, let’s consider only water:\nFirst, a quick word about centering and scaling a predictor variable:\nsome things to notice about this figure:\nAs you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.\nOnce again, the two parameters of this model represent:"
-  },
-  {
-    "objectID": "topics/secret_weapon.html#say-it-in-stan",
-    "href": "topics/secret_weapon.html#say-it-in-stan",
-    "title": "Summarizing many univariate models",
-    "section": "Say it in Stan",
-    "text": "Say it in Stan\nThe above tidyverse approach is very appealing and intuitive, but we can also do the same procedure in Stan."
-  },
-  {
-    "objectID": "topics/secret_weapon.html#modelling-variation-in-slopes",
-    "href": "topics/secret_weapon.html#modelling-variation-in-slopes",
-    "title": "Summarizing many univariate models",
-    "section": "Modelling variation in slopes",
-    "text": "Modelling variation in slopes\nClearly there is variation among species in the values of these parameters. Like all variation, we can develop a scientific model to describe it. The simplest model we’ll consider is a simple univariate distribution.\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nlogistic_bern_glm <- cmdstan_model(\n  stan_file = here::here(\"topics/secret_weapon_univariate.stan\"), \n  pedantic = TRUE)\n\nmite_bin <- mite\nmite_bin[mite_bin>0] <- 1\n\nlogistic_bern_glm$sample(data = list(\n  Nsites = nrow(mite_bin),\n  K = 2,\n  S = ncol(mite_bin),\n  x = cbind(1, with(mite.env, (WatrCont - mean(WatrCont))/100)),\n  y = as.matrix(mite_bin)\n))\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 1 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 1 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 1 finished in 9.2 seconds.\nChain 2 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 2 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 2 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 2 finished in 9.3 seconds.\nChain 3 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 3 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 3 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 3 finished in 10.0 seconds.\nChain 4 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 4 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 4 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 4 finished in 12.8 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 10.3 seconds.\nTotal execution time: 42.0 seconds.\n\n\n variable     mean   median   sd  mad       q5      q95 rhat ess_bulk ess_tail\n   lp__   -1171.18 -1170.78 8.32 8.07 -1185.34 -1157.97 1.00      643     1511\n   z[1,1]     1.67     1.65 0.36 0.36     1.11     2.29 1.00     1214     2032\n   z[2,1]     0.04     0.04 0.39 0.37    -0.62     0.67 1.00     2184     2490\n   z[1,2]    -0.41    -0.40 0.26 0.25    -0.86     0.00 1.00      839     1684\n   z[2,2]    -0.92    -0.90 0.43 0.41    -1.68    -0.26 1.00     2123     2361\n   z[1,3]     2.06     2.04 0.42 0.41     1.41     2.80 1.00     1256     2335\n   z[2,3]    -0.10    -0.09 0.42 0.40    -0.81     0.58 1.00     2376     2473\n   z[1,4]    -0.62    -0.61 0.28 0.28    -1.09    -0.17 1.00      706     1606\n   z[2,4]    -1.04    -1.02 0.45 0.44    -1.80    -0.36 1.00     1918     2508\n   z[1,5]    -1.07    -1.06 0.32 0.32    -1.61    -0.57 1.01      770     1442\n\n # showing 10 of 145 rows (change via 'max_rows' argument or 'cmdstanr_max_rows' option)\n\n\nlet’s take a look at these values:\n\ndata(\"mite.xy\", package = \"vegan\")\nmite.xy\n\n      x   y\n1  0.20 0.1\n2  1.00 0.1\n3  1.20 0.3\n4  1.40 0.5\n5  2.40 0.7\n6  1.80 0.9\n7  0.05 1.1\n8  2.00 1.3\n9  2.00 1.5\n10 1.20 1.7\n11 2.40 1.9\n12 0.20 2.1\n13 0.40 2.1\n14 2.00 2.3\n15 2.20 2.3\n16 0.05 2.7\n17 0.20 2.7\n18 2.20 2.7\n19 2.40 2.7\n20 1.20 2.9\n21 0.05 3.1\n22 1.40 3.1\n23 2.40 3.1\n24 0.20 3.5\n25 1.20 3.7\n26 0.80 3.9\n27 1.60 3.9\n28 0.20 4.1\n29 0.80 4.1\n30 1.80 4.5\n31 0.20 4.7\n32 1.40 4.7\n33 0.60 5.3\n34 1.00 5.3\n35 2.40 5.3\n36 1.40 5.5\n37 1.80 5.5\n38 0.40 5.9\n39 1.00 5.9\n40 1.80 5.9\n41 2.00 5.9\n42 0.05 6.1\n43 0.20 6.1\n44 0.40 6.1\n45 1.20 6.1\n46 1.60 6.1\n47 1.60 6.3\n48 0.40 6.5\n49 1.80 6.7\n50 0.60 6.9\n51 2.00 7.1\n52 0.05 7.3\n53 0.40 7.3\n54 1.40 7.5\n55 2.20 7.5\n56 0.20 7.9\n57 1.60 7.9\n58 2.40 7.9\n59 0.05 8.1\n60 1.20 8.1\n61 1.40 8.1\n62 2.00 8.1\n63 1.60 8.5\n64 1.60 8.7\n65 1.00 8.9\n66 1.60 8.9\n67 2.40 9.1\n68 2.20 9.3\n69 1.80 9.5\n70 0.40 9.7\n\nnrow(mite)\n\n[1] 70"
-  },
-  {
-    "objectID": "day_1.html#course-setup-information",
-    "href": "day_1.html#course-setup-information",
-    "title": "Day 1",
-    "section": "Course setup information",
-    "text": "Course setup information\n\nsite information\nplagiarism"
-  },
-  {
-    "objectID": "day_1.html#simulation",
-    "href": "day_1.html#simulation",
-    "title": "Day 1",
-    "section": "Simulation",
-    "text": "Simulation"
-  },
-  {
-    "objectID": "day_1.html#quantifying-uncertainty",
-    "href": "day_1.html#quantifying-uncertainty",
-    "title": "Day 1",
-    "section": "Quantifying uncertainty",
-    "text": "Quantifying uncertainty"
-  },
-  {
-    "objectID": "day_1.html#resampling",
-    "href": "day_1.html#resampling",
-    "title": "Day 1",
-    "section": "Resampling",
-    "text": "Resampling\nIn frequentist models, we can use the variance covariance matrix of parameters to resample new parameters values. This lets us propagate uncertainty from the estimated parameters to the predicted relationship.\nLet’s demonstrate this with one specific mite:\n\nlrug_water <- mite_water |> \n  filter(sp == \"LRUG\")\n\nlrug_glm <- glm(pa ~ water, data = lrug_water, family = \"binomial\")\n\nNow, with our model object, we can create the resampling distribution of the model predicitons:\n\n# Set seed\nset.seed(42) # The answer !\n\n# a sequence along the range of water values in the data\npredVal <- seq(from = min(lrug_water$water),\n               to = max(lrug_water$water),\n               length.out = 30)\n\nn_resamp <- 500\n\n# Result object\nresampModel <- array(NA_real_,\n                   dim = c(length(predVal), n_resamp))\n\n# Resample model parameters and calculate model predictions\nparamMean <- summary(lrug_glm)$coefficients[,1]\nparamCov <- summary(lrug_glm)$cov.unscaled\n\n# Resample model parameters\nparamSmpl <- MASS::mvrnorm(n_resamp, paramMean, paramCov)\n\n# Calculate model predictions using the resampled model parameters\nfor(j in 1:n_resamp){\n  resampModel[,j] <- binomial(link = \"logit\")$linkinv(\n    paramSmpl[j,1] + paramSmpl[j,2] * predVal)\n}\n\n# make a plot of these predictions\nmatplot(predVal, resampModel, type = \"l\", col = \"grey\", lty = 1)\n\n\n\n\nIf we want to find some kind of confidence interval for this line, we can take the quantiles of this resampling:\n\nlow <- apply(resampModel, 1, quantile, probs = .015)\nhigh <- apply(resampModel, 1, quantile, probs = .985)\n\n# plot\nwith(lrug_water, plot(pa ~ water, pch = 21, bg = \"lightblue\"))\npolygon(c(predVal,rev(predVal)),\n        c(low,rev(high)), col=\"thistle\", border=NA)\nlines(predVal, \n      predict(lrug_glm, newdata = list(water = predVal), type = \"response\")\n      )\n\n\n\n\nWe can also do this in a tidyverse style, if you are more comfortable with that:\n\ntibble(predVal) |> \n  rowwise() |> \n  mutate(intercept = list(paramSmpl[,1]),\n         slope = list(paramSmpl[,2]),\n         prediction = list(intercept + slope*predVal),\n         prediction_probability = list(plogis(prediction)),\n         low  = quantile(prediction_probability, .015),\n         high = quantile(prediction_probability, .985)) |> \n  ggplot(aes(x = predVal, ymin = low, ymax = high)) + \n  geom_ribbon(fill = \"thistle\") + \n  theme_bw() + \n  ylim(c(0,1))"
-  },
-  {
-    "objectID": "day_1.html#bayesian-approach",
-    "href": "day_1.html#bayesian-approach",
-    "title": "Day 1",
-    "section": "Bayesian approach",
-    "text": "Bayesian approach\nhere is a simple bayesian model to generate the same inference:\n\\[\n\\begin{align}\ny &\\sim \\text{Bernoulli}(p)\\\\\n\\text{logit}(p) &= \\alpha + X\\beta\\\\\n\\alpha &\\sim \\text{Normal}(-2.5, .5)\\\\\n\\beta &\\sim \\text{Normal}(0, .5)\\\\\n\\end{align}\n\\]\nnormally we would go through a careful process of checking our priors here. At this time we won’t because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.\nFirst we compile the model, then we’ll look at the Stan code:\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: /Users/blag1404/.cmdstan/cmdstan-2.31.0\n\n\n- CmdStan version: 2.31.0\n\nlogistic_glm_stan <- cmdstan_model(stan_file = \"stan/logistic_bern_logit.stan\", \n                               pedantic = TRUE)\n\nlogistic_glm_stan\n\ndata {\n  int<lower=0> n;\n  vector[n] x;\n  array[n] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  real slope;\n}\nmodel {\n  y ~ bernoulli_logit(intercept + slope * x);\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n}\n\n\nHere we see the same three parts of a Stan model that we have reviewed already:\n\ndata\nparameters\nprobability statements\n\nAs you can see, we are using a handy Stan function called bernoulli_logit. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.\n\n\nAs a quick review, the logit equation, or inverse-log-odds, is written as \\[\n\\frac{e^\\mu}{1 + e^\\mu}\n\\] Which is also written as\n\\[\n\\frac{1}{1 + e^{-\\mu}}\n\\]\nStan expects our data as a list.\n\nlogistic_glm_stan_samples <- logistic_glm_stan$sample(\n  data = list(n = nrow(lrug_water),\n              y = lrug_water$pa,\n              x = lrug_water$water),\n  refresh = 0)\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 finished in 0.2 seconds.\nChain 2 finished in 0.1 seconds.\nChain 3 finished in 0.2 seconds.\nChain 4 finished in 0.1 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.2 seconds.\nTotal execution time: 1.1 seconds.\n\ncoef(lrug_glm)\n\n(Intercept)       water \n-2.48153943  0.00874349 \n\nlibrary(tidybayes)\n\nspread_rvars(logistic_glm_stan_samples, intercept, slope[]) |> \n  bind_cols(predVal = predVal) |> \n  mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |> \n  ggplot(aes(x = predVal, ydist = pred)) + \n  stat_dist_lineribbon() + \n  guides(fill = \"none\") + \n  ylim(c(0,1))\n\n\n\n\n\nAlternative parameterization\nStan contains many functions intended to facilitate writing statistical models. Above, we used the function bernoulli_logit so that we could provide the expression for the average on the logit scale.  Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints – only some values are “allowed”. For example, the only parameter of a Bernoulli distribution is \\(p\\), the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for \\(p\\).\n\n\n\n\n\n\nWarning\n\n\n\nPLEASE NOTE below you will see the relative path to the stan file (stan/logistic.stan). Immediately below you will see the Stan file content. You can copy and paste this to your own computer!\n\n\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nlogistic_bern_glm <- cmdstan_model(stan_file = \"stan/logistic.stan\", \n                               pedantic = TRUE)\n\nlogistic_bern_glm\n\ndata {\n  int<lower=0> N;\n  matrix[N, 1] x;\n  array[N] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  vector[1] slope;\n}\nmodel {\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n  y ~ bernoulli_logit_glm(x, intercept, slope);\n}"
-  },
-  {
-    "objectID": "day_2.html#convergence-diagnostics",
-    "href": "day_2.html#convergence-diagnostics",
-    "title": "Day 2",
-    "section": "Convergence Diagnostics",
-    "text": "Convergence Diagnostics"
-  },
-  {
-    "objectID": "day_2.html#model-validation-with-simulation",
-    "href": "day_2.html#model-validation-with-simulation",
-    "title": "Day 2",
-    "section": "Model validation with simulation",
-    "text": "Model validation with simulation"
-  },
-  {
-    "objectID": "day_2.html#dags",
-    "href": "day_2.html#dags",
-    "title": "Day 2",
-    "section": "DAGs",
-    "text": "DAGs\n\nforks, pipes and colliders\nsimulation from a DAG\ndemonstration of errors from disregarding DAGs"
-  },
-  {
     "objectID": "practice_example_template.html",
     "href": "practice_example_template.html",
     "title": "Template",
@@ -84,11 +7,193 @@
     "text": "Some text\n\n\nThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.\nWhen you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:\n\nsummary(cars)\n\n     speed           dist       \n Min.   : 4.0   Min.   :  2.00  \n 1st Qu.:12.0   1st Qu.: 26.00  \n Median :15.0   Median : 36.00  \n Mean   :15.4   Mean   : 42.98  \n 3rd Qu.:19.0   3rd Qu.: 56.00  \n Max.   :25.0   Max.   :120.00  \n\n\n\n\n\nYou can also embed plots, for example:\n\n\n\n\n\nNote that the echo = FALSE parameter was added to the code chunk to prevent printing of the R code that generated the plot."
   },
   {
-    "objectID": "slides/template/index.html",
-    "href": "slides/template/index.html",
-    "title": "Template for presentations",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Course contents",
     "section": "",
-    "text": "this is the first slide"
+    "text": "Here are documents containing all code and theory for the entire course:\n\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\nDay 1\n\n\n\n\n\nGeneral Introduction, introduction to simulation, model checking, and Stan workflows.\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\n\n\nDay 2\n\n\n\n\n\nMCMC, Diagnostic tests, model validation, and DAGs.\n\n\n\n\n \n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#illustrative-datasets",
+    "href": "slides/01_Data/index.html#illustrative-datasets",
+    "title": "Data used for this course",
+    "section": "Illustrative datasets",
+    "text": "Illustrative datasets\nTo illustrate the different models and methods we will discuss in this course, we will rely on a few data sets, which are directly available in different R package\n\nmite, mite.env and mite.xy available in the vegan R package\npenguins available in the palmerpenguins R package\n\nThese datasets are practical because they are manageable in size and will allow you to see how to work out the different example presented in this course.\nLet’s look at them in more details"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#oribatid-mite-data",
+    "href": "slides/01_Data/index.html#oribatid-mite-data",
+    "title": "Data used for this course",
+    "section": "Oribatid mite data",
+    "text": "Oribatid mite data\nAside from being a very interesting datasets this data has been sample on the southern shore of Lac Geai (a few minutes walk from here ! We will go see it this week)\nSampling was carried out in June 1989 on the partially floating vegetation mat surrounding the lake from the forest border to the free water by Daniel Borcard"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#oribatid-mite-data-1",
+    "href": "slides/01_Data/index.html#oribatid-mite-data-1",
+    "title": "Data used for this course",
+    "section": "Oribatid mite data",
+    "text": "Oribatid mite data\nOribatid mites are small (usually ranging in size from 0.2 to 1.4 mm) invertebrates that are part of the Arachnida class (so they have 8 legs).\n\nIn the mite data, 35 morphospecies were identified and counted across 70 samples."
+  },
+  {
+    "objectID": "slides/01_Data/index.html#sites-coordinates",
+    "href": "slides/01_Data/index.html#sites-coordinates",
+    "title": "Data used for this course",
+    "section": "Sites coordinates",
+    "text": "Sites coordinates"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#vegetation-cover",
+    "href": "slides/01_Data/index.html#vegetation-cover",
+    "title": "Data used for this course",
+    "section": "Vegetation cover",
+    "text": "Vegetation cover\n{fig-align=“center” width = 105%}"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#microtopography-and-shrub-cover",
+    "href": "slides/01_Data/index.html#microtopography-and-shrub-cover",
+    "title": "Data used for this course",
+    "section": "Microtopography and shrub cover",
+    "text": "Microtopography and shrub cover\n{fig-align=“center” width = 105%}"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#substrate-density-and-water-content",
+    "href": "slides/01_Data/index.html#substrate-density-and-water-content",
+    "title": "Data used for this course",
+    "section": "Substrate density and water content",
+    "text": "Substrate density and water content\n{fig-align=“center” width = 105%}"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#un-beau-titre",
+    "href": "slides/02_Linear_model/index.html#un-beau-titre",
+    "title": "Linear models",
+    "section": "Un beau titre",
+    "text": "Un beau titre\nthis is the first slide"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#second",
+    "href": "slides/02_Linear_model/index.html#second",
+    "title": "Linear models",
+    "section": "second",
+    "text": "second\n\nTest your model"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#section",
+    "href": "slides/02_Linear_model/index.html#section",
+    "title": "Linear models",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#section-1",
+    "href": "slides/02_Linear_model/index.html#section-1",
+    "title": "Linear models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#section-2",
+    "href": "slides/02_Linear_model/index.html#section-2",
+    "title": "Linear models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#choose-parameters",
+    "href": "slides/02_Linear_model/index.html#choose-parameters",
+    "title": "Linear models",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#make-up-an-x-variable",
+    "href": "slides/02_Linear_model/index.html#make-up-an-x-variable",
+    "title": "Linear models",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#calculate-the-average",
+    "href": "slides/02_Linear_model/index.html#calculate-the-average",
+    "title": "Linear models",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#simulate-some-observations",
+    "href": "slides/02_Linear_model/index.html#simulate-some-observations",
+    "title": "Linear models",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#finally-visualize",
+    "href": "slides/02_Linear_model/index.html#finally-visualize",
+    "title": "Linear models",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#here-it-is-all-on-one-slide",
+    "href": "slides/02_Linear_model/index.html#here-it-is-all-on-one-slide",
+    "title": "Linear models",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/02_Linear_model/index.html#or-we-can-present-the-code-and-results-separately",
+    "title": "Linear models",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#another-equation",
+    "href": "slides/02_Linear_model/index.html#another-equation",
+    "title": "Linear models",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#the-equation",
+    "href": "slides/02_Linear_model/index.html#the-equation",
+    "title": "Linear models",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#the-model",
+    "href": "slides/02_Linear_model/index.html#the-model",
+    "title": "Linear models",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#declare-the-data",
+    "href": "slides/02_Linear_model/index.html#declare-the-data",
+    "title": "Linear models",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#state-parameters",
+    "href": "slides/02_Linear_model/index.html#state-parameters",
+    "title": "Linear models",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#write-the-likelihood-and-priors",
+    "href": "slides/02_Linear_model/index.html#write-the-likelihood-and-priors",
+    "title": "Linear models",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/template/index.html#un-beau-titre",
+    "href": "slides/template/index.html#un-beau-titre",
+    "title": "Template for presentations",
+    "section": "Un beau titre",
+    "text": "Un beau titre\nthis is the first slide"
   },
   {
     "objectID": "slides/template/index.html#second",
@@ -210,300 +315,210 @@
     "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Course contents",
-    "section": "",
-    "text": "Here are documents containing all code and theory for the entire course:\n\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\nDay 1\n\n\n\n\n\nGeneral Introduction, introduction to simulation, model checking, and Stan workflows.\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\n\n\nDay 2\n\n\n\n\n\nMCMC, Diagnostic tests, model validation, and DAGs.\n\n\n\n\n \n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "slides/template/index.html#un-beau-titre",
-    "href": "slides/template/index.html#un-beau-titre",
-    "title": "Template for presentations",
-    "section": "Un beau titre",
-    "text": "Un beau titre\nthis is the first slide"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#internet",
-    "href": "slides/Introduction/index.html#internet",
+    "objectID": "slides/00_Introduction/index.html#internet",
+    "href": "slides/00_Introduction/index.html#internet",
     "title": "Introduction",
     "section": "Internet",
     "text": "Internet\nNetwork : \nPassword :"
   },
   {
-    "objectID": "slides/Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
-    "href": "slides/Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
+    "objectID": "slides/00_Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
+    "href": "slides/00_Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
     "title": "Introduction",
     "section": "Dos and don’ts at the Station biologique des Laurentides",
     "text": "Dos and don’ts at the Station biologique des Laurentides"
   },
   {
-    "objectID": "slides/Introduction/index.html#course-material",
-    "href": "slides/Introduction/index.html#course-material",
+    "objectID": "slides/00_Introduction/index.html#course-material",
+    "href": "slides/00_Introduction/index.html#course-material",
     "title": "Introduction",
     "section": "Course material",
     "text": "Course material\nWebsite :\nOn it, you will find the slides but also Rmarkdown files with practical examples.\nYou will also find course syllabus\nLet’s take a look…"
   },
   {
-    "objectID": "slides/Introduction/index.html#general-daily-schedule",
-    "href": "slides/Introduction/index.html#general-daily-schedule",
+    "objectID": "slides/00_Introduction/index.html#general-daily-schedule",
+    "href": "slides/00_Introduction/index.html#general-daily-schedule",
     "title": "Introduction",
     "section": "General daily schedule",
     "text": "General daily schedule\n9h00 - Start of the day\n9h00 to 12h00 - Lecture/Practice\n12h00 to 13h00 - Lunch\n13h00 to 17h00 - Lecture/Practice\n17h00 to 18h00 - Project presentations"
   },
   {
-    "objectID": "slides/Introduction/index.html#a-bit-of-history",
-    "href": "slides/Introduction/index.html#a-bit-of-history",
-    "title": "Introduction",
-    "section": "A bit of history",
-    "text": "A bit of history\nBecause of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
-  },
-  {
-    "objectID": "slides/Introduction/index.html#good-reference",
-    "href": "slides/Introduction/index.html#good-reference",
-    "title": "Introduction",
-    "section": "Good reference",
-    "text": "Good reference\n\nA good portion of this course material is based on this book."
-  },
-  {
-    "objectID": "slides/Introduction/index.html#great-technical-references",
-    "href": "slides/Introduction/index.html#great-technical-references",
-    "title": "Introduction",
-    "section": "Great technical references",
-    "text": "Great technical references\n\nEverything is there but it can gets technical !"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#r-and-stan",
-    "href": "slides/Introduction/index.html#r-and-stan",
-    "title": "Introduction",
-    "section": "R and Stan",
-    "text": "R and Stan\nAll of the practical aspect of the course will be done with R and Stan.\nRStudio\nWe strongly (!) encourage you to use RStudio and to start a projectforthe course."
-  },
-  {
-    "objectID": "slides/Introduction/index.html#r-package-to-install",
-    "href": "slides/Introduction/index.html#r-package-to-install",
-    "title": "Introduction",
-    "section": "R package to install",
-    "text": "R package to install\n\ninstall.packages(c(\"rstan\"))\n\nimg:\n\nit is a landscape"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#section",
-    "href": "slides/Introduction/index.html#section",
-    "title": "Introduction",
-    "section": "",
-    "text": "check with simulations"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#section-1",
-    "href": "slides/Introduction/index.html#section-1",
-    "title": "Introduction",
-    "section": "",
-    "text": "check with simulations"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#choose-parameters",
-    "href": "slides/Introduction/index.html#choose-parameters",
-    "title": "Introduction",
-    "section": "choose parameters",
-    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#make-up-an-x-variable",
-    "href": "slides/Introduction/index.html#make-up-an-x-variable",
-    "title": "Introduction",
-    "section": "make up an X variable",
-    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#calculate-the-average",
-    "href": "slides/Introduction/index.html#calculate-the-average",
-    "title": "Introduction",
-    "section": "calculate the average",
-    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#simulate-some-observations",
-    "href": "slides/Introduction/index.html#simulate-some-observations",
-    "title": "Introduction",
-    "section": "simulate some observations",
-    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#finally-visualize",
-    "href": "slides/Introduction/index.html#finally-visualize",
-    "title": "Introduction",
-    "section": "finally, visualize",
-    "text": "finally, visualize\n\nplot(y_obs ~ x)"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#here-it-is-all-on-one-slide",
-    "href": "slides/Introduction/index.html#here-it-is-all-on-one-slide",
-    "title": "Introduction",
-    "section": "here it is all on one slide",
-    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#or-we-can-present-the-code-and-results-separately",
-    "href": "slides/Introduction/index.html#or-we-can-present-the-code-and-results-separately",
-    "title": "Introduction",
-    "section": "Or we can present the code and results separately",
-    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#another-equation",
-    "href": "slides/Introduction/index.html#another-equation",
-    "title": "Introduction",
-    "section": "another equation",
-    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#the-equation",
-    "href": "slides/Introduction/index.html#the-equation",
-    "title": "Introduction",
-    "section": "The equation",
-    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#the-model",
-    "href": "slides/Introduction/index.html#the-model",
-    "title": "Introduction",
-    "section": "The model",
-    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#declare-the-data",
-    "href": "slides/Introduction/index.html#declare-the-data",
-    "title": "Introduction",
-    "section": "Declare the data",
-    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#state-parameters",
-    "href": "slides/Introduction/index.html#state-parameters",
-    "title": "Introduction",
-    "section": "State parameters",
-    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#write-the-likelihood-and-priors",
-    "href": "slides/Introduction/index.html#write-the-likelihood-and-priors",
-    "title": "Introduction",
-    "section": "Write the likelihood and priors",
-    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#what-are-hierarchical-models",
-    "href": "slides/Introduction/index.html#what-are-hierarchical-models",
+    "objectID": "slides/00_Introduction/index.html#what-are-hierarchical-models",
+    "href": "slides/00_Introduction/index.html#what-are-hierarchical-models",
     "title": "Introduction",
     "section": "What are hierarchical models ?",
     "text": "What are hierarchical models ?\nFor this course, hierarchical models are regression models in which the parameters (the regression coefficients) are themselves given a probability model (Gelman and Hill 2007)."
   },
   {
-    "objectID": "slides/Introduction/index.html#particularities-of-hierarchical-models",
-    "href": "slides/Introduction/index.html#particularities-of-hierarchical-models",
+    "objectID": "slides/00_Introduction/index.html#particularities-of-hierarchical-models",
+    "href": "slides/00_Introduction/index.html#particularities-of-hierarchical-models",
     "title": "Introduction",
     "section": "Particularities of hierarchical models",
     "text": "Particularities of hierarchical models\nHierarchical models are\n\nA challenging bit of technology (probably more than you might think!).\nVery flexible models (in many more ways that are usually expected!)\nConstrained to the same particularities as (generalized) (non) linear models (sometimes to a more severe extent)"
   },
   {
-    "objectID": "slides/Introduction/index.html#implementation-of-hierarchical-models",
-    "href": "slides/Introduction/index.html#implementation-of-hierarchical-models",
-    "title": "Introduction",
-    "section": "Implementation of hierarchical models",
-    "text": "Implementation of hierarchical models"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#a-bit-of-vocabulary",
-    "href": "slides/Introduction/index.html#a-bit-of-vocabulary",
+    "objectID": "slides/00_Introduction/index.html#a-bit-of-vocabulary",
+    "href": "slides/00_Introduction/index.html#a-bit-of-vocabulary",
     "title": "Introduction",
     "section": "A bit of vocabulary",
     "text": "A bit of vocabulary\nHierarchical models, as we will see them in this course, are also known under different names\n\nRandom effect models\nMixed models\nMultilevel models\nVariance component models\nError component models"
   },
   {
-    "objectID": "slides/Introduction/index.html#a-bit-of-vocabulary-1",
-    "href": "slides/Introduction/index.html#a-bit-of-vocabulary-1",
+    "objectID": "slides/00_Introduction/index.html#a-bit-of-vocabulary-1",
+    "href": "slides/00_Introduction/index.html#a-bit-of-vocabulary-1",
     "title": "Introduction",
     "section": "A bit of vocabulary",
     "text": "A bit of vocabulary\nWe decided to use the term hierachical model to prevent confusions that sometimes arises in the litterature about random and fixed effects, which are terms commonly used when referring to mixed effect models.\nActually, random and fixed effects have multiple definitions, which leads to confusion"
   },
   {
-    "objectID": "slides/Introduction/index.html#ronald-fisher",
-    "href": "slides/Introduction/index.html#ronald-fisher",
-    "title": "Introduction",
-    "section": "Ronald Fisher",
-    "text": "Ronald Fisher\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
-  },
-  {
-    "objectID": "slides/Introduction/index.html#implementation",
-    "href": "slides/Introduction/index.html#implementation",
-    "title": "Introduction",
-    "section": "Implementation",
-    "text": "Implementation\n\nHierarchical models have been implemented in many software packages,\n\nin R\n\nlme4, brms, nlme, glmmTMB, MCMCglmm, …\n\nin SAS\n\nMIXED, HPMIXED, GLMMIX, …\n\nin julia\n\nMixedModels.jl\n\n…"
-  },
-  {
-    "objectID": "slides/Introduction/index.html#a-bit-of-vocabulary-2",
-    "href": "slides/Introduction/index.html#a-bit-of-vocabulary-2",
+    "objectID": "slides/00_Introduction/index.html#a-bit-of-vocabulary-2",
+    "href": "slides/00_Introduction/index.html#a-bit-of-vocabulary-2",
     "title": "Introduction",
     "section": "A bit of vocabulary",
     "text": "A bit of vocabulary\nMultiple Definition of fixed and random effects\n\n(Kreft and De Leeuw 1998) Fixed effects are constant and random effect vary\n(Searl et al. 1992) Effects are fixed if they are interesting in themselves or random if there is interest in the underlying population\n(Green and Tukey 1960) When a sample exhausts the population, the corresponding variable is fixed; when the sample is a small (i.e., negligible) part of the population the corresponding variable is random\n(Roy LaMotte 2014) If an effect is assumed to be a realized value of a random variable, it is called a random effect\n(Robinson 1991) Fixed effects are estimated using least squares (or, more generally, maximum likelihood) and random effects are estimated with shrinkage."
   },
   {
-    "objectID": "slides/Introduction/index.html#implementation-1",
-    "href": "slides/Introduction/index.html#implementation-1",
+    "objectID": "slides/00_Introduction/index.html#a-bit-of-history",
+    "href": "slides/00_Introduction/index.html#a-bit-of-history",
+    "title": "Introduction",
+    "section": "A bit of history",
+    "text": "A bit of history\nBecause of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#implementation",
+    "href": "slides/00_Introduction/index.html#implementation",
     "title": "Introduction",
     "section": "Implementation",
-    "text": "Implementation\nWhat we will use\nWe will not use any of these software packages… because under specific circumstances, what may seem like the same implementation of a model may lead to different answers… and both can actually be right !\nThis is because the underlying model implemented in the software package may actually be slightly different.\nInstead we will implement our own models from scratch using stan."
+    "text": "Implementation\n\nHierarchical models have been implemented in many software packages,\n\nin R\n\nlme4, brms, nlme, glmmTMB, MCMCglmm, …\n\nin SAS\n\nMIXED, HPMIXED, GLMMIX, …\n\nin julia\n\nMixedModels.jl\n\n…"
   },
   {
-    "objectID": "slides/01_Data/index.html#un-beau-titre",
-    "href": "slides/01_Data/index.html#un-beau-titre",
-    "title": "Data used for this course",
-    "section": "Un beau titre",
-    "text": "Un beau titre\nthis is the first slide"
+    "objectID": "slides/00_Introduction/index.html#implementation-1",
+    "href": "slides/00_Introduction/index.html#implementation-1",
+    "title": "Introduction",
+    "section": "Implementation",
+    "text": "Implementation\nWhat we will use\nWe will not use any of these software packages… because under specific circumstances, what may seem like the same implementation of a model may lead to different answers… and both can actually be right !\nThis is because the underlying model implemented in the software package may actually be slightly different.\nInstead we will implement our own models from scratch using Stan."
   },
   {
-    "objectID": "slides/01_Data/index.html#second",
-    "href": "slides/01_Data/index.html#second",
-    "title": "Data used for this course",
-    "section": "second",
-    "text": "second\n\nTest your model"
+    "objectID": "slides/00_Introduction/index.html#good-reference",
+    "href": "slides/00_Introduction/index.html#good-reference",
+    "title": "Introduction",
+    "section": "Good reference",
+    "text": "Good reference\n\nA good portion of this course material is based on this book."
   },
   {
-    "objectID": "slides/01_Data/index.html#section",
-    "href": "slides/01_Data/index.html#section",
-    "title": "Data used for this course",
+    "objectID": "slides/00_Introduction/index.html#great-technical-references",
+    "href": "slides/00_Introduction/index.html#great-technical-references",
+    "title": "Introduction",
+    "section": "Great technical references",
+    "text": "Great technical references\n\nEverything is there but it can gets technical !"
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#r-and-stan",
+    "href": "slides/00_Introduction/index.html#r-and-stan",
+    "title": "Introduction",
+    "section": "R and Stan",
+    "text": "R and Stan\nAll of the practical aspect of the course will be done with R and Stan.\nRStudio\nWe strongly (!) encourage you to use RStudio and to start a project for the course."
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#r-package-to-install",
+    "href": "slides/00_Introduction/index.html#r-package-to-install",
+    "title": "Introduction",
+    "section": "R package to install",
+    "text": "R package to install\n\ninstall.packages(c(\"vegan\"))"
+  },
+  {
+    "objectID": "about.html#cibles-de-formation",
+    "href": "about.html#cibles-de-formation",
+    "title": "Advanced Statistics and hierarchical models",
+    "section": "Cibles de formation",
+    "text": "Cibles de formation\nApprendre la théorie statistique pour mieux construire, appliquer et interpréter différents modèles statistiques appliqués à des systèmes biologiques. Devenir familier avec la recherche primaire en en modélisation statistique de systèmes biologiques. Développer des connaissances et gagner de l’expérience à travailler de façon collaborative sur des problématiques lié au développement et à l’application de méthodes statisiques.\nThis course will feature hierarchical models and spatial statistics."
+  },
+  {
+    "objectID": "about.html#course-instructors",
+    "href": "about.html#course-instructors",
+    "title": "Advanced Statistics and hierarchical models",
+    "section": "Course Instructors",
+    "text": "Course Instructors\n\n\n\n\n\n\nDr Guillaume Blanchet\n\n\n\n\n\n\n\nDr Andrew MacDonald\n\n\n\n\n\n\n\nDr Vincent Tolon"
+  },
+  {
+    "objectID": "day_1.html#content",
+    "href": "day_1.html#content",
+    "title": "Day 1",
+    "section": "Content",
+    "text": "Content\nThe Secret Weapon\n\nAfternoon practical exercises"
+  },
+  {
+    "objectID": "day_1.html#course-setup-information",
+    "href": "day_1.html#course-setup-information",
+    "title": "Day 1",
+    "section": "Course setup information",
+    "text": "Course setup information\n\nsite information\nplagiarism"
+  },
+  {
+    "objectID": "day_1.html#simulation",
+    "href": "day_1.html#simulation",
+    "title": "Day 1",
+    "section": "Simulation",
+    "text": "Simulation"
+  },
+  {
+    "objectID": "day_1.html#quantifying-uncertainty",
+    "href": "day_1.html#quantifying-uncertainty",
+    "title": "Day 1",
+    "section": "Quantifying uncertainty",
+    "text": "Quantifying uncertainty"
+  },
+  {
+    "objectID": "day_1.html#resampling",
+    "href": "day_1.html#resampling",
+    "title": "Day 1",
+    "section": "Resampling",
+    "text": "Resampling\nIn frequentist models, we can use the variance covariance matrix of parameters to resample new parameters values. This lets us propagate uncertainty from the estimated parameters to the predicted relationship.\nLet’s demonstrate this with one specific mite:\n\nlrug_water <- mite_water |> \n  filter(sp == \"LRUG\")\n\nlrug_glm <- glm(pa ~ water, data = lrug_water, family = \"binomial\")\n\nNow, with our model object, we can create the resampling distribution of the model predicitons:\n\n# Set seed\nset.seed(42) # The answer !\n\n# a sequence along the range of water values in the data\npredVal <- seq(from = min(lrug_water$water),\n               to = max(lrug_water$water),\n               length.out = 30)\n\nn_resamp <- 500\n\n# Result object\nresampModel <- array(NA_real_,\n                   dim = c(length(predVal), n_resamp))\n\n# Resample model parameters and calculate model predictions\nparamMean <- summary(lrug_glm)$coefficients[,1]\nparamCov <- summary(lrug_glm)$cov.unscaled\n\n# Resample model parameters\nparamSmpl <- MASS::mvrnorm(n_resamp, paramMean, paramCov)\n\n# Calculate model predictions using the resampled model parameters\nfor(j in 1:n_resamp){\n  resampModel[,j] <- binomial(link = \"logit\")$linkinv(\n    paramSmpl[j,1] + paramSmpl[j,2] * predVal)\n}\n\n# make a plot of these predictions\nmatplot(predVal, resampModel, type = \"l\", col = \"grey\", lty = 1)\n\n\n\n\nIf we want to find some kind of confidence interval for this line, we can take the quantiles of this resampling:\n\nlow <- apply(resampModel, 1, quantile, probs = .015)\nhigh <- apply(resampModel, 1, quantile, probs = .985)\n\n# plot\nwith(lrug_water, plot(pa ~ water, pch = 21, bg = \"lightblue\"))\npolygon(c(predVal,rev(predVal)),\n        c(low,rev(high)), col=\"thistle\", border=NA)\nlines(predVal, \n      predict(lrug_glm, newdata = list(water = predVal), type = \"response\")\n      )\n\n\n\n\nWe can also do this in a tidyverse style, if you are more comfortable with that:\n\ntibble(predVal) |> \n  rowwise() |> \n  mutate(intercept = list(paramSmpl[,1]),\n         slope = list(paramSmpl[,2]),\n         prediction = list(intercept + slope*predVal),\n         prediction_probability = list(plogis(prediction)),\n         low  = quantile(prediction_probability, .015),\n         high = quantile(prediction_probability, .985)) |> \n  ggplot(aes(x = predVal, ymin = low, ymax = high)) + \n  geom_ribbon(fill = \"thistle\") + \n  theme_bw() + \n  ylim(c(0,1))"
+  },
+  {
+    "objectID": "day_1.html#bayesian-approach",
+    "href": "day_1.html#bayesian-approach",
+    "title": "Day 1",
+    "section": "Bayesian approach",
+    "text": "Bayesian approach\nhere is a simple bayesian model to generate the same inference:\n\\[\n\\begin{align}\ny &\\sim \\text{Bernoulli}(p)\\\\\n\\text{logit}(p) &= \\alpha + X\\beta\\\\\n\\alpha &\\sim \\text{Normal}(-2.5, .5)\\\\\n\\beta &\\sim \\text{Normal}(0, .5)\\\\\n\\end{align}\n\\]\nnormally we would go through a careful process of checking our priors here. At this time we won’t because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.\nFirst we compile the model, then we’ll look at the Stan code:\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: /Users/amacdonald/.cmdstan/cmdstan-2.31.0\n\n\n- CmdStan version: 2.31.0\n\nlogistic_glm_stan <- cmdstan_model(stan_file = \"stan/logistic_bern_logit.stan\", \n                               pedantic = TRUE)\n\nlogistic_glm_stan\n\ndata {\n  int<lower=0> n;\n  vector[n] x;\n  array[n] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  real slope;\n}\nmodel {\n  y ~ bernoulli_logit(intercept + slope * x);\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n}\n\n\nHere we see the same three parts of a Stan model that we have reviewed already:\n\ndata\nparameters\nprobability statements\n\nAs you can see, we are using a handy Stan function called bernoulli_logit. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.\n\n\nAs a quick review, the logit equation, or inverse-log-odds, is written as \\[\n\\frac{e^\\mu}{1 + e^\\mu}\n\\] Which is also written as\n\\[\n\\frac{1}{1 + e^{-\\mu}}\n\\]\nStan expects our data as a list.\n\nlogistic_glm_stan_samples <- logistic_glm_stan$sample(\n  data = list(n = nrow(lrug_water),\n              y = lrug_water$pa,\n              x = lrug_water$water),\n  refresh = 0)\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 finished in 0.2 seconds.\nChain 2 finished in 0.2 seconds.\nChain 3 finished in 0.3 seconds.\nChain 4 finished in 0.2 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.2 seconds.\nTotal execution time: 1.3 seconds.\n\ncoef(lrug_glm)\n\n(Intercept)       water \n-2.48153943  0.00874349 \n\nlibrary(tidybayes)\n\nspread_rvars(logistic_glm_stan_samples, intercept, slope[]) |> \n  bind_cols(predVal = predVal) |> \n  mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |> \n  ggplot(aes(x = predVal, ydist = pred)) + \n  stat_dist_lineribbon() + \n  guides(fill = \"none\") + \n  ylim(c(0,1))\n\nWarning: Using the `size` aesthetic with geom_ribbon was deprecated in ggplot2 3.4.0.\nℹ Please use the `linewidth` aesthetic instead.\n\n\nWarning: Unknown or uninitialised column: `linewidth`.\n\n\nWarning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.\nℹ Please use the `linewidth` aesthetic instead.\n\n\nWarning: Unknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\n\n\n\n\n\n\nAlternative parameterization\nStan contains many functions intended to facilitate writing statistical models. Above, we used the function bernoulli_logit so that we could provide the expression for the average on the logit scale.  Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints – only some values are “allowed”. For example, the only parameter of a Bernoulli distribution is \\(p\\), the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for \\(p\\).\n\n\n\n\n\n\nWarning\n\n\n\nPLEASE NOTE below you will see the relative path to the stan file (stan/logistic.stan). Immediately below you will see the Stan file content. You can copy and paste this to your own computer!\n\n\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nlogistic_bern_glm <- cmdstan_model(stan_file = \"stan/logistic.stan\", \n                               pedantic = TRUE)\n\nlogistic_bern_glm\n\ndata {\n  int<lower=0> N;\n  matrix[N, 1] x;\n  array[N] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  vector[1] slope;\n}\nmodel {\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n  y ~ bernoulli_logit_glm(x, intercept, slope);\n}"
+  },
+  {
+    "objectID": "topics/secret_weapon.html",
+    "href": "topics/secret_weapon.html",
+    "title": "Summarizing many univariate models",
     "section": "",
-    "text": "img:\n\nit is a landscape"
+    "text": "We’ve already looked at univariate models. When we fit the same model to multiple different groups, we don’t expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.\nHierarchial models represent a way to model this variation, in ways that range from simple to complex.\nBefore we dive in with hierarchical structure, let’s build a bridge between these two approaches.\nThis is useful to help us understand what a hierarchical model does.\nHowever it is also useful from a strict model-building perspective – so useful that Andrew Gelman calls it a “Secret Weapon” tk link\nTo keep things simple and univariate, let’s consider only water:\nFirst, a quick word about centering and scaling a predictor variable:\nsome things to notice about this figure:\nAs you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.\nOnce again, the two parameters of this model represent:"
   },
   {
-    "objectID": "slides/01_Data/index.html#section-1",
-    "href": "slides/01_Data/index.html#section-1",
-    "title": "Data used for this course",
-    "section": "",
-    "text": "check with simulations"
+    "objectID": "topics/secret_weapon.html#say-it-in-stan",
+    "href": "topics/secret_weapon.html#say-it-in-stan",
+    "title": "Summarizing many univariate models",
+    "section": "Say it in Stan",
+    "text": "Say it in Stan\nThe above tidyverse approach is very appealing and intuitive, but we can also do the same procedure in Stan."
   },
   {
-    "objectID": "slides/01_Data/index.html#section-2",
-    "href": "slides/01_Data/index.html#section-2",
-    "title": "Data used for this course",
-    "section": "",
-    "text": "check with simulations"
+    "objectID": "topics/secret_weapon.html#modelling-variation-in-slopes",
+    "href": "topics/secret_weapon.html#modelling-variation-in-slopes",
+    "title": "Summarizing many univariate models",
+    "section": "Modelling variation in slopes",
+    "text": "Modelling variation in slopes\nClearly there is variation among species in the values of these parameters. Like all variation, we can develop a scientific model to describe it. The simplest model we’ll consider is a simple univariate distribution.\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nlogistic_bern_glm <- cmdstan_model(\n  stan_file = here::here(\"topics/secret_weapon_univariate.stan\"), \n  pedantic = TRUE)\n\nmite_bin <- mite\nmite_bin[mite_bin>0] <- 1\n\nlogistic_bern_glm$sample(data = list(\n  Nsites = nrow(mite_bin),\n  K = 2,\n  S = ncol(mite_bin),\n  x = cbind(1, with(mite.env, (WatrCont - mean(WatrCont))/100)),\n  y = as.matrix(mite_bin)\n))\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 1 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 1 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 1 finished in 9.2 seconds.\nChain 2 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 2 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 2 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 2 finished in 9.3 seconds.\nChain 3 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 3 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 3 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 3 finished in 10.0 seconds.\nChain 4 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 4 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 4 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 4 finished in 12.8 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 10.3 seconds.\nTotal execution time: 42.0 seconds.\n\n\n variable     mean   median   sd  mad       q5      q95 rhat ess_bulk ess_tail\n   lp__   -1171.18 -1170.78 8.32 8.07 -1185.34 -1157.97 1.00      643     1511\n   z[1,1]     1.67     1.65 0.36 0.36     1.11     2.29 1.00     1214     2032\n   z[2,1]     0.04     0.04 0.39 0.37    -0.62     0.67 1.00     2184     2490\n   z[1,2]    -0.41    -0.40 0.26 0.25    -0.86     0.00 1.00      839     1684\n   z[2,2]    -0.92    -0.90 0.43 0.41    -1.68    -0.26 1.00     2123     2361\n   z[1,3]     2.06     2.04 0.42 0.41     1.41     2.80 1.00     1256     2335\n   z[2,3]    -0.10    -0.09 0.42 0.40    -0.81     0.58 1.00     2376     2473\n   z[1,4]    -0.62    -0.61 0.28 0.28    -1.09    -0.17 1.00      706     1606\n   z[2,4]    -1.04    -1.02 0.45 0.44    -1.80    -0.36 1.00     1918     2508\n   z[1,5]    -1.07    -1.06 0.32 0.32    -1.61    -0.57 1.01      770     1442\n\n # showing 10 of 145 rows (change via 'max_rows' argument or 'cmdstanr_max_rows' option)\n\n\nlet’s take a look at these values:\n\ndata(\"mite.xy\", package = \"vegan\")\nmite.xy\n\n      x   y\n1  0.20 0.1\n2  1.00 0.1\n3  1.20 0.3\n4  1.40 0.5\n5  2.40 0.7\n6  1.80 0.9\n7  0.05 1.1\n8  2.00 1.3\n9  2.00 1.5\n10 1.20 1.7\n11 2.40 1.9\n12 0.20 2.1\n13 0.40 2.1\n14 2.00 2.3\n15 2.20 2.3\n16 0.05 2.7\n17 0.20 2.7\n18 2.20 2.7\n19 2.40 2.7\n20 1.20 2.9\n21 0.05 3.1\n22 1.40 3.1\n23 2.40 3.1\n24 0.20 3.5\n25 1.20 3.7\n26 0.80 3.9\n27 1.60 3.9\n28 0.20 4.1\n29 0.80 4.1\n30 1.80 4.5\n31 0.20 4.7\n32 1.40 4.7\n33 0.60 5.3\n34 1.00 5.3\n35 2.40 5.3\n36 1.40 5.5\n37 1.80 5.5\n38 0.40 5.9\n39 1.00 5.9\n40 1.80 5.9\n41 2.00 5.9\n42 0.05 6.1\n43 0.20 6.1\n44 0.40 6.1\n45 1.20 6.1\n46 1.60 6.1\n47 1.60 6.3\n48 0.40 6.5\n49 1.80 6.7\n50 0.60 6.9\n51 2.00 7.1\n52 0.05 7.3\n53 0.40 7.3\n54 1.40 7.5\n55 2.20 7.5\n56 0.20 7.9\n57 1.60 7.9\n58 2.40 7.9\n59 0.05 8.1\n60 1.20 8.1\n61 1.40 8.1\n62 2.00 8.1\n63 1.60 8.5\n64 1.60 8.7\n65 1.00 8.9\n66 1.60 8.9\n67 2.40 9.1\n68 2.20 9.3\n69 1.80 9.5\n70 0.40 9.7\n\nnrow(mite)\n\n[1] 70"
   },
   {
-    "objectID": "slides/01_Data/index.html#choose-parameters",
-    "href": "slides/01_Data/index.html#choose-parameters",
-    "title": "Data used for this course",
-    "section": "choose parameters",
-    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+    "objectID": "day_2.html#convergence-diagnostics",
+    "href": "day_2.html#convergence-diagnostics",
+    "title": "Day 2",
+    "section": "Convergence Diagnostics",
+    "text": "Convergence Diagnostics"
   },
   {
-    "objectID": "slides/01_Data/index.html#make-up-an-x-variable",
-    "href": "slides/01_Data/index.html#make-up-an-x-variable",
-    "title": "Data used for this course",
-    "section": "make up an X variable",
-    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+    "objectID": "day_2.html#model-validation-with-simulation",
+    "href": "day_2.html#model-validation-with-simulation",
+    "title": "Day 2",
+    "section": "Model validation with simulation",
+    "text": "Model validation with simulation"
   },
   {
+<<<<<<< HEAD
     "objectID": "slides/01_Data/index.html#calculate-the-average",
     "href": "slides/01_Data/index.html#calculate-the-average",
     "title": "Data used for this course",
@@ -838,5 +853,12 @@
     "title": "Linear models",
     "section": "Estimating regression parameters",
     "text": "Estimating regression parameters\nMany techniques have been proposed to estimate the parameters of a regression model.\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters.\nFor example, if we want to build a confidence interval such as the one estimated the following code\n\nreg <- lm(y_obs ~ x)\n\nHow would you do it ?"
+=======
+    "objectID": "day_2.html#dags",
+    "href": "day_2.html#dags",
+    "title": "Day 2",
+    "section": "DAGs",
+    "text": "DAGs\n\nforks, pipes and colliders\nsimulation from a DAG\ndemonstration of errors from disregarding DAGs"
+>>>>>>> 8c5515f27d224befafdd05f94cc955e8eec30234
   }
 ]
