@@ -3,7 +3,7 @@ title: "Linear models"
 title-slide-attributes: 
   data-background-image: ../img/bg.jpg
   data-background-size: full
-author: "Andrew MacDonald and Guillaume Blanchet"
+author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
 date: "2023-02-10"
 execute:
   echo: true
@@ -15,9 +15,185 @@ format:
     background-transition: fade
 ---
 
-## Un beau titre
+### Basic regression model
 
-this is the first slide
+:::{style="font-size: 0.8em"}
+Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.
+
+In its simplest form, this is usually presented as 
+$$
+y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
+$$
+
+It is known as a **simple linear model**, where :
+
+  $y_i$ is the value of a response variable for observation $i$
+
+  $x_i$ is the value of an explanatory variable for observation $i$
+
+  $\beta_0$ is the model intercept
+
+  $\beta_1$ is the model slope
+
+  $\varepsilon$ is the error term
+:::
+
+
+## Basic regression model
+
+The cool thing about the simple linear model is that it can be studied visually quite easily
+
+```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+# Simulate some data
+set.seed(42) # The answer !
+
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+
+par(mar = c(5,5,0.1,0.1))
+plot(x, y_obs,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "Humidity",
+     ylab = "Biomass",
+     cex.lab = 2.5,
+     cex = 2)
+
+abline(a = yintercept,
+       b = slope,
+       lwd = 10,
+       col = "orange")
+```
+
+## Basic regression model
+
+:::{style="font-size: 0.75em"}
+There are however two major pitfalls in using the simple linear model for problems in the life sciences
+
+1. The simple linear model assumes that the error follows a Gaussian distribution... actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter 
+
+**Any clue which one?**
+
+In the simple linear regression the error term ($\varepsilon$) has actually a very precise definition:
+
+$$\varepsilon \sim {\cal N}(0, \sigma^2)$$
+where $\sigma^2$ is an estimated variance 
+
+In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.
+:::
+
+## Gaussian error
+
+```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
+# Simulate some data
+set.seed(42) # The answer !
+
+yintercept <- 4
+slope <- 1.3
+obs_error <- 0.5
+obs_error_small <- 0.1
+
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+y_obs_small <- rnorm(200, mean = y_mean, sd = obs_error_small)
+
+par(mfrow = c(1,2),
+    mar = c(5,5,3,0.1))
+
+plot(x, y_obs,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "Humidity",
+     ylab = "Biomass",
+     cex.lab = 2.5,
+     cex = 2,
+     cex.main = 3,
+     main = "Variance = 0.5")
+
+abline(a = yintercept,
+       b = slope,
+       lwd = 10,
+       col = "orange")
+
+plot(x, y_obs_small,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "Humidity",
+     ylab = "",
+     cex.lab = 2.5,
+     cex = 2,
+     cex.main = 3,
+     main = "Variance = 0.1")
+
+abline(a = yintercept,
+       b = slope,
+       lwd = 10,
+       col = "orange")
+
+```
+
+## Estimating regression parameters
+
+Many techniques have been proposed to estimate the parameters of a regression model. 
+
+The goal of this course is not to study these techniques but we will learn how to play with the estimated parameters. 
+
+For example, if we want to build a confidence interval such as the one estimated the following code
+
+```{r}
+reg <- lm(y_obs ~ x)
+```
+
+**How would you do it ?**
+
+At this point, the model's results are worth studying
+
+## Estimating regression parameters
+### Model's results
+```{r}
+summary(reg)
+```
+
+Let's say we want to reconstrust the model by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow a Gaussian distribution. How would you do this ?
+
+## Basic regression model - Gaussian error
+
+To go around this problem, *generalized* linear models (GLMs) have been proposed. In essence, GLMs use *link functions* to adapt models for them to be used on non-Gaussian data. 
+
+**For example**
+
+logit link function :
+
+log link function :
+
+The logit link function is often used for modelling binary data while the log link function is commonly used for modelling count data.
+
+
+
+
+## Basic regression model
+
+There are however a few major pitfall in using the simple linear model for problems in the life sciences
+
+2. One explanatory is almost never enough to answer the questions we want to aproach
 
 ## second
 
