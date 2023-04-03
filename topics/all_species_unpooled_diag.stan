@@ -30,6 +30,6 @@ model {
   }
   // priors
   to_vector(z) ~ std_normal();
-  sd_params ~ exponential(2);
+  sd_params ~ exponential(3);
   gamma ~ normal(0, 2);
 }

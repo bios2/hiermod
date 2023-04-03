@@ -507,7 +507,7 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h3 id="what-we-will-use">What we will use</h3>
 <p>We will not use any of these software packages… because under specific circumstances, what may seem like the same implementation of a model may lead to different answers… and both can actually be right !</p>
 <p>This is because the underlying model implemented in the software package may actually be slightly different.</p>
-<p>Instead we will implement our own models from scratch using <code>stan</code>.</p>
+<p>Instead we will implement our own models from scratch using Stan.</p>
 </section>
 <section id="good-reference" class="slide level2">
 <h2>Good reference</h2>
@@ -523,190 +523,13 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>R and Stan</h2>
 <p>All of the practical aspect of the course will be done with R and Stan.</p>
 <h3 id="rstudio">RStudio</h3>
-<p>We strongly (!) encourage you to use RStudio and to start a projectforthe course.</p>
+<p>We strongly (!) encourage you to use RStudio and to start a project for the course.</p>
 </section>
 <section id="r-package-to-install" class="slide level2">
 <h2>R package to install</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"rstan"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"vegan"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>img:</p>
-
-<img data-src="img/bg.jpg" class="r-stretch"><p>it is a landscape</p>
-</section>
-<section id="section" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
-<div style="margin-top: 100px;">
-<p>check with simulations</p>
-</div>
-</section>
-<section id="section-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
-<div style="margin-top: 200px; font-size: 2.5em; color: red;">
-<p>check with simulations</p>
-</div>
-</section>
-<section id="choose-parameters" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">choose parameters</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb2-1" class="hljs-ln-code"><a href="#cb2-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb2-2" class="hljs-ln-code"><a href="#cb2-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb2-3" class="hljs-ln-code"><a href="#cb2-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="make-up-an-x-variable" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">make up an X variable</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb3-1" class="hljs-ln-code"><a href="#cb3-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb3-2" class="hljs-ln-code"><a href="#cb3-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb3-3" class="hljs-ln-code"><a href="#cb3-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb3-4" class="hljs-ln-code"><a href="#cb3-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="calculate-the-average" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">calculate the average</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb4-1" class="hljs-ln-code"><a href="#cb4-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb4-2" class="hljs-ln-code"><a href="#cb4-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb4-3" class="hljs-ln-code"><a href="#cb4-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb4-4" class="hljs-ln-code"><a href="#cb4-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb4-5" class="hljs-ln-code"><a href="#cb4-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="simulate-some-observations" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">simulate some observations</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb5-1" class="hljs-ln-code"><a href="#cb5-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb5-2" class="hljs-ln-code"><a href="#cb5-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb5-3" class="hljs-ln-code"><a href="#cb5-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb5-4" class="hljs-ln-code"><a href="#cb5-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb5-5" class="hljs-ln-code"><a href="#cb5-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb5-6" class="hljs-ln-code"><a href="#cb5-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="finally-visualize" class="slide level2">
-<h2>finally, visualize</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
-<section id="here-it-is-all-on-one-slide" class="slide level2">
-<h2>here it is all on one slide</h2>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb7-6"><a href="#cb7-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="or-we-can-present-the-code-and-results-separately" class="slide level2">
-<h2>Or we can present the code and results separately</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">The code</a></li><li><a href="#tabset-1-2">The figure</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb8-5"><a href="#cb8-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb8-6"><a href="#cb8-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<div id="tabset-1-2">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="another-equation" class="slide level2">
-<h2>another equation</h2>
-<p><span class="math display">\[
-2 + 4 = 6
-\]</span></p>
-</section>
-<section id="the-equation" class="slide level2">
-<h2>The equation</h2>
-<p><span class="math display">\[
-\begin{align}
-y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &amp;= a + bx \\
-\end{align}
-\]</span></p>
-</section>
-<section id="the-model" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">The model</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb10-1" class="hljs-ln-code"><a href="#cb10-1"></a><span class="kw">data</span> {</span>
-<span id="cb10-2" class="hljs-ln-code"><a href="#cb10-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb10-3" class="hljs-ln-code"><a href="#cb10-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb10-4" class="hljs-ln-code"><a href="#cb10-4"></a>}</span>
-<span id="cb10-5" class="hljs-ln-code"><a href="#cb10-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb10-6" class="hljs-ln-code"><a href="#cb10-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb10-7" class="hljs-ln-code"><a href="#cb10-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb10-8" class="hljs-ln-code"><a href="#cb10-8"></a>}</span>
-<span id="cb10-9" class="hljs-ln-code"><a href="#cb10-9"></a><span class="kw">model</span> {</span>
-<span id="cb10-10" class="hljs-ln-code"><a href="#cb10-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb10-11" class="hljs-ln-code"><a href="#cb10-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb10-12" class="hljs-ln-code"><a href="#cb10-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb10-13" class="hljs-ln-code"><a href="#cb10-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="declare-the-data" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">Declare the data</h2>
-<div class="sourceCode" id="cb11" data-code-line-numbers="1-4"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb11-1" class="hljs-ln-code"><a href="#cb11-1"></a><span class="kw">data</span> {</span>
-<span id="cb11-2" class="hljs-ln-code"><a href="#cb11-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb11-3" class="hljs-ln-code"><a href="#cb11-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb11-4" class="hljs-ln-code"><a href="#cb11-4"></a>}</span>
-<span id="cb11-5" class="hljs-ln-code"><a href="#cb11-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb11-6" class="hljs-ln-code"><a href="#cb11-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb11-7" class="hljs-ln-code"><a href="#cb11-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb11-8" class="hljs-ln-code"><a href="#cb11-8"></a>}</span>
-<span id="cb11-9" class="hljs-ln-code"><a href="#cb11-9"></a><span class="kw">model</span> {</span>
-<span id="cb11-10" class="hljs-ln-code"><a href="#cb11-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb11-11" class="hljs-ln-code"><a href="#cb11-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb11-12" class="hljs-ln-code"><a href="#cb11-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb11-13" class="hljs-ln-code"><a href="#cb11-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="state-parameters" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">State parameters</h2>
-<div class="sourceCode" id="cb12" data-code-line-numbers="5-8"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb12-1" class="hljs-ln-code"><a href="#cb12-1"></a><span class="kw">data</span> {</span>
-<span id="cb12-2" class="hljs-ln-code"><a href="#cb12-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb12-3" class="hljs-ln-code"><a href="#cb12-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb12-4" class="hljs-ln-code"><a href="#cb12-4"></a>}</span>
-<span id="cb12-5" class="hljs-ln-code"><a href="#cb12-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb12-6" class="hljs-ln-code"><a href="#cb12-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb12-7" class="hljs-ln-code"><a href="#cb12-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb12-8" class="hljs-ln-code"><a href="#cb12-8"></a>}</span>
-<span id="cb12-9" class="hljs-ln-code"><a href="#cb12-9"></a><span class="kw">model</span> {</span>
-<span id="cb12-10" class="hljs-ln-code"><a href="#cb12-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb12-11" class="hljs-ln-code"><a href="#cb12-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb12-12" class="hljs-ln-code"><a href="#cb12-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb12-13" class="hljs-ln-code"><a href="#cb12-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="write-the-likelihood-and-priors" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">Write the likelihood and priors</h2>
-<div class="sourceCode" id="cb13" data-code-line-numbers="9-13"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb13-1" class="hljs-ln-code"><a href="#cb13-1"></a><span class="kw">data</span> {</span>
-<span id="cb13-2" class="hljs-ln-code"><a href="#cb13-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb13-3" class="hljs-ln-code"><a href="#cb13-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb13-4" class="hljs-ln-code"><a href="#cb13-4"></a>}</span>
-<span id="cb13-5" class="hljs-ln-code"><a href="#cb13-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb13-6" class="hljs-ln-code"><a href="#cb13-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb13-7" class="hljs-ln-code"><a href="#cb13-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb13-8" class="hljs-ln-code"><a href="#cb13-8"></a>}</span>
-<span id="cb13-9" class="hljs-ln-code"><a href="#cb13-9"></a><span class="kw">model</span> {</span>
-<span id="cb13-10" class="hljs-ln-code"><a href="#cb13-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb13-11" class="hljs-ln-code"><a href="#cb13-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb13-12" class="hljs-ln-code"><a href="#cb13-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb13-13" class="hljs-ln-code"><a href="#cb13-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
