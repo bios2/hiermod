@@ -63,11 +63,53 @@
     "text": "Substrate density and water content\n{fig-align=“center” width = 105%}"
   },
   {
-    "objectID": "slides/02_Linear_model/index.html#un-beau-titre",
-    "href": "slides/02_Linear_model/index.html#un-beau-titre",
+    "objectID": "slides/02_Linear_model/index.html#basic-regression-model-1",
+    "href": "slides/02_Linear_model/index.html#basic-regression-model-1",
     "title": "Linear models",
-    "section": "Un beau titre",
-    "text": "Un beau titre\nthis is the first slide"
+    "section": "Basic regression model",
+    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#basic-regression-model-2",
+    "href": "slides/02_Linear_model/index.html#basic-regression-model-2",
+    "title": "Linear models",
+    "section": "Basic regression model",
+    "text": "Basic regression model\n\nThere are however two major pitfalls in using the simple linear model for problems in the life sciences\n\nThe simple linear model assumes that the error follows a Gaussian distribution… actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter\n\nAny clue which one?\nIn the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim {\\cal N}(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#gaussian-error",
+    "href": "slides/02_Linear_model/index.html#gaussian-error",
+    "title": "Linear models",
+    "section": "Gaussian error",
+    "text": "Gaussian error"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nMany techniques have been proposed to estimate the parameters of a regression model.\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters.\nFor example, if we want to build a confidence interval such as the one estimated the following code\n\nreg <- lm(y_obs ~ x)\n\nHow would you do it ?\nAt this point, the model’s results are worth studying"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-1",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-1",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nModel’s results\n\nsummary(reg)\n\n\nCall:\nlm(formula = y_obs ~ x)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.32240 -0.31159  0.00155  0.30531  1.37850 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  3.97537    0.03415  116.42   <2e-16 ***\nx            1.30382    0.05844   22.31   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4815 on 198 degrees of freedom\nMultiple R-squared:  0.7154,    Adjusted R-squared:  0.714 \nF-statistic: 497.7 on 1 and 198 DF,  p-value: < 2.2e-16\n\n\nLet’s say we want to reconstrust the model by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow a Gaussian distribution. How would you do this ?"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#basic-regression-model---gaussian-error",
+    "href": "slides/02_Linear_model/index.html#basic-regression-model---gaussian-error",
+    "title": "Linear models",
+    "section": "Basic regression model - Gaussian error",
+    "text": "Basic regression model - Gaussian error\nTo go around this problem, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\nFor example\nlogit link function :\nlog link function :\nThe logit link function is often used for modelling binary data while the log link function is commonly used for modelling count data."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#basic-regression-model-3",
+    "href": "slides/02_Linear_model/index.html#basic-regression-model-3",
+    "title": "Linear models",
+    "section": "Basic regression model",
+    "text": "Basic regression model\nThere are however a few major pitfall in using the simple linear model for problems in the life sciences\n\nOne explanatory is almost never enough to answer the questions we want to aproach"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#second",
@@ -518,347 +560,10 @@
     "text": "Model validation with simulation"
   },
   {
-<<<<<<< HEAD
-    "objectID": "slides/01_Data/index.html#calculate-the-average",
-    "href": "slides/01_Data/index.html#calculate-the-average",
-    "title": "Data used for this course",
-    "section": "calculate the average",
-    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#simulate-some-observations",
-    "href": "slides/01_Data/index.html#simulate-some-observations",
-    "title": "Data used for this course",
-    "section": "simulate some observations",
-    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#finally-visualize",
-    "href": "slides/01_Data/index.html#finally-visualize",
-    "title": "Data used for this course",
-    "section": "finally, visualize",
-    "text": "finally, visualize\n\nplot(y_obs ~ x)"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#here-it-is-all-on-one-slide",
-    "href": "slides/01_Data/index.html#here-it-is-all-on-one-slide",
-    "title": "Data used for this course",
-    "section": "here it is all on one slide",
-    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#or-we-can-present-the-code-and-results-separately",
-    "href": "slides/01_Data/index.html#or-we-can-present-the-code-and-results-separately",
-    "title": "Data used for this course",
-    "section": "Or we can present the code and results separately",
-    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#another-equation",
-    "href": "slides/01_Data/index.html#another-equation",
-    "title": "Data used for this course",
-    "section": "another equation",
-    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#the-equation",
-    "href": "slides/01_Data/index.html#the-equation",
-    "title": "Data used for this course",
-    "section": "The equation",
-    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#the-model",
-    "href": "slides/01_Data/index.html#the-model",
-    "title": "Data used for this course",
-    "section": "The model",
-    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#declare-the-data",
-    "href": "slides/01_Data/index.html#declare-the-data",
-    "title": "Data used for this course",
-    "section": "Declare the data",
-    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#state-parameters",
-    "href": "slides/01_Data/index.html#state-parameters",
-    "title": "Data used for this course",
-    "section": "State parameters",
-    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#write-the-likelihood-and-priors",
-    "href": "slides/01_Data/index.html#write-the-likelihood-and-priors",
-    "title": "Data used for this course",
-    "section": "Write the likelihood and priors",
-    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#illustrative-datasets",
-    "href": "slides/01_Data/index.html#illustrative-datasets",
-    "title": "Data used for this course",
-    "section": "Illustrative datasets",
-    "text": "Illustrative datasets\nTo illustrate the different models and methods we will discuss in this course, we will rely on a few data sets, which are directly available in different R package\n\nmite, mite.env and mite.xy available in the vegan R package\npenguins available in the palmerpenguins R package\n\nThese datasets are practical because they are manageable in size and will allow you to see how to work out the different example presented in this course.\nLet’s look at them in more details"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#oribatid-mite-data",
-    "href": "slides/01_Data/index.html#oribatid-mite-data",
-    "title": "Data used for this course",
-    "section": "Oribatid mite data",
-    "text": "Oribatid mite data\nAside from being a very interesting datasets this data has been sample on the southern shore of Lac Geai (a few minutes walk from here ! We will go see it this week)\nSampling was carried out in June 1989 on the partially floating vegetation mat surrounding the lake from the forest border to the free water by Daniel Borcard"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#oribatid-mite-data-1",
-    "href": "slides/01_Data/index.html#oribatid-mite-data-1",
-    "title": "Data used for this course",
-    "section": "Oribatid mite data",
-    "text": "Oribatid mite data\nOribatid mites are small (usually ranging in size from 0.2 to 1.4 mm) invertebrates that are part of the Arachnida class (so they have 8 legs).\n\nIn the mite data, 35 morphospecies were identified and counted across 70 samples."
-  },
-  {
-    "objectID": "slides/01_Data/index.html#explanatory-variables",
-    "href": "slides/01_Data/index.html#explanatory-variables",
-    "title": "Data used for this course",
-    "section": "Explanatory variables",
-    "text": "Explanatory variables\nSites coordinates"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#explanatory-variables-1",
-    "href": "slides/01_Data/index.html#explanatory-variables-1",
-    "title": "Data used for this course",
-    "section": "Explanatory variables",
-    "text": "Explanatory variables\nVegetation cover"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#explanatory-variables-2",
-    "href": "slides/01_Data/index.html#explanatory-variables-2",
-    "title": "Data used for this course",
-    "section": "Explanatory variables",
-    "text": "Explanatory variables\nMicrotopography and shrub cover"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#explanatory-variables-3",
-    "href": "slides/01_Data/index.html#explanatory-variables-3",
-    "title": "Data used for this course",
-    "section": "Explanatory variables",
-    "text": "Explanatory variables\nSubstrate density and water content"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#sites-coordinates",
-    "href": "slides/01_Data/index.html#sites-coordinates",
-    "title": "Data used for this course",
-    "section": "Sites coordinates",
-    "text": "Sites coordinates"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#vegetation-cover",
-    "href": "slides/01_Data/index.html#vegetation-cover",
-    "title": "Data used for this course",
-    "section": "Vegetation cover",
-    "text": "Vegetation cover\n{fig-align=“center” width = 105%}"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#microtopography-and-shrub-cover",
-    "href": "slides/01_Data/index.html#microtopography-and-shrub-cover",
-    "title": "Data used for this course",
-    "section": "Microtopography and shrub cover",
-    "text": "Microtopography and shrub cover\n{fig-align=“center” width = 50%}"
-  },
-  {
-    "objectID": "slides/01_Data/index.html#substrate-density-and-water-content",
-    "href": "slides/01_Data/index.html#substrate-density-and-water-content",
-    "title": "Data used for this course",
-    "section": "Substrate density and water content",
-    "text": "Substrate density and water content\n{fig-align=“center” width = 105%}"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#quick-overview-of-multiple-regression-models",
-    "href": "slides/02_Linear_model/index.html#quick-overview-of-multiple-regression-models",
-    "title": "Linear models",
-    "section": "Quick overview of multiple regression models",
-    "text": "Quick overview of multiple regression models\nHierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\nIn its simplest form, this is usually presented as \\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\nIt is known as a simple linear model, where\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\\(\\beta_0\\) is the model intercept\n\\(\\beta_1\\) is the model slope\n\\(\\varepsilon\\) is the error term"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#second",
-    "href": "slides/02_Linear_model/index.html#second",
-    "title": "Linear models",
-    "section": "second",
-    "text": "second\n\nTest your model"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#section",
-    "href": "slides/02_Linear_model/index.html#section",
-    "title": "Linear models",
-    "section": "",
-    "text": "img:\n\nit is a landscape"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#section-1",
-    "href": "slides/02_Linear_model/index.html#section-1",
-    "title": "Linear models",
-    "section": "",
-    "text": "check with simulations"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#section-2",
-    "href": "slides/02_Linear_model/index.html#section-2",
-    "title": "Linear models",
-    "section": "",
-    "text": "check with simulations"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#choose-parameters",
-    "href": "slides/02_Linear_model/index.html#choose-parameters",
-    "title": "Linear models",
-    "section": "choose parameters",
-    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#make-up-an-x-variable",
-    "href": "slides/02_Linear_model/index.html#make-up-an-x-variable",
-    "title": "Linear models",
-    "section": "make up an X variable",
-    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#calculate-the-average",
-    "href": "slides/02_Linear_model/index.html#calculate-the-average",
-    "title": "Linear models",
-    "section": "calculate the average",
-    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#simulate-some-observations",
-    "href": "slides/02_Linear_model/index.html#simulate-some-observations",
-    "title": "Linear models",
-    "section": "simulate some observations",
-    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#finally-visualize",
-    "href": "slides/02_Linear_model/index.html#finally-visualize",
-    "title": "Linear models",
-    "section": "finally, visualize",
-    "text": "finally, visualize\n\nplot(y_obs ~ x)"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#here-it-is-all-on-one-slide",
-    "href": "slides/02_Linear_model/index.html#here-it-is-all-on-one-slide",
-    "title": "Linear models",
-    "section": "here it is all on one slide",
-    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#or-we-can-present-the-code-and-results-separately",
-    "href": "slides/02_Linear_model/index.html#or-we-can-present-the-code-and-results-separately",
-    "title": "Linear models",
-    "section": "Or we can present the code and results separately",
-    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#another-equation",
-    "href": "slides/02_Linear_model/index.html#another-equation",
-    "title": "Linear models",
-    "section": "another equation",
-    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#the-equation",
-    "href": "slides/02_Linear_model/index.html#the-equation",
-    "title": "Linear models",
-    "section": "The equation",
-    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#the-model",
-    "href": "slides/02_Linear_model/index.html#the-model",
-    "title": "Linear models",
-    "section": "The model",
-    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#declare-the-data",
-    "href": "slides/02_Linear_model/index.html#declare-the-data",
-    "title": "Linear models",
-    "section": "Declare the data",
-    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#state-parameters",
-    "href": "slides/02_Linear_model/index.html#state-parameters",
-    "title": "Linear models",
-    "section": "State parameters",
-    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#write-the-likelihood-and-priors",
-    "href": "slides/02_Linear_model/index.html#write-the-likelihood-and-priors",
-    "title": "Linear models",
-    "section": "Write the likelihood and priors",
-    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#regression-models-the-backbone-of-hierarchical-models",
-    "href": "slides/02_Linear_model/index.html#regression-models-the-backbone-of-hierarchical-models",
-    "title": "Linear models",
-    "section": "Regression models the backbone of hierarchical models",
-    "text": "Regression models the backbone of hierarchical models\n\nHierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\nIn its simplest form, this is usually presented as \\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\nIt is known as a simple linear model, where :\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\\(\\beta_0\\) is the model intercept\n\\(\\beta_1\\) is the model slope\n\\(\\varepsilon\\) is the error term"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#basic-regression-model-1",
-    "href": "slides/02_Linear_model/index.html#basic-regression-model-1",
-    "title": "Linear models",
-    "section": "Basic regression model",
-    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#basic-regression-model-2",
-    "href": "slides/02_Linear_model/index.html#basic-regression-model-2",
-    "title": "Linear models",
-    "section": "Basic regression model",
-    "text": "Basic regression model\n\nThere are however two major pitfalls in using the simple linear model for problems in the life sciences\n\nThe simple linear model assumes that the error follows a Gaussian distribution… actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter\n\nAny clue which one?\nIn the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim {\\cal N}(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated."
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#basic-regression-model-3",
-    "href": "slides/02_Linear_model/index.html#basic-regression-model-3",
-    "title": "Linear models",
-    "section": "Basic regression model",
-    "text": "Basic regression model\nThere are however a few major pitfall in using the simple linear model for problems in the life sciences\n\nOne explanatory is almost never enough to answer the questions we want to aproach"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#basic-regression-model-4",
-    "href": "slides/02_Linear_model/index.html#basic-regression-model-4",
-    "title": "Linear models",
-    "section": "Basic regression model",
-    "text": "Basic regression model\nThere are however a few major pitfall in using the simple linear model for problems in the life sciences\n\nOne explanatory is almost never enough to answer the questions we want to aproach"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#basic-regression-model---gaussian-error",
-    "href": "slides/02_Linear_model/index.html#basic-regression-model---gaussian-error",
-    "title": "Linear models",
-    "section": "Basic regression model - Gaussian error",
-    "text": "Basic regression model - Gaussian error\nTo go around this problem, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\nFor example\nlogit link function :\nlog link function :\nThe logit link function is often used for modelling binary data while the log link function is commonly used for modelling count data."
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#gaussian-error",
-    "href": "slides/02_Linear_model/index.html#gaussian-error",
-    "title": "Linear models",
-    "section": "Gaussian error",
-    "text": "Gaussian error"
-  },
-  {
-    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters",
-    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters",
-    "title": "Linear models",
-    "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nMany techniques have been proposed to estimate the parameters of a regression model.\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters.\nFor example, if we want to build a confidence interval such as the one estimated the following code\n\nreg <- lm(y_obs ~ x)\n\nHow would you do it ?"
-=======
     "objectID": "day_2.html#dags",
     "href": "day_2.html#dags",
     "title": "Day 2",
     "section": "DAGs",
     "text": "DAGs\n\nforks, pipes and colliders\nsimulation from a DAG\ndemonstration of errors from disregarding DAGs"
->>>>>>> 8c5515f27d224befafdd05f94cc955e8eec30234
   }
 ]
