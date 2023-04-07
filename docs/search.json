@@ -704,62 +704,118 @@
     "href": "slides/03_Matrix_algebra/index.html#the-very-basics",
     "title": "Matrix algebra",
     "section": "The very basics",
-    "text": "The very basics\n$$\n\\mathbf{A} = \\begin{bmatrix}\n    A_{11} & A_{12} & \\dots & A_{1j} & \\dots & A_{1n}\\\\\n    A_{21} & A_{22} & \\dots & A_{2j} & \\dots & A_{2n}\\\\\n    \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n    A_{i1} & A_{i2} & \\dots & A_{ij} & \\dots & A_{in}\\\\\n    \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n    A_{m1} & A_{m2} & \\dots & A_{mj} & \\dots & A_{mn}\\\\\n\\end{bmatrix}\n$$"
+    "text": "The very basics\n\\[\n\\mathbf{A} = \\begin{bmatrix}\n                A_{11} & A_{12} & \\dots & A_{1j} & \\dots & A_{1n}\\\\\n                A_{21} & A_{22} & \\dots & A_{2j} & \\dots & A_{2n}\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              A_{i1} & A_{i2} & \\dots & A_{ij} & \\dots & A_{in}\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            A_{m1} & A_{m2} & \\dots & A_{mj} & \\dots & A_{mn}\\\\\n        \\end{bmatrix}\n\\]"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#addition-and-substraction",
     "href": "slides/03_Matrix_algebra/index.html#addition-and-substraction",
     "title": "Matrix algebra",
     "section": "Addition and Substraction",
-    "text": "Addition and Substraction\n$$\\mathbf{C} = \\mathbf{A}\\pm \\mathbf{B}$$\n$$C_{ij} = A_{ij} \\pm B_{ij}$$\n\n\\[\\begin{bmatrix}\n                3 & 5\\\\\n                1 & -2\\\\\n            \\end{bmatrix} +\n            \\begin{bmatrix}\n                2 & 1\\\\\n                4 & -2\\\\\n            \\end{bmatrix} =\n            \\begin{bmatrix}\n                3+2 & 5+1\\\\\n                1+4 & -2-2\\\\\n            \\end{bmatrix} =\n            \\begin{bmatrix}\n                5 & 6\\\\\n                5 & -4\\\\\n            \\end{bmatrix}\\]"
+    "text": "Addition and Substraction\n\\[\\mathbf{C} = \\mathbf{A}\\pm \\mathbf{B}\\] \\[C_{ij} = A_{ij} \\pm B_{ij}\\]\n\n\\[\\begin{bmatrix}\n                3 & 5\\\\\n                1 & -2\\\\\n            \\end{bmatrix} +\n            \\begin{bmatrix}\n                2 & 1\\\\\n                4 & -2\\\\\n            \\end{bmatrix} =\n            \\begin{bmatrix}\n                3+2 & 5+1\\\\\n                1+4 & -2-2\\\\\n            \\end{bmatrix} =\n            \\begin{bmatrix}\n                5 & 6\\\\\n                5 & -4\\\\\n            \\end{bmatrix}\\]\n\nIn R\n\nA <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)\nB <- matrix(c(2, 4, 1, -2), nrow = 2, ncol = 2)\nA + B\n\n     [,1] [,2]\n[1,]    5    6\n[2,]    5   -4"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#multiplying-a-matrix-by-a-scalar",
     "href": "slides/03_Matrix_algebra/index.html#multiplying-a-matrix-by-a-scalar",
     "title": "Matrix algebra",
     "section": "Multiplying a matrix by a scalar",
-    "text": "Multiplying a matrix by a scalar\n$$\\mathbf{B} = c\\mathbf{A}$$\n$$B_{ij} = cA_{ij}$$\n\n    $$\n        0.3 \\begin{bmatrix}\n            3 & 5\\\\\n            1 & -2\\\\\n        \\end{bmatrix} =  \n        \\begin{bmatrix}\n            0.9 & 1.5\\\\\n            0.3 & -0.6\\\\\n        \\end{bmatrix}\n    $$"
+    "text": "Multiplying a matrix by a scalar\n\\[\\mathbf{B} = c\\mathbf{A}\\] \\[B_{ij} = cA_{ij}\\]\n\n\\[\n            0.3 \\begin{bmatrix}\n                3 & 5\\\\\n                1 & -2\\\\\n            \\end{bmatrix} =  \n            \\begin{bmatrix}\n                0.9 & 1.5\\\\\n                0.3 & -0.6\\\\\n            \\end{bmatrix}\n\\]\n\nIn R\n\nA <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)\nc <- 0.3\nc*A \n\n     [,1] [,2]\n[1,]  0.9  1.5\n[2,]  0.3 -0.6"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#matrix-multiplications-not-divisions",
     "href": "slides/03_Matrix_algebra/index.html#matrix-multiplications-not-divisions",
     "title": "Matrix algebra",
     "section": "Matrix multiplications (not divisions!)",
-    "text": "Matrix multiplications (not divisions!)\n$$\\mathbf{C} = \\mathbf{A} \\cdot \\mathbf{B}$$\n$$\\mathbf{C}_{mr} = \\mathbf{A}_{mn}\\mathbf{B}_{nr}$$\n$$C_{ik} = \\sum^{n}_{j=1}A_{ij}B_{jk}$$\n\n**Rules**\n\nAssociative: $\\mathbf{A}(\\mathbf{B}\\mathbf{C}) = (\\mathbf{A}\\mathbf{B})\\mathbf{C}$\n\nDistributive: $\\mathbf{A}(\\mathbf{B} + \\mathbf{C}) = \\mathbf{A}\\mathbf{B}+\\mathbf{A}\\mathbf{C}$\n\nNot commutative: $\\mathbf{A}\\mathbf{B} \\neq \\mathbf{B}\\mathbf{A}$\n}"
+    "text": "Matrix multiplications (not divisions!)\n\\[\\mathbf{C} = \\mathbf{A} \\cdot \\mathbf{B}\\] \\[\\mathbf{C}_{mr} = \\mathbf{A}_{mn}\\mathbf{B}_{nr}\\] \\[C_{ik} = \\sum^{n}_{j=1}A_{ij}B_{jk}\\]\nRules\nAssociative: \\(\\mathbf{A}(\\mathbf{B}\\mathbf{C}) = (\\mathbf{A}\\mathbf{B})\\mathbf{C}\\)\nDistributive: \\(\\mathbf{A}(\\mathbf{B} + \\mathbf{C}) = \\mathbf{A}\\mathbf{B}+\\mathbf{A}\\mathbf{C}\\)\nNot commutative: \\(\\mathbf{A}\\mathbf{B} \\neq \\mathbf{B}\\mathbf{A}\\)"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#inner-product",
     "href": "slides/03_Matrix_algebra/index.html#inner-product",
     "title": "Matrix algebra",
     "section": "Inner product",
-    "text": "Inner product\n$$(\\mathbf{Ax})_i=\\sum_{j=1}^{n}A_{ij}x_j$$\n\n        $$\n            \\begin{bmatrix}\n                3 & 5\\\\\n                1 & -2\\\\\n            \\end{bmatrix}\n            \\begin{bmatrix}\n                2\\\\ 5\\\\\n            \\end{bmatrix} = \n            \\begin{bmatrix}\n                (3, 5) \\cdot (2, 5)\\\\\n                (1, -2) \\cdot (2, 5) \\\\\n            \\end{bmatrix} = \n            \\begin{bmatrix}\n                3 \\times 2 + 5 \\times 5\\\\\n                1 \\times 2 -2 \\times 5\\\\\n            \\end{bmatrix} = \n            \\begin{bmatrix}\n                16\\\\\n                -8\\\\\n            \\end{bmatrix}\n        $$"
+    "text": "Inner product\n\\[(\\mathbf{Ax})_i=\\sum_{j=1}^{n}A_{ij}x_j\\]\n\n\\[\n  \\begin{bmatrix}\n    3 & 5\\\\\n    1 & -2\\\\\n  \\end{bmatrix}\n  \\begin{bmatrix}\n    2\\\\ 5\\\\\n  \\end{bmatrix} =\n  \\begin{bmatrix}\n    (3, 5) \\cdot (2, 5)\\\\\n    (1, -2) \\cdot (2, 5) \\\\\n  \\end{bmatrix} =\n  \\begin{bmatrix}\n    3 \\times 2 + 5 \\times 5\\\\\n    1 \\times 2 -2 \\times 5\\\\\n  \\end{bmatrix} =\n  \\begin{bmatrix}\n    31\\\\\n    -8\\\\\n  \\end{bmatrix}\n\\]\n\nIn R\n\nA <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)\nx <- matrix(c(2,5), nrow = 2, ncol = 1)\nA %*% x\n\n     [,1]\n[1,]   31\n[2,]   -8"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#dot-product",
     "href": "slides/03_Matrix_algebra/index.html#dot-product",
     "title": "Matrix algebra",
     "section": "Dot product",
-    "text": "Dot product\n$$\\mathbf{v} \\cdot \\mathbf{x}= v_1x_1+v_2x_2+\\dots + v_nx_n$$\n\n    $$\n        \\begin{bmatrix}\n            3 & 1\\\\\n        \\end{bmatrix}\n        \\cdot\n        \\begin{bmatrix}\n            2\\\\ 5\\\\\n        \\end{bmatrix} = \n        \\begin{bmatrix}\n            3 \\times  2\\\\\n            1 \\times 5 \\\\\n        \\end{bmatrix} = \n        \\begin{bmatrix}\n            6\\\\\n            5\\\\\n        \\end{bmatrix}\n    $$"
+    "text": "Dot product\n\\[\\mathbf{v} \\cdot \\mathbf{x}= v_1x_1+v_2x_2+\\dots + v_nx_n\\]\n\n\\[\n            \\begin{bmatrix}\n                3 & 1\\\\\n            \\end{bmatrix}\n            \\cdot\n            \\begin{bmatrix}\n                2\\\\ 5\\\\\n            \\end{bmatrix} =\n                3 \\times  2 + 1 \\times 5 = 11\n\\]\n\nIn R\n\nv <- c(3, 1)\nx <- c(2,5)\nsum(v * x)\n\n[1] 11"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#solving-systems-of-linear-equation",
     "href": "slides/03_Matrix_algebra/index.html#solving-systems-of-linear-equation",
     "title": "Matrix algebra",
     "section": "Solving systems of linear equation",
-    "text": "Solving systems of linear equation\n$$\\begin{align*}\n    3b_1 + 5x_2 - 4x_3 &= 1\\\\\n    x_1 - 2x_2 + 3x_3 &= 0\\\\\n    4x_1 + 6x_2 + 5x_3 &= 1\\\\\n\\end{align*}\n$$\n$$\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\mathbf{A} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\mathbf{x} \\,\\,\\,\\,\\,\\qquad \\mathbf{b} $$\n$$\n    \\begin{bmatrix}\n        3 & 5 & -4\\\\\n        1 & -2 & 3\\\\\n        4 & 6 & 5 \\\\\n    \\end{bmatrix}\n    \\begin{bmatrix}\n        x_1\\\\ x_2\\\\ x_3\\\\\n    \\end{bmatrix} = \n    \\begin{bmatrix}\n        1\\\\ 0\\\\ 1\\\\\n    \\end{bmatrix}\n$$"
+    "text": "Solving systems of linear equation\n\\[\n\\begin{align*}\n        1 &= 3\\beta_1 + 5\\beta_2 - 4\\beta_3 \\\\\n        0 &= \\beta_1 - 2\\beta_2 + 3\\beta_3\\\\\n        1 &= 4\\beta_1 + 6\\beta_2 + 5\\beta_3\\\\\n    \\end{align*}\n\\] \\[\n\\mathbf{y} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\mathbf{X} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\boldsymbol{\\beta}\n\\] \\[\n        \\begin{bmatrix}\n            1\\\\ 0\\\\ 1\\\\\n        \\end{bmatrix}=\n        \\begin{bmatrix}\n            3 & 5 & -4\\\\\n            1 & -2 & 3\\\\\n            4 & 6 & 5 \\\\\n        \\end{bmatrix}\n        \\begin{bmatrix}\n            \\beta_1\\\\ \\beta_2\\\\ \\beta_3\\\\\n        \\end{bmatrix}\n\\]"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#solving-systems-of-linear-equation-1",
     "href": "slides/03_Matrix_algebra/index.html#solving-systems-of-linear-equation-1",
     "title": "Matrix algebra",
     "section": "Solving systems of linear equation",
-    "text": "Solving systems of linear equation\n$$\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\mathbf{A} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\mathbf{x} \\,\\,\\,\\,\\,\\qquad \\mathbf{b} $$\n$$\n    \\begin{bmatrix}\n        3 & 5 & -4\\\\\n        1 & -2 & 3\\\\\n        4 & 6 & 5 \\\\\n    \\end{bmatrix}\n    \\begin{bmatrix}\n        x_1\\\\ x_2\\\\ x_3\\\\\n    \\end{bmatrix} = \n    \\begin{bmatrix}\n        1\\\\ 0\\\\ 1\\\\\n    \\end{bmatrix}\n$$\n\nHow do we solve for $\\mathbf{x}$?\n$$\n\\begin{align*}\n    \\mathbf{A}\\mathbf{x} &= \\mathbf{b}\\\\\n    \\mathbf{A}^{-1}\\mathbf{A}\\mathbf{x} &= \\mathbf{A}^{-1}\\mathbf{b}\\\\\n    \\mathbf{I}\\mathbf{x} &= \\mathbf{A}^{-1}\\mathbf{b}\\\\\n    \\mathbf{x} &= \\mathbf{A}^{-1}\\mathbf{b}\n\\end{align*}\n$$\nWe can use the solve in R\n\ncode <- 1"
+    "text": "Solving systems of linear equation\n\n\\[\n\\mathbf{y} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\mathbf{X} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\boldsymbol{\\beta}\n\\] \\[\n        \\begin{bmatrix}\n            1\\\\ 0\\\\ 1\\\\\n        \\end{bmatrix}=\n        \\begin{bmatrix}\n            3 & 5 & -4\\\\\n            1 & -2 & 3\\\\\n            4 & 6 & 5 \\\\\n        \\end{bmatrix}\n        \\begin{bmatrix}\n            \\beta_1\\\\ \\beta_2\\\\ \\beta_3\\\\\n        \\end{bmatrix}\n\\]\nHow do we mathematically solve for \\(\\boldsymbol{\\beta}\\)?\n\\[\n    \\begin{align*}\n        \\mathbf{y} &= \\mathbf{X}\\boldsymbol{\\beta}\\\\\n        \\mathbf{X}^{-1}\\mathbf{y} &= \\mathbf{X}^{-1}\\mathbf{X}\\boldsymbol{\\beta}\\\\\n        \\mathbf{X}^{-1}\\mathbf{y} &= \\mathbf{I}\\boldsymbol{\\beta}\\\\\n        \\mathbf{X}^{-1}\\mathbf{y} &= \\boldsymbol{\\beta}\\\\\n    \\end{align*}\n\\]"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#eigenvectors-and-eigenvalues",
     "href": "slides/03_Matrix_algebra/index.html#eigenvectors-and-eigenvalues",
     "title": "Matrix algebra",
     "section": "Eigenvectors and eigenvalues",
-    "text": "Eigenvectors and eigenvalues\nRight eigenvector is :\n\n$$\\mathbf{A}\\mathbf{w} = \\lambda\\mathbf{w}$$\nLeft eigenvector is :\n\n$$\\mathbf{v}\\mathbf{A} = \\lambda\\mathbf{v}$$\n\n**Rules**\n\n\\(\\mathbf{A}\\) has to be a square matrix\nIf \\(\\mathbf{w}\\) is an eigenvector of \\(\\mathbf{A}\\), so is \\(c\\mathbf{w}\\) for any value of \\(c \\neq0\\)\nThe right eigenvector of \\(\\mathbf{A}^T\\) is the left eigenvector of \\(\\mathbf{A}\\)\nEigenvectors are linearly independent"
+    "text": "Eigenvectors and eigenvalues\n\nRight eigenvector is :\n\\[\\mathbf{A}\\mathbf{w} = \\lambda\\mathbf{w}\\] Left eigenvector is :\n\\[\\mathbf{v}\\mathbf{A} = \\lambda\\mathbf{v}\\]\nRules\n\n\\(\\mathbf{A}\\) has to be a square matrix\nIf \\(\\mathbf{w}\\) is an eigenvector of \\(\\mathbf{A}\\), so is \\(c\\mathbf{w}\\) for any value of \\(c \\neq0\\)\nThe right eigenvector of \\(\\mathbf{A}^T\\) is the left eigenvector of \\(\\mathbf{A}\\)\nEigenvectors are linearly independent"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#solving-systems-of-linear-equation-2",
+    "href": "slides/03_Matrix_algebra/index.html#solving-systems-of-linear-equation-2",
+    "title": "Matrix algebra",
+    "section": "Solving systems of linear equation",
+    "text": "Solving systems of linear equation\n\n\\[\n\\mathbf{y} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\mathbf{X} \\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\qquad \\boldsymbol{\\beta}\n\\] \\[\n        \\begin{bmatrix}\n            1\\\\ 0\\\\ 1\\\\\n        \\end{bmatrix}=\n        \\begin{bmatrix}\n            3 & 5 & -4\\\\\n            1 & -2 & 3\\\\\n            4 & 6 & 5 \\\\\n        \\end{bmatrix}\n        \\begin{bmatrix}\n            \\beta_1\\\\ \\beta_2\\\\ \\beta_3\\\\\n        \\end{bmatrix}\n\\]\nHow do we solve for \\(\\boldsymbol{\\beta}\\) in R?\n\nX <- matrix(c(3, 1, 4, 5, -2, 6, -4, 3, 5), nrow = 3, ncol = 3)\ny <- c(1, 0, 1)\n\n(beta <- solve(X, y))\n\n[1]  0.20000000  0.05714286 -0.02857143"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#usefulness-of-eigenvalues-for-this-course",
+    "href": "slides/03_Matrix_algebra/index.html#usefulness-of-eigenvalues-for-this-course",
+    "title": "Matrix algebra",
+    "section": "Usefulness of eigenvalues for this course",
+    "text": "Usefulness of eigenvalues for this course\nBeyond the technicality of extracting eigenvalues from a square matrix, as is explained in the previous slides"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#section",
+    "href": "slides/03_Matrix_algebra/index.html#section",
+    "title": "Matrix algebra",
+    "section": "",
+    "text": "Usefulness of eigenvalues for this course\nBeyond the technicality of extracting eigenvalues from a square matrix, as is explained in the previous slides"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#positive-definite-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#positive-definite-matrix",
+    "title": "Matrix algebra",
+    "section": "Positive definite matrix",
+    "text": "Positive definite matrix\nIt is reasonably common when you build a hierarchical model to get an error message that state :\n\nError: Matrix X is not positive definite\n\nor similarly\n\nError: Matrix X is not positive semi-definite\n\nWhat does this mean ? Any idea ?"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#positive-semi-definite-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#positive-semi-definite-matrix",
+    "title": "Matrix algebra",
+    "section": "Positive (semi-)definite matrix",
+    "text": "Positive (semi-)definite matrix\nNerdy mathematical definition\nPositive definite matrix\n\\(\\mathbf{M}\\) is a positive definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} > 0\\)\nPositive semi-definite matrix\n\\(\\mathbf{M}\\) is a positive semi-definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} \\ge 0\\)"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#positive-semi-definite-matrix-1",
+    "href": "slides/03_Matrix_algebra/index.html#positive-semi-definite-matrix-1",
+    "title": "Matrix algebra",
+    "section": "Positive (semi-)definite matrix",
+    "text": "Positive (semi-)definite matrix\nChecking if a matrix is positive (semi-)definite\nThe properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.\nAll we have to do is look at the eigenvalue of a square matrix.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than 0, matrix \\(\\mathbf{M}\\) is positive definite.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than or equal ro 0, matrix \\(\\mathbf{M}\\) is positive semi-definite."
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#cholesky-decomposition",
+    "href": "slides/03_Matrix_algebra/index.html#cholesky-decomposition",
+    "title": "Matrix algebra",
+    "section": "Cholesky decomposition",
+    "text": "Cholesky decomposition\nto add stuff here\nto add stuff here\nto add stuff here"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#determinant-of-a-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#determinant-of-a-matrix",
+    "title": "Matrix algebra",
+    "section": "Determinant of a matrix",
+    "text": "Determinant of a matrix\nto add stuff here\nto add stuff here\nto add stuff here"
   }
 ]
