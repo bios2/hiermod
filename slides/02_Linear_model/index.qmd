@@ -17,27 +17,27 @@ format:
 
 ### Basic regression model
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.
 
-In its simplest form, this is usually presented as 
+In its simplest form, a regression model is usually presented as 
+
 $$
 y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 $$
 
 It is known as a **simple linear model**, where :
 
-  $y_i$ is the value of a response variable for observation $i$
+$y_i$ is the value of a response variable for observation $i$
 
-  $x_i$ is the value of an explanatory variable for observation $i$
+$x_i$ is the value of an explanatory variable for observation $i$
 
-  $\beta_0$ is the model intercept
+$\beta_0$ is the model intercept
 
-  $\beta_1$ is the model slope
+$\beta_1$ is the model slope
 
-  $\varepsilon$ is the error term
+$\varepsilon$ is the error term
 :::
-
 
 ## Basic regression model
 
@@ -47,15 +47,18 @@ The cool thing about the simple linear model is that it can be studied visually 
 # Simulate some data
 set.seed(42) # The answer !
 
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
+covParam <- matrix(c(0.6, 0.3,0.3,0.8), 2, 2)
+meanParam <- c(1.5, 0.2)
+param <- MASS::mvrnorm(1, mu = meanParam, Sigma = covParam)
+yintercept <- param[1]
+slope <- param[2]
+obs_error <- 0.5
 
-x <- runif(200, min = -1, max = 1)
+x <- runif(100, min = -1, max = 1)
 y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+y_obs <- rnorm(100, mean = y_mean, sd = obs_error)
 
-par(mar = c(5,5,0.1,0.1))
+par(mar = c(6,7,0.1,0.1))
 plot(x, y_obs,
      pch = 19,
      col="blue", 
@@ -63,10 +66,12 @@ plot(x, y_obs,
      cex.axis=2.3,
      bty="L",
      xaxs="i",
-     xlab = "Humidity",
-     ylab = "Biomass",
-     cex.lab = 2.5,
+     xlab = "",
+     ylab = "",
      cex = 2)
+
+mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
+mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
 
 abline(a = yintercept,
        b = slope,
@@ -74,19 +79,297 @@ abline(a = yintercept,
        col = "orange")
 ```
 
-## Basic regression model
+## Estimating regression parameters
 
-:::{style="font-size: 0.75em"}
-There are however two major pitfalls in using the simple linear model for problems in the life sciences
+Many techniques have been proposed to estimate the parameters of a regression model.
 
-1. The simple linear model assumes that the error follows a Gaussian distribution... actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter 
+The goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.
+
+For example, if we want to build a model's confidence interval from a linear regression coded as
+
+```{r, echo = FALSE}
+y <- y_obs
+```
+
+```{r}
+reg <- lm(y ~ x)
+```
+
+**How would you do it ?**
+
+Let's look at the model's results are worth studying
+
+## Estimating regression parameters
+
+### Model's results
+
+::: {style="font-size: 0.75em"}
+
+```{r}
+(summaryReg <- summary(reg))
+```
+
+Let's say we want to construst the model's confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?
+::: 
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+We could sample the model parameters but how can we do this properly ?
+
+**Any suggestions?**
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+If we look at the estimated regression model coefficient, we can learn a few things
+
+```{r}
+summaryReg$coefficients
+```
+
+Notably, there are uncertainty around the parameters.
+
+Maybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.
+
+Let's give it a shot !
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+If we assume that the parameters of our particular model follow a Gaussian distribution, we can state that  
+
+$$\beta_0 \sim N(2.574, 0.047^2)$$
+$$\beta_1 \sim N(1.101, 0.080^2)$$
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+In R, we can do this as follow
+
+```{r}
+# Object that include regression coefficients
+regCoef <- summaryReg$coefficients
+
+# Sample regression parameters
+beta_0 <- rnorm(100, mean = regCoef[1,1], sd = regCoef[1,2])
+beta_1 <- rnorm(100, mean = regCoef[2,1], sd = regCoef[2,2])
+```
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+par(mar = c(6,7,0.1,0.1))
+plot(x, y_obs,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "",
+     ylab = "",
+     cex = 2)
+
+mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
+mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
+
+orange <- col2rgb("orange")
+
+for(i in 1:length(beta_0)){
+abline(a = beta_0[i],
+       b = beta_1[i],
+       lwd = 2,
+       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
+}
+```
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+But is this the right way to do it ?
+
+![](https://www.i2symbol.com/pictures/emojis/e/e/7/b/ee7b4fb9880ef3c8ee19626cdc14bf5c_384.png){fig-align="center" width=20%}
+
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+Actually, even if the model's confidence interval look about right, they are wrong ! 
+
+![](https://www.i2symbol.com/pictures/emojis/8/b/f/8/8bf88079d65d540a26a1f181cf6ba060_384.png){fig-align="center" width=20%}
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+The approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.
+
+A situation that happens only in very specific circumstances.
+
+So... We need to find a way to account for the non-independencies between the parameters. 
+
+How can we do this ? Any ideas ?
+
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+::: {style="font-size: 0.75em"}
+Assuming that the regression parameters are normally distributed is not a bad assumption. 
+
+However to consider a dependencies between the parameters we need to sample them from a **multivariate** normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.
+
+The good news is that this covariance matrix is given by `summary.lm` function
+:::
+
+```{r}
+(covReg <- summaryReg$cov.unscaled)
+```
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+For our specific model, mathematically, we assume that  
+
+$$\begin{bmatrix}
+  \beta_0\\
+  \beta_1\\
+\end{bmatrix} \sim MVN \left( \begin{bmatrix}
+  2.574\\
+  1.101\\
+\end{bmatrix}, \begin{bmatrix}
+  0.0100 & -0.0005 \\
+  -0.0005 & 0.0286 \\
+\end{bmatrix} \right)$$
+
+**Note** To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course. 
+
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+In R, we can sample the parameters using a multivariate normal distribution using the following code
+
+```{r}
+# Object that include regression coefficients
+regCoef <- summaryReg$coefficients
+
+# Sample regression parameters
+beta <- MASS::mvrnorm(100, regCoef[,1], Sigma = covReg)
+```
+
+## Estimating regression parameters
+
+### Sampling model parameters
+
+```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+par(mar = c(6,7,0.1,0.1))
+plot(x, y_obs,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "",
+     ylab = "",
+     cex = 2)
+
+mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
+mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
+
+orange <- col2rgb("orange")
+
+for(i in 1:length(beta_0)){
+  abline(a = beta[i,1],
+       b = beta[i,2],
+       lwd = 2,
+       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
+}
+```
+
+## Estimating regression parameters
+
+### Sampling model parameters - Comparison
+
+```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
+par(mfrow = c(1,2), mar = c(6,7,3,0.1))
+
+plot(x, y_obs,
+     pch = 19,
+     col="red", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "",
+     ylab = "",
+     cex = 2, 
+     main = "Wrong way",
+     cex.main = 3.5)
+
+mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
+mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
+
+for(i in 1:length(beta_0)){
+abline(a = beta_0[i],
+       b = beta_1[i],
+       lwd = 2,
+       col = rgb(1, 0, 0, alpha = 0.5))
+}
+
+plot(x, y_obs,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "",
+     ylab = "",
+     cex = 2, 
+     main = "Proper way",
+     cex.main = 3.5)
+
+mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
+
+orange <- col2rgb("orange")
+
+for(i in 1:length(beta_0)){
+  abline(a = beta[i,1],
+       b = beta[i,2],
+       lwd = 2,
+       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
+}
+```
+
+
+# Limits of the simple linear regression 
+
+## Limits of the simple linear regression 
+
+::: {style="font-size: 0.75em"}
+There are two major pitfalls of the simple linear model for problems in the life sciences
+
+1.  The simple linear model assumes that the error follows a Gaussian distribution... actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter.
 
 **Any clue which one?**
 
 In the simple linear regression the error term ($\varepsilon$) has actually a very precise definition:
 
-$$\varepsilon \sim {\cal N}(0, \sigma^2)$$
-where $\sigma^2$ is an estimated variance 
+$$\varepsilon \sim N(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance
 
 In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.
 :::
@@ -122,7 +405,8 @@ plot(x, y_obs,
      cex.lab = 2.5,
      cex = 2,
      cex.main = 3,
-     main = "Variance = 0.5")
+     main = "Variance = 0.5",
+     asp = 1)
 
 abline(a = yintercept,
        b = slope,
@@ -141,7 +425,8 @@ plot(x, y_obs_small,
      cex.lab = 2.5,
      cex = 2,
      cex.main = 3,
-     main = "Variance = 0.1")
+     main = "Variance = 0.1",
+     asp = 1)
 
 abline(a = yintercept,
        b = slope,
@@ -150,33 +435,10 @@ abline(a = yintercept,
 
 ```
 
-## Estimating regression parameters
-
-Many techniques have been proposed to estimate the parameters of a regression model. 
-
-The goal of this course is not to study these techniques but we will learn how to play with the estimated parameters. 
-
-For example, if we want to build a confidence interval such as the one estimated the following code
-
-```{r}
-reg <- lm(y_obs ~ x)
-```
-
-**How would you do it ?**
-
-At this point, the model's results are worth studying
-
-## Estimating regression parameters
-### Model's results
-```{r}
-summary(reg)
-```
-
-Let's say we want to reconstrust the model by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow a Gaussian distribution. How would you do this ?
 
 ## Basic regression model - Gaussian error
 
-To go around this problem, *generalized* linear models (GLMs) have been proposed. In essence, GLMs use *link functions* to adapt models for them to be used on non-Gaussian data. 
+To go around this problem, *generalized* linear models (GLMs) have been proposed. In essence, GLMs use *link functions* to adapt models for them to be used on non-Gaussian data.
 
 **For example**
 
@@ -186,14 +448,11 @@ log link function :
 
 The logit link function is often used for modelling binary data while the log link function is commonly used for modelling count data.
 
-
-
-
 ## Basic regression model
 
 There are however a few major pitfall in using the simple linear model for problems in the life sciences
 
-2. One explanatory is almost never enough to answer the questions we want to aproach
+2.  One explanatory is almost never enough to answer the questions we want to aproach
 
 ## second
 

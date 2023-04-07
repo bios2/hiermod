@@ -74,7 +74,7 @@
     "href": "slides/02_Linear_model/index.html#basic-regression-model-2",
     "title": "Linear models",
     "section": "Basic regression model",
-    "text": "Basic regression model\n\nThere are however two major pitfalls in using the simple linear model for problems in the life sciences\n\nThe simple linear model assumes that the error follows a Gaussian distribution… actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter\n\nAny clue which one?\nIn the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim {\\cal N}(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated."
+    "text": "Basic regression model\n\nThere are however two major pitfalls in using the simple linear model for problems in the life sciences\n\nThe simple linear model assumes that the error follows a Gaussian distribution… actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter.\n\nAny clue which one?\nIn the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim N(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated."
   },
   {
     "objectID": "slides/02_Linear_model/index.html#gaussian-error",
@@ -88,14 +88,14 @@
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nMany techniques have been proposed to estimate the parameters of a regression model.\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters.\nFor example, if we want to build a confidence interval such as the one estimated the following code\n\nreg <- lm(y_obs ~ x)\n\nHow would you do it ?\nAt this point, the model’s results are worth studying"
+    "text": "Estimating regression parameters\nMany techniques have been proposed to estimate the parameters of a regression model.\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.\nFor example, if we want to build a model’s confidence interval from a linear regression coded as\n\n\n\n\nreg <- lm(y ~ x)\n\nHow would you do it ?\nLet’s look at the model’s results are worth studying"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-1",
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-1",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nModel’s results\n\nsummary(reg)\n\n\nCall:\nlm(formula = y_obs ~ x)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.32240 -0.31159  0.00155  0.30531  1.37850 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  3.97537    0.03415  116.42   <2e-16 ***\nx            1.30382    0.05844   22.31   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4815 on 198 degrees of freedom\nMultiple R-squared:  0.7154,    Adjusted R-squared:  0.714 \nF-statistic: 497.7 on 1 and 198 DF,  p-value: < 2.2e-16\n\n\nLet’s say we want to reconstrust the model by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow a Gaussian distribution. How would you do this ?"
+    "text": "Estimating regression parameters\nModel’s results\n\n\n(summaryReg <- summary(reg))\n\n\nCall:\nlm(formula = y ~ x)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.47988 -0.26475  0.00611  0.32590  1.36077 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  2.57389    0.04720   54.53   <2e-16 ***\nx            1.10086    0.07976   13.80   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4718 on 98 degrees of freedom\nMultiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 \nF-statistic: 190.5 on 1 and 98 DF,  p-value: < 2.2e-16\n\n\nLet’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#basic-regression-model---gaussian-error",
@@ -565,5 +565,117 @@
     "title": "Day 2",
     "section": "DAGs",
     "text": "DAGs\n\nforks, pipes and colliders\nsimulation from a DAG\ndemonstration of errors from disregarding DAGs"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-2",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-2",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nWe could sample the model parameters but how can we do this properly ?\nAny suggestions?"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-3",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-3",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIf we look at the estimated regression model coefficient, we can learn a few things\n\nsummaryReg$coefficients\n\n            Estimate Std. Error  t value     Pr(>|t|)\n(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75\nx           1.100865 0.07975800 13.80256 1.035796e-24\n\n\nNotably, there are uncertainty around the parameters.\nMaybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.\nLet’s give it a shot !"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-4",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-4",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIf we assume that the parameters of our particular model follow a Gaussian distribution, we can state that\n\\[\\beta_0 \\sim N(2.574, 0.047^2)\\] \\[\\beta_1 \\sim N(1.101, 0.080^2)\\]"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-5",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-5",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIn R, we can do this as follow\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta_0 <- rnorm(100, mean = regCoef[1,1], sd = regCoef[1,2])\nbeta_1 <- rnorm(100, mean = regCoef[2,1], sd = regCoef[2,2])"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-6",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-6",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-7",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-7",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nBut is this the right way to do it ?"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-8",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-8",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nActually, even if the model’s confidence interval look about right, they are wrong !"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-9",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-9",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nThe approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.\nA situation that happens only in very specific circumstances.\nSo… We need to find a way to account for the non-independencies between the parameters.\nHow can we do this ? Any ideas ?"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-10",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-10",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\n\nAssuming that the regression parameters are normally distributed is not a bad assumption.\nHowever to consider a dependencies between the parameters we need to sample them from a multivariate normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.\nThe good news is that this covariance matrix is given by summary.lm function\n\n\n(covReg <- summaryReg$cov.unscaled)\n\n              (Intercept)             x\n(Intercept)  0.0100098513 -0.0005305969\nx           -0.0005305969  0.0285782940"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-11",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-11",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nFor our specific model, mathematically, we assume that\n\\[\\begin{bmatrix}\n  \\beta_0\\\\\n  \\beta_1\\\\\n\\end{bmatrix} \\sim MVN \\left( \\begin{bmatrix}\n  2.574\\\\\n  1.101\\\\\n\\end{bmatrix}, \\begin{bmatrix}\n  0.0100 & -0.0005 \\\\\n  -0.0005 & 0.0286 \\\\\n\\end{bmatrix} \\right)\\]\nNote To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-12",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-12",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIn R, we can sample the parameters using a multivariate normal distribution using the following code\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta <- MASS::mvrnorm(100, regCoef[,1], Sigma = covReg)"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-13",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-13",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-14",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-14",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters - Comparison"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-15",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-15",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-16",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-16",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nCan we do better"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-17",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-17",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nActually, what we show previously is wrong because"
   }
 ]
