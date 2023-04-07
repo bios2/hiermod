@@ -1,0 +1,325 @@
+---
+title: "Matrix algebra"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
+date: "2023-02-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## The very basics
+
+$$
+\mathbf{A} = \begin{bmatrix}
+				A_{11} & A_{12} & \dots & A_{1j} & \dots & A_{1n}\\
+				A_{21} & A_{22} & \dots & A_{2j} & \dots & A_{2n}\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  A_{i1} & A_{i2} & \dots & A_{ij} & \dots & A_{in}\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    A_{m1} & A_{m2} & \dots & A_{mj} & \dots & A_{mn}\\
+		\end{bmatrix}
+$$
+
+# Matrix operations
+	
+## Addition and Substraction
+
+$$\mathbf{C} = \mathbf{A}\pm \mathbf{B}$$
+$$C_{ij} = A_{ij} \pm B_{ij}$$
+
+::: {style="color: blue;"}
+$$\begin{bmatrix}
+				3 & 5\\
+				1 & -2\\
+			\end{bmatrix} + 
+			\begin{bmatrix}
+				2 & 1\\
+				4 & -2\\
+			\end{bmatrix} = 
+			\begin{bmatrix}
+				3+2 & 5+1\\
+				1+4 & -2-2\\
+			\end{bmatrix} = 
+			\begin{bmatrix}
+				5 & 6\\
+				5 & -4\\
+			\end{bmatrix}$$
+:::
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+B <- matrix(c(2, 4, 1, -2), nrow = 2, ncol = 2)
+A + B
+```
+
+## Multiplying a matrix by a scalar
+	
+$$\mathbf{B} = c\mathbf{A}$$
+$$B_{ij} = cA_{ij}$$
+	
+::: {style="color: blue;"}
+$$
+			0.3 \begin{bmatrix}
+				3 & 5\\
+				1 & -2\\
+			\end{bmatrix} =  
+			\begin{bmatrix}
+				0.9 & 1.5\\
+				0.3 & -0.6\\
+			\end{bmatrix}
+$$
+:::		
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+c <- 0.3
+c*A 
+```
+
+## Matrix multiplications (not divisions!)
+	
+$$\mathbf{C} = \mathbf{A} \cdot \mathbf{B}$$
+$$\mathbf{C}_{mr} = \mathbf{A}_{mn}\mathbf{B}_{nr}$$
+$$C_{ik} = \sum^{n}_{j=1}A_{ij}B_{jk}$$
+
+**Rules**
+	
+Associative: $\mathbf{A}(\mathbf{B}\mathbf{C}) = (\mathbf{A}\mathbf{B})\mathbf{C}$ 
+	
+Distributive: $\mathbf{A}(\mathbf{B} + \mathbf{C}) = \mathbf{A}\mathbf{B}+\mathbf{A}\mathbf{C}$
+	
+Not commutative: $\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}$
+
+
+## Inner product
+$$(\mathbf{Ax})_i=\sum_{j=1}^{n}A_{ij}x_j$$
+
+:::{style="color: blue;"}
+$$
+  \begin{bmatrix}
+    3 & 5\\
+    1 & -2\\
+  \end{bmatrix}
+  \begin{bmatrix}
+    2\\ 5\\
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    (3, 5) \cdot (2, 5)\\
+    (1, -2) \cdot (2, 5) \\
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    3 \times 2 + 5 \times 5\\
+    1 \times 2 -2 \times 5\\
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    31\\
+    -8\\
+  \end{bmatrix}
+$$
+:::
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+x <- matrix(c(2,5), nrow = 2, ncol = 1)
+A %*% x
+```
+
+## Dot product
+$$\mathbf{v} \cdot \mathbf{x}= v_1x_1+v_2x_2+\dots + v_nx_n$$
+
+:::{style="color: blue;"}
+$$
+			\begin{bmatrix}
+				3 & 1\\
+			\end{bmatrix}
+			\cdot
+			\begin{bmatrix}
+				2\\ 5\\
+			\end{bmatrix} = 
+				3 \times  2 + 1 \times 5 = 11
+$$
+:::
+
+In R
+
+```{r}
+v <- c(3, 1)
+x <- c(2,5)
+sum(v * x)
+```
+
+## Solving systems of linear equation
+
+$$
+\begin{align*}
+		1 &= 3\beta_1 + 5\beta_2 - 4\beta_3 \\
+		0 &= \beta_1 - 2\beta_2 + 3\beta_3\\
+		1 &= 4\beta_1 + 6\beta_2 + 5\beta_3\\
+	\end{align*}
+$$
+$$
+\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta} 
+$$
+$$
+		\begin{bmatrix}
+			1\\ 0\\ 1\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			3 & 5 & -4\\
+			1 & -2 & 3\\
+			4 & 6 & 5 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			\beta_1\\ \beta_2\\ \beta_3\\
+		\end{bmatrix}
+$$
+
+## Solving systems of linear equation
+
+::: {style="font-size: 0.9em"}
+$$
+\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta} 
+$$
+$$
+		\begin{bmatrix}
+			1\\ 0\\ 1\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			3 & 5 & -4\\
+			1 & -2 & 3\\
+			4 & 6 & 5 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			\beta_1\\ \beta_2\\ \beta_3\\
+		\end{bmatrix}
+$$
+
+How do we mathematically solve for $\boldsymbol{\beta}$?
+
+$$
+	\begin{align*}
+		\mathbf{y} &= \mathbf{X}\boldsymbol{\beta}\\
+		\mathbf{X}^{-1}\mathbf{y} &= \mathbf{X}^{-1}\mathbf{X}\boldsymbol{\beta}\\
+		\mathbf{X}^{-1}\mathbf{y} &= \mathbf{I}\boldsymbol{\beta}\\
+		\mathbf{X}^{-1}\mathbf{y} &= \boldsymbol{\beta}\\
+	\end{align*}
+$$
+:::
+
+## Solving systems of linear equation
+
+::: {style="font-size: 0.9em"}
+$$
+\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta} 
+$$
+$$
+		\begin{bmatrix}
+			1\\ 0\\ 1\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			3 & 5 & -4\\
+			1 & -2 & 3\\
+			4 & 6 & 5 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			\beta_1\\ \beta_2\\ \beta_3\\
+		\end{bmatrix}
+$$
+
+How do we solve for $\boldsymbol{\beta}$ in R?
+
+```{r}
+X <- matrix(c(3, 1, 4, 5, -2, 6, -4, 3, 5), nrow = 3, ncol = 3)
+y <- c(1, 0, 1)
+
+(beta <- solve(X, y))
+```
+:::
+
+
+## Determinant of a matrix
+
+to add stuff here
+
+to add stuff here
+
+to add stuff here
+
+## Eigenvectors and eigenvalues
+	
+::: {style="font-size: 0.9em"}
+Right eigenvector is :
+	
+$$\mathbf{A}\mathbf{w} = \lambda\mathbf{w}$$
+Left eigenvector is :
+	
+$$\mathbf{v}\mathbf{A} = \lambda\mathbf{v}$$
+	
+**Rules**
+
+- $\mathbf{A}$ has to be a square matrix
+- If $\mathbf{w}$ is an eigenvector of $\mathbf{A}$, so is $c\mathbf{w}$ for any value of $c \neq0$
+- The right eigenvector of $\mathbf{A}^T$ is the left eigenvector of $\mathbf{A}$
+- Eigenvectors are linearly independent
+:::
+
+## Positive definite matrix
+
+It is reasonably common when you build a hierarchical model to get an error message that state :
+
+:::{style="font-size: 0.8em"}
+`Error: Matrix X is not positive definite`
+:::
+
+or similarly
+
+:::{style="font-size: 0.8em"}
+`Error: Matrix X is not positive semi-definite`
+:::
+
+What does this mean ? Any idea ?
+
+## Positive (semi-)definite matrix
+### Nerdy mathematical definition
+
+**Positive definite matrix**
+
+$\mathbf{M}$ is a positive definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} > 0$
+
+**Positive semi-definite matrix**
+
+$\mathbf{M}$ is a positive semi-definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} \ge 0$
+
+## Positive (semi-)definite matrix
+### Checking if a matrix is positive (semi-)definite
+
+The properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.
+
+All we have to do is look at the eigenvalue of a square matrix. 
+
+If all eigenvalues of a matrix $\mathbf{M}$ larger than 0, matrix $\mathbf{M}$ is positive definite.
+
+If all eigenvalues of a matrix $\mathbf{M}$ larger than or equal ro 0, matrix $\mathbf{M}$ is positive semi-definite.
+
+## Cholesky decomposition
+
+
+to add stuff here
+
+to add stuff here
+
+to add stuff here
