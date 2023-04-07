@@ -356,14 +356,176 @@ for(i in 1:length(beta_0)){
 ```
 
 
-# Limits of the simple linear regression 
+## Estimating regression parameters
+
+So far, we focused on the most commonly assessed regression parameters of the simple linear model, the **slope** and the **intercept**, but there is another one that is very important to consider, especially for this course.
+
+**Any ideas which one it is ?**
+
+## Estimating regression parameters
+
+::: {style="font-size: 0.75em"}
+If we go back to the mathematical description of the model
+
+$$
+y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
+$$
+
+we can see that in the simple linear regression the error term ($\varepsilon$) has actually a very precise definition:
+
+$$\varepsilon \sim N(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance.
+
+In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.
+
+For most the course, we will play with this parameter in a bunch of different ways. 
+
+But before we do this, we need to understand a bit more about how this parameter influence the model.
+::: 
+
+
+## Estimating regression parameters
+
+### Variance of the model ($\sigma^2$)
+
+::: {style="font-size: 0.75em"}
+In essence, $\sigma^2$ tells us about what the model could not account for.
+
+So, if we measure biomass of two different species that react exactly the same way to humidity, we get 
+:::
+
+```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
+# Simulate some data
+set.seed(42) # The answer !
+
+yintercept <- 4
+slope <- 1.3
+obs_error <- 0.5
+obs_error_small <- 0.1
+
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+y_obs_small <- rnorm(200, mean = y_mean, sd = obs_error_small)
+
+par(mfrow = c(1,2),
+    mar = c(6,7,3,0.1))
+
+plot(x, y_obs,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "",
+     ylab = "",
+     cex = 2,
+     asp = 1,
+     main = "Species 1",
+     cex.main = 3.5)
+
+mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
+mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
+
+plot(x, y_obs_small,
+     pch = 19,
+     col="blue", 
+     las=1,
+     cex.axis=2.3,
+     bty="L",
+     xaxs="i",
+     xlab = "",
+     ylab = "",
+     cex.lab = 2.5,
+     cex = 2,
+     asp = 1,
+     main = "Species 2",
+     cex.main = 3.5)
+
+mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
+
+
+# For the next slide
+sp1 <- y_obs
+sp2 <- y_obs_small
+```
+
+## Estimating regression parameters
+### Variance of the model ($\sigma^2$)
+
+The estimated parameters for each regression are all available using `summary.lm`
+
+```{r}
+# Regression model
+regSp1 <- lm(sp1 ~ x)
+regSp2 <- lm(sp2 ~ x)
+
+# Summary
+summaryRegSp1 <- summary(regSp1)
+summaryRegSp2 <- summary(regSp2)
+```
+
+## Estimating regression parameters
+### Variance of the model ($\sigma^2$)
+
+:::: {.columns}
+
+::: {.column width="50%"}
+For species 1
+```{r}
+# Estimated coefficients
+summaryRegSp1$coefficients[,1:2]
+
+# Estimated variance
+summaryRegSp1$sigma
+```
+:::
+
+::: {.column width="50%"}
+For species 2
+```{r}
+# Estimated coefficients
+summaryRegSp2$coefficients[,1:2]
+
+# Estimated variance
+summaryRegSp2$sigma
+```
+:::
+::::
 
 ## Limits of the simple linear regression 
 
-::: {style="font-size: 0.75em"}
 There are two major pitfalls of the simple linear model for problems in the life sciences
 
-1.  The simple linear model assumes that the error follows a Gaussian distribution... actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter.
+1.  One explanatory is almost never enough to approach biological questions nowadays.
+
+2.  The simple linear model assumes that the error follows a Gaussian distribution.
+
+## Limits of the simple linear regression 
+### Multiple linear regression
+
+::: {style="font-size: 0.75em"}
+Simple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a **multiple linear regression**.
+
+Mathematically, a multiple linear regression can be defined as 
+
+$$
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \varepsilon
+$$
+
+Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in genral.
+
+In this respect, let's take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra.
+:::
+
+# Matrix algebra interlude
+
+## Multiple linear regression
+
+# ICI 
+# ICI 
+# ICI 
+
 
 **Any clue which one?**
 
