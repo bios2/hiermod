@@ -263,7 +263,7 @@
     "href": "slides/02_Linear_model/index.html#basic-regression-model-2",
     "title": "Linear models",
     "section": "Basic regression model",
-    "text": "Basic regression model\n\nThere are however two major pitfalls in using the simple linear model for problems in the life sciences\n\nThe simple linear model assumes that the error follows a Gaussian distribution… actually to be very precise, in the typical way we learn about simple linear regression models, it is common to disregard one parameter.\n\nAny clue which one?\nIn the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim N(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated."
+    "text": "Basic regression model\nThere are however a few major pitfall in using the simple linear model for problems in the life sciences\n\nOne explanatory is almost never enough to answer the questions we want to aproach"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#gaussian-error",
@@ -683,21 +683,21 @@
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-15",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters"
+    "text": "Estimating regression parameters\nSo far, we focused on the most commonly assessed regression parameters of the simple linear model, the slope and the intercept, but there is another one that is very important to consider, especially for this course.\nAny ideas which one it is ?"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-16",
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-16",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nCan we do better"
+    "text": "Estimating regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim N(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance.\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\nFor most the course, we will play with this parameter in a bunch of different ways.\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-17",
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-17",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nActually, what we show previously is wrong because"
+    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\nSo, if we measure biomass of two different species that react exactly the same way to humidity, we get"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#the-very-basics",
@@ -725,7 +725,7 @@
     "href": "slides/03_Matrix_algebra/index.html#matrix-multiplications-not-divisions",
     "title": "Matrix algebra",
     "section": "Matrix multiplications (not divisions!)",
-    "text": "Matrix multiplications (not divisions!)\n\\[\\mathbf{C} = \\mathbf{A} \\cdot \\mathbf{B}\\] \\[\\mathbf{C}_{mr} = \\mathbf{A}_{mn}\\mathbf{B}_{nr}\\] \\[C_{ik} = \\sum^{n}_{j=1}A_{ij}B_{jk}\\]\nRules\nAssociative: \\(\\mathbf{A}(\\mathbf{B}\\mathbf{C}) = (\\mathbf{A}\\mathbf{B})\\mathbf{C}\\)\nDistributive: \\(\\mathbf{A}(\\mathbf{B} + \\mathbf{C}) = \\mathbf{A}\\mathbf{B}+\\mathbf{A}\\mathbf{C}\\)\nNot commutative: \\(\\mathbf{A}\\mathbf{B} \\neq \\mathbf{B}\\mathbf{A}\\)"
+    "text": "Matrix multiplications (not divisions!)\n\\[\\mathbf{C} = \\mathbf{A} \\cdot \\mathbf{B}\\]\n\\[C_{ik} = \\sum^{n}_{j=1}A_{ij}B_{jk}\\]\nRules\nAssociative: \\(\\mathbf{A}(\\mathbf{B}\\mathbf{C}) = (\\mathbf{A}\\mathbf{B})\\mathbf{C}\\)\nDistributive: \\(\\mathbf{A}(\\mathbf{B} + \\mathbf{C}) = \\mathbf{A}\\mathbf{B}+\\mathbf{A}\\mathbf{C}\\)\nNot commutative: \\(\\mathbf{A}\\mathbf{B} \\neq \\mathbf{B}\\mathbf{A}\\)"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#inner-product",
@@ -809,7 +809,7 @@
     "href": "slides/03_Matrix_algebra/index.html#cholesky-decomposition",
     "title": "Matrix algebra",
     "section": "Cholesky decomposition",
-    "text": "Cholesky decomposition\nto add stuff here\nto add stuff here\nto add stuff here"
+    "text": "Cholesky decomposition\n\nThe Cholesky decomposition allows to decompose a matrix in a triangular, which, when multiplied by its transposed will allow us to recover the initial matrix.\nIn coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice\nIn math terms the Cholesky decomposition is defined as \\[\\mathbf{A} = \\mathbf{L}\\mathbf{L}^t\\] Example\n\\[\n        \\begin{bmatrix}\n            1 & 1 & 1\\\\\n            1 & 5 & 5\\\\\n            1 & 5 & 14\\\\\n        \\end{bmatrix}=\n        \\begin{bmatrix}\n            1 & 0 & 0\\\\\n            1 & 2 & 0\\\\\n            1 & 2 & 3 \\\\\n        \\end{bmatrix}\n        \\begin{bmatrix}\n            1 & 1 & 1\\\\\n            0 & 2 & 2\\\\\n            0 & 0 & 3 \\\\\n        \\end{bmatrix}\n\\]"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#determinant-of-a-matrix",
@@ -817,5 +817,138 @@
     "title": "Matrix algebra",
     "section": "Determinant of a matrix",
     "text": "Determinant of a matrix\nto add stuff here\nto add stuff here\nto add stuff here"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-18",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-18",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\nThe estimated parameters for each regression are all available using summary.lm\n\n# Regression model\nregSp1 <- lm(sp1 ~ x)\nregSp2 <- lm(sp2 ~ x)\n\n# Summary\nsummaryRegSp1 <- summary(regSp1)\nsummaryRegSp2 <- summary(regSp2)"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-19",
+    "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-19",
+    "title": "Linear models",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\n\nFor species 1\n\n# Estimated coefficients\nsummaryRegSp1$coefficients[,1:2]\n\n            Estimate Std. Error\n(Intercept) 3.975367  0.0341467\nx           1.303821  0.0584426\n\n# Estimated variance\nsummaryRegSp1$sigma\n\n[1] 0.481509\n\n\n\nFor species 2\n\n# Estimated coefficients\nsummaryRegSp2$coefficients[,1:2]\n\n            Estimate  Std. Error\n(Intercept) 3.996627 0.006714987\nx           1.280388 0.011492802\n\n# Estimated variance\nsummaryRegSp2$sigma\n\n[1] 0.09468927"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#limits-of-the-simple-linear-regression",
+    "href": "slides/02_Linear_model/index.html#limits-of-the-simple-linear-regression",
+    "title": "Linear models",
+    "section": "Limits of the simple linear regression",
+    "text": "Limits of the simple linear regression\nThere are two major pitfalls of the simple linear model for problems in the life sciences\n\nOne explanatory is almost never enough to approach biological questions nowadays.\nThe simple linear model assumes that the error follows a Gaussian distribution."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#limits-of-the-simple-linear-regression-1",
+    "href": "slides/02_Linear_model/index.html#limits-of-the-simple-linear-regression-1",
+    "title": "Linear models",
+    "section": "Limits of the simple linear regression",
+    "text": "Limits of the simple linear regression\nMultiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in genral.\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#multiple-linear-regression-1",
+    "href": "slides/02_Linear_model/index.html#multiple-linear-regression-1",
+    "title": "Linear models",
+    "section": "Multiple linear regression",
+    "text": "Multiple linear regression"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#a-general-way-to-write-matrices",
+    "href": "slides/03_Matrix_algebra/index.html#a-general-way-to-write-matrices",
+    "title": "Matrix algebra",
+    "section": "A general way to write matrices",
+    "text": "A general way to write matrices\n\\[\n\\mathbf{A} = \\begin{bmatrix}\n                A_{11} & A_{12} & \\dots & A_{1j} & \\dots & A_{1n}\\\\\n                A_{21} & A_{22} & \\dots & A_{2j} & \\dots & A_{2n}\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              A_{i1} & A_{i2} & \\dots & A_{ij} & \\dots & A_{in}\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            A_{m1} & A_{m2} & \\dots & A_{mj} & \\dots & A_{mn}\\\\\n        \\end{bmatrix}\n\\] \\[A = \\left[a_{ij}\\right]=\\left[a_{ij}\\right]_{m\\times n}\\]"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#square-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#square-matrix",
+    "title": "Matrix algebra",
+    "section": "Square matrix",
+    "text": "Square matrix\nThe square matrix has as many rows at it has columns \\[\n\\mathbf{B} = \\begin{bmatrix}\n                B_{11} & B_{12} & \\dots & B_{1j} & \\dots & B_{1n}\\\\\n                B_{21} & B_{22} & \\dots & B_{2j} & \\dots & B_{2n}\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              B_{i1} & B_{i2} & \\dots & B_{ij} & \\dots & B_{in}\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            B_{n1} & B_{n2} & \\dots & B_{nj} & \\dots & B_{nn}\\\\\n        \\end{bmatrix}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#matrix-inversion",
+    "href": "slides/03_Matrix_algebra/index.html#matrix-inversion",
+    "title": "Matrix algebra",
+    "section": "Matrix inversion",
+    "text": "Matrix inversion\n\nIn matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix \\(\\mathbf{A}\\) is defined as \\(\\mathbf{A}^{-1}\\)\nAs such, \\[\\mathbf{A}\\cdot \\mathbf{A}^{-1} = \\mathbf{I}\\] In R\n\nA <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)\n(Ainv <- solve(A))\n\n           [,1]       [,2]\n[1,] 0.18181818  0.4545455\n[2,] 0.09090909 -0.2727273\n\nA %*% Ainv\n\n              [,1] [,2]\n[1,]  1.000000e+00    0\n[2,] -2.775558e-17    1"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#the-transpose-of-a-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#the-transpose-of-a-matrix",
+    "title": "Matrix algebra",
+    "section": "The transpose of a matrix",
+    "text": "The transpose of a matrix\n\n\n\n\\[A = \\begin{bmatrix}\n          5 & -6 & 4 & -4\\\\\n        \\end{bmatrix}\n\\]\n\\[B = \\begin{bmatrix}\n          -8\\\\\n          9\\\\\n          -2\\\\\n        \\end{bmatrix}\n\\]\n\\[C = \\begin{bmatrix}\n          -4 & 1\\\\\n          2 & -5\\\\\n        \\end{bmatrix}\n\\]\n\n\\[A^t=\\begin{bmatrix}\n          5\\\\\n          -6\\\\\n          4\\\\\n          -4\\\\\n        \\end{bmatrix}\n\\]\n\\[B^t =\\begin{bmatrix}\n          -8 & 9 & -2\\\\\n        \\end{bmatrix}\n\\]\n\\[C^t =\\begin{bmatrix}\n          -4 & 2\\\\\n          1 & -5\\\\\n        \\end{bmatrix}\n\\]\n\n\nIn R\n\nA <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)\nA\n\n     [,1] [,2]\n[1,]    3    5\n[2,]    1   -2\n\nt(A)\n\n     [,1] [,2]\n[1,]    3    1\n[2,]    5   -2"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#symmetric-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#symmetric-matrix",
+    "title": "Matrix algebra",
+    "section": "Symmetric matrix",
+    "text": "Symmetric matrix\nThe values on the above and below the diagonal are match so that \\(A = A^t\\)\n\n\\[\n\\begin{bmatrix}\n                3 & 4 & -10\\\\\n                4 & 5 & 7\\\\\n                -10 & 7 & -6\\\\\n        \\end{bmatrix}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#diagonal-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#diagonal-matrix",
+    "title": "Matrix algebra",
+    "section": "Diagonal matrix",
+    "text": "Diagonal matrix\nThe diagonal matrix is a square matrix where all values of its diagonal are 0 except the ones on the diagonal.\n\n\\[D=\n      \\begin{bmatrix}\n        d_1 & 0 & \\dots & 0\\\\\n        0 & d_2 & \\dots & 0\\\\\n        \\vdots & \\vdots & \\ddots & \\vdots\\\\\n        0 & 0 & \\dots & d_n\\\\\n\\end{bmatrix}\\]\nAn example\n\n\\[\n\\begin{bmatrix}\n                -1 & 0 & 0\\\\\n                0 & 0 & 0\\\\\n                0 & 0 & 6\\\\\n        \\end{bmatrix}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#identity-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#identity-matrix",
+    "title": "Matrix algebra",
+    "section": "Identity matrix",
+    "text": "Identity matrix\nThe identity matrix is a square matrix where all values of its diagonal are 0 except the diagonal values which are all 1s.\n\n\n\\[\n\\mathbf{I}=\\begin{bmatrix}\n                1 & 0 & 0\\\\\n                0 & 1 & 0\\\\\n                0 & 0 & 1\\\\\n        \\end{bmatrix}\n\\]\n\nThe identity matrix is important because\n\\[\\mathbf{A} \\cdot \\mathbf{I}_n = \\mathbf{A}\\] or\n\\[\\mathbf{I}_m \\cdot \\mathbf{A} = \\mathbf{A}\\]"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#eigenvectors-and-eigenvalues",
+    "href": "slides/nn_extra_slides/index.html#eigenvectors-and-eigenvalues",
+    "title": "Matrix algebra",
+    "section": "Eigenvectors and eigenvalues",
+    "text": "Eigenvectors and eigenvalues\n\nRight eigenvector is :\n\\[\\mathbf{A}\\mathbf{w} = \\lambda\\mathbf{w}\\] Left eigenvector is :\n\\[\\mathbf{v}\\mathbf{A} = \\lambda\\mathbf{v}\\]\nRules\n\n\\(\\mathbf{A}\\) has to be a square matrix\nIf \\(\\mathbf{w}\\) is an eigenvector of \\(\\mathbf{A}\\), so is \\(c\\mathbf{w}\\) for any value of \\(c \\neq0\\)\nThe right eigenvector of \\(\\mathbf{A}^T\\) is the left eigenvector of \\(\\mathbf{A}\\)\nEigenvectors are linearly independent"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#positive-definite-matrix",
+    "href": "slides/nn_extra_slides/index.html#positive-definite-matrix",
+    "title": "Matrix algebra",
+    "section": "Positive definite matrix",
+    "text": "Positive definite matrix\nIt is reasonably common when you build a hierarchical model to get an error message that state :\n\nError: Matrix X is not positive definite\n\nor similarly\n\nError: Matrix X is not positive semi-definite\n\nWhat does this mean ? Any idea ?"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#positive-semi-definite-matrix",
+    "href": "slides/nn_extra_slides/index.html#positive-semi-definite-matrix",
+    "title": "Matrix algebra",
+    "section": "Positive (semi-)definite matrix",
+    "text": "Positive (semi-)definite matrix\nNerdy mathematical definition\nPositive definite matrix\n\\(\\mathbf{M}\\) is a positive definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} > 0\\)\nPositive semi-definite matrix\n\\(\\mathbf{M}\\) is a positive semi-definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} \\ge 0\\)"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#positive-semi-definite-matrix-1",
+    "href": "slides/nn_extra_slides/index.html#positive-semi-definite-matrix-1",
+    "title": "Matrix algebra",
+    "section": "Positive (semi-)definite matrix",
+    "text": "Positive (semi-)definite matrix\nChecking if a matrix is positive (semi-)definite\nThe properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.\nAll we have to do is look at the eigenvalue of a square matrix.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than 0, matrix \\(\\mathbf{M}\\) is positive definite.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than or equal ro 0, matrix \\(\\mathbf{M}\\) is positive semi-definite."
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#matrix-inversion-1",
+    "href": "slides/03_Matrix_algebra/index.html#matrix-inversion-1",
+    "title": "Matrix algebra",
+    "section": "Matrix inversion",
+    "text": "Matrix inversion\nInverting a diagonal matrix\n\\[D^{-1}=\n      \\begin{bmatrix}\n        1/d_1 & 0 & \\dots & 0\\\\\n        0 &  1/d_2 & \\dots & 0\\\\\n        \\vdots & \\vdots & \\ddots & \\vdots\\\\\n        0 & 0 & \\dots &  1/d_n\\\\\n\\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#triangular-matrix",
+    "href": "slides/03_Matrix_algebra/index.html#triangular-matrix",
+    "title": "Matrix algebra",
+    "section": "Triangular matrix",
+    "text": "Triangular matrix\n\n\nLower triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & 0 & 0\\\\\n        3 & 0 & 0 & 0\\\\\n        0 & 4 & 3 & 0\\\\\n        9 & -5 & 4 & 3\\\\\n\\end{bmatrix}\\]\n\nUpper triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & -5 & 0\\\\\n        0 & 0 & 5 & 6\\\\\n        0 & 0 & 3 & 3\\\\\n        0 & 0 & 0 & 3\\\\\n      \\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/03_Matrix_algebra/index.html#cholesky-decomposition-1",
+    "href": "slides/03_Matrix_algebra/index.html#cholesky-decomposition-1",
+    "title": "Matrix algebra",
+    "section": "Cholesky decomposition",
+    "text": "Cholesky decomposition\nWhy is it useful ?\nThere are actually two main reasons :\n\nWorking with triangular matrices is computationally more efficient\nIt can be used to rescale matrices and make MCMC algorithms converge more easily"
   }
 ]
