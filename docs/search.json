@@ -256,14 +256,14 @@
     "href": "slides/02_Linear_model/index.html#basic-regression-model-1",
     "title": "Linear models",
     "section": "Basic regression model",
-    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily"
+    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily.\nFor example if we are interested in knowing how a newly discovered plant species (Bidonia exemplaris) reacts to humidity, we can relate the biomass of B. exemplaris sampled at 100 sites with the soil humidity content and readily visual the data and the trend."
   },
   {
     "objectID": "slides/02_Linear_model/index.html#basic-regression-model-2",
     "href": "slides/02_Linear_model/index.html#basic-regression-model-2",
     "title": "Linear models",
     "section": "Basic regression model",
-    "text": "Basic regression model\nThere are however a few major pitfall in using the simple linear model for problems in the life sciences\n\nOne explanatory is almost never enough to answer the questions we want to aproach"
+    "text": "Basic regression model"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#gaussian-error",
@@ -277,14 +277,14 @@
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nMany techniques have been proposed to estimate the parameters of a regression model.\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.\nFor example, if we want to build a model’s confidence interval from a linear regression coded as\n\n\n\n\nreg <- lm(y ~ x)\n\nHow would you do it ?\nLet’s look at the model’s results are worth studying"
+    "text": "Estimating regression parameters\nMany techniques have been proposed to estimate the parameters of a regression model.\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.\nFor example, if we want to build a model’s confidence interval from a linear regression coded as\n\n\n\n\nreg <- lm(b.exemplaris ~ humidity)\n\nHow would you do it ?\nLet’s look at the model’s results are worth studying"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-1",
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-1",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nModel’s results\n\n\n(summaryReg <- summary(reg))\n\n\nCall:\nlm(formula = y ~ x)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.47988 -0.26475  0.00611  0.32590  1.36077 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  2.57389    0.04720   54.53   <2e-16 ***\nx            1.10086    0.07976   13.80   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4718 on 98 degrees of freedom\nMultiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 \nF-statistic: 190.5 on 1 and 98 DF,  p-value: < 2.2e-16\n\n\nLet’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?"
+    "text": "Estimating regression parameters\nModel’s results\n\n\n(summaryReg <- summary(reg))\n\n\nCall:\nlm(formula = b.exemplaris ~ humidity)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.47988 -0.26475  0.00611  0.32590  1.36077 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  2.57389    0.04720   54.53   <2e-16 ***\nhumidity     1.10086    0.07976   13.80   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4718 on 98 degrees of freedom\nMultiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 \nF-statistic: 190.5 on 1 and 98 DF,  p-value: < 2.2e-16\n\n\nLet’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#basic-regression-model---gaussian-error",
@@ -319,7 +319,7 @@
     "href": "slides/02_Linear_model/index.html#section-1",
     "title": "Linear models",
     "section": "",
-    "text": "check with simulations"
+    "text": "img:\n\nit is a landscape"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#section-2",
@@ -599,7 +599,7 @@
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-3",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nIf we look at the estimated regression model coefficient, we can learn a few things\n\nsummaryReg$coefficients\n\n            Estimate Std. Error  t value     Pr(>|t|)\n(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75\nx           1.100865 0.07975800 13.80256 1.035796e-24\n\n\nNotably, there are uncertainty around the parameters.\nMaybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.\nLet’s give it a shot !"
+    "text": "Estimating regression parameters\nSampling model parameters\nIf we look at the estimated regression model coefficient, we can learn a few things\n\nsummaryReg$coefficients\n\n            Estimate Std. Error  t value     Pr(>|t|)\n(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75\nhumidity    1.100865 0.07975800 13.80256 1.035796e-24\n\n\nNotably, there are uncertainty around the parameters.\nMaybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.\nLet’s give it a shot !"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-4",
@@ -648,7 +648,7 @@
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-10",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\n\nAssuming that the regression parameters are normally distributed is not a bad assumption.\nHowever to consider a dependencies between the parameters we need to sample them from a multivariate normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.\nThe good news is that this covariance matrix is given by summary.lm function\n\n\n(covReg <- summaryReg$cov.unscaled)\n\n              (Intercept)             x\n(Intercept)  0.0100098513 -0.0005305969\nx           -0.0005305969  0.0285782940"
+    "text": "Estimating regression parameters\nSampling model parameters\n\nAssuming that the regression parameters are normally distributed is not a bad assumption.\nHowever to consider a dependencies between the parameters we need to sample them from a multivariate normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.\nThe good news is that this covariance matrix is given by summary.lm function\n\n\n(covReg <- summaryReg$cov.unscaled)\n\n              (Intercept)      humidity\n(Intercept)  0.0100098513 -0.0005305969\nhumidity    -0.0005305969  0.0285782940"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-11",
@@ -690,14 +690,14 @@
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-16",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim N(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance.\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\nFor most the course, we will play with this parameter in a bunch of different ways.\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
+    "text": "Estimating regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim N(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance.\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\nFor most the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-17",
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-17",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\nSo, if we measure biomass of two different species that react exactly the same way to humidity, we get"
+    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)"
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#the-very-basics",
@@ -823,14 +823,14 @@
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-18",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\nThe estimated parameters for each regression are all available using summary.lm\n\n# Regression model\nregSp1 <- lm(sp1 ~ x)\nregSp2 <- lm(sp2 ~ x)\n\n# Summary\nsummaryRegSp1 <- summary(regSp1)\nsummaryRegSp2 <- summary(regSp2)"
+    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n\n# Regression model\nregBexemplaris <- lm(b.exemplaris ~ humidity)\nregIchicktighii <- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris <- summary(regBexemplaris)\nsummaryRegIchicktighii <- summary(regIchicktighii)"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#estimating-regression-parameters-19",
     "href": "slides/02_Linear_model/index.html#estimating-regression-parameters-19",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\n\nFor species 1\n\n# Estimated coefficients\nsummaryRegSp1$coefficients[,1:2]\n\n            Estimate Std. Error\n(Intercept) 3.975367  0.0341467\nx           1.303821  0.0584426\n\n# Estimated variance\nsummaryRegSp1$sigma\n\n[1] 0.481509\n\n\n\nFor species 2\n\n# Estimated coefficients\nsummaryRegSp2$coefficients[,1:2]\n\n            Estimate  Std. Error\n(Intercept) 3.996627 0.006714987\nx           1.280388 0.011492802\n\n# Estimated variance\nsummaryRegSp2$sigma\n\n[1] 0.09468927"
+    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\n\nFor Bidonia exemplaris\n\n# Estimated coefficients\nsummaryRegBexemplaris$coefficients[,1:2]\n\n            Estimate Std. Error\n(Intercept) 2.573889 0.04720304\nhumidity    1.100865 0.07975800\n\n# Estimated variance\nsummaryRegBexemplaris$sigma\n\n[1] 0.471798\n\n\n\nFor Ilovea chicktighii\n\n# Estimated coefficients\nsummaryRegIchicktighii$coefficients[,1:2]\n\n            Estimate  Std. Error\n(Intercept) 3.991785 0.008928294\nhumidity    1.271250 0.015085956\n\n# Estimated variance\nsummaryRegIchicktighii$sigma\n\n[1] 0.089239"
   },
   {
     "objectID": "slides/02_Linear_model/index.html#limits-of-the-simple-linear-regression",
@@ -851,7 +851,7 @@
     "href": "slides/02_Linear_model/index.html#multiple-linear-regression-1",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression"
+    "text": "Multiple linear regression\nIn this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the \\(\\beta\\)s) can depend on other other data and parameters."
   },
   {
     "objectID": "slides/03_Matrix_algebra/index.html#a-general-way-to-write-matrices",
@@ -950,5 +950,47 @@
     "title": "Matrix algebra",
     "section": "Cholesky decomposition",
     "text": "Cholesky decomposition\nWhy is it useful ?\nThere are actually two main reasons :\n\nWorking with triangular matrices is computationally more efficient\nIt can be used to rescale matrices and make MCMC algorithms converge more easily"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#multiple-linear-regression",
+    "href": "slides/02_Linear_model/index.html#multiple-linear-regression",
+    "title": "Linear models",
+    "section": "Multiple linear regression",
+    "text": "Multiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in genral.\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#error-term-in-linear-models",
+    "href": "slides/02_Linear_model/index.html#error-term-in-linear-models",
+    "title": "Linear models",
+    "section": "Error term in linear models",
+    "text": "Error term in linear models\nAs previously mentioned, in (simple and multiple!) linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim N(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\nwhich means that the error linear regression follows a Gaussian distribution with an estimateed variance."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#generalized-linear-models",
+    "href": "slides/02_Linear_model/index.html#generalized-linear-models",
+    "title": "Linear models",
+    "section": "Generalized linear models",
+    "text": "Generalized linear models\nTo go around this problem, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\nMathematically, the generic way to write generalized linear model is\n\\[\n\\widehat{y}_i = g^{-1}(\\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip})\n\\] or in matrix notation\n\\[\n\\widehat{\\mathbf{y}} = g^{-1}(\\mathbf{X}\\boldsymbol{\\beta})\n\\]\nwhere \\(g\\) is the link function and \\(g^{-1}\\) the inverse link function."
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#generalized-linear-models-1",
+    "href": "slides/02_Linear_model/index.html#generalized-linear-models-1",
+    "title": "Linear models",
+    "section": "Generalized linear models",
+    "text": "Generalized linear models\nLink functions\n\nThere are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.\nArguably the most common link function in ecology are\nlogit link function\nIt is commonly used for modelling binary (0-1) data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\frac{\\widehat{\\mathbf{y}}}{1 - \\widehat{\\mathbf{y}}}\\right)\n\\] The inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\frac{\\exp(\\mathbf{X}\\boldsymbol{\\beta})}{1 + \\exp(\\mathbf{X}\\boldsymbol{\\beta})} = \\frac{1}{1 + \\exp(-\\mathbf{X}\\boldsymbol{\\beta})}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#section-3",
+    "href": "slides/02_Linear_model/index.html#section-3",
+    "title": "Linear models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/02_Linear_model/index.html#generalized-linear-models-2",
+    "href": "slides/02_Linear_model/index.html#generalized-linear-models-2",
+    "title": "Linear models",
+    "section": "Generalized linear models",
+    "text": "Generalized linear models\nLink functions\n\nAnother commonly used link function is\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\] The inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
   }
 ]
