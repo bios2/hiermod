@@ -1,0 +1,405 @@
+---
+title: "Bayesian modelling"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
+date: "2023-02-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## Frequentist
+::: {style="font-size: 0.8em"}
+
+In introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.
+
+Frequentists want to find the best model parameter(s) for the data at hand
+
+$$\text{Likelihood}\hspace{1.5cm}P(\text{Data}|\text{Model})$$
+
+They are interested in **maximizing** the Likelihood
+
+They need **data**
+
+### Estimating model parameters
+
+- Minimizing the sums of squares
+- Simulated annealing
+- Nelder-Mead Simplex
+- ...
+::: 
+
+
+## Bayesian
+
+::: {style="font-size: 0.75em"}
+Bayesians want to find how good the model parameter(s) are given some data
+
+$$\text{Posterior}\hspace{1.5cm}P(\text{Model}|\text{Data})$$
+
+They are interested in the **posterior** distribution
+
+They need **data** and **prior** information
+
+The general framework used in Bayesian modelling is 
+
+$$\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}$$
+
+### Estimating model parameters
+
+- Markov Chain Monte Carlo
+- Integrated nested Laplace approximation
+- ...
+
+:::
+
+## Our way of thinking is Bayesian
+
+![](../img/Fantastic_Beast.png){width=1000 height=500}
+
+## Our way of thinking is Bayesian
+
+{{< 
+    video https://www.youtube.com/embed/uoEnGiG9aWA
+    title="What is the CERN?"
+    start="34"
+    width="1000" 
+    height="600"
+>}}
+
+
+## A few words about the prior
+
+::: {style="font-size: 0.75em"}
+### Definition of prior probability
+
+ The **prior probability** informes us about the probability of the model being true *before* the current data is considered.
+
+### Types of priors
+
+#### "Uninformative"
+
+These priors are meant to bring very little information about the model
+
+#### Informative
+
+These priors bring information about the model that is available
+
+#### Conjugate
+
+These priors have the same functional form (mathematically speaking) as the likelihood
+:::
+
+## A few words about the prior
+
+### "Uninformative" priors
+
+:::::{style="font-size: 0.75em"}
+**Example** If we have no idea of how elevation influence sugar maple
+
+#### Gaussian distribution
+:::: {.columns}
+::: {.column width="50%"}
+$$f(x)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$
+::: 
+::: {.column width="50%"}
+$\mu = 0$
+
+$\sigma = \text{Large say 100}$
+:::
+::::
+:::::
+```{r, echo = FALSE, fig.width=5, fig.height=2, fig.align='center'}
+par(mar=c(0.5,5,0.5,0.5))
+couleur<-rainbow(5)
+curve(dnorm, -100, 100, n = 10000, col = couleur[1], xaxt = "n",
+      xlab = "", ylab = "Density", las = 1, cex.lab=1.5, lwd = 3)
+curve(dnorm(x,mean = 0, sd = 2), -1000, 1000, add=TRUE,
+      n=10000, col="orange", lwd = 3)
+curve(dnorm(x,mean = 0, sd = 5), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[3], lwd = 3)
+curve(dnorm(x,mean = 0, sd = 8), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[4], lwd = 3)
+curve(dnorm(x,mean = 0, sd = 10), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[5], lwd = 3)
+curve(dnorm(x,mean = 0, sd = 100), -1000, 1000, add=TRUE,
+      n=10000, lwd = 3)
+legend("topright",legend=c(expression(sigma==1),
+                           expression(sigma==2),
+                           expression(sigma==5),
+                           expression(sigma==8),
+                           expression(sigma==10),
+                           expression(sigma==100)),col=c(couleur[1],
+                                                   "orange",
+                                                   couleur[3:5],
+                                                   "black"),
+       lty=1, lwd=3)
+```
+
+
+## A few words about the prior
+
+### Informative priors
+
+:::::{style="font-size: 0.6em"}
+**Example** If we know that 
+  
+  - There are less sugar maples the higher we go
+  - The influence of elevation on sugar maple cannot be more than two folds
+
+#### Uniform distribution
+
+:::: {.columns}
+::: {.column width="50%"}
+$$f(x)=\left\{
+  \begin{array}{cl}
+    \frac{1}{b-a} & \text{for } x\in [a,b]\\
+    0 &\text{otherwise}\\
+  \end{array}
+\right.$$
+:::
+::: {.column width="50%"}
+  \item $a > -2$
+  
+  \item $b < 0$
+:::
+::::
+:::::
+
+```{r echo=FALSE, fig.width=5, fig.height=2, fig.align='center'}
+par(mar=c(2,5,0,0))
+curve(dunif(x,min = -2, max = 0), n=1000, -2.5, 0.5, xlab = "",
+      ylab = "Density", las = 1, cex.lab=1.5, lwd = 3)
+```
+
+## A few words about the prior
+
+### Conjugate priors
+
+These types of priors are convenient to use because 
+
+- They are computationally faster to use
+- They can be interepreted as additional data
+
+#### Why are they useful?
+
+There is no need to write the likelihood down when using them. All that needs to be done is to sample them to obtain a parameter estimation.
+
+## A few words about the prior
+
+### Conjugate priors
+
+#### What does it mean to be of the same *functional form*?
+
+It means that both distribution have th same mathematical structure. 
+
+:::: {.columns}
+::: {.column width="50%"}
+**Binomial distribution**
+$$\theta^a(1-\theta)^b$$
+:::
+::: {.column width="50%"}
+**Beta distribution**
+$$\theta^{\alpha-1}(1-\theta)^{\beta-1}$$
+:::
+::::
+
+<https://en.wikipedia.org/wiki/Conjugate_prior>
+
+## second
+
+::: r-fit-text
+Test your model
+:::
+
+## 
+
+img:
+
+![](img/bg.jpg)
+
+it is a landscape
+
+##  {auto-animate="true"}
+
+::: {style="margin-top: 100px;"}
+check with simulations
+:::
+
+##  {auto-animate="true"}
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+check with simulations
+:::
+
+## choose parameters {auto-animate="TRUE"}
+
+``` r
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+```
+
+## make up an X variable {auto-animate="TRUE"}
+
+``` r
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+```
+
+## calculate the average {auto-animate="TRUE"}
+
+``` r
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+```
+
+## simulate some observations {auto-animate="TRUE"}
+
+```{r}
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+```
+
+## finally, visualize
+
+```{r}
+plot(y_obs ~ x)
+```
+
+## here it is all on one slide
+
+```{r}
+#| output-location: column
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+plot(y_obs, x)
+```
+
+## Or we can present the code and results separately
+
+::: panel-tabset
+### The code
+
+```{r}
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+```
+
+### The figure
+
+```{r}
+plot(y_obs ~ x)
+```
+:::
+
+## another equation
+
+$$
+2 + 4 = 6
+$$
+
+## The equation
+
+$$
+\begin{align}
+y  &\sim \text{N}(\mu, \sigma_{obs}) \\
+\mu &= a + bx \\
+\end{align}
+$$
+
+## The model {auto-animate="TRUE"}
+
+``` stan
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## Declare the data {auto-animate="TRUE"}
+
+``` {.stan code-line-numbers="1-4"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## State parameters {auto-animate="TRUE"}
+
+``` {.stan code-line-numbers="5-8"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## Write the likelihood and priors {auto-animate="TRUE"}
+
+``` {.stan code-line-numbers="9-13"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```

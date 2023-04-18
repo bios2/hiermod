@@ -992,5 +992,187 @@
     "title": "Linear models",
     "section": "Generalized linear models",
     "text": "Generalized linear models\nLink functions\n\nAnother commonly used link function is\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\] The inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#frequentist",
+    "href": "slides/04_Bayesian/index.html#frequentist",
+    "title": "Bayesian modelling",
+    "section": "Frequentist",
+    "text": "Frequentist\n\nIn introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.\nFrequentists want to find the best model parameter(s) for the data at hand\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\]\nThey are interested in maximizing the Likelihood\nThey need data\nEstimating model parameters\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#second",
+    "href": "slides/04_Bayesian/index.html#second",
+    "title": "Bayesian modelling",
+    "section": "second",
+    "text": "second\n\nTest your model"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#section",
+    "href": "slides/04_Bayesian/index.html#section",
+    "title": "Bayesian modelling",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#section-1",
+    "href": "slides/04_Bayesian/index.html#section-1",
+    "title": "Bayesian modelling",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#section-2",
+    "href": "slides/04_Bayesian/index.html#section-2",
+    "title": "Bayesian modelling",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#choose-parameters",
+    "href": "slides/04_Bayesian/index.html#choose-parameters",
+    "title": "Bayesian modelling",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#make-up-an-x-variable",
+    "href": "slides/04_Bayesian/index.html#make-up-an-x-variable",
+    "title": "Bayesian modelling",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#calculate-the-average",
+    "href": "slides/04_Bayesian/index.html#calculate-the-average",
+    "title": "Bayesian modelling",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#simulate-some-observations",
+    "href": "slides/04_Bayesian/index.html#simulate-some-observations",
+    "title": "Bayesian modelling",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#finally-visualize",
+    "href": "slides/04_Bayesian/index.html#finally-visualize",
+    "title": "Bayesian modelling",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#here-it-is-all-on-one-slide",
+    "href": "slides/04_Bayesian/index.html#here-it-is-all-on-one-slide",
+    "title": "Bayesian modelling",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/04_Bayesian/index.html#or-we-can-present-the-code-and-results-separately",
+    "title": "Bayesian modelling",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#another-equation",
+    "href": "slides/04_Bayesian/index.html#another-equation",
+    "title": "Bayesian modelling",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#the-equation",
+    "href": "slides/04_Bayesian/index.html#the-equation",
+    "title": "Bayesian modelling",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#the-model",
+    "href": "slides/04_Bayesian/index.html#the-model",
+    "title": "Bayesian modelling",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#declare-the-data",
+    "href": "slides/04_Bayesian/index.html#declare-the-data",
+    "title": "Bayesian modelling",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#state-parameters",
+    "href": "slides/04_Bayesian/index.html#state-parameters",
+    "title": "Bayesian modelling",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#write-the-likelihood-and-priors",
+    "href": "slides/04_Bayesian/index.html#write-the-likelihood-and-priors",
+    "title": "Bayesian modelling",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#bayesian",
+    "href": "slides/04_Bayesian/index.html#bayesian",
+    "title": "Bayesian modelling",
+    "section": "Bayesian",
+    "text": "Bayesian\n\nBayesians want to find how good the model parameter(s) are given some data\n\\[\\text{Posterior}\\hspace{1.5cm}P(\\text{Model}|\\text{Data})\\]\nThey are interested in the posterior distribution\nThey need data and prior information\nThe general framework used in Bayesian modelling is\n\\[\\underbrace{P(\\text{Model}|\\text{Data})}_\\text{Posterior}\\propto \\underbrace{P(\\text{Data}|\\text{Model})}_\\text{Likelihood}\\underbrace{P(\\text{Model})}_\\text{Prior}\\]\nEstimating model parameters\n\nMarkov Chain Monte Carlo\nIntegrated nested Laplace approximation\n…"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#our-way-of-thinking-is-bayesian",
+    "href": "slides/04_Bayesian/index.html#our-way-of-thinking-is-bayesian",
+    "title": "Bayesian modelling",
+    "section": "Our way of thinking is Bayesian",
+    "text": "Our way of thinking is Bayesian"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#our-way-of-thinking-is-bayesian-1",
+    "href": "slides/04_Bayesian/index.html#our-way-of-thinking-is-bayesian-1",
+    "title": "Bayesian modelling",
+    "section": "Our way of thinking is Bayesian",
+    "text": "Our way of thinking is Bayesian"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#a-few-words-about-the-prior",
+    "href": "slides/04_Bayesian/index.html#a-few-words-about-the-prior",
+    "title": "Bayesian modelling",
+    "section": "A few words about the prior",
+    "text": "A few words about the prior\n\nDefinition of prior probability\nThe prior probability informes us about the probability of the model being true before the current data is considered.\nTypes of priors\n“Uninformative”\nThese priors are meant to bring very little information about the model\nInformative\nThese priors bring information about the model that is available\nConjugate\nThese priors have the same functional form (mathematically speaking) as the likelihood"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-1",
+    "href": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-1",
+    "title": "Bayesian modelling",
+    "section": "A few words about the prior",
+    "text": "A few words about the prior\n“Uninformative” priors\n\nExample If we have no idea of how elevation influence sugar maple\nGaussian distribution\n\n\n\\[f(x)=\\frac{1}{\\sqrt{2\\pi\\sigma^2}}e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}\\]\n\n\\(\\mu = 0\\)\n\\(\\sigma = \\text{Large say 100}\\)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-2",
+    "href": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-2",
+    "title": "Bayesian modelling",
+    "section": "A few words about the prior",
+    "text": "A few words about the prior\nInformative priors\n\nExample If we know that\n\nThere are less sugar maples the higher we go\nThe influence of elevation on sugar maple cannot be more than two folds\n\nUniform distribution\n\n\n\\[f(x)=\\left\\{\n  \\begin{array}{cl}\n    \\frac{1}{b-a} & \\text{for } x\\in [a,b]\\\\\n    0 &\\text{otherwise}\\\\\n  \\end{array}\n\\right.\\]\n\n\\(a > -2\\)\n\\(b < 0\\)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-3",
+    "href": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-3",
+    "title": "Bayesian modelling",
+    "section": "A few words about the prior",
+    "text": "A few words about the prior\nConjugate priors\nThese types of priors are convenient to use because\n\nThey are computationally faster to use\nThey can be interepreted as additional data\n\nWhy are they useful?\nThere is no need to write the likelihood down when using them. All that needs to be done is to sample them to obtain a parameter estimation."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-4",
+    "href": "slides/04_Bayesian/index.html#a-few-words-about-the-prior-4",
+    "title": "Bayesian modelling",
+    "section": "A few words about the prior",
+    "text": "A few words about the prior\nConjugate priors\nWhat does it mean to be of the same functional form?\nIt means that both distribution have th same mathematical structure.\n\n\nBinomial distribution \\[\\theta^a(1-\\theta)^b\\]\n\nBeta distribution \\[\\theta^{\\alpha-1}(1-\\theta)^{\\beta-1}\\]\n\n\nhttps://en.wikipedia.org/wiki/Conjugate_prior"
   }
 ]
