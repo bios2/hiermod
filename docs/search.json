@@ -1124,7 +1124,7 @@
     "href": "slides/04_Bayesian/index.html#bayesian",
     "title": "Bayesian modelling",
     "section": "Bayesian",
-    "text": "Bayesian\n\nBayesians want to find how good the model parameter(s) are given some data\n\\[\\text{Posterior}\\hspace{1.5cm}P(\\text{Model}|\\text{Data})\\]\nThey are interested in the posterior distribution\nThey need data and prior information\nThe general framework used in Bayesian modelling is\n\\[\\underbrace{P(\\text{Model}|\\text{Data})}_\\text{Posterior}\\propto \\underbrace{P(\\text{Data}|\\text{Model})}_\\text{Likelihood}\\underbrace{P(\\text{Model})}_\\text{Prior}\\]\nEstimating model parameters\n\nMarkov Chain Monte Carlo\nIntegrated nested Laplace approximation\n…"
+    "text": "Bayesian\n\nBayesians want to find how good the model parameter(s) are given some data\n\\[\\text{Posterior}\\hspace{1.5cm}P(\\text{Model}|\\text{Data})\\]\nThey are interested in the posterior distribution\nThey need data and prior information\nThe general framework used in Bayesian modelling is\n\\[\\underbrace{P(\\text{Model}|\\text{Data})}_\\text{Posterior}\\propto \\underbrace{P(\\text{Data}|\\text{Model})}_\\text{Likelihood}\\underbrace{P(\\text{Model})}_\\text{Prior}\\]\nEstimating model parameters\n\nMarkov Chain Monte Carlo\nHamiltonian Monte Carlo\n…"
   },
   {
     "objectID": "slides/04_Bayesian/index.html#our-way-of-thinking-is-bayesian",
@@ -1174,5 +1174,96 @@
     "title": "Bayesian modelling",
     "section": "A few words about the prior",
     "text": "A few words about the prior\nConjugate priors\nWhat does it mean to be of the same functional form?\nIt means that both distribution have th same mathematical structure.\n\n\nBinomial distribution \\[\\theta^a(1-\\theta)^b\\]\n\nBeta distribution \\[\\theta^{\\alpha-1}(1-\\theta)^{\\beta-1}\\]\n\n\nhttps://en.wikipedia.org/wiki/Conjugate_prior"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#our-way-of-thinking-is-bayesian-2",
+    "href": "slides/04_Bayesian/index.html#our-way-of-thinking-is-bayesian-2",
+    "title": "Bayesian modelling",
+    "section": "Our way of thinking is Bayesian",
+    "text": "Our way of thinking is Bayesian"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#estimating-bayesian-model",
+    "href": "slides/04_Bayesian/index.html#estimating-bayesian-model",
+    "title": "Bayesian modelling",
+    "section": "Estimating Bayesian model",
+    "text": "Estimating Bayesian model\nAs I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.\nThe goal of this course is not to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
+    "href": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nHistorically, the developments of MCMC are intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.\nTo explain what is an MCMC, let’s imagine that we are interested in understanding the behaviour of the mallard (Anas platyrhynchos)."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-1",
+    "href": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-1",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nFor simplicity, let’s assume that we are monitoring the behaviour of the mallard every minutes and that we are recording whether it is\nOn land\n\n\n\n\n\nIn the water"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-2",
+    "href": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-2",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nUsing this information, we can draw diagram defining how the behaviour of the mallard changes at every time steps"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-3",
+    "href": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-3",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nIn a markov chain, we assume that we know how probable it is to go from one behaviour (land) to another (water)"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-4",
+    "href": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-4",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nIn an MCMC, we assume that the likeliness of passing from one behaviour (land) to another (water) depends on a statistical distribution."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-5",
+    "href": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-5",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nWhen using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.\nSince we do not know what the “true” characteristics of the distributions, both approach rely on different approach to assess the structure of the distribution is."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
+    "href": "slides/04_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nMCMC relies on using many random samples to assess what the structure of the distribution is."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#hamiltonial-monte-carlo",
+    "href": "slides/04_Bayesian/index.html#hamiltonial-monte-carlo",
+    "title": "Bayesian modelling",
+    "section": "Hamiltonial Monte Carlo",
+    "text": "Hamiltonial Monte Carlo"
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#hamiltonian-monte-carlo",
+    "href": "slides/04_Bayesian/index.html#hamiltonian-monte-carlo",
+    "title": "Bayesian modelling",
+    "section": "Hamiltonian Monte Carlo",
+    "text": "Hamiltonian Monte Carlo\nHamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the structure of the distribution is."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#sampling-the-parameters-distributions",
+    "href": "slides/04_Bayesian/index.html#sampling-the-parameters-distributions",
+    "title": "Bayesian modelling",
+    "section": "Sampling the parameter’s distributions",
+    "text": "Sampling the parameter’s distributions\n\nIn both MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.\nHere is a rough procedure to follow:\n\nPerform a pilot run with a reduced number of steps (e.g. 10) and measure the time it takes\nDecide on a number of steps to run to obtain a result in a reasonable amount of time\nRun the algorithm again !\nStudy the chain visually\n\nA more statistical way - The Raftery-Lewis diagnostic\nIt relies on a pilot run to estimate the number of steps to be carried out.\nIt is implemented in the raftery.diag function of the coda R package."
+  },
+  {
+    "objectID": "slides/04_Bayesian/index.html#sampling-the-parameters-distributions-1",
+    "href": "slides/04_Bayesian/index.html#sampling-the-parameters-distributions-1",
+    "title": "Bayesian modelling",
+    "section": "Sampling the parameter’s distributions",
+    "text": "Sampling the parameter’s distributions"
   }
 ]

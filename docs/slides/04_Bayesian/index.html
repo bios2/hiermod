@@ -429,18 +429,18 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <h3 id="estimating-model-parameters-1">Estimating model parameters</h3>
 <ul>
 <li>Markov Chain Monte Carlo</li>
-<li>Integrated nested Laplace approximation</li>
+<li>Hamiltonian Monte Carlo</li>
 <li>…</li>
 </ul>
 </div>
 </section>
 <section id="our-way-of-thinking-is-bayesian" class="slide level2">
 <h2>Our way of thinking is Bayesian</h2>
-<p><img data-src="../img/Fantastic_Beast.png" width="1000" height="500"></p>
-</section>
-<section id="our-way-of-thinking-is-bayesian-1" class="slide level2">
-<h2>Our way of thinking is Bayesian</h2>
-<iframe src="https://www.youtube.com/embed/uoEnGiG9aWA?start=34" width="1000" height="600" title="What is the CERN?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="https://youtu.be/uoEnGiG9aWA?t=34"><img data-src="../img/Fantastic_Beast.png" width="1000" height="500"></a></p>
+</figure>
+</div>
 </section>
 <section id="a-few-words-about-the-prior" class="slide level2">
 <h2>A few words about the prior</h2>
@@ -524,6 +524,91 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p><a href="https://en.wikipedia.org/wiki/Conjugate_prior" class="uri">https://en.wikipedia.org/wiki/Conjugate_prior</a></p>
 </section>
+<section id="estimating-bayesian-model" class="slide level2">
+<h2>Estimating Bayesian model</h2>
+<p>As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.</p>
+<p>The goal of this course is <strong>not</strong> to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.</p>
+</section>
+<section id="markov-chain-monte-carlo-mcmc" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<div style="font-size: 0.75em;">
+<p>Historically, the developments of MCMC are intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.</p>
+<p>To explain what is an MCMC, let’s imagine that we are interested in understanding the behaviour of the mallard (<em>Anas platyrhynchos</em>).</p>
+</div>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg/1024px-Anas_platyrhynchos_male_female_quadrat.jpg" style="width:10.0%" class="r-stretch quarto-figure-center"></section>
+<section id="markov-chain-monte-carlo-mcmc-1" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<div style="font-size: 0.75em;">
+<p>For simplicity, let’s assume that we are monitoring the behaviour of the mallard every minutes and that we are recording whether it is</p>
+<h4 id="on-land">On land</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ichef.bbci.co.uk/news/976/cpsprodpb/33B5/production/_127273231_comedy5.jpg" style="width:30.0%"></p>
+</figure>
+</div>
+<h4 id="in-the-water">In the water</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://img.bbg.org/large/41847802500.jpg" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-2" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<p>Using this information, we can draw diagram defining how the behaviour of the mallard changes at every time steps</p>
+
+<img data-src="../img/DAG.png" class="r-stretch quarto-figure-center"></section>
+<section id="markov-chain-monte-carlo-mcmc-3" class="slide level2">
+<h2><em>Markov Chain</em> Monte Carlo (MCMC)</h2>
+<div style="font-size: 0.75em;">
+<p>In a markov chain, we assume that we know how probable it is to go from one behaviour (land) to another (water)</p>
+</div>
+
+<img data-src="../img/DAG_Markov_chain.png" class="r-stretch quarto-figure-center"></section>
+<section id="markov-chain-monte-carlo-mcmc-4" class="slide level2">
+<h2>Markov Chain <em>Monte Carlo</em> (MCMC)</h2>
+<div style="font-size: 0.75em;">
+<p>In an MCMC, we assume that the likeliness of passing from one behaviour (land) to another (water) depends on a statistical distribution.</p>
+</div>
+
+<img data-src="../img/DAG_Markov_chain_monte_Carlo.png" class="r-stretch quarto-figure-center"></section>
+<section id="markov-chain-monte-carlo-mcmc-5" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<p>When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.</p>
+<p>Since we do not know what the “true” characteristics of the distributions, both approach rely on different approach to assess the structure of the distribution is.</p>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-6" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<p>MCMC relies on using many random samples to assess what the structure of the distribution is.</p>
+
+<img data-src="../img/Drunken_walk.png" class="r-stretch quarto-figure-center"></section>
+<section id="hamiltonian-monte-carlo" class="slide level2">
+<h2>Hamiltonian Monte Carlo</h2>
+<p>Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the structure of the distribution is.</p>
+
+<img data-src="https://www.westcoasttraveller.com/wp-content/uploads/2021/03/24581102_web1_210322-WCT-WestcoastSkateparks_1-800x533.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"></section>
+<section id="sampling-the-parameters-distributions" class="slide level2">
+<h2>Sampling the parameter’s distributions</h2>
+<div style="font-size: 0.7em;">
+<p>In both MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.</p>
+<p>Here is a rough procedure to follow:</p>
+<ol type="1">
+<li>Perform a pilot run with a reduced number of steps (e.g.&nbsp;10) and measure the time it takes</li>
+<li>Decide on a number of steps to run to obtain a result in a reasonable amount of time</li>
+<li>Run the algorithm again !</li>
+<li>Study the chain visually</li>
+</ol>
+<h3 id="a-more-statistical-way---the-raftery-lewis-diagnostic">A more statistical way - The Raftery-Lewis diagnostic</h3>
+<p>It relies on a pilot run to estimate the number of steps to be carried out.</p>
+<p>It is implemented in the <code>raftery.diag</code> function of the <code>coda</code> R package.</p>
+</div>
+</section>
+<section id="sampling-the-parameters-distributions-1" class="slide level2">
+<h2>Sampling the parameter’s distributions</h2>
+
+<img data-src="index_files/figure-revealjs/trace-1.png" width="768" class="r-stretch"></section>
 <section id="second" class="slide level2">
 <h2>second</h2>
 <div class="r-fit-text">
