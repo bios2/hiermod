@@ -124,7 +124,9 @@ Nobody has the time for that. so instead the best choice is to see how well the 
 draws <- samp_bill_dep$draws(variables = c("mu", "sigma"))
 draws_matrix <- posterior::as_draws_matrix(draws)
 
-## set up a matrix. for every posterior sample, (that is, for a value of mu and a value of sigma) draw a whole fake dataset from a normal distribution with that mean and sd. 
+## set up a matrix. for every posterior sample, 
+## (that is, for a value of mu and a value of sigma) 
+## draw a whole fake dataset from a normal distribution with that mean and sd. 
 nsamples <- 50
 yrep <- matrix(0, ncol = list_bill_dep$N, nrow = nsamples)
 
@@ -199,6 +201,16 @@ Sometimes scientists will plot histograms of data at the beginning of a research
 :::
 
 ## Stan code for species differences
+
+
+$$
+\begin{align}
+\text{Bill depth}_{\text{sp}[i]} &\sim \text{Normal}(\mu_{\text{sp}[i]}, \sigma) \\
+\mu &\sim \text{Normal}(17, 2) \\
+\sigma &\sim \text{Exponential}(2) \\
+\end{align}
+$$
+
 
 ```{r}
 #| class-output: stan
@@ -293,7 +305,17 @@ normal_dist_post_samp |>
 ### Exercises
 
 
-* repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? 
+#### Level 1
+* repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)
 * use bayesplot to examine the fit of body size to these data. 
-* generate some random groups of your own and 
+
+#### Level 2
+* generate some random groups of your own, with known means. How well does the model fit these data
+* The present model is fixed for exactly 3 groups. how would you change it for any number of groups?
+
+#### Level 3
 * the function `tidybayes::compose_data` is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of `tidybayes::compose_data`?
+* As you can see, the model 
+
+### Optional! 
+Try this on your own data! 

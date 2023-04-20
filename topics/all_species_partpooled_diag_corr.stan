@@ -12,7 +12,7 @@ parameters {
   vector[K] gamma;              
   // standard deviations of species departures
   vector<lower=0>[K] sd_params; 
-  // add the correlations between slop and intercept
+  // add the correlations between slope and intercept
   cholesky_factor_corr[K] slope_inter_corr;
 }
 transformed parameters {

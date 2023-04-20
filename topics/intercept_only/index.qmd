@@ -1,0 +1,354 @@
+
+## main questions
+
+* Understanding a hierarchical model as a model for parameters
+* Introduce 
+* One Weird Trick (you Supervisor will be Amazed)--- mean centering and group mean centering
+
+a model for parameters
+
+start withglobal aerages of seach tgroup., 
+our question,is, what create this variation in averages? 
+
+show distribution of sample averages
+Do this for the average of the distributions, showing their interactions with each other, their distribution oacross all values. 
+
+Starting with just the distribution of abundances across the species and plots. 
+
+Then move to an intercept-only poisson model : distribution across plots
+
+really take time: build up a model of multiple averages per species and multiple per plot
+
+or would the penguins be better for this? Consider the different islands and the different species
+
+honestly could do it with both. 
+
+Then try the following
+
+modelling an average
+modelling group means
+modelling more than one group mean 
+
+a process:
+* Look at your data
+* think about "0" -- where should it be? what does it mean?
+* think about units -- how much of a difference in your "X" matters to your "y"?
+
+* model the average and standard deviation of bill size (or of species abudance)
+
+$$
+\begin{align}
+Y_s &\sim \text{Poisson}(\lambda_s) \\
+\log{\lambda_s} &\sim \text{Normal}(300, 100)  \\
+\end{align}
+$$
+
+* a quick note -- centering the response, i.e. taking the average out of the prior on the averages
+* look at the averages
+* how could we describe these averages? a simple model: mean and standard deviation
+
+```{r}
+data("mite", package = "vegan")
+
+spp_names <- colnames(mite)
+spp_names <- setNames(1:ncol(mite), colnames(mite))
+
+
+mite_long <- mite |> 
+  tidyr::pivot_longer(dplyr::everything(), names_to = "spp", values_to = "abd") |> 
+  dplyr::mutate(group_id = spp_names[spp])
+
+library(cmdstanr)
+
+group_avg_nopool <- cmdstan_model("topics/intercept_only/group_avg_nopool.stan", 
+                                  pedantic = TRUE)
+
+samp_group_avg_nopool <- group_avg_nopool$sample(data = list(
+  N = nrow(mite_long),
+  N_groups = ncol(mite),
+  group_id = mite_long$group_id,
+  abd = mite_long$abd
+))
+
+```
+
+
+```{r}
+library(tidyverse)
+library(tidybayes)
+rvars_group_means_unpooled <- samp_group_avg_nopool |> 
+  tidybayes::gather_rvars(group_mean[group_id]) |> 
+  dplyr::mutate(spp = names(spp_names)[group_id],
+                spp = fct_reorder(spp, .value, .fun = median))
+
+rvars_group_means_unpooled |> 
+  ggplot2::ggplot(aes(y = spp, dist = .value)) + 
+  tidybayes::stat_halfeye()
+
+rvars_group_means_unpooled |> 
+  ggplot2::ggplot(aes(y = spp, dist = exp(.value))) + 
+  tidybayes::stat_halfeye()
+
+colMeans(mite)
+```
+
+I could easily add these colmeans to the second plot above
+
+```{r}
+rvars_group_means_unpooled |> 
+  ggplot2::ggplot(aes(y = spp, dist = exp(.value))) + 
+  tidybayes::stat_halfeye() +
+  geom_point(aes(y = spp, x = value), 
+             inherit.aes = FALSE,
+             data = enframe(colMeans(mite), name = "spp"),
+             col = "red")
+```
+
+Before we jump to considering this as a hierarchical model, let's look at another way of writing this Stan code
+
+First of all, I could have written this as a for-loop. I chose to vectorize it, and you can read more about it in the Stan user manual here.
+
+```{r}
+# for-loop version
+```
+
+You migth prefer seeing it this way because this lets you keep the data in the format you found it. you might also find it more readable. For models of this size, there will be no difference in speed between the two. But in bigger models, the first way I showed will be faster. this is because of the way that th Stan algorithm works when evaluatint the likelihood section. You can read more about it here [TK]
+
+Whether you choose a vectorized or for-loop approach to writing the likelihood, there is another, much more important alternative to writing a likelihood. 
+
+## rewriting the Normal distribution
+
+$$
+\text{Normal}(\mu, \sigma) = \mu + z \times \sigma
+$$
+
+if 
+
+$$
+z \sim \text{Normal}(0, 1)
+$$
+
+you can choose to write a normal distribution two ways. In the first, you consider the mean and standard devation as parameters "inside" the distribution, in the other, you start with a standard normal distribution and first _scale_ it (multiply by the standard deviation) and then _shift_ it (add in the average)
+
+The result is a distribution that slides around the number line, like this: 
+
+```{r}
+## tk animation
+```
+
+We can rewrite the first model in exactly this syntax
+
+```{r}
+
+group_avg_nopool_nc <- cmdstan_model("topics/intercept_only/group_avg_nopool_nc.stan", 
+                                  pedantic = TRUE)
+
+samp_group_avg_nopool_nc <- group_avg_nopool_nc$sample(data = list(
+  N = nrow(mite_long),
+  N_groups = ncol(mite),
+  group_id = mite_long$group_id,
+  abd = mite_long$abd)
+)
+```
+
+This is an interesting fact that we will use later, but which I wanted to show now, separately from studying hierarchical modesls
+
+### A model for parameters
+
+let's go back to the original differences between groups.. this time using species data
+
+Can also run the above model with row numbers
+
+```{r}
+mite_long_group <- mite |> 
+  tibble::rowid_to_column() |> 
+  pivot_longer(-rowid, names_to = "spp", values_to = "abd") |> 
+  rename(group_id = rowid)
+
+samp_group_avg_nopool_nc <- group_avg_nopool_nc$sample(data = list(
+  N = nrow(mite_long_group),
+  N_groups = max(mite_long_group$group_id),
+  group_id = mite_long_group$group_id,
+  abd = mite_long_group$abd))
+
+
+rvars_group_means_unpooled <- samp_group_avg_nopool_nc |> 
+  tidybayes::gather_rvars(group_mean[group_id]) |> 
+  dplyr::mutate(spp = names(spp_names)[group_id],
+                spp = fct_reorder(spp, .value, .fun = median))
+
+rvars_group_means_unpooled |> 
+  ggplot2::ggplot(aes(y = group_id, dist = .value)) + 
+  tidybayes::stat_halfeye()
+```
+
+
+
+now, let's stop for a second and look at the point estimates for each plot in the dataset:
+
+```{r}
+rvars_group_means_unpooled |> 
+  mutate(site_average = median(.value)) |> 
+  ggplot(aes(x = site_average)) + 
+  geom_histogram()
+
+```
+
+<aside>Are you using the *median* to calculate something you're calling an *average* ? what is going on?!
+A: I did this on purpose to show this distinction. the PARAMETER we're talking about is the average abundance in each site. We don't have a single value for this average, instead we have 2000 possible values, according to our model. We could choose to summarize those numbers any way we want -- often, the median is a good choice. 
+</aside>
+
+Where do these differences in group mean come from? The simplest possible model might be that there is some average mite abundance, and some plots have more or less than this average. In other words, a normal distribution.
+
+Let's add this model into our code
+
+```{r}
+group_avg_partpool <- cmdstan_model("topics/intercept_only/group_avg_partpool.stan",
+                                    pedantic = TRUE)
+
+samp_group_avg_partpool <- group_avg_partpool$sample(data = list(
+  N = nrow(mite_long_group),
+  N_groups = max(mite_long_group$group_id),
+  group_id = mite_long_group$group_id,
+  abd = mite_long_group$abd))
+
+samp_group_avg_partpool |> 
+  gather_rvars(group_mean[spp]) |> 
+  arrange(median(.value))
+```
+
+```{r}
+samp_group_avg_partpool |> 
+  gather_rvars(mu, sigma)
+```
+
+## Regularization: a simple simulation
+
+one of the best and most useful aspects of hierarchical models is one which is not easy to see in our chosen datasets! 
+Instead, I'm going to simulate some data to demonstrate it.
+
+```{r}
+set.seed(1234)
+fake_clutch_size_data <- tibble::tibble(
+  site_id = 1:42,
+  n_nests_per_site = sample(size = max(site_id),
+                            x = c(33, 13, 3),
+                            prob = c(.1, .2, .7),
+                            replace = TRUE),
+  site_mean = rnorm(n = max(site_id),
+                    mean = log(10), 
+                    sd = .7)) |> 
+  rowwise() |> 
+  mutate(clutch_size = list(rpois(n = n_nests_per_site, 
+                                  lambda = exp(site_mean))))
+
+
+fake_clutch_size_data |> 
+  # unnest(clutch_size) |> 
+  mutate(mean_cs = mean(clutch_size)) |> 
+  ggplot(aes(x = exp(site_mean), y = mean_cs,
+             fill = as.factor(n_nests_per_site))) + 
+  geom_point(pch = 21, size = 5) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  geom_abline(slope = 1, intercept = 0)
+```
+
+can also look at it going through 0
+
+```{r}
+nopool_fig <- fake_clutch_size_data |> 
+  # unnest(clutch_size) |> 
+  mutate(mean_cs = mean(clutch_size)) |> 
+  ggplot(aes(x = exp(site_mean), y = mean_cs - exp(site_mean),
+             fill = as.factor(n_nests_per_site))) + 
+  geom_point(pch = 21, size = 5) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  geom_abline(slope = 0, intercept = 0)
+```
+
+in both cases you can see that the green values are off of the true value -- just by chance they ended up above or below the real value
+
+let's fit our model from above to this! 
+
+```{r}
+
+unnest_fake_cs <- unnest(fake_clutch_size_data, cols = "clutch_size")
+
+group_avg_partpool_nests_samp <- group_avg_partpool$sample(
+  data = with(unnest_fake_cs, 
+              list(N = length(clutch_size),
+                   N_groups = max(site_id),
+                   group_id = site_id,
+                   abd = clutch_size
+              ))
+)
+
+```
+
+```{r}
+truth_posterior_combined <- group_avg_partpool_nests_samp |> 
+  gather_rvars(group_mean[site_id]) |> 
+  mutate(mean_cs = median(.value)) |> 
+  select(-.value) |> 
+  left_join(fake_clutch_size_data |> select(site_id, n_nests_per_site, site_mean))
+
+truth_posterior_combined |> 
+  ggplot(
+    aes(
+      x = site_mean,
+      y = mean_cs - site_mean,
+      fill = as.factor(n_nests_per_site))) + 
+  geom_point(pch = 21, size = 5) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  geom_abline(slope = 0, intercept = 0)
+
+
+
+nopool_fig + 
+  geom_point(
+    aes(
+      x = site_mean,
+      y = mean_cs - site_mean),
+    data = truth_posterior_combined) + 
+  facet_wrap(~n_nests_per_site)
+  
+  
+truth_posterior_combined |> 
+  filter(exp(site_mean)>50)
+
+fake_clutch_size_data |> 
+  filter(site_id == 41) |> 
+  pull(clutch_size)
+  
+```
+
+
+
+Small exercise for you: demonstrate that all 3 models described here produce answers that are exactly the same.
+
+```{r}
+
+```
+
+
+
+In the ohter, you have standard normal variation 
+
+Animation showing overa ll mean and error, then group means and error
+
+progrssion later to negative binomial perhaps??
+
+animation showing averages -- group averages -- species averages
+
+really want to show my own style here! I think I can see how this would build together. 
+
+I wonder, if there is a way to simulate predator-prey dynamics in space, in a model where the predator needs to have both prey and environment conditions, but they prey need only the environment. what would happen if we use causal models (or the wrong causal model) on those data, measuring predators affecting prey when there is nothing 
+
+
+
+
+group-mean-centering as a main topic
+Not as a new topic but as an interesting way to describe multilevel, slope models. 
+
+animation of points moving together, after group-mean-centering
+
