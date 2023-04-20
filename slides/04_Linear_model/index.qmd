@@ -147,8 +147,8 @@ Let's give it a shot !
 
 If we assume that the parameters of our particular model follow a Gaussian distribution, we can state that  
 
-$$\beta_0 \sim N(2.574, 0.047^2)$$
-$$\beta_1 \sim N(1.101, 0.080^2)$$
+$$\beta_0 \sim \mathcal{N}(2.574, 0.047^2)$$
+$$\beta_1 \sim \mathcal{N}(1.101, 0.080^2)$$
 
 ## Estimating regression parameters
 
@@ -250,7 +250,7 @@ For our specific model, mathematically, we assume that
 $$\begin{bmatrix}
   \beta_0\\
   \beta_1\\
-\end{bmatrix} \sim MVN \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{MVN} \left( \begin{bmatrix}
   2.574\\
   1.101\\
 \end{bmatrix}, \begin{bmatrix}
@@ -378,7 +378,8 @@ $$
 
 we can see that in the simple linear regression the error term ($\varepsilon$) has actually a very precise definition:
 
-$$\varepsilon \sim N(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance.
+$$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$
+where $\sigma^2$ is an estimated variance.
 
 In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.
 
@@ -387,6 +388,14 @@ For most the course, we will play with the variance parameter $\sigma^2$ in a bu
 But before we do this, we need to understand a bit more about how this parameter influence the model.
 ::: 
 
+
+## Estimating regression parameters
+
+A first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as 
+$$
+y \sim \mathcal{N}(\beta_0 + \beta_1 x_{i}, \sigma^2)
+$$
+As we will see later in this course, this writting style will become particularly useful as we move forward in this course.
 
 ## Estimating regression parameters
 
@@ -522,18 +531,346 @@ In this respect, let's take a bit of time to get acquinted with different basic 
 
 # Matrix algebra interlude
 
+## A general way to write matrices
+$$
+\mathbf{A} = \begin{bmatrix}
+				A_{11} & A_{12} & \dots & A_{1j} & \dots & A_{1n}\\
+				A_{21} & A_{22} & \dots & A_{2j} & \dots & A_{2n}\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  A_{i1} & A_{i2} & \dots & A_{ij} & \dots & A_{in}\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    A_{m1} & A_{m2} & \dots & A_{mj} & \dots & A_{mn}\\
+		\end{bmatrix}
+$$
+$$A = \left[a_{ij}\right]=\left[a_{ij}\right]_{m\times n}$$
+
+# Basic matrix operations
+
+## The transpose of a matrix
+
+::::: { style="font-size: 0.65em"}
+:::: {.columns}
+::: {.column width="50%"}
+
+$$A = \begin{bmatrix}
+          5 & -6 & 4 & -4\\
+        \end{bmatrix}
+$$
+
+$$B = \begin{bmatrix}
+          -8\\
+          9\\
+          -2\\
+        \end{bmatrix}
+$$
+
+$$C = \begin{bmatrix}
+          -4 & 1\\
+          2 & -5\\
+        \end{bmatrix}
+$$
+:::
+
+::: {.column width="50%"}
+
+$$A^t=\begin{bmatrix}
+          5\\
+          -6\\
+          4\\
+          -4\\
+        \end{bmatrix}
+$$
+    
+ 
+$$B^t =\begin{bmatrix}
+          -8 & 9 & -2\\
+        \end{bmatrix}
+$$
+    
+
+$$C^t =\begin{bmatrix}
+          -4 & 2\\
+          1 & -5\\
+        \end{bmatrix}
+$$
+:::
+::::
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+A
+t(A)
+```
+:::::
+## Addition and Substraction
+
+$$\mathbf{C} = \mathbf{A}\pm \mathbf{B}$$
+$$C_{ij} = A_{ij} \pm B_{ij}$$
+
+::: {style="color: blue;"}
+$$\begin{bmatrix}
+				3 & 5\\
+				1 & -2\\
+			\end{bmatrix} + 
+			\begin{bmatrix}
+				2 & 1\\
+				4 & -2\\
+			\end{bmatrix} = 
+			\begin{bmatrix}
+				3+2 & 5+1\\
+				1+4 & -2-2\\
+			\end{bmatrix} = 
+			\begin{bmatrix}
+				5 & 6\\
+				5 & -4\\
+			\end{bmatrix}$$
+:::
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+B <- matrix(c(2, 4, 1, -2), nrow = 2, ncol = 2)
+A + B
+```
+
+## Multiplying a matrix by a scalar
+	
+$$\mathbf{B} = c\mathbf{A}$$
+$$B_{ij} = cA_{ij}$$
+	
+::: {style="color: blue;"}
+$$
+			0.3 \begin{bmatrix}
+				3 & 5\\
+				1 & -2\\
+			\end{bmatrix} =  
+			\begin{bmatrix}
+				0.9 & 1.5\\
+				0.3 & -0.6\\
+			\end{bmatrix}
+$$
+:::		
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+c <- 0.3
+c*A 
+```
+
+## Matrix multiplications (not divisions!)
+	
+$$\mathbf{C} = \mathbf{A} \cdot \mathbf{B}$$
+
+$$C_{ik} = \sum^{n}_{j=1}A_{ij}B_{jk}$$
+
+**Rules**
+	
+Associative: $\mathbf{A}(\mathbf{B}\mathbf{C}) = (\mathbf{A}\mathbf{B})\mathbf{C}$ 
+	
+Distributive: $\mathbf{A}(\mathbf{B} + \mathbf{C}) = \mathbf{A}\mathbf{B}+\mathbf{A}\mathbf{C}$
+	
+Not commutative: $\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}$
+
+
+## Inner product
+$$(\mathbf{Ax})_i=\sum_{j=1}^{n}A_{ij}x_j$$
+
+:::{style="color: blue;"}
+$$
+  \begin{bmatrix}
+    3 & 5\\
+    1 & -2\\
+  \end{bmatrix}
+  \begin{bmatrix}
+    2\\ 5\\
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    (3, 5) \cdot (2, 5)\\
+    (1, -2) \cdot (2, 5) \\
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    3 \times 2 + 5 \times 5\\
+    1 \times 2 -2 \times 5\\
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    31\\
+    -8\\
+  \end{bmatrix}
+$$
+:::
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+x <- matrix(c(2,5), nrow = 2, ncol = 1)
+A %*% x
+```
+
+# Some important matrices
+
+
+## Identity matrix
+
+The identity matrix is a square matrix where all values of its diagonal are 0 except  the diagonal values which are all 1s.
+
+:::: { style="font-size: 0.8em"}
+::: {style="color: blue;"}
+$$
+\mathbf{I}=\begin{bmatrix}
+				1 & 0 & 0\\
+				0 & 1 & 0\\
+				0 & 0 & 1\\
+		\end{bmatrix}
+$$
+:::
+
+The identity matrix is important because 
+
+$$\mathbf{A} \cdot \mathbf{I}_n = \mathbf{A}$$
+or 
+
+$$\mathbf{I}_m \cdot \mathbf{A} = \mathbf{A}$$
+::::
+
+
+## Diagonal matrix
+
+The diagonal matrix is a square matrix where all values of its diagonal are 0 except the ones on the diagonal.
+
+:::: {style="font-size: 0.8em"}
+$$D=
+      \begin{bmatrix}
+        d_1 & 0 & \dots & 0\\
+        0 & d_2 & \dots & 0\\
+        \vdots & \vdots & \ddots & \vdots\\
+        0 & 0 & \dots & d_n\\
+\end{bmatrix}$$
+
+An example
+
+::: {style="color: blue;"}
+$$
+\begin{bmatrix}
+				-1 & 0 & 0\\
+				0 & 0 & 0\\
+				0 & 0 & 6\\
+		\end{bmatrix}
+$$
+:::
+::::
+
+## Triangular matrix
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Lower triangular matrix
+$$\begin{bmatrix}
+        -10 & 0 & 0 & 0\\
+        3 & 0 & 0 & 0\\
+        0 & 4 & 3 & 0\\
+        9 & -5 & 4 & 3\\
+\end{bmatrix}$$
+:::
+::: {.column width="50%"}
+#### Upper triangular matrix
+$$\begin{bmatrix}
+        -10 & 0 & -5 & 0\\
+        0 & 0 & 5 & 6\\
+        0 & 0 & 3 & 3\\
+        0 & 0 & 0 & 3\\
+      \end{bmatrix}$$
+:::
+::::
+
+## Symmetric matrix
+
+The values on the  above and below the diagonal are match so that $A = A^t$
+
+::: {style="color: blue;"}
+$$
+\begin{bmatrix}
+				3 & 4 & -10\\
+				4 & 5 & 7\\
+				-10 & 7 & -6\\
+		\end{bmatrix}
+$$
+:::
+
+## Matrix inversion
+
+::: { style="font-size: 0.8em"}
+In matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix $\mathbf{A}$ is defined as $\mathbf{A}^{-1}$
+
+As such,
+$$\mathbf{A}\cdot \mathbf{A}^{-1} = \mathbf{I}$$ 
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+(Ainv <- solve(A))
+A %*% Ainv
+```
+:::
+
+## Matrix inversion
+### Inverting a diagonal matrix
+
+$$D^{-1}=
+      \begin{bmatrix}
+        1/d_1 & 0 & \dots & 0\\
+        0 &  1/d_2 & \dots & 0\\
+        \vdots & \vdots & \ddots & \vdots\\
+        0 & 0 & \dots &  1/d_n\\
+\end{bmatrix}$$
+
+# End of matrix algebra interlude
+
 ## Multiple linear regression
 
 In this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the $\beta$s) can depend on other other data and parameters. 
 
+As we saw earlier, a classic way to write multiple linear regression is 
 
-## Error term in linear models
+$$
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \varepsilon
+$$
+
+However, we can rewrite this using matrix notation has
+
+$$
+\mathbf{y} = \boldsymbol{\beta}\mathbf{X} + \boldsymbol{\varepsilon}
+$$
+
+## Multiple linear regression
+### Matrix notation
+
+$$
+\mathbf{y} = \boldsymbol{\beta}\mathbf{X} + \boldsymbol{\varepsilon}
+$$
+
+Using the matrix notation, we assume that 
+
+- $\mathbf{y}$ is a vector of length $n$ (samples)
+- $\mathbf{X}$ is a matrix with $n$ samples (rows) and representing $p$ explanatory variables (columns)
+- $\boldsymbol{\beta}$ is a vector of $p$ regression coefficients
+- $\boldsymbol{\varepsilon}$ is a vector of residuals of length $n$
+
+## Error in linear models
 
 As previously mentioned, in (simple and multiple!) linear regression the error term ($\varepsilon$) has actually a very precise definition:
 
-$$\varepsilon \sim N(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance
+$$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance
 
 which means that the error linear regression follows a Gaussian distribution with an estimateed variance.
+
+**Note** The model can be written using matrix notation as  
+$$\mathbf{y} \sim \mathcal{N}(\boldsymbol{\beta}\mathbf{X}, \sigma^2)$$ where $\sigma^2$
 
 ## Generalized linear models
 

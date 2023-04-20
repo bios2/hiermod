@@ -169,47 +169,20 @@ curve(dunif(x,min = -2, max = 0), n=1000, -2.5, 0.5, xlab = "",
       ylab = "Density", las = 1, cex.lab=1.5, lwd = 3)
 ```
 
-## A few words about the prior
-
-### Conjugate priors
-
-These types of priors are convenient to use because 
-
-- They are computationally faster to use
-- They can be interepreted as additional data
-
-#### Why are they useful?
-
-There is no need to write the likelihood down when using them. All that needs to be done is to sample them to obtain a parameter estimation.
-
-## A few words about the prior
-
-### Conjugate priors
-
-#### What does it mean to be of the same *functional form*?
-
-It means that both distribution have th same mathematical structure. 
-
-:::: {.columns}
-::: {.column width="50%"}
-**Binomial distribution**
-$$\theta^a(1-\theta)^b$$
-:::
-::: {.column width="50%"}
-**Beta distribution**
-$$\theta^{\alpha-1}(1-\theta)^{\beta-1}$$
-:::
-::::
-
-<https://en.wikipedia.org/wiki/Conjugate_prior>
-
 ## Estimating Bayesian model
 
+:::{style="font-size: 0.75em;"}
 As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.  
 
+### Typical reasons to favour MCMC
 
+- It is flexible
+- It can be applied to complex models such as models with multiple levels of hierarchy
+
+### Why should we learn about MCMC ?
 
 The goal of this course is **not** to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.
+:::
 
 ## Markov Chain Monte Carlo (MCMC)
 
@@ -264,7 +237,7 @@ In an MCMC, we assume that the likeliness of passing from one behaviour (land) t
 
 When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.
 
-Since we do not know what the "true" characteristics of the distributions, both approach rely on different approach to assess the structure of the distribution is. 
+Since we do not know what the "true" characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is. 
 
 ## Markov Chain Monte Carlo (MCMC)
 
@@ -278,28 +251,23 @@ Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the struct
 
 ![](https://www.westcoasttraveller.com/wp-content/uploads/2021/03/24581102_web1_210322-WCT-WestcoastSkateparks_1-800x533.jpg){fig-align="center" width=80%}
 
-## Sampling the parameter's distributions
+## Sampling the parameter
 
-:::{style="font-size: 0.7em;"}
-In both MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.
+:::{style="font-size: 0.9em;"}
+In MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.
 
 Here is a rough procedure to follow:
 
-1. Perform a pilot run with a reduced number of steps (e.g. 10) and measure the time it takes
+1. Perform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes
 2. Decide on a number of steps to run to obtain a result in a reasonable amount of time
 3. Run the algorithm again !
 4. Study the chain visually
-
-### A more statistical way - The Raftery-Lewis diagnostic
-
-It relies on a pilot run to estimate the number of steps to be carried out.
-
-It is implemented in the `raftery.diag` function of the `coda` R package.
 :::
 
-## Sampling the parameter's distributions
+## Studying convergence
 
-```{r trace, fig.width = 8,fig.height = 5,echo=FALSE,eval=TRUE}
+```{r trace, fig.width = 10,fig.height = 7,echo=FALSE,eval=TRUE, fig.align='center'}
+set.seed(42) # The answer !
 par(mfrow=c(3,1),mar=c(2,2,3,0.5),oma=c(5,5,0,0))
 
 perfect <- rnorm(5000,mean=3)
@@ -308,17 +276,52 @@ title("Perfect",cex.main=3)
 
 auto <- as.vector(arima.sim(n=5000,list(ar=c(0.95)),mean=0.1))
 plot(auto,type="l", ylab="",xlab="",las=1,cex.axis=2, col= "blue")
-title("Needs to be ran longer with thinning",cex.main=3)
+title("Needs to be ran longer",cex.main=3)
 
 burn <- 3/(1+(1:5000)^(-0.5))+rnorm(5000,sd=0.15)
 plot(burn,type="l", ylab="",xlab="",las=1,cex.axis=2, col= "darkgreen")
 title("Needs burn-in or a better starting value",cex.main=3)
 
 mtext("Steps",side=1,cex=3,outer=TRUE,line=1.75)
-mtext(expression(theta),side=2,cex=3,outer=TRUE,line=1.25)
+mtext("Parameter",side=2,cex=3,outer=TRUE,line=1.25)
+```
+
+## Studying convergence
+
+```{r thining1 ,fig.width = 10, fig.height = 3.5,echo=FALSE,eval=TRUE}
+set.seed(42) # The answer !
+par(mar=c(5,5,3,0.5))
+
+plot(auto, type = "l", xlab = "Steps",  ylab = "Parameters", 
+     las=1, cex.axis = 1.2, cex.lab = 3, col= "blue")
 ```
 
 
+## Studying convergence
+
+:::{style="font-size: 0.7em;"}
+If we ran the same MCMC as above but instead for 50000 steps, we obtain
+:::
+
+```{r thining2,fig.width = 10, fig.height = 3.5,echo=FALSE,eval=TRUE}
+par(mar=c(5,5,3,0.5))
+
+autoLong <- as.vector(arima.sim(n=50000,list(ar=c(0.95)),mean=0.1))
+plot(autoLong, type = "l", xlab = "Steps", 
+     ylab = "Parameter", las = 1, cex.axis = 1.2, cex.lab = 3, 
+     col = "blue")
+#plot(autoLong[seq(10,50000,by=10)], type = "l", xlab = "Steps", 
+#     ylab = "Parameter", las = 1, cex.axis = 1.2, cex.lab = 3, 
+#     col = "blue")
+```
+
+
+:::{style="font-size: 0.7em;"}
+**Note** It is also possible to *thin* (record only the $n^{\text{th}}$ iteration), but it is better to keep all iterations when possible. Actually, *thinning* should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer.
+:::
+
+## Studying convergence
+#### 
 
 ## second
 

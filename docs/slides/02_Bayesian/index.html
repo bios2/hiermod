@@ -499,35 +499,18 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="480" class="r-stretch quarto-figure-center"></section>
-<section id="a-few-words-about-the-prior-3" class="slide level2">
-<h2>A few words about the prior</h2>
-<h3 id="conjugate-priors">Conjugate priors</h3>
-<p>These types of priors are convenient to use because</p>
-<ul>
-<li>They are computationally faster to use</li>
-<li>They can be interepreted as additional data</li>
-</ul>
-<h4 id="why-are-they-useful">Why are they useful?</h4>
-<p>There is no need to write the likelihood down when using them. All that needs to be done is to sample them to obtain a parameter estimation.</p>
-</section>
-<section id="a-few-words-about-the-prior-4" class="slide level2">
-<h2>A few words about the prior</h2>
-<h3 id="conjugate-priors-1">Conjugate priors</h3>
-<h4 id="what-does-it-mean-to-be-of-the-same-functional-form">What does it mean to be of the same <em>functional form</em>?</h4>
-<p>It means that both distribution have th same mathematical structure.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Binomial distribution</strong> <span class="math display">\[\theta^a(1-\theta)^b\]</span></p>
-</div><div class="column" style="width:50%;">
-<p><strong>Beta distribution</strong> <span class="math display">\[\theta^{\alpha-1}(1-\theta)^{\beta-1}\]</span></p>
-</div>
-</div>
-<p><a href="https://en.wikipedia.org/wiki/Conjugate_prior" class="uri">https://en.wikipedia.org/wiki/Conjugate_prior</a></p>
-</section>
 <section id="estimating-bayesian-model" class="slide level2">
 <h2>Estimating Bayesian model</h2>
+<div style="font-size: 0.75em;">
 <p>As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.</p>
+<h3 id="typical-reasons-to-favour-mcmc">Typical reasons to favour MCMC</h3>
+<ul>
+<li>It is flexible</li>
+<li>It can be applied to complex models such as models with multiple levels of hierarchy</li>
+</ul>
+<h3 id="why-should-we-learn-about-mcmc">Why should we learn about MCMC ?</h3>
 <p>The goal of this course is <strong>not</strong> to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.</p>
+</div>
 </section>
 <section id="markov-chain-monte-carlo-mcmc" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
@@ -577,7 +560,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <section id="markov-chain-monte-carlo-mcmc-5" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p>When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.</p>
-<p>Since we do not know what the “true” characteristics of the distributions, both approach rely on different approach to assess the structure of the distribution is.</p>
+<p>Since we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is.</p>
 </section>
 <section id="markov-chain-monte-carlo-mcmc-6" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
@@ -589,45 +572,60 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the structure of the distribution is.</p>
 
 <img data-src="https://www.westcoasttraveller.com/wp-content/uploads/2021/03/24581102_web1_210322-WCT-WestcoastSkateparks_1-800x533.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"></section>
-<section id="sampling-the-parameters-distributions" class="slide level2">
-<h2>Sampling the parameter’s distributions</h2>
-<div style="font-size: 0.7em;">
-<p>In both MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.</p>
+<section id="sampling-the-parameter" class="slide level2">
+<h2>Sampling the parameter</h2>
+<div style="font-size: 0.9em;">
+<p>In MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.</p>
 <p>Here is a rough procedure to follow:</p>
 <ol type="1">
-<li>Perform a pilot run with a reduced number of steps (e.g.&nbsp;10) and measure the time it takes</li>
+<li>Perform a pilot run with a reduced number of iterations (e.g.&nbsp;10) and measure the time it takes</li>
 <li>Decide on a number of steps to run to obtain a result in a reasonable amount of time</li>
 <li>Run the algorithm again !</li>
 <li>Study the chain visually</li>
 </ol>
-<h3 id="a-more-statistical-way---the-raftery-lewis-diagnostic">A more statistical way - The Raftery-Lewis diagnostic</h3>
-<p>It relies on a pilot run to estimate the number of steps to be carried out.</p>
-<p>It is implemented in the <code>raftery.diag</code> function of the <code>coda</code> R package.</p>
 </div>
 </section>
-<section id="sampling-the-parameters-distributions-1" class="slide level2">
-<h2>Sampling the parameter’s distributions</h2>
+<section id="studying-convergence" class="slide level2">
+<h2>Studying convergence</h2>
 
-<img data-src="index_files/figure-revealjs/trace-1.png" width="768" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/trace-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="studying-convergence-1" class="slide level2">
+<h2>Studying convergence</h2>
+
+<img data-src="index_files/figure-revealjs/thining1 -1.png" width="960" class="r-stretch"></section>
+<section id="studying-convergence-2" class="slide level2">
+<h2>Studying convergence</h2>
+<div style="font-size: 0.7em;">
+<p>If we ran the same MCMC as above but instead for 50000 steps, we obtain</p>
+</div>
+
+<img data-src="index_files/figure-revealjs/thining2-1.png" width="960" class="r-stretch"><div style="font-size: 0.7em;">
+<p><strong>Note</strong> It is also possible to <em>thin</em> (record only the <span class="math inline">\(n^{\text{th}}\)</span> iteration), but it is better to keep all iterations when possible. Actually, <em>thinning</em> should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer.</p>
+</div>
+</section>
+<section id="studying-convergence-3" class="slide level2">
+<h2>Studying convergence</h2>
+<h4 id="section"></h4>
+</section>
 <section id="second" class="slide level2">
 <h2>second</h2>
 <div class="r-fit-text">
 <p>Test your model</p>
 </div>
 </section>
-<section id="section" class="slide level2">
+<section id="section-1" class="slide level2">
 <h2></h2>
 <p>img:</p>
 
 <img data-src="img/bg.jpg" class="r-stretch"><p>it is a landscape</p>
 </section>
-<section id="section-1" class="slide level2" data-auto-animate="true">
+<section id="section-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
 <div style="margin-top: 100px;">
 <p>check with simulations</p>
 </div>
 </section>
-<section id="section-2" class="slide level2" data-auto-animate="true">
+<section id="section-3" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>check with simulations</p>

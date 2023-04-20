@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.335">
 
   <meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
-  <title>Modèles hiérarchiques pour les sciences de la vie - Matrix algebra</title>
+  <title>Modèles hiérarchiques pour les sciences de la vie - Linear models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -388,7 +388,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="../img/bg.jpg" data-background-size="full" class="quarto-title-block center">
-  <h1 class="title">Matrix algebra</h1>
+  <h1 class="title">Linear models</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -399,6 +399,309 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 
   <p class="date">2/10/23</p>
+</section>
+<section class="slide level2">
+
+<h3 id="basic-regression-model">Basic regression model</h3>
+<div style="font-size: 0.8em">
+<p>Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.</p>
+<p>In its simplest form, a regression model is usually presented as</p>
+<p><span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
+\]</span></p>
+<p>It is known as a <strong>simple linear model</strong>, where :</p>
+<p><span class="math inline">\(y_i\)</span> is the value of a response variable for observation <span class="math inline">\(i\)</span></p>
+<p><span class="math inline">\(x_i\)</span> is the value of an explanatory variable for observation <span class="math inline">\(i\)</span></p>
+<p><span class="math inline">\(\beta_0\)</span> is the model intercept</p>
+<p><span class="math inline">\(\beta_1\)</span> is the model slope</p>
+<p><span class="math inline">\(\varepsilon\)</span> is the error term</p>
+</div>
+</section>
+<section id="basic-regression-model-1" class="slide level2">
+<h2>Basic regression model</h2>
+<p>The cool thing about the simple linear model is that it can be studied visually quite easily.</p>
+<p>For example if we are interested in knowing how a newly discovered plant species (<em>Bidonia exemplaris</em>) reacts to humidity, we can relate the biomass of <em>B. exemplaris</em> sampled at 100 sites with the soil humidity content and readily visual the data and the trend.</p>
+</section>
+<section id="basic-regression-model-2" class="slide level2">
+<h2>Basic regression model</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<p>Many techniques have been proposed to estimate the parameters of a regression model.</p>
+<p>The goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.</p>
+<p>For example, if we want to build a model’s confidence interval from a linear regression coded as</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(b.exemplaris <span class="sc">~</span> humidity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>How would you do it ?</strong></p>
+<p>Let’s look at the model’s results are worth studying</p>
+</section>
+<section id="estimating-regression-parameters-1" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="models-results">Model’s results</h3>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>(summaryReg <span class="ot">&lt;-</span> <span class="fu">summary</span>(reg))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = b.exemplaris ~ humidity)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.47988 -0.26475  0.00611  0.32590  1.36077 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.57389    0.04720   54.53   &lt;2e-16 ***
+humidity     1.10086    0.07976   13.80   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4718 on 98 degrees of freedom
+Multiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 
+F-statistic: 190.5 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Let’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?</p>
+</div>
+</section>
+<section id="estimating-regression-parameters-2" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters">Sampling model parameters</h3>
+<p>We could sample the model parameters but how can we do this properly ?</p>
+<p><strong>Any suggestions?</strong></p>
+</section>
+<section id="estimating-regression-parameters-3" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-1">Sampling model parameters</h3>
+<p>If we look at the estimated regression model coefficient, we can learn a few things</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>summaryReg<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error  t value     Pr(&gt;|t|)
+(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75
+humidity    1.100865 0.07975800 13.80256 1.035796e-24</code></pre>
+</div>
+</div>
+<p>Notably, there are uncertainty around the parameters.</p>
+<p>Maybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.</p>
+<p>Let’s give it a shot !</p>
+</section>
+<section id="estimating-regression-parameters-4" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-2">Sampling model parameters</h3>
+<p>If we assume that the parameters of our particular model follow a Gaussian distribution, we can state that</p>
+<p><span class="math display">\[\beta_0 \sim \mathcal{N}(2.574, 0.047^2)\]</span> <span class="math display">\[\beta_1 \sim \mathcal{N}(1.101, 0.080^2)\]</span></p>
+</section>
+<section id="estimating-regression-parameters-5" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-3">Sampling model parameters</h3>
+<p>In R, we can do this as follow</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Object that include regression coefficients</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>regCoef <span class="ot">&lt;-</span> summaryReg<span class="sc">$</span>coefficients</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># Sample regression parameters</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>beta_0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> regCoef[<span class="dv">1</span>,<span class="dv">1</span>], <span class="at">sd =</span> regCoef[<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb6-6"><a href="#cb6-6"></a>beta_1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> regCoef[<span class="dv">2</span>,<span class="dv">1</span>], <span class="at">sd =</span> regCoef[<span class="dv">2</span>,<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="estimating-regression-parameters-6" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-4">Sampling model parameters</h3>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-7" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-5">Sampling model parameters</h3>
+<p>But is this the right way to do it ?</p>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/e/e/7/b/ee7b4fb9880ef3c8ee19626cdc14bf5c_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-8" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-6">Sampling model parameters</h3>
+<p>Actually, even if the model’s confidence interval look about right, they are wrong !</p>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/8/b/f/8/8bf88079d65d540a26a1f181cf6ba060_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-9" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-7">Sampling model parameters</h3>
+<p>The approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.</p>
+<p>A situation that happens only in very specific circumstances.</p>
+<p>So… We need to find a way to account for the non-independencies between the parameters.</p>
+<p>How can we do this ? Any ideas ?</p>
+</section>
+<section id="estimating-regression-parameters-10" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-8">Sampling model parameters</h3>
+<div style="font-size: 0.75em">
+<p>Assuming that the regression parameters are normally distributed is not a bad assumption.</p>
+<p>However to consider a dependencies between the parameters we need to sample them from a <strong>multivariate</strong> normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.</p>
+<p>The good news is that this covariance matrix is given by <code>summary.lm</code> function</p>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>(covReg <span class="ot">&lt;-</span> summaryReg<span class="sc">$</span>cov.unscaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              (Intercept)      humidity
+(Intercept)  0.0100098513 -0.0005305969
+humidity    -0.0005305969  0.0285782940</code></pre>
+</div>
+</div>
+</section>
+<section id="estimating-regression-parameters-11" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-9">Sampling model parameters</h3>
+<p>For our specific model, mathematically, we assume that</p>
+<p><span class="math display">\[\begin{bmatrix}
+  \beta_0\\
+  \beta_1\\
+\end{bmatrix} \sim \mathcal{MVN} \left( \begin{bmatrix}
+  2.574\\
+  1.101\\
+\end{bmatrix}, \begin{bmatrix}
+  0.0100 &amp; -0.0005 \\
+  -0.0005 &amp; 0.0286 \\
+\end{bmatrix} \right)\]</span></p>
+<p><strong>Note</strong> To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course.</p>
+</section>
+<section id="estimating-regression-parameters-12" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-10">Sampling model parameters</h3>
+<p>In R, we can sample the parameters using a multivariate normal distribution using the following code</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Object that include regression coefficients</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>regCoef <span class="ot">&lt;-</span> summaryReg<span class="sc">$</span>coefficients</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co"># Sample regression parameters</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>beta <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="dv">100</span>, regCoef[,<span class="dv">1</span>], <span class="at">Sigma =</span> covReg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="estimating-regression-parameters-13" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-11">Sampling model parameters</h3>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-14" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters---comparison">Sampling model parameters - Comparison</h3>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="1536" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-15" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<p>So far, we focused on the most commonly assessed regression parameters of the simple linear model, the <strong>slope</strong> and the <strong>intercept</strong>, but there is another one that is very important to consider, especially for this course.</p>
+<p><strong>Any ideas which one it is ?</strong></p>
+</section>
+<section id="estimating-regression-parameters-16" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<div style="font-size: 0.75em">
+<p>If we go back to the mathematical description of the model</p>
+<p><span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
+\]</span></p>
+<p>we can see that in the simple linear regression the error term (<span class="math inline">\(\varepsilon\)</span>) has actually a very precise definition:</p>
+<p><span class="math display">\[\varepsilon \sim \mathcal{N}(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is an estimated variance.</p>
+<p>In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.</p>
+<p>For most the course, we will play with the variance parameter <span class="math inline">\(\sigma^2\)</span> in a bunch of different ways.</p>
+<p>But before we do this, we need to understand a bit more about how this parameter influence the model.</p>
+</div>
+</section>
+<section id="estimating-regression-parameters-17" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<p>A first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as <span class="math display">\[
+y \sim \mathcal{N}(\beta_0 + \beta_1 x_{i}, \sigma^2)
+\]</span> As we will see later in this course, this writting style will become particularly useful as we move forward in this course.</p>
+</section>
+<section id="estimating-regression-parameters-18" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="variance-of-the-model-sigma2">Variance of the model (<span class="math inline">\(\sigma^2\)</span>)</h3>
+<div style="font-size: 0.75em">
+<p>In essence, <span class="math inline">\(\sigma^2\)</span> tells us about what the model could not account for.</p>
+<p>For example, let’s compare the biomass of <em>Bidonia exemplaris</em> with that of <em>Ilovea chicktighii</em>, another species (a carnivorous plant)</p>
+</div>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="1536" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-19" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="variance-of-the-model-sigma2-1">Variance of the model (<span class="math inline">\(\sigma^2\)</span>)</h3>
+<p>By regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using <code>summary.lm</code>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Regression model</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>regBexemplaris <span class="ot">&lt;-</span> <span class="fu">lm</span>(b.exemplaris <span class="sc">~</span> humidity)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>regIchicktighii <span class="ot">&lt;-</span> <span class="fu">lm</span>(i.chicktighii <span class="sc">~</span> humidity)</span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co"># Summary</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>summaryRegBexemplaris <span class="ot">&lt;-</span> <span class="fu">summary</span>(regBexemplaris)</span>
+<span id="cb10-7"><a href="#cb10-7"></a>summaryRegIchicktighii <span class="ot">&lt;-</span> <span class="fu">summary</span>(regIchicktighii)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="estimating-regression-parameters-20" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="variance-of-the-model-sigma2-2">Variance of the model (<span class="math inline">\(\sigma^2\)</span>)</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>For <em>Bidonia exemplaris</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Estimated coefficients</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>summaryRegBexemplaris<span class="sc">$</span>coefficients[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error
+(Intercept) 2.573889 0.04720304
+humidity    1.100865 0.07975800</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Estimated variance</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>summaryRegBexemplaris<span class="sc">$</span>sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.471798</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>For <em>Ilovea chicktighii</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Estimated coefficients</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>summaryRegIchicktighii<span class="sc">$</span>coefficients[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate  Std. Error
+(Intercept) 3.991785 0.008928294
+humidity    1.271250 0.015085956</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Estimated variance</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>summaryRegIchicktighii<span class="sc">$</span>sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.089239</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="limits-of-the-simple-linear-regression" class="slide level2">
+<h2>Limits of the simple linear regression</h2>
+<p>There are two major pitfalls of the simple linear model for problems in the life sciences</p>
+<ol type="1">
+<li><p>One explanatory is almost never enough to approach biological questions nowadays.</p></li>
+<li><p>The simple linear model assumes that the error follows a Gaussian distribution.</p></li>
+</ol>
+</section>
+<section id="multiple-linear-regression" class="slide level2">
+<h2>Multiple linear regression</h2>
+<div style="font-size: 0.75em">
+<p>Simple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a <strong>multiple linear regression</strong>.</p>
+<p>Mathematically, a multiple linear regression can be defined as</p>
+<p><span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \varepsilon
+\]</span></p>
+<p>Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in genral.</p>
+<p>In this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra.</p>
+</div>
+</section>
+<section>
+<section id="matrix-algebra-interlude" class="title-slide slide level1 center">
+<h1>Matrix algebra interlude</h1>
+
 </section>
 <section id="a-general-way-to-write-matrices" class="slide level2">
 <h2>A general way to write matrices</h2>
@@ -412,7 +715,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
             A_{m1} &amp; A_{m2} &amp; \dots &amp; A_{mj} &amp; \dots &amp; A_{mn}\\
         \end{bmatrix}
 \]</span> <span class="math display">\[A = \left[a_{ij}\right]=\left[a_{ij}\right]_{m\times n}\]</span></p>
-</section>
+</section></section>
 <section>
 <section id="basic-matrix-operations" class="title-slide slide level1 center">
 <h1>Basic matrix operations</h1>
@@ -459,14 +762,14 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    3    5
 [2,]    1   -2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">t</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">t</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    3    1
@@ -498,9 +801,9 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>A <span class="sc">+</span> B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb23-3"><a href="#cb23-3"></a>A <span class="sc">+</span> B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    5    6
@@ -525,9 +828,9 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>c <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>c<span class="sc">*</span>A </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>c <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>c<span class="sc">*</span>A </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]  0.9  1.5
@@ -572,38 +875,13 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
-<span id="cb9-3"><a href="#cb9-3"></a>A <span class="sc">%*%</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb27-2"><a href="#cb27-2"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
+<span id="cb27-3"><a href="#cb27-3"></a>A <span class="sc">%*%</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1]
 [1,]   31
 [2,]   -8</code></pre>
-</div>
-</div>
-</section>
-<section id="dot-product" class="slide level2">
-<h2>Dot product</h2>
-<p><span class="math display">\[\mathbf{v} \cdot \mathbf{x}= v_1x_1+v_2x_2+\dots + v_nx_n\]</span></p>
-<div style="color: blue;">
-<p><span class="math display">\[
-            \begin{bmatrix}
-                3 &amp; 1\\
-            \end{bmatrix}
-            \cdot
-            \begin{bmatrix}
-                2\\ 5\\
-            \end{bmatrix} =
-                3 \times  2 + 1 \times 5 = 11
-\]</span></p>
-</div>
-<p>In R</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb11-2"><a href="#cb11-2"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">sum</span>(v <span class="sc">*</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 11</code></pre>
 </div>
 </div>
 </section></section>
@@ -694,14 +972,14 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>In matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix <span class="math inline">\(\mathbf{A}\)</span> is defined as <span class="math inline">\(\mathbf{A}^{-1}\)</span></p>
 <p>As such, <span class="math display">\[\mathbf{A}\cdot \mathbf{A}^{-1} = \mathbf{I}\]</span> In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>(Ainv <span class="ot">&lt;-</span> <span class="fu">solve</span>(A))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb29-2"><a href="#cb29-2"></a>(Ainv <span class="ot">&lt;-</span> <span class="fu">solve</span>(A))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           [,1]       [,2]
 [1,] 0.18181818  0.4545455
 [2,] 0.09090909 -0.2727273</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>A <span class="sc">%*%</span> Ainv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>A <span class="sc">%*%</span> Ainv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              [,1] [,2]
 [1,]  1.000000e+00    0
@@ -720,123 +998,88 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
         \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
         0 &amp; 0 &amp; \dots &amp;  1/d_n\\
 \end{bmatrix}\]</span></p>
+</section></section>
+<section>
+<section id="end-of-matrix-algebra-interlude" class="title-slide slide level1 center">
+<h1>End of matrix algebra interlude</h1>
+
 </section>
-<section id="solving-systems-of-linear-equation" class="slide level2">
-<h2>Solving systems of linear equation</h2>
+<section id="multiple-linear-regression-1" class="slide level2">
+<h2>Multiple linear regression</h2>
+<p>In this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the <span class="math inline">\(\beta\)</span>s) can depend on other other data and parameters.</p>
+<p>As we saw earlier, a classic way to write multiple linear regression is</p>
 <p><span class="math display">\[
-\begin{align*}
-        1 &amp;= 3\beta_1 + 5\beta_2 - 4\beta_3 \\
-        0 &amp;= \beta_1 - 2\beta_2 + 3\beta_3\\
-        1 &amp;= 4\beta_1 + 6\beta_2 + 5\beta_3\\
-    \end{align*}
-\]</span> <span class="math display">\[
-\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta}
-\]</span> <span class="math display">\[
-        \begin{bmatrix}
-            1\\ 0\\ 1\\
-        \end{bmatrix}=
-        \begin{bmatrix}
-            3 &amp; 5 &amp; -4\\
-            1 &amp; -2 &amp; 3\\
-            4 &amp; 6 &amp; 5 \\
-        \end{bmatrix}
-        \begin{bmatrix}
-            \beta_1\\ \beta_2\\ \beta_3\\
-        \end{bmatrix}
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \varepsilon
+\]</span></p>
+<p>However, we can rewrite this using matrix notation has</p>
+<p><span class="math display">\[
+\mathbf{y} = \boldsymbol{\beta}\mathbf{X} + \boldsymbol{\varepsilon}
 \]</span></p>
 </section>
-<section id="solving-systems-of-linear-equation-1" class="slide level2">
-<h2>Solving systems of linear equation</h2>
-<div style="font-size: 0.9em">
+<section id="multiple-linear-regression-2" class="slide level2">
+<h2>Multiple linear regression</h2>
+<h3 id="matrix-notation">Matrix notation</h3>
 <p><span class="math display">\[
-\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta}
-\]</span> <span class="math display">\[
-        \begin{bmatrix}
-            1\\ 0\\ 1\\
-        \end{bmatrix}=
-        \begin{bmatrix}
-            3 &amp; 5 &amp; -4\\
-            1 &amp; -2 &amp; 3\\
-            4 &amp; 6 &amp; 5 \\
-        \end{bmatrix}
-        \begin{bmatrix}
-            \beta_1\\ \beta_2\\ \beta_3\\
-        \end{bmatrix}
+\mathbf{y} = \boldsymbol{\beta}\mathbf{X} + \boldsymbol{\varepsilon}
 \]</span></p>
-<p>How do we mathematically solve for <span class="math inline">\(\boldsymbol{\beta}\)</span>?</p>
-<p><span class="math display">\[
-    \begin{align*}
-        \mathbf{y} &amp;= \mathbf{X}\boldsymbol{\beta}\\
-        \mathbf{X}^{-1}\mathbf{y} &amp;= \mathbf{X}^{-1}\mathbf{X}\boldsymbol{\beta}\\
-        \mathbf{X}^{-1}\mathbf{y} &amp;= \mathbf{I}\boldsymbol{\beta}\\
-        \mathbf{X}^{-1}\mathbf{y} &amp;= \boldsymbol{\beta}\\
-    \end{align*}
-\]</span></p>
-</div>
+<p>Using the matrix notation, we assume that</p>
+<ul>
+<li><span class="math inline">\(\mathbf{y}\)</span> is a vector of length <span class="math inline">\(n\)</span> (samples)</li>
+<li><span class="math inline">\(\mathbf{X}\)</span> is a matrix with <span class="math inline">\(n\)</span> samples (rows) and representing <span class="math inline">\(p\)</span> explanatory variables (columns)</li>
+<li><span class="math inline">\(\boldsymbol{\beta}\)</span> is a vector of <span class="math inline">\(p\)</span> regression coefficients</li>
+<li><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> is a vector of residuals of length <span class="math inline">\(n\)</span></li>
+</ul>
 </section>
-<section id="solving-systems-of-linear-equation-2" class="slide level2">
-<h2>Solving systems of linear equation</h2>
-<div style="font-size: 0.9em">
-<p><span class="math display">\[
-\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta}
-\]</span> <span class="math display">\[
-        \begin{bmatrix}
-            1\\ 0\\ 1\\
-        \end{bmatrix}=
-        \begin{bmatrix}
-            3 &amp; 5 &amp; -4\\
-            1 &amp; -2 &amp; 3\\
-            4 &amp; 6 &amp; 5 \\
-        \end{bmatrix}
-        \begin{bmatrix}
-            \beta_1\\ \beta_2\\ \beta_3\\
-        \end{bmatrix}
-\]</span></p>
-<p>How do we solve for <span class="math inline">\(\boldsymbol{\beta}\)</span> in R?</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="sc">-</span><span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb17-2"><a href="#cb17-2"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb17-3"><a href="#cb17-3"></a></span>
-<span id="cb17-4"><a href="#cb17-4"></a>(beta <span class="ot">&lt;-</span> <span class="fu">solve</span>(X, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1]  0.20000000  0.05714286 -0.02857143</code></pre>
-</div>
-</div>
-</div>
+<section id="error-in-linear-models" class="slide level2">
+<h2>Error in linear models</h2>
+<p>As previously mentioned, in (simple and multiple!) linear regression the error term (<span class="math inline">\(\varepsilon\)</span>) has actually a very precise definition:</p>
+<p><span class="math display">\[\varepsilon \sim \mathcal{N}(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is an estimated variance</p>
+<p>which means that the error linear regression follows a Gaussian distribution with an estimateed variance.</p>
+<p><strong>Note</strong> The model can be written using matrix notation as<br>
+<span class="math display">\[\mathbf{y} \sim \mathcal{N}(\boldsymbol{\beta}\mathbf{X}, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span></p>
 </section>
-<section id="cholesky-decomposition" class="slide level2">
-<h2>Cholesky decomposition</h2>
-<div style="font-size: 0.8em">
-<p>The Cholesky decomposition allows to decompose a matrix in a triangular, which, when multiplied by its transposed will allow us to recover the initial matrix.</p>
-<p>In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice</p>
-<p>In math terms the Cholesky decomposition is defined as <span class="math display">\[\mathbf{A} = \mathbf{L}\mathbf{L}^t\]</span> Example</p>
+<section id="generalized-linear-models" class="slide level2">
+<h2>Generalized linear models</h2>
+<p>To go around this problem, <em>generalized</em> linear models (GLMs) have been proposed. In essence, GLMs use <em>link functions</em> to adapt models for them to be used on non-Gaussian data.</p>
+<p>Mathematically, the generic way to write generalized linear model is</p>
 <p><span class="math display">\[
-        \begin{bmatrix}
-            1 &amp; 1 &amp; 1\\
-            1 &amp; 5 &amp; 5\\
-            1 &amp; 5 &amp; 14\\
-        \end{bmatrix}=
-        \begin{bmatrix}
-            1 &amp; 0 &amp; 0\\
-            1 &amp; 2 &amp; 0\\
-            1 &amp; 2 &amp; 3 \\
-        \end{bmatrix}
-        \begin{bmatrix}
-            1 &amp; 1 &amp; 1\\
-            0 &amp; 2 &amp; 2\\
-            0 &amp; 0 &amp; 3 \\
-        \end{bmatrix}
+\widehat{y}_i = g^{-1}(\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip})
+\]</span> or in matrix notation</p>
+<p><span class="math display">\[
+\widehat{\mathbf{y}} = g^{-1}(\mathbf{X}\boldsymbol{\beta})
+\]</span></p>
+<p>where <span class="math inline">\(g\)</span> is the link function and <span class="math inline">\(g^{-1}\)</span> the inverse link function.</p>
+</section>
+<section id="generalized-linear-models-1" class="slide level2">
+<h2>Generalized linear models</h2>
+<h3 id="link-functions">Link functions</h3>
+<div style="font-size: 0.75em">
+<p>There are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.</p>
+<p>Arguably the most common link function in ecology are</p>
+<h5 id="logit-link-function">logit link function</h5>
+<p>It is commonly used for modelling binary (0-1) data.</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta} = \ln\left(\frac{\widehat{\mathbf{y}}}{1 - \widehat{\mathbf{y}}}\right)
+\]</span> The inverse logit link function is</p>
+<p><span class="math display">\[
+\widehat{\mathbf{y}} = \frac{\exp(\mathbf{X}\boldsymbol{\beta})}{1 + \exp(\mathbf{X}\boldsymbol{\beta})} = \frac{1}{1 + \exp(-\mathbf{X}\boldsymbol{\beta})}
 \]</span></p>
 </div>
 </section>
-<section id="cholesky-decomposition-1" class="slide level2">
-<h2>Cholesky decomposition</h2>
-<h3 id="why-is-it-useful">Why is it useful ?</h3>
-<p>There are actually two main reasons :</p>
-<ol type="1">
-<li>Working with triangular matrices is computationally more efficient</li>
-<li>It can be used to rescale matrices and make MCMC algorithms converge more easily</li>
-</ol>
+<section id="generalized-linear-models-2" class="slide level2">
+<h2>Generalized linear models</h2>
+<h3 id="link-functions-1">Link functions</h3>
+<div style="font-size: 0.75em">
+<p>Another commonly used link function is</p>
+<h5 id="log-link-function">log link function</h5>
+<p>It is commonly used for modelling count data.</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta} = \ln\left(\widehat{\mathbf{y}}\right)
+\]</span> The inverse logit link function is</p>
+<p><span class="math display">\[
+\widehat{\mathbf{y}} = \exp(\mathbf{X}\boldsymbol{\beta})
+\]</span></p>
+</div>
 
 
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
