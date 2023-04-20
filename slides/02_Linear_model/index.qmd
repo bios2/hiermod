@@ -41,7 +41,11 @@ $\varepsilon$ is the error term
 
 ## Basic regression model
 
-The cool thing about the simple linear model is that it can be studied visually quite easily
+The cool thing about the simple linear model is that it can be studied visually quite easily.
+
+For example if we are interested in knowing how a newly discovered plant species (*Bidonia exemplaris*) reacts to humidity, we can relate the biomass of *B. exemplaris* sampled at 100 sites with the soil humidity content and readily  visual the data and the trend.
+
+## Basic regression model
 
 ```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
 # Simulate some data
@@ -88,11 +92,12 @@ The goal of this course is not to study these techniques but we will learn how t
 For example, if we want to build a model's confidence interval from a linear regression coded as
 
 ```{r, echo = FALSE}
-y <- y_obs
+b.exemplaris <- y_obs
+humidity <- x
 ```
 
 ```{r}
-reg <- lm(y ~ x)
+reg <- lm(b.exemplaris ~ humidity)
 ```
 
 **How would you do it ?**
@@ -377,7 +382,7 @@ $$\varepsilon \sim N(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance.
 
 In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.
 
-For most the course, we will play with this parameter in a bunch of different ways. 
+For most the course, we will play with the variance parameter $\sigma^2$ in a bunch of different ways. 
 
 But before we do this, we need to understand a bit more about how this parameter influence the model.
 ::: 
@@ -390,7 +395,7 @@ But before we do this, we need to understand a bit more about how this parameter
 ::: {style="font-size: 0.75em"}
 In essence, $\sigma^2$ tells us about what the model could not account for.
 
-So, if we measure biomass of two different species that react exactly the same way to humidity, we get 
+For example, let's compare the biomass of *Bidonia exemplaris* with that of *Ilovea chicktighii*, another species (a carnivorous plant) 
 :::
 
 ```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
@@ -402,15 +407,14 @@ slope <- 1.3
 obs_error <- 0.5
 obs_error_small <- 0.1
 
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-y_obs_small <- rnorm(200, mean = y_mean, sd = obs_error_small)
+y_mean <- yintercept + slope * humidity
+y_obs <- rnorm(100, mean = y_mean, sd = obs_error)
+y_obs_small <- rnorm(100, mean = y_mean, sd = obs_error_small)
 
 par(mfrow = c(1,2),
     mar = c(6,7,3,0.1))
 
-plot(x, y_obs,
+plot(humidity, b.exemplaris,
      pch = 19,
      col="blue", 
      las=1,
@@ -421,13 +425,13 @@ plot(x, y_obs,
      ylab = "",
      cex = 2,
      asp = 1,
-     main = "Species 1",
+     main = "B. exemplaris",
      cex.main = 3.5)
 
 mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
 mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
 
-plot(x, y_obs_small,
+plot(humidity, y_obs_small,
      pch = 19,
      col="blue", 
      las=1,
@@ -439,30 +443,29 @@ plot(x, y_obs_small,
      cex.lab = 2.5,
      cex = 2,
      asp = 1,
-     main = "Species 2",
+     main = "I. chicktighii",
      cex.main = 3.5)
 
 mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
 
 
 # For the next slide
-sp1 <- y_obs
-sp2 <- y_obs_small
+i.chicktighii <- y_obs_small
 ```
 
 ## Estimating regression parameters
 ### Variance of the model ($\sigma^2$)
 
-The estimated parameters for each regression are all available using `summary.lm`
+By regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using `summary.lm`)
 
 ```{r}
 # Regression model
-regSp1 <- lm(sp1 ~ x)
-regSp2 <- lm(sp2 ~ x)
+regBexemplaris <- lm(b.exemplaris ~ humidity)
+regIchicktighii <- lm(i.chicktighii ~ humidity)
 
 # Summary
-summaryRegSp1 <- summary(regSp1)
-summaryRegSp2 <- summary(regSp2)
+summaryRegBexemplaris <- summary(regBexemplaris)
+summaryRegIchicktighii <- summary(regIchicktighii)
 ```
 
 ## Estimating regression parameters
@@ -471,24 +474,24 @@ summaryRegSp2 <- summary(regSp2)
 :::: {.columns}
 
 ::: {.column width="50%"}
-For species 1
+For *Bidonia exemplaris*
 ```{r}
 # Estimated coefficients
-summaryRegSp1$coefficients[,1:2]
+summaryRegBexemplaris$coefficients[,1:2]
 
 # Estimated variance
-summaryRegSp1$sigma
+summaryRegBexemplaris$sigma
 ```
 :::
 
 ::: {.column width="50%"}
-For species 2
+For *Ilovea chicktighii*
 ```{r}
 # Estimated coefficients
-summaryRegSp2$coefficients[,1:2]
+summaryRegIchicktighii$coefficients[,1:2]
 
 # Estimated variance
-summaryRegSp2$sigma
+summaryRegIchicktighii$sigma
 ```
 :::
 ::::
@@ -501,8 +504,7 @@ There are two major pitfalls of the simple linear model for problems in the life
 
 2.  The simple linear model assumes that the error follows a Gaussian distribution.
 
-## Limits of the simple linear regression 
-### Multiple linear regression
+## Multiple linear regression
 
 ::: {style="font-size: 0.75em"}
 Simple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a **multiple linear regression**.
@@ -522,287 +524,72 @@ In this respect, let's take a bit of time to get acquinted with different basic 
 
 ## Multiple linear regression
 
-# ICI 
-# ICI 
-# ICI 
+In this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the $\beta$s) can depend on other other data and parameters. 
 
 
-**Any clue which one?**
+## Error term in linear models
 
-In the simple linear regression the error term ($\varepsilon$) has actually a very precise definition:
+As previously mentioned, in (simple and multiple!) linear regression the error term ($\varepsilon$) has actually a very precise definition:
 
 $$\varepsilon \sim N(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance
 
-In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.
-:::
+which means that the error linear regression follows a Gaussian distribution with an estimateed variance.
 
-## Gaussian error
-
-```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
-# Simulate some data
-set.seed(42) # The answer !
-
-yintercept <- 4
-slope <- 1.3
-obs_error <- 0.5
-obs_error_small <- 0.1
-
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-y_obs_small <- rnorm(200, mean = y_mean, sd = obs_error_small)
-
-par(mfrow = c(1,2),
-    mar = c(5,5,3,0.1))
-
-plot(x, y_obs,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "Humidity",
-     ylab = "Biomass",
-     cex.lab = 2.5,
-     cex = 2,
-     cex.main = 3,
-     main = "Variance = 0.5",
-     asp = 1)
-
-abline(a = yintercept,
-       b = slope,
-       lwd = 10,
-       col = "orange")
-
-plot(x, y_obs_small,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "Humidity",
-     ylab = "",
-     cex.lab = 2.5,
-     cex = 2,
-     cex.main = 3,
-     main = "Variance = 0.1",
-     asp = 1)
-
-abline(a = yintercept,
-       b = slope,
-       lwd = 10,
-       col = "orange")
-
-```
-
-
-## Basic regression model - Gaussian error
+## Generalized linear models
 
 To go around this problem, *generalized* linear models (GLMs) have been proposed. In essence, GLMs use *link functions* to adapt models for them to be used on non-Gaussian data.
 
-**For example**
-
-logit link function :
-
-log link function :
-
-The logit link function is often used for modelling binary data while the log link function is commonly used for modelling count data.
-
-## Basic regression model
-
-There are however a few major pitfall in using the simple linear model for problems in the life sciences
-
-2.  One explanatory is almost never enough to answer the questions we want to aproach
-
-## second
-
-::: r-fit-text
-Test your model
-:::
-
-## 
-
-img:
-
-![](img/bg.jpg)
-
-it is a landscape
-
-##  {auto-animate="true"}
-
-::: {style="margin-top: 100px;"}
-check with simulations
-:::
-
-##  {auto-animate="true"}
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-check with simulations
-:::
-
-## choose parameters {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-```
-
-## make up an X variable {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-```
-
-## calculate the average {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-```
-
-## simulate some observations {auto-animate="TRUE"}
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-## finally, visualize
-
-```{r}
-plot(y_obs ~ x)
-```
-
-## here it is all on one slide
-
-```{r}
-#| output-location: column
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-plot(y_obs, x)
-```
-
-## Or we can present the code and results separately
-
-::: panel-tabset
-### The code
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-### The figure
-
-```{r}
-plot(y_obs ~ x)
-```
-:::
-
-## another equation
+Mathematically, the generic way to write generalized linear model is
 
 $$
-2 + 4 = 6
+\widehat{y}_i = g^{-1}(\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip})
+$$
+or in matrix notation
+
+$$
+\widehat{\mathbf{y}} = g^{-1}(\mathbf{X}\boldsymbol{\beta})
 $$
 
-## The equation
+where $g$ is the link function and $g^{-1}$ the inverse link function.
+
+## Generalized linear models
+### Link functions
+
+::: {style="font-size: 0.75em"}
+There are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.
+
+Arguably the most common link function in ecology are 
+
+##### logit link function
+
+It is commonly used for modelling binary (0-1) data.
 
 $$
-\begin{align}
-y  &\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &= a + bx \\
-\end{align}
+\mathbf{X}\boldsymbol{\beta} = \ln\left(\frac{\widehat{\mathbf{y}}}{1 - \widehat{\mathbf{y}}}\right)
 $$
+The inverse logit link function is 
 
-## The model {auto-animate="TRUE"}
+$$
+\widehat{\mathbf{y}} = \frac{\exp(\mathbf{X}\boldsymbol{\beta})}{1 + \exp(\mathbf{X}\boldsymbol{\beta})} = \frac{1}{1 + \exp(-\mathbf{X}\boldsymbol{\beta})}
+$$
+:::
 
-``` stan
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+## Generalized linear models
+### Link functions
 
-## Declare the data {auto-animate="TRUE"}
+::: {style="font-size: 0.75em"}
+Another commonly used link function is
 
-``` {.stan code-line-numbers="1-4"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+##### log link function
 
-## State parameters {auto-animate="TRUE"}
+It is commonly used for modelling count data.
 
-``` {.stan code-line-numbers="5-8"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+$$
+\mathbf{X}\boldsymbol{\beta} = \ln\left(\widehat{\mathbf{y}}\right)
+$$
+The inverse logit link function is 
 
-## Write the likelihood and priors {auto-animate="TRUE"}
-
-``` {.stan code-line-numbers="9-13"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+$$
+\widehat{\mathbf{y}} = \exp(\mathbf{X}\boldsymbol{\beta})
+$$
+:::

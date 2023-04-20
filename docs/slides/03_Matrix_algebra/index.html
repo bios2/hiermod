@@ -400,8 +400,8 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 
   <p class="date">2/10/23</p>
 </section>
-<section id="the-very-basics" class="slide level2">
-<h2>The very basics</h2>
+<section id="a-general-way-to-write-matrices" class="slide level2">
+<h2>A general way to write matrices</h2>
 <p><span class="math display">\[
 \mathbf{A} = \begin{bmatrix}
                 A_{11} &amp; A_{12} &amp; \dots &amp; A_{1j} &amp; \dots &amp; A_{1n}\\
@@ -411,12 +411,69 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
             \vdots &amp; \vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots\\
             A_{m1} &amp; A_{m2} &amp; \dots &amp; A_{mj} &amp; \dots &amp; A_{mn}\\
         \end{bmatrix}
-\]</span></p>
+\]</span> <span class="math display">\[A = \left[a_{ij}\right]=\left[a_{ij}\right]_{m\times n}\]</span></p>
 </section>
 <section>
-<section id="matrix-operations" class="title-slide slide level1 center">
-<h1>Matrix operations</h1>
+<section id="basic-matrix-operations" class="title-slide slide level1 center">
+<h1>Basic matrix operations</h1>
 
+</section>
+<section id="the-transpose-of-a-matrix" class="slide level2">
+<h2>The transpose of a matrix</h2>
+<div style="font-size: 0.65em">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math display">\[A = \begin{bmatrix}
+          5 &amp; -6 &amp; 4 &amp; -4\\
+        \end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[B = \begin{bmatrix}
+          -8\\
+          9\\
+          -2\\
+        \end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[C = \begin{bmatrix}
+          -4 &amp; 1\\
+          2 &amp; -5\\
+        \end{bmatrix}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><span class="math display">\[A^t=\begin{bmatrix}
+          5\\
+          -6\\
+          4\\
+          -4\\
+        \end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[B^t =\begin{bmatrix}
+          -8 &amp; 9 &amp; -2\\
+        \end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[C^t =\begin{bmatrix}
+          -4 &amp; 2\\
+          1 &amp; -5\\
+        \end{bmatrix}
+\]</span></p>
+</div>
+</div>
+<p>In R</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    3    5
+[2,]    1   -2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">t</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    3    1
+[2,]    5   -2</code></pre>
+</div>
+</div>
+</div>
 </section>
 <section id="addition-and-substraction" class="slide level2">
 <h2>Addition and Substraction</h2>
@@ -441,9 +498,9 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>A <span class="sc">+</span> B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>A <span class="sc">+</span> B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    5    6
@@ -468,9 +525,9 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>c <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>c<span class="sc">*</span>A </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>c <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>c<span class="sc">*</span>A </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]  0.9  1.5
@@ -480,7 +537,8 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </section>
 <section id="matrix-multiplications-not-divisions" class="slide level2">
 <h2>Matrix multiplications (not divisions!)</h2>
-<p><span class="math display">\[\mathbf{C} = \mathbf{A} \cdot \mathbf{B}\]</span> <span class="math display">\[\mathbf{C}_{mr} = \mathbf{A}_{mn}\mathbf{B}_{nr}\]</span> <span class="math display">\[C_{ik} = \sum^{n}_{j=1}A_{ij}B_{jk}\]</span></p>
+<p><span class="math display">\[\mathbf{C} = \mathbf{A} \cdot \mathbf{B}\]</span></p>
+<p><span class="math display">\[C_{ik} = \sum^{n}_{j=1}A_{ij}B_{jk}\]</span></p>
 <p><strong>Rules</strong></p>
 <p>Associative: <span class="math inline">\(\mathbf{A}(\mathbf{B}\mathbf{C}) = (\mathbf{A}\mathbf{B})\mathbf{C}\)</span></p>
 <p>Distributive: <span class="math inline">\(\mathbf{A}(\mathbf{B} + \mathbf{C}) = \mathbf{A}\mathbf{B}+\mathbf{A}\mathbf{C}\)</span></p>
@@ -514,9 +572,9 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>A <span class="sc">%*%</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>A <span class="sc">%*%</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1]
 [1,]   31
@@ -541,13 +599,127 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 <p>In R</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">sum</span>(v <span class="sc">*</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">sum</span>(v <span class="sc">*</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11</code></pre>
 </div>
 </div>
+</section></section>
+<section>
+<section id="some-important-matrices" class="title-slide slide level1 center">
+<h1>Some important matrices</h1>
+
+</section>
+<section id="identity-matrix" class="slide level2">
+<h2>Identity matrix</h2>
+<p>The identity matrix is a square matrix where all values of its diagonal are 0 except the diagonal values which are all 1s.</p>
+<div style="font-size: 0.8em">
+<div style="color: blue;">
+<p><span class="math display">\[
+\mathbf{I}=\begin{bmatrix}
+                1 &amp; 0 &amp; 0\\
+                0 &amp; 1 &amp; 0\\
+                0 &amp; 0 &amp; 1\\
+        \end{bmatrix}
+\]</span></p>
+</div>
+<p>The identity matrix is important because</p>
+<p><span class="math display">\[\mathbf{A} \cdot \mathbf{I}_n = \mathbf{A}\]</span> or</p>
+<p><span class="math display">\[\mathbf{I}_m \cdot \mathbf{A} = \mathbf{A}\]</span></p>
+</div>
+</section>
+<section id="diagonal-matrix" class="slide level2">
+<h2>Diagonal matrix</h2>
+<p>The diagonal matrix is a square matrix where all values of its diagonal are 0 except the ones on the diagonal.</p>
+<div style="font-size: 0.8em">
+<p><span class="math display">\[D=
+      \begin{bmatrix}
+        d_1 &amp; 0 &amp; \dots &amp; 0\\
+        0 &amp; d_2 &amp; \dots &amp; 0\\
+        \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+        0 &amp; 0 &amp; \dots &amp; d_n\\
+\end{bmatrix}\]</span></p>
+<p>An example</p>
+<div style="color: blue;">
+<p><span class="math display">\[
+\begin{bmatrix}
+                -1 &amp; 0 &amp; 0\\
+                0 &amp; 0 &amp; 0\\
+                0 &amp; 0 &amp; 6\\
+        \end{bmatrix}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="triangular-matrix" class="slide level2">
+<h2>Triangular matrix</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h4 id="lower-triangular-matrix">Lower triangular matrix</h4>
+<p><span class="math display">\[\begin{bmatrix}
+        -10 &amp; 0 &amp; 0 &amp; 0\\
+        3 &amp; 0 &amp; 0 &amp; 0\\
+        0 &amp; 4 &amp; 3 &amp; 0\\
+        9 &amp; -5 &amp; 4 &amp; 3\\
+\end{bmatrix}\]</span></p>
+</div><div class="column" style="width:50%;">
+<h4 id="upper-triangular-matrix">Upper triangular matrix</h4>
+<p><span class="math display">\[\begin{bmatrix}
+        -10 &amp; 0 &amp; -5 &amp; 0\\
+        0 &amp; 0 &amp; 5 &amp; 6\\
+        0 &amp; 0 &amp; 3 &amp; 3\\
+        0 &amp; 0 &amp; 0 &amp; 3\\
+      \end{bmatrix}\]</span></p>
+</div>
+</div>
+</section>
+<section id="symmetric-matrix" class="slide level2">
+<h2>Symmetric matrix</h2>
+<p>The values on the above and below the diagonal are match so that <span class="math inline">\(A = A^t\)</span></p>
+<div style="color: blue;">
+<p><span class="math display">\[
+\begin{bmatrix}
+                3 &amp; 4 &amp; -10\\
+                4 &amp; 5 &amp; 7\\
+                -10 &amp; 7 &amp; -6\\
+        \end{bmatrix}
+\]</span></p>
+</div>
+</section>
+<section id="matrix-inversion" class="slide level2">
+<h2>Matrix inversion</h2>
+<div style="font-size: 0.8em">
+<p>In matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix <span class="math inline">\(\mathbf{A}\)</span> is defined as <span class="math inline">\(\mathbf{A}^{-1}\)</span></p>
+<p>As such, <span class="math display">\[\mathbf{A}\cdot \mathbf{A}^{-1} = \mathbf{I}\]</span> In R</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>(Ainv <span class="ot">&lt;-</span> <span class="fu">solve</span>(A))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]       [,2]
+[1,] 0.18181818  0.4545455
+[2,] 0.09090909 -0.2727273</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>A <span class="sc">%*%</span> Ainv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              [,1] [,2]
+[1,]  1.000000e+00    0
+[2,] -2.775558e-17    1</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="matrix-inversion-1" class="slide level2">
+<h2>Matrix inversion</h2>
+<h3 id="inverting-a-diagonal-matrix">Inverting a diagonal matrix</h3>
+<p><span class="math display">\[D^{-1}=
+      \begin{bmatrix}
+        1/d_1 &amp; 0 &amp; \dots &amp; 0\\
+        0 &amp;  1/d_2 &amp; \dots &amp; 0\\
+        \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+        0 &amp; 0 &amp; \dots &amp;  1/d_n\\
+\end{bmatrix}\]</span></p>
 </section>
 <section id="solving-systems-of-linear-equation" class="slide level2">
 <h2>Solving systems of linear equation</h2>
@@ -622,70 +794,49 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 \]</span></p>
 <p>How do we solve for <span class="math inline">\(\boldsymbol{\beta}\)</span> in R?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="sc">-</span><span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb9-3"><a href="#cb9-3"></a></span>
-<span id="cb9-4"><a href="#cb9-4"></a>(beta <span class="ot">&lt;-</span> <span class="fu">solve</span>(X, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="sc">-</span><span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a>(beta <span class="ot">&lt;-</span> <span class="fu">solve</span>(X, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  0.20000000  0.05714286 -0.02857143</code></pre>
 </div>
 </div>
 </div>
 </section>
-<section id="determinant-of-a-matrix" class="slide level2">
-<h2>Determinant of a matrix</h2>
-<p>to add stuff here</p>
-<p>to add stuff here</p>
-<p>to add stuff here</p>
-</section>
-<section id="eigenvectors-and-eigenvalues" class="slide level2">
-<h2>Eigenvectors and eigenvalues</h2>
-<div style="font-size: 0.9em">
-<p>Right eigenvector is :</p>
-<p><span class="math display">\[\mathbf{A}\mathbf{w} = \lambda\mathbf{w}\]</span> Left eigenvector is :</p>
-<p><span class="math display">\[\mathbf{v}\mathbf{A} = \lambda\mathbf{v}\]</span></p>
-<p><strong>Rules</strong></p>
-<ul>
-<li><span class="math inline">\(\mathbf{A}\)</span> has to be a square matrix</li>
-<li>If <span class="math inline">\(\mathbf{w}\)</span> is an eigenvector of <span class="math inline">\(\mathbf{A}\)</span>, so is <span class="math inline">\(c\mathbf{w}\)</span> for any value of <span class="math inline">\(c \neq0\)</span></li>
-<li>The right eigenvector of <span class="math inline">\(\mathbf{A}^T\)</span> is the left eigenvector of <span class="math inline">\(\mathbf{A}\)</span></li>
-<li>Eigenvectors are linearly independent</li>
-</ul>
-</div>
-</section>
-<section id="positive-definite-matrix" class="slide level2">
-<h2>Positive definite matrix</h2>
-<p>It is reasonably common when you build a hierarchical model to get an error message that state :</p>
-<div style="font-size: 0.8em">
-<p><code>Error: Matrix X is not positive definite</code></p>
-</div>
-<p>or similarly</p>
-<div style="font-size: 0.8em">
-<p><code>Error: Matrix X is not positive semi-definite</code></p>
-</div>
-<p>What does this mean ? Any idea ?</p>
-</section>
-<section id="positive-semi-definite-matrix" class="slide level2">
-<h2>Positive (semi-)definite matrix</h2>
-<h3 id="nerdy-mathematical-definition">Nerdy mathematical definition</h3>
-<p><strong>Positive definite matrix</strong></p>
-<p><span class="math inline">\(\mathbf{M}\)</span> is a positive definite matrix if, for any real vector <span class="math inline">\(\mathbf{z}\)</span>, <span class="math inline">\(\mathbf{z}^t\mathbf{M}\mathbf{z} &gt; 0\)</span></p>
-<p><strong>Positive semi-definite matrix</strong></p>
-<p><span class="math inline">\(\mathbf{M}\)</span> is a positive semi-definite matrix if, for any real vector <span class="math inline">\(\mathbf{z}\)</span>, <span class="math inline">\(\mathbf{z}^t\mathbf{M}\mathbf{z} \ge 0\)</span></p>
-</section>
-<section id="positive-semi-definite-matrix-1" class="slide level2">
-<h2>Positive (semi-)definite matrix</h2>
-<h3 id="checking-if-a-matrix-is-positive-semi-definite">Checking if a matrix is positive (semi-)definite</h3>
-<p>The properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.</p>
-<p>All we have to do is look at the eigenvalue of a square matrix.</p>
-<p>If all eigenvalues of a matrix <span class="math inline">\(\mathbf{M}\)</span> larger than 0, matrix <span class="math inline">\(\mathbf{M}\)</span> is positive definite.</p>
-<p>If all eigenvalues of a matrix <span class="math inline">\(\mathbf{M}\)</span> larger than or equal ro 0, matrix <span class="math inline">\(\mathbf{M}\)</span> is positive semi-definite.</p>
-</section>
 <section id="cholesky-decomposition" class="slide level2">
 <h2>Cholesky decomposition</h2>
-<p>to add stuff here</p>
-<p>to add stuff here</p>
-<p>to add stuff here</p>
+<div style="font-size: 0.8em">
+<p>The Cholesky decomposition allows to decompose a matrix in a triangular, which, when multiplied by its transposed will allow us to recover the initial matrix.</p>
+<p>In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice</p>
+<p>In math terms the Cholesky decomposition is defined as <span class="math display">\[\mathbf{A} = \mathbf{L}\mathbf{L}^t\]</span> Example</p>
+<p><span class="math display">\[
+        \begin{bmatrix}
+            1 &amp; 1 &amp; 1\\
+            1 &amp; 5 &amp; 5\\
+            1 &amp; 5 &amp; 14\\
+        \end{bmatrix}=
+        \begin{bmatrix}
+            1 &amp; 0 &amp; 0\\
+            1 &amp; 2 &amp; 0\\
+            1 &amp; 2 &amp; 3 \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            1 &amp; 1 &amp; 1\\
+            0 &amp; 2 &amp; 2\\
+            0 &amp; 0 &amp; 3 \\
+        \end{bmatrix}
+\]</span></p>
+</div>
+</section>
+<section id="cholesky-decomposition-1" class="slide level2">
+<h2>Cholesky decomposition</h2>
+<h3 id="why-is-it-useful">Why is it useful ?</h3>
+<p>There are actually two main reasons :</p>
+<ol type="1">
+<li>Working with triangular matrices is computationally more efficient</li>
+<li>It can be used to rescale matrices and make MCMC algorithms converge more easily</li>
+</ol>
 
 
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">

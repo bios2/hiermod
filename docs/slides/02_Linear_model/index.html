@@ -419,7 +419,11 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 </section>
 <section id="basic-regression-model-1" class="slide level2">
 <h2>Basic regression model</h2>
-<p>The cool thing about the simple linear model is that it can be studied visually quite easily</p>
+<p>The cool thing about the simple linear model is that it can be studied visually quite easily.</p>
+<p>For example if we are interested in knowing how a newly discovered plant species (<em>Bidonia exemplaris</em>) reacts to humidity, we can relate the biomass of <em>B. exemplaris</em> sampled at 100 sites with the soil humidity content and readily visual the data and the trend.</p>
+</section>
+<section id="basic-regression-model-2" class="slide level2">
+<h2>Basic regression model</h2>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="estimating-regression-parameters" class="slide level2">
@@ -431,7 +435,7 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(b.exemplaris <span class="sc">~</span> humidity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>How would you do it ?</strong></p>
 <p>Let’s look at the model’s results are worth studying</p>
@@ -445,7 +449,7 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x)
+lm(formula = b.exemplaris ~ humidity)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
@@ -454,7 +458,7 @@ Residuals:
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
 (Intercept)  2.57389    0.04720   54.53   &lt;2e-16 ***
-x            1.10086    0.07976   13.80   &lt;2e-16 ***
+humidity     1.10086    0.07976   13.80   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -481,7 +485,7 @@ F-statistic: 190.5 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Estimate Std. Error  t value     Pr(&gt;|t|)
 (Intercept) 2.573889 0.04720304 54.52804 4.011925e-75
-x           1.100865 0.07975800 13.80256 1.035796e-24</code></pre>
+humidity    1.100865 0.07975800 13.80256 1.035796e-24</code></pre>
 </div>
 </div>
 <p>Notably, there are uncertainty around the parameters.</p>
@@ -543,9 +547,9 @@ x           1.100865 0.07975800 13.80256 1.035796e-24</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>(covReg <span class="ot">&lt;-</span> summaryReg<span class="sc">$</span>cov.unscaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>              (Intercept)             x
+<pre><code>              (Intercept)      humidity
 (Intercept)  0.0100098513 -0.0005305969
-x           -0.0005305969  0.0285782940</code></pre>
+humidity    -0.0005305969  0.0285782940</code></pre>
 </div>
 </div>
 </section>
@@ -602,7 +606,7 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 <p>we can see that in the simple linear regression the error term (<span class="math inline">\(\varepsilon\)</span>) has actually a very precise definition:</p>
 <p><span class="math display">\[\varepsilon \sim N(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is an estimated variance.</p>
 <p>In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.</p>
-<p>For most the course, we will play with this parameter in a bunch of different ways.</p>
+<p>For most the course, we will play with the variance parameter <span class="math inline">\(\sigma^2\)</span> in a bunch of different ways.</p>
 <p>But before we do this, we need to understand a bit more about how this parameter influence the model.</p>
 </div>
 </section>
@@ -611,22 +615,22 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 <h3 id="variance-of-the-model-sigma2">Variance of the model (<span class="math inline">\(\sigma^2\)</span>)</h3>
 <div style="font-size: 0.75em">
 <p>In essence, <span class="math inline">\(\sigma^2\)</span> tells us about what the model could not account for.</p>
-<p>So, if we measure biomass of two different species that react exactly the same way to humidity, we get</p>
+<p>For example, let’s compare the biomass of <em>Bidonia exemplaris</em> with that of <em>Ilovea chicktighii</em>, another species (a carnivorous plant)</p>
 </div>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="1536" class="r-stretch quarto-figure-center"></section>
 <section id="estimating-regression-parameters-18" class="slide level2">
 <h2>Estimating regression parameters</h2>
 <h3 id="variance-of-the-model-sigma2-1">Variance of the model (<span class="math inline">\(\sigma^2\)</span>)</h3>
-<p>The estimated parameters for each regression are all available using <code>summary.lm</code></p>
+<p>By regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using <code>summary.lm</code>)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Regression model</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>regSp1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp1 <span class="sc">~</span> x)</span>
-<span id="cb10-3"><a href="#cb10-3"></a>regSp2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp2 <span class="sc">~</span> x)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>regBexemplaris <span class="ot">&lt;-</span> <span class="fu">lm</span>(b.exemplaris <span class="sc">~</span> humidity)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>regIchicktighii <span class="ot">&lt;-</span> <span class="fu">lm</span>(i.chicktighii <span class="sc">~</span> humidity)</span>
 <span id="cb10-4"><a href="#cb10-4"></a></span>
 <span id="cb10-5"><a href="#cb10-5"></a><span class="co"># Summary</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>summaryRegSp1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(regSp1)</span>
-<span id="cb10-7"><a href="#cb10-7"></a>summaryRegSp2 <span class="ot">&lt;-</span> <span class="fu">summary</span>(regSp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-6"><a href="#cb10-6"></a>summaryRegBexemplaris <span class="ot">&lt;-</span> <span class="fu">summary</span>(regBexemplaris)</span>
+<span id="cb10-7"><a href="#cb10-7"></a>summaryRegIchicktighii <span class="ot">&lt;-</span> <span class="fu">summary</span>(regIchicktighii)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="estimating-regression-parameters-19" class="slide level2">
@@ -634,35 +638,35 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 <h3 id="variance-of-the-model-sigma2-2">Variance of the model (<span class="math inline">\(\sigma^2\)</span>)</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>For species 1</p>
+<p>For <em>Bidonia exemplaris</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Estimated coefficients</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>summaryRegSp1<span class="sc">$</span>coefficients[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-2"><a href="#cb11-2"></a>summaryRegBexemplaris<span class="sc">$</span>coefficients[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Estimate Std. Error
-(Intercept) 3.975367  0.0341467
-x           1.303821  0.0584426</code></pre>
+(Intercept) 2.573889 0.04720304
+humidity    1.100865 0.07975800</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Estimated variance</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>summaryRegSp1<span class="sc">$</span>sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-2"><a href="#cb13-2"></a>summaryRegBexemplaris<span class="sc">$</span>sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.481509</code></pre>
+<pre><code>[1] 0.471798</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<p>For species 2</p>
+<p>For <em>Ilovea chicktighii</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Estimated coefficients</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>summaryRegSp2<span class="sc">$</span>coefficients[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-2"><a href="#cb15-2"></a>summaryRegIchicktighii<span class="sc">$</span>coefficients[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Estimate  Std. Error
-(Intercept) 3.996627 0.006714987
-x           1.280388 0.011492802</code></pre>
+(Intercept) 3.991785 0.008928294
+humidity    1.271250 0.015085956</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Estimated variance</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a>summaryRegSp2<span class="sc">$</span>sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-2"><a href="#cb17-2"></a>summaryRegIchicktighii<span class="sc">$</span>sigma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.09468927</code></pre>
+<pre><code>[1] 0.089239</code></pre>
 </div>
 </div>
 </div>
@@ -676,9 +680,8 @@ x           1.280388 0.011492802</code></pre>
 <li><p>The simple linear model assumes that the error follows a Gaussian distribution.</p></li>
 </ol>
 </section>
-<section id="limits-of-the-simple-linear-regression-1" class="slide level2">
-<h2>Limits of the simple linear regression</h2>
-<h3 id="multiple-linear-regression">Multiple linear regression</h3>
+<section id="multiple-linear-regression" class="slide level2">
+<h2>Multiple linear regression</h2>
 <div style="font-size: 0.75em">
 <p>Simple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a <strong>multiple linear regression</strong>.</p>
 <p>Mathematically, a multiple linear regression can be defined as</p>
@@ -696,229 +699,56 @@ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \vare
 </section>
 <section id="multiple-linear-regression-1" class="slide level2">
 <h2>Multiple linear regression</h2>
-</section></section>
-<section id="ici" class="title-slide slide level1 center">
-<h1>ICI</h1>
-
+<p>In this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the <span class="math inline">\(\beta\)</span>s) can depend on other other data and parameters.</p>
 </section>
-
-<section id="ici-1" class="title-slide slide level1 center">
-<h1>ICI</h1>
-
-</section>
-
-<section>
-<section id="ici-2" class="title-slide slide level1 center">
-<h1>ICI</h1>
-<p><strong>Any clue which one?</strong></p>
-<p>In the simple linear regression the error term (<span class="math inline">\(\varepsilon\)</span>) has actually a very precise definition:</p>
+<section id="error-term-in-linear-models" class="slide level2">
+<h2>Error term in linear models</h2>
+<p>As previously mentioned, in (simple and multiple!) linear regression the error term (<span class="math inline">\(\varepsilon\)</span>) has actually a very precise definition:</p>
 <p><span class="math display">\[\varepsilon \sim N(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is an estimated variance</p>
-<p>In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated. :::</p>
+<p>which means that the error linear regression follows a Gaussian distribution with an estimateed variance.</p>
 </section>
-<section id="gaussian-error" class="slide level2">
-<h2>Gaussian error</h2>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-16-1.png" width="1536" class="r-stretch quarto-figure-center"></section>
-<section id="basic-regression-model---gaussian-error" class="slide level2">
-<h2>Basic regression model - Gaussian error</h2>
+<section id="generalized-linear-models" class="slide level2">
+<h2>Generalized linear models</h2>
 <p>To go around this problem, <em>generalized</em> linear models (GLMs) have been proposed. In essence, GLMs use <em>link functions</em> to adapt models for them to be used on non-Gaussian data.</p>
-<p><strong>For example</strong></p>
-<p>logit link function :</p>
-<p>log link function :</p>
-<p>The logit link function is often used for modelling binary data while the log link function is commonly used for modelling count data.</p>
-</section>
-<section id="basic-regression-model-2" class="slide level2">
-<h2>Basic regression model</h2>
-<p>There are however a few major pitfall in using the simple linear model for problems in the life sciences</p>
-<ol start="2" type="1">
-<li>One explanatory is almost never enough to answer the questions we want to aproach</li>
-</ol>
-</section>
-<section id="second" class="slide level2">
-<h2>second</h2>
-<div class="r-fit-text">
-<p>Test your model</p>
-</div>
-</section>
-<section id="section" class="slide level2">
-<h2></h2>
-<p>img:</p>
-
-<img data-src="img/bg.jpg" class="r-stretch"><p>it is a landscape</p>
-</section>
-<section id="section-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
-<div style="margin-top: 100px;">
-<p>check with simulations</p>
-</div>
-</section>
-<section id="section-2" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
-<div style="margin-top: 200px; font-size: 2.5em; color: red;">
-<p>check with simulations</p>
-</div>
-</section>
-<section id="choose-parameters" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">choose parameters</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb19-1" class="hljs-ln-code"><a href="#cb19-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb19-2" class="hljs-ln-code"><a href="#cb19-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb19-3" class="hljs-ln-code"><a href="#cb19-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="make-up-an-x-variable" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">make up an X variable</h2>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb20-1" class="hljs-ln-code"><a href="#cb20-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb20-2" class="hljs-ln-code"><a href="#cb20-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb20-3" class="hljs-ln-code"><a href="#cb20-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb20-4" class="hljs-ln-code"><a href="#cb20-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="calculate-the-average" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">calculate the average</h2>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb21-1" class="hljs-ln-code"><a href="#cb21-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb21-2" class="hljs-ln-code"><a href="#cb21-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb21-3" class="hljs-ln-code"><a href="#cb21-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb21-4" class="hljs-ln-code"><a href="#cb21-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb21-5" class="hljs-ln-code"><a href="#cb21-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="simulate-some-observations" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">simulate some observations</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb22-1" class="hljs-ln-code"><a href="#cb22-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb22-2" class="hljs-ln-code"><a href="#cb22-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb22-3" class="hljs-ln-code"><a href="#cb22-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb22-4" class="hljs-ln-code"><a href="#cb22-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb22-5" class="hljs-ln-code"><a href="#cb22-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb22-6" class="hljs-ln-code"><a href="#cb22-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="finally-visualize" class="slide level2">
-<h2>finally, visualize</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
-<section id="here-it-is-all-on-one-slide" class="slide level2">
-<h2>here it is all on one slide</h2>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb24-4"><a href="#cb24-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb24-5"><a href="#cb24-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb24-6"><a href="#cb24-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span>
-<span id="cb24-7"><a href="#cb24-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="or-we-can-present-the-code-and-results-separately" class="slide level2">
-<h2>Or we can present the code and results separately</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">The code</a></li><li><a href="#tabset-1-2">The figure</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb25-5"><a href="#cb25-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb25-6"><a href="#cb25-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<div id="tabset-1-2">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="another-equation" class="slide level2">
-<h2>another equation</h2>
+<p>Mathematically, the generic way to write generalized linear model is</p>
 <p><span class="math display">\[
-2 + 4 = 6
-\]</span></p>
-</section>
-<section id="the-equation" class="slide level2">
-<h2>The equation</h2>
+\widehat{y}_i = g^{-1}(\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip})
+\]</span> or in matrix notation</p>
 <p><span class="math display">\[
-\begin{align}
-y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &amp;= a + bx \\
-\end{align}
+\widehat{\mathbf{y}} = g^{-1}(\mathbf{X}\boldsymbol{\beta})
 \]</span></p>
+<p>where <span class="math inline">\(g\)</span> is the link function and <span class="math inline">\(g^{-1}\)</span> the inverse link function.</p>
 </section>
-<section id="the-model" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">The model</h2>
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb27-1" class="hljs-ln-code"><a href="#cb27-1"></a><span class="kw">data</span> {</span>
-<span id="cb27-2" class="hljs-ln-code"><a href="#cb27-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb27-3" class="hljs-ln-code"><a href="#cb27-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb27-4" class="hljs-ln-code"><a href="#cb27-4"></a>}</span>
-<span id="cb27-5" class="hljs-ln-code"><a href="#cb27-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb27-6" class="hljs-ln-code"><a href="#cb27-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb27-7" class="hljs-ln-code"><a href="#cb27-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb27-8" class="hljs-ln-code"><a href="#cb27-8"></a>}</span>
-<span id="cb27-9" class="hljs-ln-code"><a href="#cb27-9"></a><span class="kw">model</span> {</span>
-<span id="cb27-10" class="hljs-ln-code"><a href="#cb27-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb27-11" class="hljs-ln-code"><a href="#cb27-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb27-12" class="hljs-ln-code"><a href="#cb27-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb27-13" class="hljs-ln-code"><a href="#cb27-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="generalized-linear-models-1" class="slide level2">
+<h2>Generalized linear models</h2>
+<h3 id="link-functions">Link functions</h3>
+<div style="font-size: 0.75em">
+<p>There are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.</p>
+<p>Arguably the most common link function in ecology are</p>
+<h5 id="logit-link-function">logit link function</h5>
+<p>It is commonly used for modelling binary (0-1) data.</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta} = \ln\left(\frac{\widehat{\mathbf{y}}}{1 - \widehat{\mathbf{y}}}\right)
+\]</span> The inverse logit link function is</p>
+<p><span class="math display">\[
+\widehat{\mathbf{y}} = \frac{\exp(\mathbf{X}\boldsymbol{\beta})}{1 + \exp(\mathbf{X}\boldsymbol{\beta})} = \frac{1}{1 + \exp(-\mathbf{X}\boldsymbol{\beta})}
+\]</span></p>
+</div>
 </section>
-<section id="declare-the-data" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">Declare the data</h2>
-<div class="sourceCode" id="cb28" data-code-line-numbers="1-4"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb28-1" class="hljs-ln-code"><a href="#cb28-1"></a><span class="kw">data</span> {</span>
-<span id="cb28-2" class="hljs-ln-code"><a href="#cb28-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb28-3" class="hljs-ln-code"><a href="#cb28-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb28-4" class="hljs-ln-code"><a href="#cb28-4"></a>}</span>
-<span id="cb28-5" class="hljs-ln-code"><a href="#cb28-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb28-6" class="hljs-ln-code"><a href="#cb28-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb28-7" class="hljs-ln-code"><a href="#cb28-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb28-8" class="hljs-ln-code"><a href="#cb28-8"></a>}</span>
-<span id="cb28-9" class="hljs-ln-code"><a href="#cb28-9"></a><span class="kw">model</span> {</span>
-<span id="cb28-10" class="hljs-ln-code"><a href="#cb28-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb28-11" class="hljs-ln-code"><a href="#cb28-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb28-12" class="hljs-ln-code"><a href="#cb28-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb28-13" class="hljs-ln-code"><a href="#cb28-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="state-parameters" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">State parameters</h2>
-<div class="sourceCode" id="cb29" data-code-line-numbers="5-8"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb29-1" class="hljs-ln-code"><a href="#cb29-1"></a><span class="kw">data</span> {</span>
-<span id="cb29-2" class="hljs-ln-code"><a href="#cb29-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb29-3" class="hljs-ln-code"><a href="#cb29-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb29-4" class="hljs-ln-code"><a href="#cb29-4"></a>}</span>
-<span id="cb29-5" class="hljs-ln-code"><a href="#cb29-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb29-6" class="hljs-ln-code"><a href="#cb29-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb29-7" class="hljs-ln-code"><a href="#cb29-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb29-8" class="hljs-ln-code"><a href="#cb29-8"></a>}</span>
-<span id="cb29-9" class="hljs-ln-code"><a href="#cb29-9"></a><span class="kw">model</span> {</span>
-<span id="cb29-10" class="hljs-ln-code"><a href="#cb29-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb29-11" class="hljs-ln-code"><a href="#cb29-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb29-12" class="hljs-ln-code"><a href="#cb29-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb29-13" class="hljs-ln-code"><a href="#cb29-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="write-the-likelihood-and-priors" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">Write the likelihood and priors</h2>
-<div class="sourceCode" id="cb30" data-code-line-numbers="9-13"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb30-1" class="hljs-ln-code"><a href="#cb30-1"></a><span class="kw">data</span> {</span>
-<span id="cb30-2" class="hljs-ln-code"><a href="#cb30-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb30-3" class="hljs-ln-code"><a href="#cb30-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb30-4" class="hljs-ln-code"><a href="#cb30-4"></a>}</span>
-<span id="cb30-5" class="hljs-ln-code"><a href="#cb30-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb30-6" class="hljs-ln-code"><a href="#cb30-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb30-7" class="hljs-ln-code"><a href="#cb30-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb30-8" class="hljs-ln-code"><a href="#cb30-8"></a>}</span>
-<span id="cb30-9" class="hljs-ln-code"><a href="#cb30-9"></a><span class="kw">model</span> {</span>
-<span id="cb30-10" class="hljs-ln-code"><a href="#cb30-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb30-11" class="hljs-ln-code"><a href="#cb30-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb30-12" class="hljs-ln-code"><a href="#cb30-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb30-13" class="hljs-ln-code"><a href="#cb30-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="generalized-linear-models-2" class="slide level2">
+<h2>Generalized linear models</h2>
+<h3 id="link-functions-1">Link functions</h3>
+<div style="font-size: 0.75em">
+<p>Another commonly used link function is</p>
+<h5 id="log-link-function">log link function</h5>
+<p>It is commonly used for modelling count data.</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta} = \ln\left(\widehat{\mathbf{y}}\right)
+\]</span> The inverse logit link function is</p>
+<p><span class="math display">\[
+\widehat{\mathbf{y}} = \exp(\mathbf{X}\boldsymbol{\beta})
+\]</span></p>
+</div>
 
 
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">

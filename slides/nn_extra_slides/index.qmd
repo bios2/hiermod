@@ -1,0 +1,90 @@
+---
+title: "Extra stuff"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
+date: "2023-02-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## Square matrix
+
+The square matrix has as many rows at it has columns 
+$$
+\mathbf{B} = \begin{bmatrix}
+				B_{11} & B_{12} & \dots & B_{1j} & \dots & B_{1n}\\
+				B_{21} & B_{22} & \dots & B_{2j} & \dots & B_{2n}\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  B_{i1} & B_{i2} & \dots & B_{ij} & \dots & B_{in}\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    B_{n1} & B_{n2} & \dots & B_{nj} & \dots & B_{nn}\\
+		\end{bmatrix}
+$$
+
+## Determinant of a matrix
+
+Not sure if it should be included or not
+
+## Eigenvectors and eigenvalues
+	
+::: {style="font-size: 0.9em"}
+Right eigenvector is :
+	
+$$\mathbf{A}\mathbf{w} = \lambda\mathbf{w}$$
+Left eigenvector is :
+	
+$$\mathbf{v}\mathbf{A} = \lambda\mathbf{v}$$
+	
+**Rules**
+
+- $\mathbf{A}$ has to be a square matrix
+- If $\mathbf{w}$ is an eigenvector of $\mathbf{A}$, so is $c\mathbf{w}$ for any value of $c \neq0$
+- The right eigenvector of $\mathbf{A}^T$ is the left eigenvector of $\mathbf{A}$
+- Eigenvectors are linearly independent
+:::
+
+## Positive definite matrix
+
+It is reasonably common when you build a hierarchical model to get an error message that state :
+
+:::{style="font-size: 0.8em"}
+`Error: Matrix X is not positive definite`
+:::
+
+or similarly
+
+:::{style="font-size: 0.8em"}
+`Error: Matrix X is not positive semi-definite`
+:::
+
+What does this mean ? Any idea ?
+
+## Positive (semi-)definite matrix
+### Nerdy mathematical definition
+
+**Positive definite matrix**
+
+$\mathbf{M}$ is a positive definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} > 0$
+
+**Positive semi-definite matrix**
+
+$\mathbf{M}$ is a positive semi-definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} \ge 0$
+
+## Positive (semi-)definite matrix
+### Checking if a matrix is positive (semi-)definite
+
+The properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.
+
+All we have to do is look at the eigenvalue of a square matrix. 
+
+If all eigenvalues of a matrix $\mathbf{M}$ larger than 0, matrix $\mathbf{M}$ is positive definite.
+
+If all eigenvalues of a matrix $\mathbf{M}$ larger than or equal ro 0, matrix $\mathbf{M}$ is positive semi-definite.

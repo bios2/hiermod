@@ -15,8 +15,7 @@ format:
     background-transition: fade
 ---
 
-## The very basics
-
+## A general way to write matrices
 $$
 \mathbf{A} = \begin{bmatrix}
 				A_{11} & A_{12} & \dots & A_{1j} & \dots & A_{1n}\\
@@ -27,9 +26,68 @@ $$
 		    A_{m1} & A_{m2} & \dots & A_{mj} & \dots & A_{mn}\\
 		\end{bmatrix}
 $$
+$$A = \left[a_{ij}\right]=\left[a_{ij}\right]_{m\times n}$$
 
-# Matrix operations
-	
+# Basic matrix operations
+
+## The transpose of a matrix
+
+::::: { style="font-size: 0.65em"}
+:::: {.columns}
+::: {.column width="50%"}
+
+$$A = \begin{bmatrix}
+          5 & -6 & 4 & -4\\
+        \end{bmatrix}
+$$
+
+$$B = \begin{bmatrix}
+          -8\\
+          9\\
+          -2\\
+        \end{bmatrix}
+$$
+
+$$C = \begin{bmatrix}
+          -4 & 1\\
+          2 & -5\\
+        \end{bmatrix}
+$$
+:::
+
+::: {.column width="50%"}
+
+$$A^t=\begin{bmatrix}
+          5\\
+          -6\\
+          4\\
+          -4\\
+        \end{bmatrix}
+$$
+    
+ 
+$$B^t =\begin{bmatrix}
+          -8 & 9 & -2\\
+        \end{bmatrix}
+$$
+    
+
+$$C^t =\begin{bmatrix}
+          -4 & 2\\
+          1 & -5\\
+        \end{bmatrix}
+$$
+:::
+::::
+
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+A
+t(A)
+```
+:::::
 ## Addition and Substraction
 
 $$\mathbf{C} = \mathbf{A}\pm \mathbf{B}$$
@@ -91,7 +149,7 @@ c*A
 ## Matrix multiplications (not divisions!)
 	
 $$\mathbf{C} = \mathbf{A} \cdot \mathbf{B}$$
-$$\mathbf{C}_{mr} = \mathbf{A}_{mn}\mathbf{B}_{nr}$$
+
 $$C_{ik} = \sum^{n}_{j=1}A_{ij}B_{jk}$$
 
 **Rules**
@@ -161,6 +219,124 @@ v <- c(3, 1)
 x <- c(2,5)
 sum(v * x)
 ```
+
+# Some important matrices
+
+
+## Identity matrix
+
+The identity matrix is a square matrix where all values of its diagonal are 0 except  the diagonal values which are all 1s.
+
+:::: { style="font-size: 0.8em"}
+::: {style="color: blue;"}
+$$
+\mathbf{I}=\begin{bmatrix}
+				1 & 0 & 0\\
+				0 & 1 & 0\\
+				0 & 0 & 1\\
+		\end{bmatrix}
+$$
+:::
+
+The identity matrix is important because 
+
+$$\mathbf{A} \cdot \mathbf{I}_n = \mathbf{A}$$
+or 
+
+$$\mathbf{I}_m \cdot \mathbf{A} = \mathbf{A}$$
+::::
+
+
+## Diagonal matrix
+
+The diagonal matrix is a square matrix where all values of its diagonal are 0 except the ones on the diagonal.
+
+:::: {style="font-size: 0.8em"}
+$$D=
+      \begin{bmatrix}
+        d_1 & 0 & \dots & 0\\
+        0 & d_2 & \dots & 0\\
+        \vdots & \vdots & \ddots & \vdots\\
+        0 & 0 & \dots & d_n\\
+\end{bmatrix}$$
+
+An example
+
+::: {style="color: blue;"}
+$$
+\begin{bmatrix}
+				-1 & 0 & 0\\
+				0 & 0 & 0\\
+				0 & 0 & 6\\
+		\end{bmatrix}
+$$
+:::
+::::
+
+## Triangular matrix
+
+:::: {.columns}
+::: {.column width="50%"}
+#### Lower triangular matrix
+$$\begin{bmatrix}
+        -10 & 0 & 0 & 0\\
+        3 & 0 & 0 & 0\\
+        0 & 4 & 3 & 0\\
+        9 & -5 & 4 & 3\\
+\end{bmatrix}$$
+:::
+::: {.column width="50%"}
+#### Upper triangular matrix
+$$\begin{bmatrix}
+        -10 & 0 & -5 & 0\\
+        0 & 0 & 5 & 6\\
+        0 & 0 & 3 & 3\\
+        0 & 0 & 0 & 3\\
+      \end{bmatrix}$$
+:::
+::::
+
+## Symmetric matrix
+
+The values on the  above and below the diagonal are match so that $A = A^t$
+
+::: {style="color: blue;"}
+$$
+\begin{bmatrix}
+				3 & 4 & -10\\
+				4 & 5 & 7\\
+				-10 & 7 & -6\\
+		\end{bmatrix}
+$$
+:::
+
+## Matrix inversion
+
+::: { style="font-size: 0.8em"}
+In matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix $\mathbf{A}$ is defined as $\mathbf{A}^{-1}$
+
+As such,
+$$\mathbf{A}\cdot \mathbf{A}^{-1} = \mathbf{I}$$ 
+In R
+
+```{r}
+A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
+(Ainv <- solve(A))
+A %*% Ainv
+```
+:::
+
+## Matrix inversion
+### Inverting a diagonal matrix
+
+$$D^{-1}=
+      \begin{bmatrix}
+        1/d_1 & 0 & \dots & 0\\
+        0 &  1/d_2 & \dots & 0\\
+        \vdots & \vdots & \ddots & \vdots\\
+        0 & 0 & \dots &  1/d_n\\
+\end{bmatrix}$$
+
 
 ## Solving systems of linear equation
 
@@ -251,75 +427,42 @@ y <- c(1, 0, 1)
 :::
 
 
-## Determinant of a matrix
+## Cholesky decomposition
 
-to add stuff here
+::: { style="font-size: 0.8em"}
+The Cholesky decomposition allows to decompose a matrix in a triangular, which, when multiplied by its transposed will allow us to recover the initial matrix. 
 
-to add stuff here
+In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice
 
-to add stuff here
+In math terms the Cholesky decomposition is defined as 
+$$\mathbf{A} = \mathbf{L}\mathbf{L}^t$$
+Example
 
-## Eigenvectors and eigenvalues
-	
-::: {style="font-size: 0.9em"}
-Right eigenvector is :
-	
-$$\mathbf{A}\mathbf{w} = \lambda\mathbf{w}$$
-Left eigenvector is :
-	
-$$\mathbf{v}\mathbf{A} = \lambda\mathbf{v}$$
-	
-**Rules**
-
-- $\mathbf{A}$ has to be a square matrix
-- If $\mathbf{w}$ is an eigenvector of $\mathbf{A}$, so is $c\mathbf{w}$ for any value of $c \neq0$
-- The right eigenvector of $\mathbf{A}^T$ is the left eigenvector of $\mathbf{A}$
-- Eigenvectors are linearly independent
+$$
+		\begin{bmatrix}
+			1 & 1 & 1\\
+			1 & 5 & 5\\
+			1 & 5 & 14\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			1 & 0 & 0\\
+			1 & 2 & 0\\
+			1 & 2 & 3 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			1 & 1 & 1\\
+			0 & 2 & 2\\
+			0 & 0 & 3 \\
+		\end{bmatrix}
+$$
 :::
 
-## Positive definite matrix
-
-It is reasonably common when you build a hierarchical model to get an error message that state :
-
-:::{style="font-size: 0.8em"}
-`Error: Matrix X is not positive definite`
-:::
-
-or similarly
-
-:::{style="font-size: 0.8em"}
-`Error: Matrix X is not positive semi-definite`
-:::
-
-What does this mean ? Any idea ?
-
-## Positive (semi-)definite matrix
-### Nerdy mathematical definition
-
-**Positive definite matrix**
-
-$\mathbf{M}$ is a positive definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} > 0$
-
-**Positive semi-definite matrix**
-
-$\mathbf{M}$ is a positive semi-definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} \ge 0$
-
-## Positive (semi-)definite matrix
-### Checking if a matrix is positive (semi-)definite
-
-The properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.
-
-All we have to do is look at the eigenvalue of a square matrix. 
-
-If all eigenvalues of a matrix $\mathbf{M}$ larger than 0, matrix $\mathbf{M}$ is positive definite.
-
-If all eigenvalues of a matrix $\mathbf{M}$ larger than or equal ro 0, matrix $\mathbf{M}$ is positive semi-definite.
 
 ## Cholesky decomposition
 
+### Why is it useful ?
 
-to add stuff here
+There are actually two main reasons :
 
-to add stuff here
-
-to add stuff here
+1. Working with triangular matrices is computationally more efficient
+2. It can be used to rescale matrices and make MCMC algorithms converge more easily
