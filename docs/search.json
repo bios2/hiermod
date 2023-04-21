@@ -1635,7 +1635,7 @@
     "href": "slides/02_Bayesian/index.html#studying-convergence-3",
     "title": "Bayesian modelling",
     "section": "Studying convergence",
-    "text": "Studying convergence"
+    "text": "Studying convergence\nBurn-in\nBurn-in is throwing away some iterations at the beginning of the MCMC run"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#second",
@@ -1649,7 +1649,7 @@
     "href": "slides/02_Bayesian/index.html#section-1",
     "title": "Bayesian modelling",
     "section": "",
-    "text": "img:\n\nit is a landscape"
+    "text": "check with simulations"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#section-2",
@@ -1755,5 +1755,19 @@
     "title": "Bayesian modelling",
     "section": "Write the likelihood and priors",
     "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#section",
+    "href": "slides/02_Bayesian/index.html#section",
+    "title": "Bayesian modelling",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#studying-convergence-4",
+    "href": "slides/02_Bayesian/index.html#studying-convergence-4",
+    "title": "Bayesian modelling",
+    "section": "Studying convergence",
+    "text": "Studying convergence\nBurn-in\nAfter burn-in, we obtain"
   }
 ]
