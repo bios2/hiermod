@@ -1769,5 +1769,264 @@
     "title": "Bayesian modelling",
     "section": "Studying convergence",
     "text": "Studying convergence\nBurn-in\nAfter burn-in, we obtain"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
+    "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
+    "title": "‘Simple’ hierarchical models",
+    "section": "“Simple” hierarchical model",
+    "text": "“Simple” hierarchical model\nHere, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#a-very-general-formulation",
+    "href": "slides/06_Simple_hierarchical_model/index.html#a-very-general-formulation",
+    "title": "‘Simple’ hierarchical models",
+    "section": "A (very !) general formulation",
+    "text": "A (very !) general formulation\n\nAs discuss yesterday, a linear model can be writen as\n\\[\\mathbf{y}\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta}, \\sigma^2\\mathbf{I})\\]\nwhere\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory varaibles)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#a-very-general-formulation-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#a-very-general-formulation-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "A (very !) general formulation",
+    "text": "A (very !) general formulation\n\nA hierarchical model is a generalization of the linear model such that\n\\[(\\mathbf{y}|\\mathbf{b} )\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma^2\\mathbf{I})\\]\n\n\nwhere\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is another matrix of explanatory variables with \\(n\\) rows (samples) and \\(q\\) columns (explanatory variables)\n\\(\\mathbf{b}\\) is a vector \\(q\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{Z}\\)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#second",
+    "href": "slides/06_Simple_hierarchical_model/index.html#second",
+    "title": "‘Simple’ hierarchical models",
+    "section": "second",
+    "text": "second\n\nTest your model"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#section",
+    "href": "slides/06_Simple_hierarchical_model/index.html#section",
+    "title": "‘Simple’ hierarchical models",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#section-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#section-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#section-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#section-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#choose-parameters",
+    "href": "slides/06_Simple_hierarchical_model/index.html#choose-parameters",
+    "title": "‘Simple’ hierarchical models",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#make-up-an-x-variable",
+    "href": "slides/06_Simple_hierarchical_model/index.html#make-up-an-x-variable",
+    "title": "‘Simple’ hierarchical models",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#calculate-the-average",
+    "href": "slides/06_Simple_hierarchical_model/index.html#calculate-the-average",
+    "title": "‘Simple’ hierarchical models",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#simulate-some-observations",
+    "href": "slides/06_Simple_hierarchical_model/index.html#simulate-some-observations",
+    "title": "‘Simple’ hierarchical models",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#finally-visualize",
+    "href": "slides/06_Simple_hierarchical_model/index.html#finally-visualize",
+    "title": "‘Simple’ hierarchical models",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#here-it-is-all-on-one-slide",
+    "href": "slides/06_Simple_hierarchical_model/index.html#here-it-is-all-on-one-slide",
+    "title": "‘Simple’ hierarchical models",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/06_Simple_hierarchical_model/index.html#or-we-can-present-the-code-and-results-separately",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#another-equation",
+    "href": "slides/06_Simple_hierarchical_model/index.html#another-equation",
+    "title": "‘Simple’ hierarchical models",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#the-equation",
+    "href": "slides/06_Simple_hierarchical_model/index.html#the-equation",
+    "title": "‘Simple’ hierarchical models",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#the-model",
+    "href": "slides/06_Simple_hierarchical_model/index.html#the-model",
+    "title": "‘Simple’ hierarchical models",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#declare-the-data",
+    "href": "slides/06_Simple_hierarchical_model/index.html#declare-the-data",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#state-parameters",
+    "href": "slides/06_Simple_hierarchical_model/index.html#state-parameters",
+    "title": "‘Simple’ hierarchical models",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#write-the-likelihood-and-priors",
+    "href": "slides/06_Simple_hierarchical_model/index.html#write-the-likelihood-and-priors",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#a-very-general-formulation-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#a-very-general-formulation-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "A (very !) general formulation",
+    "text": "A (very !) general formulation\n\nA hierarchical model is a generalization of the linear model such that\n\\[(\\mathbf{y}|\\mathbf{b} )\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma^2\\mathbf{I})\\] What is also noticeable in this model is the conditional relationship between \\(\\mathbf{y}\\) and \\(\\mathbf{b}\\).\nSpecifically, in this formulation,\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mathbf{0}, \\mathbf{\\Sigma})\\] where \\(\\mathbf{\\Sigma}\\) is a covariance matrix.\nBased on this general formulation, we can now define all unconstrained hierarchical models."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#the",
+    "href": "slides/06_Simple_hierarchical_model/index.html#the",
+    "title": "‘Simple’ hierarchical models",
+    "section": "The “|”",
+    "text": "The “|”\n\nMost of you have probably already used the packages lme4 or brms to build hierarchical models and in so, have used the | to include a hierachy in your model.\nBut do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?\n\n\n\nLet’s look at different lme4 models"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation",
+    "href": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation",
+    "title": "‘Simple’ hierarchical models",
+    "section": "A bit of notation",
+    "text": "A bit of notation\nBefore we get into writing math, we need to define a bit of notation in addition of the one we have used so far.\nSpecifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.\nWe will use square brackets to define the level of interest\nExample\n\\[\\mathbf{Z}_{f[l]}\\] This means that, within \\(\\mathbf{Z}\\), we focus on \\(l^{\\text{th}}\\) level of factor \\(f\\)."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#g",
+    "href": "slides/06_Simple_hierarchical_model/index.html#g",
+    "title": "‘Simple’ hierarchical models",
+    "section": "(1|g)",
+    "text": "(1|g)\nThis model imposes a assumes there is a"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1g",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1g",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1|g)",
+    "text": "y ~ (1|g)\nThis model assumes there is a hierarchy solely on the intercept of the model.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = b_{{f_i[l]}} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nA common question that often gets asked is :\n“How many level is enough ?”\nThis is a simple questions that sadly does not have a simple answer."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1g-or-y-1-1g",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1g-or-y-1-1g",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1|g) or y ~ 1 + (1|g)",
+    "text": "y ~ (1|g) or y ~ 1 + (1|g)\nThis model assumes there is a hierarchy solely on the intercept of the model.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = b_{{f_i[l]}} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1g-or",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1g-or",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1|g) or",
+    "text": "y ~ (1|g) or"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f-or-y-1-1-f",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-or-y-1-1-f",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f) or y ~ 1 + (1 | f)",
+    "text": "y ~ (1 | f) or y ~ 1 + (1 | f)\nThis model assumes there is a hierarchy solely on the intercept of the model.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = b_{{f_i[l]}} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-fg-or-y-1-f-1-fg",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-fg-or-y-1-f-1-fg",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f/g) or y ~ (1 | f) + (1 | f:g)",
+    "text": "y ~ (1 | f/g) or y ~ (1 | f) + (1 | f:g)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f)",
+    "text": "y ~ (1 | f)\n\nOther notation used : y ~ 1 + (1 | f)\nThis model assumes there is a hierarchy solely on the intercept.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = b_{{f_i[l]}} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f) + (1 | g)",
+    "text": "y ~ (1 | f) + (1 | g)\n\nOther notation used : 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among the two factors.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]\\times g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n\\end{bmatrix}\n\\right)\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-fg",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-fg",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f/g)",
+    "text": "y ~ (1 | f/g)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ x + (x | g)",
+    "text": "y ~ x + (x | g)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ x + (x || g)",
+    "text": "y ~ x + (x || g)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f)",
+    "text": "y ~ (1 | f)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f) + (1 | g)",
+    "text": "y ~ (1 | f) + (1 | g)\nThis model has a number interesting properties\n\nIt does not assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.\nIf a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)\nThis can be generalized to as many factors as we want. We will see howe this can be usefull later."
   }
 ]
