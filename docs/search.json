@@ -1985,28 +1985,28 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f",
     "title": "‘Simple’ hierarchical models",
     "section": "y ~ (1 | f)",
-    "text": "y ~ (1 | f)\n\nOther notation used : y ~ 1 + (1 | f)\nThis model assumes there is a hierarchy solely on the intercept.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = b_{{f_i[l]}} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
+    "text": "y ~ (1 | f)\n\nOther notation used : y ~ 1 + (1 | f)\nThis model assumes there is a hierarchy solely on the intercept.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = b_{{f_i[l]}} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g",
     "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g",
     "title": "‘Simple’ hierarchical models",
     "section": "y ~ (1 | f) + (1 | g)",
-    "text": "y ~ (1 | f) + (1 | g)\n\nOther notation used : 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among the two factors.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]\\times g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n\\end{bmatrix}\n\\right)\\]"
+    "text": "y ~ (1 | f) + (1 | g)\n\nOther notation used : y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among the two factors.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]\\times g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n\\end{bmatrix}\n\\right)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-fg",
     "href": "slides/06_Simple_hierarchical_model/index.html#y-1-fg",
     "title": "‘Simple’ hierarchical models",
     "section": "y ~ (1 | f/g)",
-    "text": "y ~ (1 | f/g)"
+    "text": "y ~ (1 | f/g)\n\nOther notation used : (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l_f\\) of the factor \\(f\\) changes or when the level \\(l_g\\) of the factor \\(g\\) within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_{g\\in f})\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g",
     "href": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g",
     "title": "‘Simple’ hierarchical models",
-    "section": "y ~ x + (x | g)",
-    "text": "y ~ x + (x | g)"
+    "section": "y ~ x + (x || g)",
+    "text": "y ~ x + (x || g)"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g-1",
@@ -2027,6 +2027,20 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g-1",
     "title": "‘Simple’ hierarchical models",
     "section": "y ~ (1 | f) + (1 | g)",
-    "text": "y ~ (1 | f) + (1 | g)\nThis model has a number interesting properties\n\nIt does not assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.\nIf a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)\nThis can be generalized to as many factors as we want. We will see howe this can be usefull later."
+    "text": "y ~ (1 | f) + (1 | g)\nThis model has a number interesting properties\n\nIt does not assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.\nIf a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)\nThis can be generalized to as many factors as we want. We will see how this can be useful later."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-x-f",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-x-f",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ 1 + (x | f)",
+    "text": "y ~ 1 + (x | f)\n\nThis model assumes there is a hierarchy on the parameters associated to variable x.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\beta_0 + \\mathbf{Z}\\mathbf{b}_{f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\] or\n\\[y_i = \\beta_0 + b_{f[l_f]}z_i + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the weight on variable \\(z\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchy-on-an-intercept-and-a-slope",
+    "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchy-on-an-intercept-and-a-slope",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Simple hierarchy on an intercept and a slope",
+    "text": "Simple hierarchy on an intercept and a slope\nFundamentally, what are the differences ? Any idea ?"
   }
 ]

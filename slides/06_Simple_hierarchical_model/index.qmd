@@ -107,6 +107,8 @@ We will use square brackets to define the level of interest
 $$\mathbf{Z}_{f[l]}$$
 This means that, within $\mathbf{Z}$, we focus on $l^{\text{th}}$ level of factor $f$.
 
+# Modelling hierarchy on the intercept
+
 ## `y ~ (1 | f)`
 
 ::: {style="font-size: 0.8em"}
@@ -119,7 +121,7 @@ Mathematically, it can be translated to
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
 or 
 
-$$y_i = b_{{f_i[l]}} + \varepsilon \quad \forall\quad l = 1\dots k$$
+$$y_i = b_{{f_i[l]}} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
 In words, this means that the model values $b$ will change for a sample $i$ only when the level $l$ of the factor $f$ changes. 
 
 This is because in this model
@@ -127,10 +129,32 @@ This is because in this model
 $$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
 :::
 
+## `y ~ (1 | f/g)`
+
+::: {style="font-size: 0.7em"}
+Other notation used : `(1 | f) + (1 | f:g)`
+
+This model assumes there is a hierarchy that varies among the levels of factor `f` and among the levels of factor `g` but only within the levels of factor `f`.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+or 
+
+$$y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, this means that the model values $b$ will change for a sample $i$ only when the level $l_f$ of the factor $f$ changes or when the level $l_g$ of the factor $g$ **within** the level $l_f$ of the factor $f$ changes. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_{g\in f})$$
+
+:::
+
+
 ## `y ~ (1 | f) + (1 | g)`
 
 ::: {style="font-size: 0.7em"}
-Other notation used : `1 + (1 | f) + (1 | g)`
+Other notation used : `y ~ 1 + (1 | f) + (1 | g)`
 
 This model assumes there is a hierarchy that varies among the two factors.
 
@@ -139,7 +163,7 @@ Mathematically, it can be translated to
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
 or 
 
-$$y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+$$y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
 In words, this means that the model values $b$ will change for a sample $i$ only when the interaction the level $l_f$ of the factor $f$ and the  level $l_g$ of the factor $g$ changes. 
 
 This is because in this model
@@ -160,9 +184,32 @@ This model has a number interesting properties
 - If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)
 - This can be generalized to as many factors as we want. We will see how this can be useful later.
 
-## `y ~ (1 | f/g)`
+# Modelling hierarchy on the slopes
 
-## `y ~ x + (x | g)`
+## `y ~ 1 + (x | f)`
+
+::: {style="font-size: 0.7em"}
+
+This model assumes there is a hierarchy on the parameters associated to variable `x`.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f$$
+or 
+
+$$y_i = \beta_0 + b_{f[l_f]}z_i + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, this means that the weight on variable $z$ will change for a sample $i$ only when the level $l$ of the factor $f$ changes. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+:::
+
+## Simple hierarchy on an intercept and a slope
+
+Fundamentally, what are the differences ? Any idea ?
+
+![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
 
 ## `y ~ x + (x || g)`
 
