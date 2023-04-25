@@ -1922,7 +1922,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#the",
     "title": "‘Simple’ hierarchical models",
     "section": "The “|”",
-    "text": "The “|”\n\nMost of you have probably already used the packages lme4 or brms to build hierarchical models and in so, have used the | to include a hierachy in your model.\nBut do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?\n\n\n\nLet’s look at different lme4 models"
+    "text": "The “|”\n\nMost of you have probably already used the packages lme4 or brms to build hierarchical models and so you have used the | to include a hierachy in your model.\nBut do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?\n\n\n\nLet’s look at different lme4 models to learn about some basic (and not so basic!) hierarchical models."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation",
@@ -1992,14 +1992,14 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g",
     "title": "‘Simple’ hierarchical models",
     "section": "y ~ (1 | f) + (1 | g)",
-    "text": "y ~ (1 | f) + (1 | g)\n\nOther notation used : y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among the two factors.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]\\times g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n\\end{bmatrix}\n\\right)\\]"
+    "text": "y ~ (1 | f) + (1 | g)\n\nOther notation used : y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among the two factors.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]\\times g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-fg",
     "href": "slides/06_Simple_hierarchical_model/index.html#y-1-fg",
     "title": "‘Simple’ hierarchical models",
     "section": "y ~ (1 | f/g)",
-    "text": "y ~ (1 | f/g)\n\nOther notation used : (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l_f\\) of the factor \\(f\\) changes or when the level \\(l_g\\) of the factor \\(g\\) within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_{g\\in f})\\]"
+    "text": "y ~ (1 | f/g)\n\nOther notation used : (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]} + \\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f[l_f]} + b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l_f\\) of the factor \\(f\\) changes or when the level \\(l_g\\) of the factor \\(g\\) within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0, \\begin{bmatrix}\n                                  \\sigma^2_f & 0\\\\\n                                  0& \\sigma^2_{g\\in f}\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#y-x-x-g",
@@ -2020,7 +2020,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1",
     "title": "‘Simple’ hierarchical models",
     "section": "y ~ (1 | f)",
-    "text": "y ~ (1 | f)"
+    "text": "y ~ (1 | f)\nStan code for this model\n\nFor Andrew?"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f-1-g-1",
@@ -2042,5 +2042,138 @@
     "title": "‘Simple’ hierarchical models",
     "section": "Simple hierarchy on an intercept and a slope",
     "text": "Simple hierarchy on an intercept and a slope\nFundamentally, what are the differences ? Any idea ?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-f-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-f-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f)",
+    "text": "y ~ (1 | f)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\n\nlme4 notation used y ~ (1 | f) or y ~ 1 + (1 | f)\nThis model assumes there is a hierarchy solely on the intercept.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = b_{{f_i[l]}} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\nStan code for this model\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the slopes",
+    "text": "Hierarchy on the slopes\n\nlme4 notation : y ~ 1 + (x | f)\nThis model assumes there is a hierarchy on the parameters associated to variable x.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\beta_0 + \\mathbf{Z}\\mathbf{b}_{f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\] or\n\\[y_i = \\beta_0 + b_{f[l_f]}z_i + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the weight on variable \\(z\\) will change for a sample \\(i\\) only when the level \\(l\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the slopes",
+    "text": "Hierarchy on the slopes\nStan code for this model\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-fg-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-fg-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f/g)",
+    "text": "y ~ (1 | f/g)\nStan code for this model\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#y-1-fg-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#y-1-fg-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "y ~ (1 | f/g)",
+    "text": "y ~ (1 | f/g)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the slopes",
+    "text": "Hierarchy on the slopes"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchy-on-intercept-and-slope",
+    "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchy-on-intercept-and-slope",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Simple hierarchy on intercept and slope",
+    "text": "Simple hierarchy on intercept and slope\nMathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#section-3",
+    "href": "slides/06_Simple_hierarchical_model/index.html#section-3",
+    "title": "‘Simple’ hierarchical models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchy-on-intercept-and-slope-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchy-on-intercept-and-slope-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Simple hierarchy on intercept and slope",
+    "text": "Simple hierarchy on intercept and slope\nAnswer : Very little !\nActually, if we return the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\] with the sole difference that \\(\\mathbf{b}\\) linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable. ## How many levels ?\nA common question that often gets asked is :\n“How many level is enough ?”\nThis is a simple questions that sadly does not have a simple answer."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on intercept and slope",
+    "text": "Hierarchy on intercept and slope\nMathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on intercept and slope",
+    "text": "Hierarchy on intercept and slope\nAnswer : Very little !\n\nActually, if we return the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\] with the sole difference that \\(\\mathbf{b}\\) linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nIn these types of models we are interested in estimating the variance parameter \\(\\sigma^2_f\\) in\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\] to get the best estimation of \\(\\mathbf{b}\\).\nSo, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”\nHowever, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nIs 3 enough ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.234"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-3",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-3",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nMaybe 5 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.12"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-4",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-4",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 7 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.139"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-5",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-5",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 10 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.174"
   }
 ]

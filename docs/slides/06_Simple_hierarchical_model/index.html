@@ -457,12 +457,12 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <section id="the" class="slide level2">
 <h2>The “<code>|</code>”</h2>
 <div style="font-size: 0.8em">
-<p>Most of you have probably already used the packages <code>lme4</code> or <code>brms</code> to build hierarchical models and in so, have used the <code>|</code> to include a hierachy in your model.</p>
+<p>Most of you have probably already used the packages <code>lme4</code> or <code>brms</code> to build hierarchical models and so you have used the <code>|</code> to include a hierachy in your model.</p>
 <p>But do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?</p>
 </div>
 
 <img data-src="https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"><div style="font-size: 0.8em">
-<p>Let’s look at different <code>lme4</code> models</p>
+<p>Let’s look at different <code>lme4</code> models to learn about some basic (and not so basic!) hierarchical models.</p>
 </div>
 </section>
 <section id="a-bit-of-notation" class="slide level2">
@@ -473,15 +473,10 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <h3 id="example">Example</h3>
 <p><span class="math display">\[\mathbf{Z}_{f[l]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on <span class="math inline">\(l^{\text{th}}\)</span> level of factor <span class="math inline">\(f\)</span>.</p>
 </section>
-<section>
-<section id="modelling-hierarchy-on-the-intercept" class="title-slide slide level1 center">
-<h1>Modelling hierarchy on the intercept</h1>
-
-</section>
-<section id="y-1-f" class="slide level2">
-<h2><code>y ~ (1 | f)</code></h2>
+<section id="hierarchy-on-the-intercept" class="slide level2">
+<h2>Hierarchy on the intercept</h2>
 <div style="font-size: 0.8em">
-<p>Other notation used : <code>y ~ 1 + (1 | f)</code></p>
+<p><code>lme4</code> notation used <code>y ~ (1 | f)</code> or <code>y ~ 1 + (1 | f)</code></p>
 <p>This model assumes there is a hierarchy solely on the intercept.</p>
 <p>Mathematically, it can be translated to</p>
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
@@ -490,16 +485,179 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
 </div>
 </section>
+<section id="hierarchy-on-the-intercept-1" class="slide level2">
+<h2>Hierarchy on the intercept</h2>
+<h3 id="stan-code-for-this-model">Stan code for this model</h3>
+<div style="margin-top: 200px; font-size: 2.5em; color: red;">
+<p>For Andrew?</p>
+</div>
+</section>
+<section id="hierarchy-on-the-intercept-2" class="slide level2">
+<h2>Hierarchy on the intercept</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="hierarchy-on-the-slopes" class="slide level2">
+<h2>Hierarchy on the slopes</h2>
+<div style="font-size: 0.7em">
+<p><code>lme4</code> notation : <code>y ~ 1 + (x | f)</code></p>
+<p>This model assumes there is a hierarchy on the parameters associated to variable <code>x</code>.</p>
+<p>Mathematically, it can be translated to</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_0 + b_{f[l_f]}z_i + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the weight on variable <span class="math inline">\(z\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
+<p>This is because in this model</p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
+</div>
+</section>
+<section id="hierarchy-on-the-slopes-1" class="slide level2">
+<h2>Hierarchy on the slopes</h2>
+<h3 id="stan-code-for-this-model-1">Stan code for this model</h3>
+<div style="margin-top: 200px; font-size: 2.5em; color: red;">
+<p>For Andrew?</p>
+</div>
+</section>
+<section id="hierarchy-on-the-slopes-2" class="slide level2">
+<h2>Hierarchy on the slopes</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="hierarchy-on-intercept-and-slope" class="slide level2">
+<h2>Hierarchy on intercept and slope</h2>
+<p>Mathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?</p>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="hierarchy-on-intercept-and-slope-1" class="slide level2">
+<h2>Hierarchy on intercept and slope</h2>
+<p>Answer : Very little !</p>
+<div style="font-size: 0.8em">
+<p>Actually, if we return the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
+<p>Well… Actually… When a hierarchy is applied on the intercept it is technically associated to a <strong>constant</strong> explanatory variable.</p>
+</div>
+</section>
+<section id="how-many-levels" class="slide level2">
+<h2>How many levels ?</h2>
+<p>A common question that often gets asked is :</p>
+<p>“How many level is enough ?”</p>
+<p>This is a simple questions that sadly does not have a simple answer.</p>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="how-many-levels-1" class="slide level2">
+<h2>How many levels ?</h2>
+<p>In these types of models we are interested in estimating the variance parameter <span class="math inline">\(\sigma^2_f\)</span> in</p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> to get the best estimation of <span class="math inline">\(\mathbf{b}\)</span>.</p>
+<p>So, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”</p>
+<p>However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.</p>
+</section>
+<section id="how-many-levels-2" class="slide level2">
+<h2>How many levels ?</h2>
+<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
+<h3 id="is-3-enough">Is 3 enough ?</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>True variance : 0.25</p>
+<p>Estimated variance : 0.234</p>
+</div>
+</div>
+</section>
+<section id="how-many-levels-3" class="slide level2">
+<h2>How many levels ?</h2>
+<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
+<h3 id="maybe-5">Maybe 5 ?</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>True variance : 0.25</p>
+<p>Estimated variance : 0.12</p>
+</div>
+</div>
+</section>
+<section id="how-many-levels-4" class="slide level2">
+<h2>How many levels ?</h2>
+<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
+<h3 id="or-7">Or 7 ?</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>True variance : 0.25</p>
+<p>Estimated variance : 0.139</p>
+</div>
+</div>
+</section>
+<section id="how-many-levels-5" class="slide level2">
+<h2>How many levels ?</h2>
+<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
+<h3 id="or-10">Or 10 ?</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>True variance : 0.25</p>
+<p>Estimated variance : 0.174</p>
+</div>
+</div>
+</section>
 <section id="y-1-fg" class="slide level2">
 <h2><code>y ~ (1 | f/g)</code></h2>
 <div style="font-size: 0.7em">
 <p>Other notation used : <code>(1 | f) + (1 | f:g)</code></p>
 <p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes or when the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f[l_f]} + b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes or when the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
 <p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_{g\in f})\]</span></p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0, \begin{bmatrix}
+                                  \sigma^2_f &amp; 0\\
+                                  0&amp; \sigma^2_{g\in f}\\
+                                \end{bmatrix}
+                                \right)\]</span></p>
+</div>
+</section>
+<section id="y-1-fg-1" class="slide level2">
+<h2><code>y ~ (1 | f/g)</code></h2>
+<h3 id="stan-code-for-this-model-2">Stan code for this model</h3>
+<div style="margin-top: 200px; font-size: 2.5em; color: red;">
+<p>For Andrew?</p>
+</div>
+</section>
+<section id="y-1-fg-2" class="slide level2">
+<h2><code>y ~ (1 | f/g)</code></h2>
+<div class="cell" data-layout-align="center">
+
 </div>
 </section>
 <section id="y-1-f-1-g" class="slide level2">
@@ -515,8 +673,8 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
                                 \begin{bmatrix}
                                   \sigma^2_f &amp; \sigma_f\sigma_g\\
                                   \sigma_f\sigma_g&amp; \sigma^2_g\\
-\end{bmatrix}
-\right)\]</span></p>
+                                \end{bmatrix}
+                                \right)\]</span></p>
 </div>
 </section>
 <section id="y-1-f-1-g-1" class="slide level2">
@@ -527,38 +685,10 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <li>If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)</li>
 <li>This can be generalized to as many factors as we want. We will see how this can be useful later.</li>
 </ul>
-</section></section>
-<section>
-<section id="modelling-hierarchy-on-the-slopes" class="title-slide slide level1 center">
-<h1>Modelling hierarchy on the slopes</h1>
-
 </section>
-<section id="y-1-x-f" class="slide level2">
-<h2><code>y ~ 1 + (x | f)</code></h2>
-<div style="font-size: 0.7em">
-<p>This model assumes there is a hierarchy on the parameters associated to variable <code>x</code>.</p>
-<p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_0 + b_{f[l_f]}z_i + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the weight on variable <span class="math inline">\(z\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
-<p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
-</div>
-</section>
-<section id="simple-hierarchy-on-an-intercept-and-a-slope" class="slide level2">
-<h2>Simple hierarchy on an intercept and a slope</h2>
-<p>Fundamentally, what are the differences ? Any idea ?</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
 <section id="y-x-x-g" class="slide level2">
 <h2><code>y ~ x + (x || g)</code></h2>
 </section>
-<section id="how-many-levels" class="slide level2">
-<h2>How many levels ?</h2>
-<p>A common question that often gets asked is :</p>
-<p>“How many level is enough ?”</p>
-<p>This is a simple questions that sadly does not have a simple answer.</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
 <section id="second" class="slide level2">
 <h2>second</h2>
 <div class="r-fit-text">
@@ -621,7 +751,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
 <section id="here-it-is-all-on-one-slide" class="slide level2">
 <h2>here it is all on one slide</h2>
 <div class="cell columns column-output-location">
@@ -635,7 +765,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -659,7 +789,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -749,7 +879,7 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
