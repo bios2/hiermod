@@ -592,7 +592,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <section id="how-many-levels-4" class="slide level2">
 <h2>How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-7">Or 7 ?</h3>
+<h3 id="or-10">Or 10 ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
@@ -606,14 +606,14 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div><div class="column" style="width:50%;">
 <p>True variance : 0.25</p>
-<p>Estimated variance : 0.139</p>
+<p>Estimated variance : 0.174</p>
 </div>
 </div>
 </section>
 <section id="how-many-levels-5" class="slide level2">
 <h2>How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-10">Or 10 ?</h3>
+<h3 id="or-50">Or 50 ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
@@ -627,8 +627,128 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div><div class="column" style="width:50%;">
 <p>True variance : 0.25</p>
-<p>Estimated variance : 0.174</p>
+<p>Estimated variance : 0.331</p>
 </div>
+</div>
+</section>
+<section id="how-many-levels-6" class="slide level2">
+<h2>How many levels ?</h2>
+<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
+<h3 id="or-100">Or 100 ?</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>True variance : 0.25</p>
+<p>Estimated variance : 0.271</p>
+</div>
+</div>
+</section>
+<section id="how-many-levels-7" class="slide level2">
+<h2>How many levels ?</h2>
+<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
+<h3 id="or-1000">Or 1000 ?</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>True variance : 0.25</p>
+<p>Estimated variance : 0.251</p>
+</div>
+</div>
+</section>
+<section id="how-many-levels-8" class="slide level2">
+<h2>How many levels ?</h2>
+<p>There is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter <span class="math inline">\(\sigma^2\)</span>, 5 or 6 levels is the extreme minimum.</p>
+<div style="font-size: 0.75em">
+<p>In the book <em>Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects</em>, James S. Hodges (2016) makes this very thoughtful statement :</p>
+<div style="color: blue">
+<p>“Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc.”</p>
+</div>
+</div>
+</section>
+<section id="how-many-levels-9" class="slide level2">
+<h2>How many levels ?</h2>
+<p>So, what to do if the number of level is not high enough for your comfort ?</p>
+<p>You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.</p>
+<p>How does this translate mathematically, with what we have seen so far</p>
+</section>
+<section id="hierarchy-on-the-intercept-3" class="slide level2">
+<h2>Hierarchy on the intercept</h2>
+<h3 id="focus-on-the-mean">Focus on the mean</h3>
+<div style="font-size: 0.7em">
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})\]</span> In words, this means that all the samples <strong>within</strong> the <span class="math inline">\(l^\text{th}\)</span> level of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>.</p>
+<p>By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance.</p>
+</div>
+</section>
+<section id="hierarchy-on-the-intercept-4" class="slide level2">
+<h2>Hierarchy on the intercept</h2>
+<h3 id="focus-on-the-mean-1">Focus on the mean</h3>
+<div style="font-size: 0.7em">
+<p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})\]</span> When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f[l]}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f[l]}\)</span>.</p>
+<p>Technically, we can sample all <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> independently, however, using multivariate Gaussian distribution, we can sample the <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span> for all levels of the factor in one go as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span> where</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{\mu}_{f}\)</span> is a vector of <span class="math inline">\(k\)</span> means, one for each level of the factor</li>
+<li><span class="math inline">\(\mathbf{D}_f\)</span> is a <span class="math inline">\(k\times k\)</span> diagonal matrix with variance term on the diagonal</li>
+</ul>
+</div>
+</section>
+<section id="hierarchy-on-the-intercept-5" class="slide level2">
+<h2>Hierarchy on the intercept</h2>
+<h3 id="focus-on-the-mean-2">Focus on the mean</h3>
+<div style="font-size: 0.7em">
+<p>The structure of matrix <span class="math inline">\(\mathbf{D}_f\)</span> can be considered in two different ways in</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span></p>
+<p>Written in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different</p>
+</div>
+<div style="font-size: 0.6em">
+<p><span class="math display">\[\mathbf{D}_f = \begin{bmatrix}
+                \sigma^2_{f[1]} &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                0 &amp; \sigma^2_{f[2]} &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; &amp; \vdots\\
+              0 &amp; 0 &amp; \dots &amp; \sigma^2_{f[l]} &amp; \dots &amp; 0\\
+            \vdots &amp; \vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots\\
+            0 &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; \sigma^2_{f[k]}\\
+        \end{bmatrix}\]</span></p>
+</div>
+</section>
+<section id="hierarchy-on-the-intercept-6" class="slide level2">
+<h2>Hierarchy on the intercept</h2>
+<h3 id="focus-on-the-mean-3">Focus on the mean</h3>
+<div style="font-size: 0.7em">
+<p>However, it can be assumed to be all the same variance regardless of the group considered</p>
+<div style="font-size: 0.6em">
+<p><span class="math display">\[\mathbf{D}_f = \begin{bmatrix}
+                \sigma^2_{f} &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                0 &amp; \sigma^2_{f} &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; &amp; \vdots\\
+              0 &amp; 0 &amp; \dots &amp; \sigma^2_{f} &amp; \dots &amp; 0\\
+            \vdots &amp; \vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots\\
+            0 &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; \sigma^2_{f}\\
+        \end{bmatrix}\]</span></p>
+</div>
+<p>In this case,</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span></p>
+<p>can be rewritten as <span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})\]</span></p>
 </div>
 </section>
 <section id="y-1-fg" class="slide level2">
@@ -751,7 +871,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
 <section id="here-it-is-all-on-one-slide" class="slide level2">
 <h2>here it is all on one slide</h2>
 <div class="cell columns column-output-location">
@@ -765,7 +885,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -789,7 +909,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </div>
 </div>
 </div>

@@ -2167,13 +2167,69 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-4",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 7 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.139"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 10 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.174"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-5",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-5",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 10 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.174"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 50 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.331"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-6",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-6",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 100 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.271"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-7",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-7",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 1000 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.251"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-8",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-8",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nThere is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter \\(\\sigma^2\\), 5 or 6 levels is the extreme minimum.\n\nIn the book Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects, James S. Hodges (2016) makes this very thoughtful statement :\n\n“Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc.”"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-9",
+    "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-9",
+    "title": "‘Simple’ hierarchical models",
+    "section": "How many levels ?",
+    "text": "How many levels ?\nSo, what to do if the number of level is not high enough for your comfort ?\nYou can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.\nHow does this translate mathematically, with what we have seen so far"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-3",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-3",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\nFocus on the mean\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = \\beta_{f_i[l]} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In this model, we assume that \\(\\boldsymbol{\\beta}_{f[l]}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f[l]} \\sim \\mathcal{N}(\\mu_{f[l]}, \\sigma^2_{f[l]})\\] In words, this means that all the samples within the \\(l^\\text{th}\\) level of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f[l]}\\).\nBy developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-4",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-4",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\nFocus on the mean\n\nLet’s take a deeper look at \\[\\boldsymbol{\\beta}_{f[l]} \\sim \\mathcal{N}(\\mu_{f[l]}, \\sigma^2_{f[l]})\\] When we study this way of sampling \\(\\boldsymbol{\\beta}_{f[l]}\\), although our interest is more on \\(\\mu_{f[l]}\\), we also have to estimate the variance term \\(\\sigma^2_{f[l]}\\).\nTechnically, we can sample all \\(\\boldsymbol{\\beta}_{f[l]}\\) independently, however, using multivariate Gaussian distribution, we can sample the \\(\\boldsymbol{\\beta}_{f}\\) for all levels of the factor in one go as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\] where\n\n\\(\\boldsymbol{\\mu}_{f}\\) is a vector of \\(k\\) means, one for each level of the factor\n\\(\\mathbf{D}_f\\) is a \\(k\\times k\\) diagonal matrix with variance term on the diagonal"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-5",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-5",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\nFocus on the mean\n\nThe structure of matrix \\(\\mathbf{D}_f\\) can be considered in two different ways in\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\]\nWritten in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different\n\n\n\\[\\mathbf{D}_f = \\begin{bmatrix}\n                \\sigma^2_{f[1]} & 0 & \\dots & 0 & \\dots & 0\\\\\n                0 & \\sigma^2_{f[2]} & \\dots & 0 & \\dots & 0\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              0 & 0 & \\dots & \\sigma^2_{f[l]} & \\dots & 0\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            0 & 0 & \\dots & 0 & \\dots & \\sigma^2_{f[k]}\\\\\n        \\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-6",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-6",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\nFocus on the mean\n\nHowever, it can be assumed to be all the same variance regardless of the group considered\n\n\\[\\mathbf{D}_f = \\begin{bmatrix}\n                \\sigma^2_{f} & 0 & \\dots & 0 & \\dots & 0\\\\\n                0 & \\sigma^2_{f} & \\dots & 0 & \\dots & 0\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              0 & 0 & \\dots & \\sigma^2_{f} & \\dots & 0\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            0 & 0 & \\dots & 0 & \\dots & \\sigma^2_{f}\\\\\n        \\end{bmatrix}\\]\n\nIn this case,\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\]\ncan be rewritten as \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\sigma^2_{f}\\mathbf{I})\\]"
   }
 ]

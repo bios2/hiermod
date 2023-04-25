@@ -306,17 +306,18 @@ plot(val, marginal,
      frame.plot = FALSE,
      cex.axis = 2) 
 
+
+set.seed(42)
+sampl <- rnorm(3, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
 polygon(x = c(val, val[1]),
         y = c(marginal,marginal[1]),
         col = rgb(0,0,1, 0.5),border = NA)
 
 lines(val,marginal, lwd = 8)
-
-set.seed(42)
-sampl <- rnorm(3, mean = 3, sd = 0.5)
-abline(v = sampl,
-       lwd = 8,
-       col = "blue")
 ```
 :::
 ::: {.column width="50%"}
@@ -347,58 +348,17 @@ plot(val, marginal,
      frame.plot = FALSE,
      cex.axis = 2) 
 
-polygon(x = c(val, val[1]),
-        y = c(marginal,marginal[1]),
-        col = rgb(0,0,1, 0.5),border = NA)
-
-lines(val,marginal, lwd = 8)
-
 set.seed(42)
 sampl <- rnorm(5, mean = 3, sd = 0.5)
 abline(v = sampl,
-       lwd = 8,
+       lwd = 3,
        col = "blue")
-```
-:::
-::: {.column width="50%"}
-True variance : 0.25
-
-Estimated variance : `r round(var(sampl), 3)`
-:::
-::::
-
-
-## How many levels ?
-
-What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
-
-### Or 7 ?
-:::: {.columns}
-::: {.column width="50%"}
-```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
-val <- seq(1, 5, length = 200)
-marginal <- dnorm(val, mean = 3, sd = 0.5)
-
-par(mar = c(3, 0.1, 0.1, 0.1))
-plot(val, marginal,
-     type = "n",
-     yaxt = "n",
-     xlab = "",
-     ylab = "",
-     frame.plot = FALSE,
-     cex.axis = 2) 
 
 polygon(x = c(val, val[1]),
         y = c(marginal,marginal[1]),
         col = rgb(0,0,1, 0.5),border = NA)
 
 lines(val,marginal, lwd = 8)
-
-set.seed(42)
-sampl <- rnorm(7, mean = 3, sd = 0.5)
-abline(v = sampl,
-       lwd = 8,
-       col = "blue")
 ```
 :::
 ::: {.column width="50%"}
@@ -407,7 +367,6 @@ True variance : 0.25
 Estimated variance : `r round(var(sampl), 3)`
 :::
 ::::
-
 
 ## How many levels ?
 
@@ -429,17 +388,17 @@ plot(val, marginal,
      frame.plot = FALSE,
      cex.axis = 2) 
 
+set.seed(42)
+sampl <- rnorm(10, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
 polygon(x = c(val, val[1]),
         y = c(marginal,marginal[1]),
         col = rgb(0,0,1, 0.5),border = NA)
 
 lines(val,marginal, lwd = 8)
-
-set.seed(42)
-sampl <- rnorm(10, mean = 3, sd = 0.5)
-abline(v = sampl,
-       lwd = 8,
-       col = "blue")
 ```
 :::
 ::: {.column width="50%"}
@@ -448,6 +407,233 @@ True variance : 0.25
 Estimated variance : `r round(var(sampl), 3)`
 :::
 ::::
+
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Or 50 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(50, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Or 100 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(100, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Or 1000 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(1000, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+## How many levels ?
+
+There is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter $\sigma^2$, 5 or 6 levels is the extreme minimum.
+
+::: {style="font-size: 0.75em"}
+In the book *Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects*, James S. Hodges (2016) makes this very thoughtful statement : 
+
+:::: {style="color: blue"}
+"Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc."
+::::
+:::
+
+## How many levels ?
+
+So, what to do if the number of level is not high enough for your comfort ?
+
+You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.
+
+How does this translate mathematically, with what we have seen so far
+
+## Hierarchy on the intercept
+### Focus on the mean
+
+::: {style="font-size: 0.7em"}
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+or 
+
+$$y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
+
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})$$
+In words, this means that all the samples **within** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
+
+By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance. 
+:::
+
+## Hierarchy on the intercept
+### Focus on the mean
+
+::: {style="font-size: 0.7em"}
+Let's take a deeper look at 
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})$$
+When we study this way of sampling $\boldsymbol{\beta}_{f[l]}$, although our interest is more on $\mu_{f[l]}$, we also have to estimate the variance term $\sigma^2_{f[l]}$.
+
+Technically, we can sample all $\boldsymbol{\beta}_{f[l]}$ independently, however, using multivariate Gaussian distribution, we can sample the $\boldsymbol{\beta}_{f}$ for all levels of the factor in one go as
+
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
+where 
+
+- $\boldsymbol{\mu}_{f}$ is a vector of $k$ means, one for each level of the factor
+- $\mathbf{D}_f$ is a $k\times k$ diagonal matrix with variance term on the diagonal
+
+:::
+
+## Hierarchy on the intercept
+### Focus on the mean
+
+::: {style="font-size: 0.7em"}
+The structure of matrix $\mathbf{D}_f$ can be considered in two different ways in 
+
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
+
+Written in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different
+::: 
+::: {style="font-size: 0.6em"}
+$$\mathbf{D}_f = \begin{bmatrix}
+				\sigma^2_{f[1]} & 0 & \dots & 0 & \dots & 0\\
+				0 & \sigma^2_{f[2]} & \dots & 0 & \dots & 0\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  0 & 0 & \dots & \sigma^2_{f[l]} & \dots & 0\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f[k]}\\
+		\end{bmatrix}$$
+:::
+
+## Hierarchy on the intercept
+### Focus on the mean
+
+::: {style="font-size: 0.7em"}
+However, it can be assumed to be all the same variance regardless of the group considered 
+
+::: {style="font-size: 0.6em"}
+$$\mathbf{D}_f = \begin{bmatrix}
+				\sigma^2_{f} & 0 & \dots & 0 & \dots & 0\\
+				0 & \sigma^2_{f} & \dots & 0 & \dots & 0\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  0 & 0 & \dots & \sigma^2_{f} & \dots & 0\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f}\\
+		\end{bmatrix}$$
+:::
+
+In this case, 
+
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
+
+can be rewritten as 
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})$$
+
+
+:::
+
+
 
 
 
