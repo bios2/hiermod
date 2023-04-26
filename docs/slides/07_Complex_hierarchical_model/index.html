@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.335">
 
   <meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
-  <title>Modèles hiérarchiques pour les sciences de la vie - ‘Simple’ hierarchical models</title>
+  <title>Modèles hiérarchiques pour les sciences de la vie - Complex hierarchical models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -324,7 +388,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="../img/bg.jpg" data-background-size="full" class="quarto-title-block center">
-  <h1 class="title">‘Simple’ hierarchical models</h1>
+  <h1 class="title">Complex hierarchical models</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -336,14 +400,11 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 
   <p class="date">2/10/23</p>
 </section>
-<section id="simple-hierarchical-model" class="slide level2">
-<h2>“Simple” hierarchical model</h2>
-<p>Here, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.</p>
-<p>Futhermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.</p>
-<p>When we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model.</p>
+<section id="complexe-hierarchical-model" class="slide level2">
+<h2>“Complexe” hierarchical model</h2>
 </section>
-<section id="a-very-general-formulation" class="slide level2">
-<h2>A (very !) general formulation</h2>
+<section id="the-general-formulation" class="slide level2">
+<h2>The general formulation</h2>
 <div style="font-size: 0.68em">
 <p>As discuss yesterday, a linear model can be writen as</p>
 <p><span class="math display">\[\mathbf{y}\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma^2\mathbf{I})\]</span></p>
@@ -357,7 +418,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </ul>
 </div>
 </section>
-<section id="a-very-general-formulation-1" class="slide level2">
+<section id="a-very-general-formulation" class="slide level2">
 <h2>A (very !) general formulation</h2>
 <div style="font-size: 0.8em">
 <p>A hierarchical model is a generalization of the linear model such that</p>
@@ -380,7 +441,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="a-very-general-formulation-2" class="slide level2">
+<section id="a-very-general-formulation-1" class="slide level2">
 <h2>A (very !) general formulation</h2>
 <div style="font-size: 0.8em">
 <p>A hierarchical model is a generalization of the linear model such that</p>
@@ -390,345 +451,249 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>Based on this general formulation, we can now define all unconstrained hierarchical models.</p>
 </div>
 </section>
-<section id="the" class="slide level2">
-<h2>The “<code>|</code>”</h2>
-<div style="font-size: 0.8em">
-<p>Most of you have probably already used the packages <code>lme4</code> or <code>brms</code> to build hierarchical models and so you have used the <code>|</code> to include a hierachy in your model.</p>
-<p>But do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?</p>
-</div>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"><div style="font-size: 0.8em">
-<p>Let’s look at different <code>lme4</code> models to learn about some basic (and not so basic!) hierarchical models.</p>
-</div>
-</section>
-<section id="a-bit-of-notation" class="slide level2">
-<h2>A bit of notation</h2>
-<p>Before we get into writing math, we need to define a bit of notation in addition of the one we have used so far.</p>
-<p>Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.</p>
-<p>We will use square brackets to define the level of interest</p>
-<h3 id="example">Example</h3>
-<p><span class="math display">\[\mathbf{Z}_{f[l]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on <span class="math inline">\(l^{\text{th}}\)</span> level of factor <span class="math inline">\(f\)</span>.</p>
-</section>
-<section id="hierarchy-on-the-intercept" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
-<div style="font-size: 0.8em">
-<p><code>lme4</code> notation used <code>y ~ (1 | f)</code> or <code>y ~ 1 + (1 | f)</code></p>
-<p>This model assumes there is a hierarchy solely on the intercept.</p>
+<section id="y-1-fg" class="slide level2">
+<h2><code>y ~ (1 | f/g)</code></h2>
+<div style="font-size: 0.7em">
+<p>Other notation used : <code>(1 | f) + (1 | f:g)</code></p>
+<p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
-<p><span class="math display">\[y_i = b_{{f_i[l]}} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f[l_f]} + b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes or when the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
 <p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0, \begin{bmatrix}
+                                  \sigma^2_f &amp; 0\\
+                                  0&amp; \sigma^2_{g\in f}\\
+                                \end{bmatrix}
+                                \right)\]</span></p>
 </div>
 </section>
-<section id="hierarchy-on-the-intercept-1" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
+<section id="y-1-fg-1" class="slide level2">
+<h2><code>y ~ (1 | f/g)</code></h2>
 <h3 id="stan-code-for-this-model">Stan code for this model</h3>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>For Andrew?</p>
 </div>
 </section>
-<section id="hierarchy-on-the-intercept-2" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
+<section id="y-1-fg-2" class="slide level2">
+<h2><code>y ~ (1 | f/g)</code></h2>
+<div class="cell" data-layout-align="center">
 
-<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-the-slopes" class="slide level2">
-<h2>Hierarchy on the slopes</h2>
+</div>
+</section>
+<section id="y-1-f-1-g" class="slide level2">
+<h2><code>y ~ (1 | f) + (1 | g)</code></h2>
 <div style="font-size: 0.7em">
-<p><code>lme4</code> notation : <code>y ~ 1 + (x | f)</code></p>
-<p>This model assumes there is a hierarchy on the parameters associated to variable <code>x</code>.</p>
+<p>Other notation used : <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
+<p>This model assumes there is a hierarchy that varies among the two factors.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_0 + b_{f[l_f]}z_i + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the weight on variable <span class="math inline">\(z\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the interaction the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> and the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> changes.</p>
 <p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
+                                \begin{bmatrix}
+                                  \sigma^2_f &amp; \sigma_f\sigma_g\\
+                                  \sigma_f\sigma_g&amp; \sigma^2_g\\
+                                \end{bmatrix}
+                                \right)\]</span></p>
 </div>
 </section>
-<section id="hierarchy-on-the-slopes-1" class="slide level2">
-<h2>Hierarchy on the slopes</h2>
-<h3 id="stan-code-for-this-model-1">Stan code for this model</h3>
-<div style="margin-top: 200px; font-size: 2.5em; color: red;">
-<p>For Andrew?</p>
-</div>
-</section>
-<section id="hierarchy-on-the-slopes-2" class="slide level2">
-<h2>Hierarchy on the slopes</h2>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-intercept-and-slope" class="slide level2">
-<h2>Hierarchy on intercept and slope</h2>
-<p>Mathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-intercept-and-slope-1" class="slide level2">
-<h2>Hierarchy on intercept and slope</h2>
-<p>Answer : Very little !</p>
-<div style="font-size: 0.8em">
-<p>Actually, if we return the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
-<p>Well… Actually… When a hierarchy is applied on the intercept it is technically associated to a <strong>constant</strong> explanatory variable.</p>
-</div>
-</section>
-<section id="how-many-levels" class="slide level2">
-<h2>How many levels ?</h2>
-<p>A common question that often gets asked is :</p>
-<p>“How many level is enough ?”</p>
-<p>This is a simple questions that sadly does not have a simple answer.</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="how-many-levels-1" class="slide level2">
-<h2>How many levels ?</h2>
-<p>In these types of models we are interested in estimating the variance parameter <span class="math inline">\(\sigma^2_f\)</span> in</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> to get the best estimation of <span class="math inline">\(\mathbf{b}\)</span>.</p>
-<p>So, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”</p>
-<p>However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.</p>
-</section>
-<section id="how-many-levels-2" class="slide level2">
-<h2>How many levels ?</h2>
-<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="is-3-enough">Is 3 enough ?</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>True variance : 0.25</p>
-<p>Estimated variance : 0.234</p>
-</div>
-</div>
-</section>
-<section id="how-many-levels-3" class="slide level2">
-<h2>How many levels ?</h2>
-<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="maybe-5">Maybe 5 ?</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>True variance : 0.25</p>
-<p>Estimated variance : 0.12</p>
-</div>
-</div>
-</section>
-<section id="how-many-levels-4" class="slide level2">
-<h2>How many levels ?</h2>
-<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-10">Or 10 ?</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>True variance : 0.25</p>
-<p>Estimated variance : 0.174</p>
-</div>
-</div>
-</section>
-<section id="how-many-levels-5" class="slide level2">
-<h2>How many levels ?</h2>
-<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-50">Or 50 ?</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>True variance : 0.25</p>
-<p>Estimated variance : 0.331</p>
-</div>
-</div>
-</section>
-<section id="how-many-levels-6" class="slide level2">
-<h2>How many levels ?</h2>
-<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-100">Or 100 ?</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>True variance : 0.25</p>
-<p>Estimated variance : 0.271</p>
-</div>
-</div>
-</section>
-<section id="how-many-levels-7" class="slide level2">
-<h2>How many levels ?</h2>
-<p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-1000">Or 1000 ?</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>True variance : 0.25</p>
-<p>Estimated variance : 0.251</p>
-</div>
-</div>
-</section>
-<section id="how-many-levels-8" class="slide level2">
-<h2>How many levels ?</h2>
-<p>There is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter <span class="math inline">\(\sigma^2\)</span>, 5 or 6 levels is the extreme minimum.</p>
-<div style="font-size: 0.75em">
-<p>In the book <em>Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects</em>, James S. Hodges (2016) makes this very thoughtful statement :</p>
-<div style="color: blue">
-<p>“Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc.”</p>
-</div>
-</div>
-</section>
-<section id="how-many-levels-9" class="slide level2">
-<h2>How many levels ?</h2>
-<p>So, what to do if the number of level is not high enough for your comfort ?</p>
-<p>You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.</p>
-<p>How does this translate mathematically, with what we have seen so far ?</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-the-intercepts-mean" class="slide level2">
-<h2>Hierarchy on the intercept’s mean</h2>
-<div style="font-size: 0.7em">
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})\]</span> In words, this means that all the samples <strong>within</strong> the <span class="math inline">\(l^\text{th}\)</span> level of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>.</p>
-<p>By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance.</p>
-</div>
-</section>
-<section id="hierarchy-on-the-intercepts-mean-1" class="slide level2">
-<h2>Hierarchy on the intercept’s mean</h2>
-<div style="font-size: 0.7em">
-<p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})\]</span> When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f[l]}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f[l]}\)</span>.</p>
-<p>Technically, we can sample all <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> independently, however, using multivariate Gaussian distribution, we can sample the <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span> for all levels of the factor in one go as</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span> where</p>
+<section id="y-1-f-1-g-1" class="slide level2">
+<h2><code>y ~ (1 | f) + (1 | g)</code></h2>
+<p>This model has a number interesting properties</p>
 <ul>
-<li><span class="math inline">\(\boldsymbol{\mu}_{f}\)</span> is a vector of <span class="math inline">\(k\)</span> means, one for each level of the factor</li>
-<li><span class="math inline">\(\mathbf{D}_f\)</span> is a <span class="math inline">\(k\times k\)</span> diagonal matrix with variance term on the diagonal</li>
+<li>It does <strong>not</strong> assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.</li>
+<li>If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)</li>
+<li>This can be generalized to as many factors as we want. We will see how this can be useful later.</li>
 </ul>
+</section>
+<section id="y-x-x-g" class="slide level2">
+<h2><code>y ~ x + (x || g)</code></h2>
+</section>
+<section id="second" class="slide level2">
+<h2>second</h2>
+<div class="r-fit-text">
+<p>Test your model</p>
 </div>
 </section>
-<section id="hierarchy-on-the-intercepts-mean-2" class="slide level2">
-<h2>Hierarchy on the intercept’s mean</h2>
-<div style="font-size: 0.7em">
-<p>The structure of matrix <span class="math inline">\(\mathbf{D}_f\)</span> can be considered in two different ways in</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span></p>
-<p>Written in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different</p>
-</div>
-<div style="font-size: 0.6em">
-<p><span class="math display">\[\mathbf{D}_f = \begin{bmatrix}
-                \sigma^2_{f[1]} &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
-                0 &amp; \sigma^2_{f[2]} &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
-                \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; &amp; \vdots\\
-              0 &amp; 0 &amp; \dots &amp; \sigma^2_{f[l]} &amp; \dots &amp; 0\\
-            \vdots &amp; \vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots\\
-            0 &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; \sigma^2_{f[k]}\\
-        \end{bmatrix}\]</span></p>
-</div>
-</section>
-<section id="hierarchy-on-the-intercepts-mean-3" class="slide level2">
-<h2>Hierarchy on the intercept’s mean</h2>
-<div style="font-size: 0.7em">
-<p>However, it can be assumed to be all the same variance regardless of the group considered</p>
-<div style="font-size: 0.68em">
-<p><span class="math display">\[\mathbf{D}_f = \begin{bmatrix}
-                \sigma^2_{f} &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
-                0 &amp; \sigma^2_{f} &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
-                \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; &amp; \vdots\\
-              0 &amp; 0 &amp; \dots &amp; \sigma^2_{f} &amp; \dots &amp; 0\\
-            \vdots &amp; \vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots\\
-            0 &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; \sigma^2_{f}\\
-        \end{bmatrix}\]</span></p>
-</div>
-<p>In this case, <span class="math inline">\(\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\)</span> can be rewritten as <span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})\]</span> <strong>Note</strong>: This is essentially the same thing as a one-way analysis of variance.</p>
-</div>
-</section>
-<section id="hierarchy-on-the-intercepts-mean-4" class="slide level2">
-<h2>Hierarchy on the intercept’s mean</h2>
-<h3 id="stan-code">Stan code</h3>
-<div style="margin-top: 200px; font-size: 2.5em; color: red;">
-<p>For Andrew?</p>
-</div>
-</section>
-<section id="hierarchy-on-the-intercepts-mean-5" class="slide level2">
-<h2>Hierarchy on the intercept’s mean</h2>
+<section id="section" class="slide level2">
+<h2></h2>
+<p>img:</p>
 
-<img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-the-slopes-mean" class="slide level2">
-<h2>Hierarchy on the slope’s mean</h2>
-<div style="font-size: 0.7em">
-<p>Developping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_{f_i[l]}x_i + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})\]</span> In words, this means that all the samples <strong>within</strong> the <span class="math inline">\(l^\text{th}\)</span> level of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>.</p>
-<p>By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance.</p>
+<img data-src="img/bg.jpg" class="r-stretch"><p>it is a landscape</p>
+</section>
+<section id="section-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<div style="margin-top: 100px;">
+<p>check with simulations</p>
 </div>
 </section>
-<section id="hierarchy-on-the-slopes-mean-1" class="slide level2">
-<h2>Hierarchy on the slope’s mean</h2>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-the-slopes-mean-2" class="slide level2">
-<h2>Hierarchy on the slope’s mean</h2>
-<h3 id="stan-code-1">Stan code</h3>
+<section id="section-2" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
-<p>For Andrew?</p>
+<p>check with simulations</p>
 </div>
 </section>
-<section id="tracking-the-estimated-parameters" class="slide level2">
-<h2>Tracking the estimated parameters</h2>
-<div style="font-size: 0.8em;">
-<p>As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.</p>
-<p>However, we need to be careful because the notation used can play trick on us. This is especially true when using matrix notation.</p>
-<p>For example, in</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})\]</span> the number of levels are not explicitly defined and it is not clear if <span class="math inline">\(\mathbf{D}_{f[l]}\)</span> includes the same variance value on the diagonal or different ones.</p>
-<p>In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using.</p>
+<section id="choose-parameters" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">choose parameters</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb1-1" class="hljs-ln-code"><a href="#cb1-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb1-2" class="hljs-ln-code"><a href="#cb1-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb1-3" class="hljs-ln-code"><a href="#cb1-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="make-up-an-x-variable" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">make up an X variable</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb2-1" class="hljs-ln-code"><a href="#cb2-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb2-2" class="hljs-ln-code"><a href="#cb2-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb2-3" class="hljs-ln-code"><a href="#cb2-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb2-4" class="hljs-ln-code"><a href="#cb2-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="calculate-the-average" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">calculate the average</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb3-1" class="hljs-ln-code"><a href="#cb3-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb3-2" class="hljs-ln-code"><a href="#cb3-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb3-3" class="hljs-ln-code"><a href="#cb3-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb3-4" class="hljs-ln-code"><a href="#cb3-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb3-5" class="hljs-ln-code"><a href="#cb3-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="simulate-some-observations" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">simulate some observations</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb4-1" class="hljs-ln-code"><a href="#cb4-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb4-2" class="hljs-ln-code"><a href="#cb4-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb4-3" class="hljs-ln-code"><a href="#cb4-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb4-4" class="hljs-ln-code"><a href="#cb4-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb4-5" class="hljs-ln-code"><a href="#cb4-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
+<span id="cb4-6" class="hljs-ln-code"><a href="#cb4-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="choosing-the-right-model" class="slide level2">
-<h2>Choosing the right model</h2>
-<p>Although these different models are mathematically quite similar, they approach very different biological questions.</p>
-<p>A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.</p>
-<p>It is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward.</p>
+<section id="finally-visualize" class="slide level2">
+<h2>finally, visualize</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="here-it-is-all-on-one-slide" class="slide level2">
+<h2>here it is all on one slide</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
+<span id="cb6-6"><a href="#cb6-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="or-we-can-present-the-code-and-results-separately" class="slide level2">
+<h2>Or we can present the code and results separately</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">The code</a></li><li><a href="#tabset-1-2">The figure</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb7-5"><a href="#cb7-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
+<span id="cb7-6"><a href="#cb7-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="another-equation" class="slide level2">
+<h2>another equation</h2>
+<p><span class="math display">\[
+2 + 4 = 6
+\]</span></p>
+</section>
+<section id="the-equation" class="slide level2">
+<h2>The equation</h2>
+<p><span class="math display">\[
+\begin{align}
+y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
+\mu &amp;= a + bx \\
+\end{align}
+\]</span></p>
+</section>
+<section id="the-model" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">The model</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb9-1" class="hljs-ln-code"><a href="#cb9-1"></a><span class="kw">data</span> {</span>
+<span id="cb9-2" class="hljs-ln-code"><a href="#cb9-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb9-3" class="hljs-ln-code"><a href="#cb9-3"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb9-4" class="hljs-ln-code"><a href="#cb9-4"></a>}</span>
+<span id="cb9-5" class="hljs-ln-code"><a href="#cb9-5"></a><span class="kw">parameters</span> {</span>
+<span id="cb9-6" class="hljs-ln-code"><a href="#cb9-6"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb9-7" class="hljs-ln-code"><a href="#cb9-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb9-8" class="hljs-ln-code"><a href="#cb9-8"></a>}</span>
+<span id="cb9-9" class="hljs-ln-code"><a href="#cb9-9"></a><span class="kw">model</span> {</span>
+<span id="cb9-10" class="hljs-ln-code"><a href="#cb9-10"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb9-11" class="hljs-ln-code"><a href="#cb9-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb9-12" class="hljs-ln-code"><a href="#cb9-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb9-13" class="hljs-ln-code"><a href="#cb9-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="declare-the-data" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">Declare the data</h2>
+<div class="sourceCode" id="cb10" data-code-line-numbers="1-4"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb10-1" class="hljs-ln-code"><a href="#cb10-1"></a><span class="kw">data</span> {</span>
+<span id="cb10-2" class="hljs-ln-code"><a href="#cb10-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb10-3" class="hljs-ln-code"><a href="#cb10-3"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb10-4" class="hljs-ln-code"><a href="#cb10-4"></a>}</span>
+<span id="cb10-5" class="hljs-ln-code"><a href="#cb10-5"></a><span class="kw">parameters</span> {</span>
+<span id="cb10-6" class="hljs-ln-code"><a href="#cb10-6"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb10-7" class="hljs-ln-code"><a href="#cb10-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb10-8" class="hljs-ln-code"><a href="#cb10-8"></a>}</span>
+<span id="cb10-9" class="hljs-ln-code"><a href="#cb10-9"></a><span class="kw">model</span> {</span>
+<span id="cb10-10" class="hljs-ln-code"><a href="#cb10-10"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb10-11" class="hljs-ln-code"><a href="#cb10-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb10-12" class="hljs-ln-code"><a href="#cb10-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb10-13" class="hljs-ln-code"><a href="#cb10-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="state-parameters" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">State parameters</h2>
+<div class="sourceCode" id="cb11" data-code-line-numbers="5-8"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb11-1" class="hljs-ln-code"><a href="#cb11-1"></a><span class="kw">data</span> {</span>
+<span id="cb11-2" class="hljs-ln-code"><a href="#cb11-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb11-3" class="hljs-ln-code"><a href="#cb11-3"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb11-4" class="hljs-ln-code"><a href="#cb11-4"></a>}</span>
+<span id="cb11-5" class="hljs-ln-code"><a href="#cb11-5"></a><span class="kw">parameters</span> {</span>
+<span id="cb11-6" class="hljs-ln-code"><a href="#cb11-6"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb11-7" class="hljs-ln-code"><a href="#cb11-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb11-8" class="hljs-ln-code"><a href="#cb11-8"></a>}</span>
+<span id="cb11-9" class="hljs-ln-code"><a href="#cb11-9"></a><span class="kw">model</span> {</span>
+<span id="cb11-10" class="hljs-ln-code"><a href="#cb11-10"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb11-11" class="hljs-ln-code"><a href="#cb11-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb11-12" class="hljs-ln-code"><a href="#cb11-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb11-13" class="hljs-ln-code"><a href="#cb11-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="write-the-likelihood-and-priors" class="slide level2" data-auto-animate="TRUE">
+<h2 data-id="quarto-animate-title">Write the likelihood and priors</h2>
+<div class="sourceCode" id="cb12" data-code-line-numbers="9-13"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb12-1" class="hljs-ln-code"><a href="#cb12-1"></a><span class="kw">data</span> {</span>
+<span id="cb12-2" class="hljs-ln-code"><a href="#cb12-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb12-3" class="hljs-ln-code"><a href="#cb12-3"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb12-4" class="hljs-ln-code"><a href="#cb12-4"></a>}</span>
+<span id="cb12-5" class="hljs-ln-code"><a href="#cb12-5"></a><span class="kw">parameters</span> {</span>
+<span id="cb12-6" class="hljs-ln-code"><a href="#cb12-6"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb12-7" class="hljs-ln-code"><a href="#cb12-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb12-8" class="hljs-ln-code"><a href="#cb12-8"></a>}</span>
+<span id="cb12-9" class="hljs-ln-code"><a href="#cb12-9"></a><span class="kw">model</span> {</span>
+<span id="cb12-10" class="hljs-ln-code"><a href="#cb12-10"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb12-11" class="hljs-ln-code"><a href="#cb12-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb12-12" class="hljs-ln-code"><a href="#cb12-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb12-13" class="hljs-ln-code"><a href="#cb12-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">

@@ -2202,7 +2202,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-9",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nSo, what to do if the number of level is not high enough for your comfort ?\nYou can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.\nHow does this translate mathematically, with what we have seen so far"
+    "text": "How many levels ?\nSo, what to do if the number of level is not high enough for your comfort ?\nYou can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.\nHow does this translate mathematically, with what we have seen so far ?"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-3",
@@ -2230,6 +2230,293 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-6",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the intercept",
-    "text": "Hierarchy on the intercept\nFocus on the mean\n\nHowever, it can be assumed to be all the same variance regardless of the group considered\n\n\\[\\mathbf{D}_f = \\begin{bmatrix}\n                \\sigma^2_{f} & 0 & \\dots & 0 & \\dots & 0\\\\\n                0 & \\sigma^2_{f} & \\dots & 0 & \\dots & 0\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              0 & 0 & \\dots & \\sigma^2_{f} & \\dots & 0\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            0 & 0 & \\dots & 0 & \\dots & \\sigma^2_{f}\\\\\n        \\end{bmatrix}\\]\n\nIn this case,\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\]\ncan be rewritten as \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\sigma^2_{f}\\mathbf{I})\\]"
+    "text": "Hierarchy on the intercept\nFocus on the mean\n\nHowever, it can be assumed to be all the same variance regardless of the group considered\n\n\\[\\mathbf{D}_f = \\begin{bmatrix}\n                \\sigma^2_{f} & 0 & \\dots & 0 & \\dots & 0\\\\\n                0 & \\sigma^2_{f} & \\dots & 0 & \\dots & 0\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              0 & 0 & \\dots & \\sigma^2_{f} & \\dots & 0\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            0 & 0 & \\dots & 0 & \\dots & \\sigma^2_{f}\\\\\n        \\end{bmatrix}\\]\n\nIn this case, \\(\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\) can be rewritten as \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\sigma^2_{f}\\mathbf{I})\\] Note: This is essentially the same thing as a one-way analysis of variance."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-7",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-7",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\nFocus on the mean"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-8",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-8",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept",
+    "text": "Hierarchy on the intercept\nFocus on the mean\nStan code\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-focus-on-the-mean",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-focus-on-the-mean",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept (Focus on the mean)",
+    "text": "Hierarchy on the intercept (Focus on the mean)\nFocus on the mean\nStan code\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept’s mean",
+    "text": "Hierarchy on the intercept’s mean\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = \\beta_{f_i[l]} + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In this model, we assume that \\(\\boldsymbol{\\beta}_{f[l]}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f[l]} \\sim \\mathcal{N}(\\mu_{f[l]}, \\sigma^2_{f[l]})\\] In words, this means that all the samples within the \\(l^\\text{th}\\) level of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f[l]}\\).\nBy developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept’s mean",
+    "text": "Hierarchy on the intercept’s mean\n\nLet’s take a deeper look at \\[\\boldsymbol{\\beta}_{f[l]} \\sim \\mathcal{N}(\\mu_{f[l]}, \\sigma^2_{f[l]})\\] When we study this way of sampling \\(\\boldsymbol{\\beta}_{f[l]}\\), although our interest is more on \\(\\mu_{f[l]}\\), we also have to estimate the variance term \\(\\sigma^2_{f[l]}\\).\nTechnically, we can sample all \\(\\boldsymbol{\\beta}_{f[l]}\\) independently, however, using multivariate Gaussian distribution, we can sample the \\(\\boldsymbol{\\beta}_{f}\\) for all levels of the factor in one go as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\] where\n\n\\(\\boldsymbol{\\mu}_{f}\\) is a vector of \\(k\\) means, one for each level of the factor\n\\(\\mathbf{D}_f\\) is a \\(k\\times k\\) diagonal matrix with variance term on the diagonal"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept’s mean",
+    "text": "Hierarchy on the intercept’s mean\n\nThe structure of matrix \\(\\mathbf{D}_f\\) can be considered in two different ways in\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\]\nWritten in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different\n\n\n\\[\\mathbf{D}_f = \\begin{bmatrix}\n                \\sigma^2_{f[1]} & 0 & \\dots & 0 & \\dots & 0\\\\\n                0 & \\sigma^2_{f[2]} & \\dots & 0 & \\dots & 0\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              0 & 0 & \\dots & \\sigma^2_{f[l]} & \\dots & 0\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            0 & 0 & \\dots & 0 & \\dots & \\sigma^2_{f[k]}\\\\\n        \\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-3",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-3",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept’s mean",
+    "text": "Hierarchy on the intercept’s mean\n\nHowever, it can be assumed to be all the same variance regardless of the group considered\n\n\\[\\mathbf{D}_f = \\begin{bmatrix}\n                \\sigma^2_{f} & 0 & \\dots & 0 & \\dots & 0\\\\\n                0 & \\sigma^2_{f} & \\dots & 0 & \\dots & 0\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              0 & 0 & \\dots & \\sigma^2_{f} & \\dots & 0\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            0 & 0 & \\dots & 0 & \\dots & \\sigma^2_{f}\\\\\n        \\end{bmatrix}\\]\n\nIn this case, \\(\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\) can be rewritten as \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\sigma^2_{f}\\mathbf{I})\\] Note: This is essentially the same thing as a one-way analysis of variance."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-4",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-4",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept’s mean",
+    "text": "Hierarchy on the intercept’s mean\nStan code\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-5",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-5",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the intercept’s mean",
+    "text": "Hierarchy on the intercept’s mean"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the slope’s mean",
+    "text": "Hierarchy on the slope’s mean\n\nDevelopping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_0+\\mathbf{X}\\boldsymbol{\\beta}_{f[l]},\\sigma^2\\mathbf{I}) \\quad \\forall\\quad l = 1\\dots k\\] or\n\\[y_i = \\beta_0 + \\beta_{f_i[l]}x_i + \\varepsilon \\quad \\forall\\quad l = 1\\dots k\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In this model, we assume that \\(\\boldsymbol{\\beta}_{f[l]}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f[l]} \\sim \\mathcal{N}(\\mu_{f[l]}, \\mathbf{D}_{f[l]})\\] In words, this means that all the samples within the \\(l^\\text{th}\\) level of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f[l]}\\).\nBy developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the slope’s mean",
+    "text": "Hierarchy on the slope’s mean"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean-2",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean-2",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchy on the slope’s mean",
+    "text": "Hierarchy on the slope’s mean\nStan code\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#tracking-the-estimated-parameters",
+    "href": "slides/06_Simple_hierarchical_model/index.html#tracking-the-estimated-parameters",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Tracking the estimated parameters",
+    "text": "Tracking the estimated parameters\n\nAs can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.\nHowever, we need to be careful because the notation used can play trick on us. This is especially true when using matrix notation.\nFor example, in\n\\[\\boldsymbol{\\beta}_{f[l]} \\sim \\mathcal{N}(\\mu_{f[l]}, \\mathbf{D}_{f[l]})\\] the number of levels are not explicitly defined and it is not clear if \\(\\mathbf{D}_{f[l]}\\) includes the same variance value on the diagonal or different ones.\nIn any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#choosing-the-right-model",
+    "href": "slides/06_Simple_hierarchical_model/index.html#choosing-the-right-model",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Choosing the right model",
+    "text": "Choosing the right model\nAlthough these different models are mathematically quite similar, they approach very different biological questions.\nA comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.\nIt is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#complexe-hierarchical-model",
+    "href": "slides/07_Complex_hierarchical_model/index.html#complexe-hierarchical-model",
+    "title": "Complex hierarchical models",
+    "section": "“Complexe” hierarchical model",
+    "text": "“Complexe” hierarchical model"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-general-formulation",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-general-formulation",
+    "title": "Complex hierarchical models",
+    "section": "The general formulation",
+    "text": "The general formulation\n\nAs discuss yesterday, a linear model can be writen as\n\\[\\mathbf{y}\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta}, \\sigma^2\\mathbf{I})\\]\nwhere\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory varaibles)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#a-very-general-formulation",
+    "href": "slides/07_Complex_hierarchical_model/index.html#a-very-general-formulation",
+    "title": "Complex hierarchical models",
+    "section": "A (very !) general formulation",
+    "text": "A (very !) general formulation\n\nA hierarchical model is a generalization of the linear model such that\n\\[(\\mathbf{y}|\\mathbf{b} )\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma^2\\mathbf{I})\\]\n\n\nwhere\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is another matrix of explanatory variables with \\(n\\) rows (samples) and \\(q\\) columns (explanatory variables)\n\\(\\mathbf{b}\\) is a vector \\(q\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{Z}\\)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#a-very-general-formulation-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#a-very-general-formulation-1",
+    "title": "Complex hierarchical models",
+    "section": "A (very !) general formulation",
+    "text": "A (very !) general formulation\n\nA hierarchical model is a generalization of the linear model such that\n\\[(\\mathbf{y}|\\mathbf{b} )\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma^2\\mathbf{I})\\] What is also noticeable in this model is the conditional relationship between \\(\\mathbf{y}\\) and \\(\\mathbf{b}\\).\nSpecifically, in this formulation,\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mathbf{0}, \\mathbf{\\Sigma})\\] where \\(\\mathbf{\\Sigma}\\) is a covariance matrix.\nBased on this general formulation, we can now define all unconstrained hierarchical models."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-fg",
+    "href": "slides/07_Complex_hierarchical_model/index.html#y-1-fg",
+    "title": "Complex hierarchical models",
+    "section": "y ~ (1 | f/g)",
+    "text": "y ~ (1 | f/g)\n\nOther notation used : (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]} + \\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f[l_f]} + b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l_f\\) of the factor \\(f\\) changes or when the level \\(l_g\\) of the factor \\(g\\) within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0, \\begin{bmatrix}\n                                  \\sigma^2_f & 0\\\\\n                                  0& \\sigma^2_{g\\in f}\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-1",
+    "title": "Complex hierarchical models",
+    "section": "y ~ (1 | f/g)",
+    "text": "y ~ (1 | f/g)\nStan code for this model\n\nFor Andrew?"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-2",
+    "href": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-2",
+    "title": "Complex hierarchical models",
+    "section": "y ~ (1 | f/g)",
+    "text": "y ~ (1 | f/g)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-f-1-g",
+    "href": "slides/07_Complex_hierarchical_model/index.html#y-1-f-1-g",
+    "title": "Complex hierarchical models",
+    "section": "y ~ (1 | f) + (1 | g)",
+    "text": "y ~ (1 | f) + (1 | g)\n\nOther notation used : y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among the two factors.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]\\times g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-f-1-g-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#y-1-f-1-g-1",
+    "title": "Complex hierarchical models",
+    "section": "y ~ (1 | f) + (1 | g)",
+    "text": "y ~ (1 | f) + (1 | g)\nThis model has a number interesting properties\n\nIt does not assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.\nIf a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)\nThis can be generalized to as many factors as we want. We will see how this can be useful later."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#y-x-x-g",
+    "href": "slides/07_Complex_hierarchical_model/index.html#y-x-x-g",
+    "title": "Complex hierarchical models",
+    "section": "y ~ x + (x || g)",
+    "text": "y ~ x + (x || g)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#second",
+    "href": "slides/07_Complex_hierarchical_model/index.html#second",
+    "title": "Complex hierarchical models",
+    "section": "second",
+    "text": "second\n\nTest your model"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#section",
+    "href": "slides/07_Complex_hierarchical_model/index.html#section",
+    "title": "Complex hierarchical models",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#section-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#section-1",
+    "title": "Complex hierarchical models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#section-2",
+    "href": "slides/07_Complex_hierarchical_model/index.html#section-2",
+    "title": "Complex hierarchical models",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#choose-parameters",
+    "href": "slides/07_Complex_hierarchical_model/index.html#choose-parameters",
+    "title": "Complex hierarchical models",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#make-up-an-x-variable",
+    "href": "slides/07_Complex_hierarchical_model/index.html#make-up-an-x-variable",
+    "title": "Complex hierarchical models",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#calculate-the-average",
+    "href": "slides/07_Complex_hierarchical_model/index.html#calculate-the-average",
+    "title": "Complex hierarchical models",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#simulate-some-observations",
+    "href": "slides/07_Complex_hierarchical_model/index.html#simulate-some-observations",
+    "title": "Complex hierarchical models",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#finally-visualize",
+    "href": "slides/07_Complex_hierarchical_model/index.html#finally-visualize",
+    "title": "Complex hierarchical models",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#here-it-is-all-on-one-slide",
+    "href": "slides/07_Complex_hierarchical_model/index.html#here-it-is-all-on-one-slide",
+    "title": "Complex hierarchical models",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/07_Complex_hierarchical_model/index.html#or-we-can-present-the-code-and-results-separately",
+    "title": "Complex hierarchical models",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#another-equation",
+    "href": "slides/07_Complex_hierarchical_model/index.html#another-equation",
+    "title": "Complex hierarchical models",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-equation",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-equation",
+    "title": "Complex hierarchical models",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-model",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-model",
+    "title": "Complex hierarchical models",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#declare-the-data",
+    "href": "slides/07_Complex_hierarchical_model/index.html#declare-the-data",
+    "title": "Complex hierarchical models",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#state-parameters",
+    "href": "slides/07_Complex_hierarchical_model/index.html#state-parameters",
+    "title": "Complex hierarchical models",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#write-the-likelihood-and-priors",
+    "href": "slides/07_Complex_hierarchical_model/index.html#write-the-likelihood-and-priors",
+    "title": "Complex hierarchical models",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
   }
 ]
