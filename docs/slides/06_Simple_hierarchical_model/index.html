@@ -1,413 +1,311 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
+<meta name="dcterms.date" content="2023-02-10">
+
+<title>Modèles hiérarchiques pour les sciences de la vie - ‘Simple’ hierarchical models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.335">
-
-  <meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
-  <title>Modèles hiérarchiques pour les sciences de la vie - ‘Simple’ hierarchical models</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-  </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-
-  .callout {
-    margin-top: 1em;
-    margin-bottom: 1em;  
-    border-radius: .25rem;
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
   }
+}</script>
 
-  .callout.callout-style-simple { 
-    padding: 0em 0.5em;
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-    display: flex;
-  }
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-  .callout.callout-style-default {
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-  }
-
-  .callout .callout-body-container {
-    flex-grow: 1;
-  }
-
-  .callout.callout-style-simple .callout-body {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-style-default .callout-body {
-    font-size: 0.9rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-captioned.callout-style-simple .callout-body {
-    margin-top: 0.2em;
-  }
-
-  .callout:not(.callout-captioned) .callout-body {
-      display: flex;
-  }
-
-  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
-    padding-left: 1.6em;
-  }
-
-  .callout.callout-captioned .callout-header {
-    padding-top: 0.2em;
-    margin-bottom: -0.2em;
-  }
-
-  .callout.callout-captioned .callout-caption  p {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-    
-  .callout.callout-captioned.callout-style-simple .callout-content  p {
-    margin-top: 0;
-  }
-
-  .callout.callout-captioned.callout-style-default .callout-content  p {
-    margin-top: 0.7em;
-  }
-
-  .callout.callout-style-simple div.callout-caption {
-    border-bottom: none;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: 75%;
-  }
-
-  .callout.callout-style-default  div.callout-caption {
-    border-bottom: none;
-    font-weight: 600;
-    opacity: 85%;
-    font-size: 0.9rem;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-default div.callout-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-simple .callout-icon::before {
-    height: 1rem;
-    width: 1rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .callout.callout-style-default .callout-icon::before {
-    height: 0.9rem;
-    width: 0.9rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 0.9rem 0.9rem;
-  }
-
-  .callout-caption {
-    display: flex
-  }
-    
-  .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  .callout.no-icon::before {
-    display: none !important;
-  }
-
-  .callout.callout-captioned .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
-  }
-
-  .callout.callout-captioned .callout-icon::before {
-    margin-top: .5rem;
-    padding-right: .5rem;
-  }
-
-  .callout:not(.callout-captioned) .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  /* Callout Types */
-
-  div.callout-note {
-    border-left-color: #4582ec !important;
-  }
-
-  div.callout-note .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
-  }
-
-  div.callout-note.callout-style-default .callout-caption {
-    background-color: #dae6fb
-  }
-
-  div.callout-important {
-    border-left-color: #d9534f !important;
-  }
-
-  div.callout-important .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-important.callout-style-default .callout-caption {
-    background-color: #f7dddc
-  }
-
-  div.callout-warning {
-    border-left-color: #f0ad4e !important;
-  }
-
-  div.callout-warning .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-warning.callout-style-default .callout-caption {
-    background-color: #fcefdc
-  }
-
-  div.callout-tip {
-    border-left-color: #02b875 !important;
-  }
-
-  div.callout-tip .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-tip.callout-style-default .callout-caption {
-    background-color: #ccf1e3
-  }
-
-  div.callout-caution {
-    border-left-color: #fd7e14 !important;
-  }
-
-  div.callout-caution .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
-  }
-
-  div.callout-caution.callout-style-default .callout-caption {
-    background-color: #ffe5d0
-  }
-
-  </style>
-  <style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
+<link rel="stylesheet" href="../../styles.css">
 </head>
-<body class="quarto-light">
-  <div class="reveal">
-    <div class="slides">
 
-<section id="title-slide" data-background-image="../img/bg.jpg" data-background-size="full" class="quarto-title-block center">
-  <h1 class="title">‘Simple’ hierarchical models</h1>
+<body class="nav-fixed">
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Andrew MacDonald and Guillaume Blanchet and Vincent Tolon 
-</div>
-</div>
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Course material</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">Advanced Statistics and hierarchical models</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#simple-hierarchical-model" id="toc-simple-hierarchical-model" class="nav-link active" data-scroll-target="#simple-hierarchical-model">“Simple” hierarchical model</a></li>
+  <li><a href="#a-very-general-formulation" id="toc-a-very-general-formulation" class="nav-link" data-scroll-target="#a-very-general-formulation">A (very !) general formulation</a></li>
+  <li><a href="#a-very-general-formulation-1" id="toc-a-very-general-formulation-1" class="nav-link" data-scroll-target="#a-very-general-formulation-1">A (very !) general formulation</a></li>
+  <li><a href="#a-very-general-formulation-2" id="toc-a-very-general-formulation-2" class="nav-link" data-scroll-target="#a-very-general-formulation-2">A (very !) general formulation</a></li>
+  <li><a href="#the" id="toc-the" class="nav-link" data-scroll-target="#the">The “<code>|</code>”</a></li>
+  <li><a href="#a-bit-of-notation" id="toc-a-bit-of-notation" class="nav-link" data-scroll-target="#a-bit-of-notation">A bit of notation</a>
+  <ul class="collapse">
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
+  <li><a href="#hierarchy-on-the-intercept" id="toc-hierarchy-on-the-intercept" class="nav-link" data-scroll-target="#hierarchy-on-the-intercept">Hierarchy on the intercept</a></li>
+  <li><a href="#hierarchy-on-the-intercept-1" id="toc-hierarchy-on-the-intercept-1" class="nav-link" data-scroll-target="#hierarchy-on-the-intercept-1">Hierarchy on the intercept</a>
+  <ul class="collapse">
+  <li><a href="#stan-code-for-this-model" id="toc-stan-code-for-this-model" class="nav-link" data-scroll-target="#stan-code-for-this-model">Stan code for this model</a></li>
+  </ul></li>
+  <li><a href="#hierarchy-on-the-intercept-2" id="toc-hierarchy-on-the-intercept-2" class="nav-link" data-scroll-target="#hierarchy-on-the-intercept-2">Hierarchy on the intercept</a></li>
+  <li><a href="#hierarchy-on-the-slopes" id="toc-hierarchy-on-the-slopes" class="nav-link" data-scroll-target="#hierarchy-on-the-slopes">Hierarchy on the slopes</a></li>
+  <li><a href="#hierarchy-on-the-slopes-1" id="toc-hierarchy-on-the-slopes-1" class="nav-link" data-scroll-target="#hierarchy-on-the-slopes-1">Hierarchy on the slopes</a>
+  <ul class="collapse">
+  <li><a href="#stan-code-for-this-model-1" id="toc-stan-code-for-this-model-1" class="nav-link" data-scroll-target="#stan-code-for-this-model-1">Stan code for this model</a></li>
+  </ul></li>
+  <li><a href="#hierarchy-on-the-slopes-2" id="toc-hierarchy-on-the-slopes-2" class="nav-link" data-scroll-target="#hierarchy-on-the-slopes-2">Hierarchy on the slopes</a></li>
+  <li><a href="#hierarchy-on-intercept-and-slope" id="toc-hierarchy-on-intercept-and-slope" class="nav-link" data-scroll-target="#hierarchy-on-intercept-and-slope">Hierarchy on intercept and slope</a></li>
+  <li><a href="#hierarchy-on-intercept-and-slope-1" id="toc-hierarchy-on-intercept-and-slope-1" class="nav-link" data-scroll-target="#hierarchy-on-intercept-and-slope-1">Hierarchy on intercept and slope</a></li>
+  <li><a href="#how-many-levels" id="toc-how-many-levels" class="nav-link" data-scroll-target="#how-many-levels">How many levels ?</a></li>
+  <li><a href="#how-many-levels-1" id="toc-how-many-levels-1" class="nav-link" data-scroll-target="#how-many-levels-1">How many levels ?</a></li>
+  <li><a href="#how-many-levels-2" id="toc-how-many-levels-2" class="nav-link" data-scroll-target="#how-many-levels-2">How many levels ?</a>
+  <ul class="collapse">
+  <li><a href="#is-3-enough" id="toc-is-3-enough" class="nav-link" data-scroll-target="#is-3-enough">Is 3 enough ?</a></li>
+  </ul></li>
+  <li><a href="#how-many-levels-3" id="toc-how-many-levels-3" class="nav-link" data-scroll-target="#how-many-levels-3">How many levels ?</a>
+  <ul class="collapse">
+  <li><a href="#maybe-5" id="toc-maybe-5" class="nav-link" data-scroll-target="#maybe-5">Maybe 5 ?</a></li>
+  </ul></li>
+  <li><a href="#how-many-levels-4" id="toc-how-many-levels-4" class="nav-link" data-scroll-target="#how-many-levels-4">How many levels ?</a>
+  <ul class="collapse">
+  <li><a href="#or-10" id="toc-or-10" class="nav-link" data-scroll-target="#or-10">Or 10 ?</a></li>
+  </ul></li>
+  <li><a href="#how-many-levels-5" id="toc-how-many-levels-5" class="nav-link" data-scroll-target="#how-many-levels-5">How many levels ?</a>
+  <ul class="collapse">
+  <li><a href="#or-50" id="toc-or-50" class="nav-link" data-scroll-target="#or-50">Or 50 ?</a></li>
+  </ul></li>
+  <li><a href="#how-many-levels-6" id="toc-how-many-levels-6" class="nav-link" data-scroll-target="#how-many-levels-6">How many levels ?</a>
+  <ul class="collapse">
+  <li><a href="#or-100" id="toc-or-100" class="nav-link" data-scroll-target="#or-100">Or 100 ?</a></li>
+  </ul></li>
+  <li><a href="#how-many-levels-7" id="toc-how-many-levels-7" class="nav-link" data-scroll-target="#how-many-levels-7">How many levels ?</a>
+  <ul class="collapse">
+  <li><a href="#or-1000" id="toc-or-1000" class="nav-link" data-scroll-target="#or-1000">Or 1000 ?</a></li>
+  </ul></li>
+  <li><a href="#how-many-levels-8" id="toc-how-many-levels-8" class="nav-link" data-scroll-target="#how-many-levels-8">How many levels ?</a></li>
+  <li><a href="#how-many-levels-9" id="toc-how-many-levels-9" class="nav-link" data-scroll-target="#how-many-levels-9">How many levels ?</a></li>
+  <li><a href="#hierarchy-on-the-intercept-3" id="toc-hierarchy-on-the-intercept-3" class="nav-link" data-scroll-target="#hierarchy-on-the-intercept-3">Hierarchy on the intercept</a>
+  <ul class="collapse">
+  <li><a href="#focus-on-the-mean" id="toc-focus-on-the-mean" class="nav-link" data-scroll-target="#focus-on-the-mean">Focus on the mean</a></li>
+  </ul></li>
+  <li><a href="#hierarchy-on-the-intercept-4" id="toc-hierarchy-on-the-intercept-4" class="nav-link" data-scroll-target="#hierarchy-on-the-intercept-4">Hierarchy on the intercept</a>
+  <ul class="collapse">
+  <li><a href="#focus-on-the-mean-1" id="toc-focus-on-the-mean-1" class="nav-link" data-scroll-target="#focus-on-the-mean-1">Focus on the mean</a></li>
+  </ul></li>
+  <li><a href="#hierarchy-on-the-intercept-5" id="toc-hierarchy-on-the-intercept-5" class="nav-link" data-scroll-target="#hierarchy-on-the-intercept-5">Hierarchy on the intercept</a>
+  <ul class="collapse">
+  <li><a href="#focus-on-the-mean-2" id="toc-focus-on-the-mean-2" class="nav-link" data-scroll-target="#focus-on-the-mean-2">Focus on the mean</a></li>
+  </ul></li>
+  <li><a href="#hierarchy-on-the-intercept-6" id="toc-hierarchy-on-the-intercept-6" class="nav-link" data-scroll-target="#hierarchy-on-the-intercept-6">Hierarchy on the intercept</a>
+  <ul class="collapse">
+  <li><a href="#focus-on-the-mean-3" id="toc-focus-on-the-mean-3" class="nav-link" data-scroll-target="#focus-on-the-mean-3">Focus on the mean</a></li>
+  </ul></li>
+  <li><a href="#y-1-fg" id="toc-y-1-fg" class="nav-link" data-scroll-target="#y-1-fg"><code>y ~ (1 | f/g)</code></a></li>
+  <li><a href="#y-1-fg-1" id="toc-y-1-fg-1" class="nav-link" data-scroll-target="#y-1-fg-1"><code>y ~ (1 | f/g)</code></a>
+  <ul class="collapse">
+  <li><a href="#stan-code-for-this-model-2" id="toc-stan-code-for-this-model-2" class="nav-link" data-scroll-target="#stan-code-for-this-model-2">Stan code for this model</a></li>
+  </ul></li>
+  <li><a href="#y-1-fg-2" id="toc-y-1-fg-2" class="nav-link" data-scroll-target="#y-1-fg-2"><code>y ~ (1 | f/g)</code></a></li>
+  <li><a href="#y-1-f-1-g" id="toc-y-1-f-1-g" class="nav-link" data-scroll-target="#y-1-f-1-g"><code>y ~ (1 | f) + (1 | g)</code></a></li>
+  <li><a href="#y-1-f-1-g-1" id="toc-y-1-f-1-g-1" class="nav-link" data-scroll-target="#y-1-f-1-g-1"><code>y ~ (1 | f) + (1 | g)</code></a></li>
+  <li><a href="#y-x-x-g" id="toc-y-x-x-g" class="nav-link" data-scroll-target="#y-x-x-g"><code>y ~ x + (x || g)</code></a></li>
+  <li><a href="#second" id="toc-second" class="nav-link" data-scroll-target="#second">second</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"></a></li>
+  <li><a href="#choose-parameters" id="toc-choose-parameters" class="nav-link" data-scroll-target="#choose-parameters">choose parameters</a></li>
+  <li><a href="#make-up-an-x-variable" id="toc-make-up-an-x-variable" class="nav-link" data-scroll-target="#make-up-an-x-variable">make up an X variable</a></li>
+  <li><a href="#calculate-the-average" id="toc-calculate-the-average" class="nav-link" data-scroll-target="#calculate-the-average">calculate the average</a></li>
+  <li><a href="#simulate-some-observations" id="toc-simulate-some-observations" class="nav-link" data-scroll-target="#simulate-some-observations">simulate some observations</a></li>
+  <li><a href="#finally-visualize" id="toc-finally-visualize" class="nav-link" data-scroll-target="#finally-visualize">finally, visualize</a></li>
+  <li><a href="#here-it-is-all-on-one-slide" id="toc-here-it-is-all-on-one-slide" class="nav-link" data-scroll-target="#here-it-is-all-on-one-slide">here it is all on one slide</a></li>
+  <li><a href="#or-we-can-present-the-code-and-results-separately" id="toc-or-we-can-present-the-code-and-results-separately" class="nav-link" data-scroll-target="#or-we-can-present-the-code-and-results-separately">Or we can present the code and results separately</a></li>
+  <li><a href="#another-equation" id="toc-another-equation" class="nav-link" data-scroll-target="#another-equation">another equation</a></li>
+  <li><a href="#the-equation" id="toc-the-equation" class="nav-link" data-scroll-target="#the-equation">The equation</a></li>
+  <li><a href="#the-model" id="toc-the-model" class="nav-link" data-scroll-target="#the-model">The model</a></li>
+  <li><a href="#declare-the-data" id="toc-declare-the-data" class="nav-link" data-scroll-target="#declare-the-data">Declare the data</a></li>
+  <li><a href="#state-parameters" id="toc-state-parameters" class="nav-link" data-scroll-target="#state-parameters">State parameters</a></li>
+  <li><a href="#write-the-likelihood-and-priors" id="toc-write-the-likelihood-and-priors" class="nav-link" data-scroll-target="#write-the-likelihood-and-priors">Write the likelihood and priors</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">‘Simple’ hierarchical models</h1>
 </div>
 
-  <p class="date">2/10/23</p>
-</section>
-<section id="simple-hierarchical-model" class="slide level2">
-<h2>“Simple” hierarchical model</h2>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Andrew MacDonald and Guillaume Blanchet and Vincent Tolon </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 10, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="simple-hierarchical-model" class="level2">
+<h2 class="anchored" data-anchor-id="simple-hierarchical-model">“Simple” hierarchical model</h2>
 <p>Here, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.</p>
 <p>Futhermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.</p>
 <p>When we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model.</p>
 </section>
-<section id="a-very-general-formulation" class="slide level2">
-<h2>A (very !) general formulation</h2>
+<section id="a-very-general-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="a-very-general-formulation">A (very !) general formulation</h2>
 <div style="font-size: 0.68em">
 <p>As discuss yesterday, a linear model can be writen as</p>
 <p><span class="math display">\[\mathbf{y}\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma^2\mathbf{I})\]</span></p>
@@ -421,8 +319,8 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </ul>
 </div>
 </section>
-<section id="a-very-general-formulation-1" class="slide level2">
-<h2>A (very !) general formulation</h2>
+<section id="a-very-general-formulation-1" class="level2">
+<h2 class="anchored" data-anchor-id="a-very-general-formulation-1">A (very !) general formulation</h2>
 <div style="font-size: 0.8em">
 <p>A hierarchical model is a generalization of the linear model such that</p>
 <p><span class="math display">\[(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})\]</span></p>
@@ -444,8 +342,8 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="a-very-general-formulation-2" class="slide level2">
-<h2>A (very !) general formulation</h2>
+<section id="a-very-general-formulation-2" class="level2">
+<h2 class="anchored" data-anchor-id="a-very-general-formulation-2">A (very !) general formulation</h2>
 <div style="font-size: 0.8em">
 <p>A hierarchical model is a generalization of the linear model such that</p>
 <p><span class="math display">\[(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})\]</span> What is also noticeable in this model is the conditional relationship between <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{b}\)</span>.</p>
@@ -454,27 +352,33 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>Based on this general formulation, we can now define all unconstrained hierarchical models.</p>
 </div>
 </section>
-<section id="the" class="slide level2">
-<h2>The “<code>|</code>”</h2>
+<section id="the" class="level2">
+<h2 class="anchored" data-anchor-id="the">The “<code>|</code>”</h2>
 <div style="font-size: 0.8em">
 <p>Most of you have probably already used the packages <code>lme4</code> or <code>brms</code> to build hierarchical models and so you have used the <code>|</code> to include a hierachy in your model.</p>
 <p>But do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?</p>
 </div>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"><div style="font-size: 0.8em">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png" class="img-fluid figure-img" style="width:20.0%"></p>
+</figure>
+</div>
+<div style="font-size: 0.8em">
 <p>Let’s look at different <code>lme4</code> models to learn about some basic (and not so basic!) hierarchical models.</p>
 </div>
 </section>
-<section id="a-bit-of-notation" class="slide level2">
-<h2>A bit of notation</h2>
+<section id="a-bit-of-notation" class="level2">
+<h2 class="anchored" data-anchor-id="a-bit-of-notation">A bit of notation</h2>
 <p>Before we get into writing math, we need to define a bit of notation in addition of the one we have used so far.</p>
 <p>Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.</p>
 <p>We will use square brackets to define the level of interest</p>
-<h3 id="example">Example</h3>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
 <p><span class="math display">\[\mathbf{Z}_{f[l]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on <span class="math inline">\(l^{\text{th}}\)</span> level of factor <span class="math inline">\(f\)</span>.</p>
 </section>
-<section id="hierarchy-on-the-intercept" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
+</section>
+<section id="hierarchy-on-the-intercept" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept">Hierarchy on the intercept</h2>
 <div style="font-size: 0.8em">
 <p><code>lme4</code> notation used <code>y ~ (1 | f)</code> or <code>y ~ 1 + (1 | f)</code></p>
 <p>This model assumes there is a hierarchy solely on the intercept.</p>
@@ -485,19 +389,29 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
 </div>
 </section>
-<section id="hierarchy-on-the-intercept-1" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
-<h3 id="stan-code-for-this-model">Stan code for this model</h3>
+<section id="hierarchy-on-the-intercept-1" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-1">Hierarchy on the intercept</h2>
+<section id="stan-code-for-this-model" class="level3">
+<h3 class="anchored" data-anchor-id="stan-code-for-this-model">Stan code for this model</h3>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>For Andrew?</p>
 </div>
 </section>
-<section id="hierarchy-on-the-intercept-2" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-the-slopes" class="slide level2">
-<h2>Hierarchy on the slopes</h2>
+</section>
+<section id="hierarchy-on-the-intercept-2" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-2">Hierarchy on the intercept</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hierarchy-on-the-slopes" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-slopes">Hierarchy on the slopes</h2>
 <div style="font-size: 0.7em">
 <p><code>lme4</code> notation : <code>y ~ 1 + (x | f)</code></p>
 <p>This model assumes there is a hierarchy on the parameters associated to variable <code>x</code>.</p>
@@ -508,24 +422,38 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
 </div>
 </section>
-<section id="hierarchy-on-the-slopes-1" class="slide level2">
-<h2>Hierarchy on the slopes</h2>
-<h3 id="stan-code-for-this-model-1">Stan code for this model</h3>
+<section id="hierarchy-on-the-slopes-1" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-slopes-1">Hierarchy on the slopes</h2>
+<section id="stan-code-for-this-model-1" class="level3">
+<h3 class="anchored" data-anchor-id="stan-code-for-this-model-1">Stan code for this model</h3>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>For Andrew?</p>
 </div>
 </section>
-<section id="hierarchy-on-the-slopes-2" class="slide level2">
-<h2>Hierarchy on the slopes</h2>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-intercept-and-slope" class="slide level2">
-<h2>Hierarchy on intercept and slope</h2>
+</section>
+<section id="hierarchy-on-the-slopes-2" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-slopes-2">Hierarchy on the slopes</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hierarchy-on-intercept-and-slope" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-intercept-and-slope">Hierarchy on intercept and slope</h2>
 <p>Mathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-intercept-and-slope-1" class="slide level2">
-<h2>Hierarchy on intercept and slope</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" class="img-fluid figure-img" style="width:20.0%"></p>
+</figure>
+</div>
+</section>
+<section id="hierarchy-on-intercept-and-slope-1" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-intercept-and-slope-1">Hierarchy on intercept and slope</h2>
 <p>Answer : Very little !</p>
 <div style="font-size: 0.8em">
 <p>Actually, if we return the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
@@ -533,31 +461,36 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>Well… Actually… When a hierarchy is applied on the intercept it is technically associated to a <strong>constant</strong> explanatory variable.</p>
 </div>
 </section>
-<section id="how-many-levels" class="slide level2">
-<h2>How many levels ?</h2>
+<section id="how-many-levels" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels">How many levels ?</h2>
 <p>A common question that often gets asked is :</p>
 <p>“How many level is enough ?”</p>
 <p>This is a simple questions that sadly does not have a simple answer.</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="how-many-levels-1" class="slide level2">
-<h2>How many levels ?</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png" class="img-fluid figure-img" style="width:20.0%"></p>
+</figure>
+</div>
+</section>
+<section id="how-many-levels-1" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-1">How many levels ?</h2>
 <p>In these types of models we are interested in estimating the variance parameter <span class="math inline">\(\sigma^2_f\)</span> in</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> to get the best estimation of <span class="math inline">\(\mathbf{b}\)</span>.</p>
 <p>So, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”</p>
 <p>However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.</p>
 </section>
-<section id="how-many-levels-2" class="slide level2">
-<h2>How many levels ?</h2>
+<section id="how-many-levels-2" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-2">How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="is-3-enough">Is 3 enough ?</h3>
+<section id="is-3-enough" class="level3">
+<h3 class="anchored" data-anchor-id="is-3-enough">Is 3 enough ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="768"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -568,17 +501,19 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="how-many-levels-3" class="slide level2">
-<h2>How many levels ?</h2>
+</section>
+<section id="how-many-levels-3" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-3">How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="maybe-5">Maybe 5 ?</h3>
+<section id="maybe-5" class="level3">
+<h3 class="anchored" data-anchor-id="maybe-5">Maybe 5 ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="768"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -589,17 +524,19 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="how-many-levels-4" class="slide level2">
-<h2>How many levels ?</h2>
+</section>
+<section id="how-many-levels-4" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-4">How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-10">Or 10 ?</h3>
+<section id="or-10" class="level3">
+<h3 class="anchored" data-anchor-id="or-10">Or 10 ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="768"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -610,17 +547,19 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="how-many-levels-5" class="slide level2">
-<h2>How many levels ?</h2>
+</section>
+<section id="how-many-levels-5" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-5">How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-50">Or 50 ?</h3>
+<section id="or-50" class="level3">
+<h3 class="anchored" data-anchor-id="or-50">Or 50 ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="768"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -631,17 +570,19 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="how-many-levels-6" class="slide level2">
-<h2>How many levels ?</h2>
+</section>
+<section id="how-many-levels-6" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-6">How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-100">Or 100 ?</h3>
+<section id="or-100" class="level3">
+<h3 class="anchored" data-anchor-id="or-100">Or 100 ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="768"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -652,17 +593,19 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="how-many-levels-7" class="slide level2">
-<h2>How many levels ?</h2>
+</section>
+<section id="how-many-levels-7" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-7">How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
-<h3 id="or-1000">Or 1000 ?</h3>
+<section id="or-1000" class="level3">
+<h3 class="anchored" data-anchor-id="or-1000">Or 1000 ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="768"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -673,8 +616,9 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="how-many-levels-8" class="slide level2">
-<h2>How many levels ?</h2>
+</section>
+<section id="how-many-levels-8" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-8">How many levels ?</h2>
 <p>There is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter <span class="math inline">\(\sigma^2\)</span>, 5 or 6 levels is the extreme minimum.</p>
 <div style="font-size: 0.75em">
 <p>In the book <em>Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects</em>, James S. Hodges (2016) makes this very thoughtful statement :</p>
@@ -683,15 +627,16 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 </section>
-<section id="how-many-levels-9" class="slide level2">
-<h2>How many levels ?</h2>
+<section id="how-many-levels-9" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-levels-9">How many levels ?</h2>
 <p>So, what to do if the number of level is not high enough for your comfort ?</p>
 <p>You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.</p>
 <p>How does this translate mathematically, with what we have seen so far</p>
 </section>
-<section id="hierarchy-on-the-intercept-3" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
-<h3 id="focus-on-the-mean">Focus on the mean</h3>
+<section id="hierarchy-on-the-intercept-3" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-3">Hierarchy on the intercept</h2>
+<section id="focus-on-the-mean" class="level3">
+<h3 class="anchored" data-anchor-id="focus-on-the-mean">Focus on the mean</h3>
 <div style="font-size: 0.7em">
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
 <p><span class="math display">\[y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
@@ -699,9 +644,11 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance.</p>
 </div>
 </section>
-<section id="hierarchy-on-the-intercept-4" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
-<h3 id="focus-on-the-mean-1">Focus on the mean</h3>
+</section>
+<section id="hierarchy-on-the-intercept-4" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-4">Hierarchy on the intercept</h2>
+<section id="focus-on-the-mean-1" class="level3">
+<h3 class="anchored" data-anchor-id="focus-on-the-mean-1">Focus on the mean</h3>
 <div style="font-size: 0.7em">
 <p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})\]</span> When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f[l]}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f[l]}\)</span>.</p>
 <p>Technically, we can sample all <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> independently, however, using multivariate Gaussian distribution, we can sample the <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span> for all levels of the factor in one go as</p>
@@ -712,9 +659,11 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </ul>
 </div>
 </section>
-<section id="hierarchy-on-the-intercept-5" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
-<h3 id="focus-on-the-mean-2">Focus on the mean</h3>
+</section>
+<section id="hierarchy-on-the-intercept-5" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-5">Hierarchy on the intercept</h2>
+<section id="focus-on-the-mean-2" class="level3">
+<h3 class="anchored" data-anchor-id="focus-on-the-mean-2">Focus on the mean</h3>
 <div style="font-size: 0.7em">
 <p>The structure of matrix <span class="math inline">\(\mathbf{D}_f\)</span> can be considered in two different ways in</p>
 <p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span></p>
@@ -731,9 +680,11 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
         \end{bmatrix}\]</span></p>
 </div>
 </section>
-<section id="hierarchy-on-the-intercept-6" class="slide level2">
-<h2>Hierarchy on the intercept</h2>
-<h3 id="focus-on-the-mean-3">Focus on the mean</h3>
+</section>
+<section id="hierarchy-on-the-intercept-6" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-6">Hierarchy on the intercept</h2>
+<section id="focus-on-the-mean-3" class="level3">
+<h3 class="anchored" data-anchor-id="focus-on-the-mean-3">Focus on the mean</h3>
 <div style="font-size: 0.7em">
 <p>However, it can be assumed to be all the same variance regardless of the group considered</p>
 <div style="font-size: 0.6em">
@@ -751,8 +702,9 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>can be rewritten as <span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})\]</span></p>
 </div>
 </section>
-<section id="y-1-fg" class="slide level2">
-<h2><code>y ~ (1 | f/g)</code></h2>
+</section>
+<section id="y-1-fg" class="level2">
+<h2 class="anchored" data-anchor-id="y-1-fg"><code>y ~ (1 | f/g)</code></h2>
 <div style="font-size: 0.7em">
 <p>Other notation used : <code>(1 | f) + (1 | f:g)</code></p>
 <p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
@@ -767,21 +719,23 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
                                 \right)\]</span></p>
 </div>
 </section>
-<section id="y-1-fg-1" class="slide level2">
-<h2><code>y ~ (1 | f/g)</code></h2>
-<h3 id="stan-code-for-this-model-2">Stan code for this model</h3>
+<section id="y-1-fg-1" class="level2">
+<h2 class="anchored" data-anchor-id="y-1-fg-1"><code>y ~ (1 | f/g)</code></h2>
+<section id="stan-code-for-this-model-2" class="level3">
+<h3 class="anchored" data-anchor-id="stan-code-for-this-model-2">Stan code for this model</h3>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>For Andrew?</p>
 </div>
 </section>
-<section id="y-1-fg-2" class="slide level2">
-<h2><code>y ~ (1 | f/g)</code></h2>
+</section>
+<section id="y-1-fg-2" class="level2">
+<h2 class="anchored" data-anchor-id="y-1-fg-2"><code>y ~ (1 | f/g)</code></h2>
 <div class="cell" data-layout-align="center">
 
 </div>
 </section>
-<section id="y-1-f-1-g" class="slide level2">
-<h2><code>y ~ (1 | f) + (1 | g)</code></h2>
+<section id="y-1-f-1-g" class="level2">
+<h2 class="anchored" data-anchor-id="y-1-f-1-g"><code>y ~ (1 | f) + (1 | g)</code></h2>
 <div style="font-size: 0.7em">
 <p>Other notation used : <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
 <p>This model assumes there is a hierarchy that varies among the two factors.</p>
@@ -797,8 +751,8 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
                                 \right)\]</span></p>
 </div>
 </section>
-<section id="y-1-f-1-g-1" class="slide level2">
-<h2><code>y ~ (1 | f) + (1 | g)</code></h2>
+<section id="y-1-f-1-g-1" class="level2">
+<h2 class="anchored" data-anchor-id="y-1-f-1-g-1"><code>y ~ (1 | f) + (1 | g)</code></h2>
 <p>This model has a number interesting properties</p>
 <ul>
 <li>It does <strong>not</strong> assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.</li>
@@ -806,124 +760,123 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <li>This can be generalized to as many factors as we want. We will see how this can be useful later.</li>
 </ul>
 </section>
-<section id="y-x-x-g" class="slide level2">
-<h2><code>y ~ x + (x || g)</code></h2>
+<section id="y-x-x-g" class="level2">
+<h2 class="anchored" data-anchor-id="y-x-x-g"><code>y ~ x + (x || g)</code></h2>
 </section>
-<section id="second" class="slide level2">
-<h2>second</h2>
+<section id="second" class="level2">
+<h2 class="anchored" data-anchor-id="second">second</h2>
 <div class="r-fit-text">
 <p>Test your model</p>
 </div>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
 <p>img:</p>
-
-<img data-src="img/bg.jpg" class="r-stretch"><p>it is a landscape</p>
+<p><img src="img/bg.jpg" class="img-fluid"></p>
+<p>it is a landscape</p>
 </section>
-<section id="section-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
+<section id="section-1" class="level2" data-auto-animate="true">
+<h2 data-auto-animate="true" class="anchored" data-anchor-id="section-1"></h2>
 <div style="margin-top: 100px;">
 <p>check with simulations</p>
 </div>
 </section>
-<section id="section-2" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
+<section id="section-2" class="level2" data-auto-animate="true">
+<h2 data-auto-animate="true" class="anchored" data-anchor-id="section-2"></h2>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>check with simulations</p>
 </div>
 </section>
-<section id="choose-parameters" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">choose parameters</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb1-1" class="hljs-ln-code"><a href="#cb1-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb1-2" class="hljs-ln-code"><a href="#cb1-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb1-3" class="hljs-ln-code"><a href="#cb1-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="choose-parameters" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="choose-parameters">choose parameters</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="make-up-an-x-variable" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">make up an X variable</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb2-1" class="hljs-ln-code"><a href="#cb2-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb2-2" class="hljs-ln-code"><a href="#cb2-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb2-3" class="hljs-ln-code"><a href="#cb2-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb2-4" class="hljs-ln-code"><a href="#cb2-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="make-up-an-x-variable" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="make-up-an-x-variable">make up an X variable</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="calculate-the-average" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">calculate the average</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb3-1" class="hljs-ln-code"><a href="#cb3-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb3-2" class="hljs-ln-code"><a href="#cb3-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb3-3" class="hljs-ln-code"><a href="#cb3-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb3-4" class="hljs-ln-code"><a href="#cb3-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb3-5" class="hljs-ln-code"><a href="#cb3-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="calculate-the-average" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="calculate-the-average">calculate the average</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="simulate-some-observations" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">simulate some observations</h2>
+<section id="simulate-some-observations" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="simulate-some-observations">simulate some observations</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb4-1" class="hljs-ln-code"><a href="#cb4-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb4-2" class="hljs-ln-code"><a href="#cb4-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb4-3" class="hljs-ln-code"><a href="#cb4-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb4-4" class="hljs-ln-code"><a href="#cb4-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb4-5" class="hljs-ln-code"><a href="#cb4-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb4-6" class="hljs-ln-code"><a href="#cb4-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="finally-visualize" class="slide level2">
-<h2>finally, visualize</h2>
+<section id="finally-visualize" class="level2">
+<h2 class="anchored" data-anchor-id="finally-visualize">finally, visualize</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
-<section id="here-it-is-all-on-one-slide" class="slide level2">
-<h2>here it is all on one slide</h2>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb6-5"><a href="#cb6-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb6-6"><a href="#cb6-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
-</div>
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
-<section id="or-we-can-present-the-code-and-results-separately" class="slide level2">
-<h2>Or we can present the code and results separately</h2>
+<section id="here-it-is-all-on-one-slide" class="level2">
+<h2 class="anchored" data-anchor-id="here-it-is-all-on-one-slide">here it is all on one slide</h2>
+<div class="cell" data-output-location="column">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="or-we-can-present-the-code-and-results-separately" class="level2">
+<h2 class="anchored" data-anchor-id="or-we-can-present-the-code-and-results-separately">Or we can present the code and results separately</h2>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">The code</a></li><li><a href="#tabset-1-2">The figure</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">The figure</a></li></ul>
 <div class="tab-content">
-<div id="tabset-1-1">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb7-6"><a href="#cb7-6"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<div id="tabset-1-2">
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="another-equation" class="slide level2">
-<h2>another equation</h2>
+<section id="another-equation" class="level2">
+<h2 class="anchored" data-anchor-id="another-equation">another equation</h2>
 <p><span class="math display">\[
 2 + 4 = 6
 \]</span></p>
 </section>
-<section id="the-equation" class="slide level2">
-<h2>The equation</h2>
+<section id="the-equation" class="level2">
+<h2 class="anchored" data-anchor-id="the-equation">The equation</h2>
 <p><span class="math display">\[
 \begin{align}
 y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
@@ -931,456 +884,209 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
 \end{align}
 \]</span></p>
 </section>
-<section id="the-model" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">The model</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb9-1" class="hljs-ln-code"><a href="#cb9-1"></a><span class="kw">data</span> {</span>
-<span id="cb9-2" class="hljs-ln-code"><a href="#cb9-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb9-3" class="hljs-ln-code"><a href="#cb9-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb9-4" class="hljs-ln-code"><a href="#cb9-4"></a>}</span>
-<span id="cb9-5" class="hljs-ln-code"><a href="#cb9-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb9-6" class="hljs-ln-code"><a href="#cb9-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb9-7" class="hljs-ln-code"><a href="#cb9-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb9-8" class="hljs-ln-code"><a href="#cb9-8"></a>}</span>
-<span id="cb9-9" class="hljs-ln-code"><a href="#cb9-9"></a><span class="kw">model</span> {</span>
-<span id="cb9-10" class="hljs-ln-code"><a href="#cb9-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb9-11" class="hljs-ln-code"><a href="#cb9-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb9-12" class="hljs-ln-code"><a href="#cb9-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb9-13" class="hljs-ln-code"><a href="#cb9-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="the-model" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="the-model">The model</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="declare-the-data" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">Declare the data</h2>
-<div class="sourceCode" id="cb10" data-code-line-numbers="1-4"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb10-1" class="hljs-ln-code"><a href="#cb10-1"></a><span class="kw">data</span> {</span>
-<span id="cb10-2" class="hljs-ln-code"><a href="#cb10-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb10-3" class="hljs-ln-code"><a href="#cb10-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb10-4" class="hljs-ln-code"><a href="#cb10-4"></a>}</span>
-<span id="cb10-5" class="hljs-ln-code"><a href="#cb10-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb10-6" class="hljs-ln-code"><a href="#cb10-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb10-7" class="hljs-ln-code"><a href="#cb10-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb10-8" class="hljs-ln-code"><a href="#cb10-8"></a>}</span>
-<span id="cb10-9" class="hljs-ln-code"><a href="#cb10-9"></a><span class="kw">model</span> {</span>
-<span id="cb10-10" class="hljs-ln-code"><a href="#cb10-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb10-11" class="hljs-ln-code"><a href="#cb10-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb10-12" class="hljs-ln-code"><a href="#cb10-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb10-13" class="hljs-ln-code"><a href="#cb10-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="declare-the-data" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="declare-the-data">Declare the data</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource stan number-lines code-with-copy"><code class="sourceCode stan"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">data</span> {</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb10-4"><a href="#cb10-4"></a>}</span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="kw">parameters</span> {</span>
+<span id="cb10-6"><a href="#cb10-6"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb10-7"><a href="#cb10-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb10-8"><a href="#cb10-8"></a>}</span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="kw">model</span> {</span>
+<span id="cb10-10"><a href="#cb10-10"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb10-11"><a href="#cb10-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb10-12"><a href="#cb10-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb10-13"><a href="#cb10-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="state-parameters" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">State parameters</h2>
-<div class="sourceCode" id="cb11" data-code-line-numbers="5-8"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb11-1" class="hljs-ln-code"><a href="#cb11-1"></a><span class="kw">data</span> {</span>
-<span id="cb11-2" class="hljs-ln-code"><a href="#cb11-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb11-3" class="hljs-ln-code"><a href="#cb11-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb11-4" class="hljs-ln-code"><a href="#cb11-4"></a>}</span>
-<span id="cb11-5" class="hljs-ln-code"><a href="#cb11-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb11-6" class="hljs-ln-code"><a href="#cb11-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb11-7" class="hljs-ln-code"><a href="#cb11-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb11-8" class="hljs-ln-code"><a href="#cb11-8"></a>}</span>
-<span id="cb11-9" class="hljs-ln-code"><a href="#cb11-9"></a><span class="kw">model</span> {</span>
-<span id="cb11-10" class="hljs-ln-code"><a href="#cb11-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb11-11" class="hljs-ln-code"><a href="#cb11-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb11-12" class="hljs-ln-code"><a href="#cb11-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb11-13" class="hljs-ln-code"><a href="#cb11-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="state-parameters" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="state-parameters">State parameters</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource stan number-lines code-with-copy"><code class="sourceCode stan"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">data</span> {</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb11-4"><a href="#cb11-4"></a>}</span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">parameters</span> {</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb11-8"><a href="#cb11-8"></a>}</span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="kw">model</span> {</span>
+<span id="cb11-10"><a href="#cb11-10"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb11-11"><a href="#cb11-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb11-12"><a href="#cb11-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb11-13"><a href="#cb11-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="write-the-likelihood-and-priors" class="slide level2" data-auto-animate="TRUE">
-<h2 data-id="quarto-animate-title">Write the likelihood and priors</h2>
-<div class="sourceCode" id="cb12" data-code-line-numbers="9-13"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb12-1" class="hljs-ln-code"><a href="#cb12-1"></a><span class="kw">data</span> {</span>
-<span id="cb12-2" class="hljs-ln-code"><a href="#cb12-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb12-3" class="hljs-ln-code"><a href="#cb12-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb12-4" class="hljs-ln-code"><a href="#cb12-4"></a>}</span>
-<span id="cb12-5" class="hljs-ln-code"><a href="#cb12-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb12-6" class="hljs-ln-code"><a href="#cb12-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb12-7" class="hljs-ln-code"><a href="#cb12-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb12-8" class="hljs-ln-code"><a href="#cb12-8"></a>}</span>
-<span id="cb12-9" class="hljs-ln-code"><a href="#cb12-9"></a><span class="kw">model</span> {</span>
-<span id="cb12-10" class="hljs-ln-code"><a href="#cb12-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb12-11" class="hljs-ln-code"><a href="#cb12-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb12-12" class="hljs-ln-code"><a href="#cb12-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb12-13" class="hljs-ln-code"><a href="#cb12-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="write-the-likelihood-and-priors" class="level2" data-auto-animate="TRUE">
+<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="write-the-likelihood-and-priors">Write the likelihood and priors</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource stan number-lines code-with-copy"><code class="sourceCode stan"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">data</span> {</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="dt">vector</span>[N] y;</span>
+<span id="cb12-4"><a href="#cb12-4"></a>}</span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="kw">parameters</span> {</span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb12-7"><a href="#cb12-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb12-8"><a href="#cb12-8"></a>}</span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="kw">model</span> {</span>
+<span id="cb12-10"><a href="#cb12-10"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb12-11"><a href="#cb12-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
+<span id="cb12-12"><a href="#cb12-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb12-13"><a href="#cb12-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
-<img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
-
-</div>
 </section>
-    </div>
-  </div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
-
-      // Full list of configuration options available at:
-      // https://revealjs.com/config/
-      Reveal.initialize({
-'controlsAuto': true,
-'previewLinksAuto': false,
-'smaller': false,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
- 
-        // Display controls in the bottom right corner
-        controls: false,
-
-        // Help the user learn the controls by providing hints, for example by
-        // bouncing the down arrow when they first encounter a vertical slide
-        controlsTutorial: false,
-
-        // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
-
-        // Visibility rule for backwards navigation arrows; "faded", "hidden"
-        // or "visible"
-        controlsBackArrows: 'faded',
-
-        // Display a presentation progress bar
-        progress: true,
-
-        // Display the page number of the current slide
-        slideNumber: false,
-
-        // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
-
-        // Add the current slide number to the URL hash so that reloading the
-        // page/copying the URL will return you to the same slide
-        hash: true,
-
-        // Start with 1 for the hash rather than 0
-        hashOneBasedIndex: false,
-
-        // Flags if we should monitor the hash and change slides accordingly
-        respondToHashChanges: true,
-
-        // Push each slide change to the browser history
-        history: true,
-
-        // Enable keyboard shortcuts for navigation
-        keyboard: true,
-
-        // Enable the slide overview mode
-        overview: true,
-
-        // Disables the default reveal.js slide layout (scaling and centering)
-        // so that you can use custom CSS layout
-        disableLayout: false,
-
-        // Vertical centering of slides
-        center: false,
-
-        // Enables touch navigation on devices with touch input
-        touch: true,
-
-        // Loop the presentation
-        loop: false,
-
-        // Change the presentation direction to be RTL
-        rtl: false,
-
-        // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
-
-        // Randomizes the order of slides each time the presentation loads
-        shuffle: false,
-
-        // Turns fragments on and off globally
-        fragments: true,
-
-        // Flags whether to include the current fragment in the URL,
-        // so that reloading brings you to the same fragment position
-        fragmentInURL: false,
-
-        // Flags if the presentation is running in an embedded mode,
-        // i.e. contained within a limited portion of the screen
-        embedded: false,
-
-        // Flags if we should show a help overlay when the questionmark
-        // key is pressed
-        help: true,
-
-        // Flags if it should be possible to pause the presentation (blackout)
-        pause: true,
-
-        // Flags if speaker notes should be visible to all viewers
-        showNotes: false,
-
-        // Global override for autoplaying embedded media (null/true/false)
-        autoPlayMedia: null,
-
-        // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: null,
-
-        // Specify the average time in seconds that you think you will spend
-        // presenting each slide. This is used to show a pacing timer in the
-        // speaker view
-        defaultTiming: null,
-
-        // Enable slide navigation via mouse wheel
-        mouseWheel: false,
-
-        // The display mode that will be used to show slides
-        display: 'block',
-
-        // Hide cursor if inactive
-        hideInactiveCursor: true,
-
-        // Time before the cursor is hidden (in ms)
-        hideCursorTime: 5000,
-
-        // Opens links in an iframe preview overlay
-        previewLinks: false,
-
-        // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'slide',
-
-        // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
-
-        // Transition style for full page slide backgrounds
-        // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'fade',
-
-        // Number of slides away from the current that are visible
-        viewDistance: 3,
-
-        // Number of slides away from the current that are visible on mobile
-        // devices. It is advisable to set this to a lower number than
-        // viewDistance in order to save resources.
-        mobileViewDistance: 2,
-
-        // The "normal" size of the presentation, aspect ratio will be preserved
-        // when the presentation is scaled to fit different resolutions. Can be
-        // specified using percentage units.
-        width: 1050,
-
-        height: 700,
-
-        // Factor of the display size that should remain empty around the content
-        margin: 0.1,
-
-        math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
-        // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
-
-          RevealMath,
-          RevealNotes,
-          RevealSearch,
-          RevealZoom
-        ]
-      });
-    </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
-    <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
       }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        target: function(trigger) {
-          return trigger.previousElementSibling;
-        }
-      });
-      clipboard.on('success', function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      });
-      function tippyHover(el, contentFn) {
-        const config = {
-          allowHTML: true,
-          content: contentFn,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'quarto-reveal',
-          placement: 'bottom-start'
-        };
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          return note.innerHTML;
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
-          });
-        }
-      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
     });
-    </script>
-    
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
 
 </body></html>
