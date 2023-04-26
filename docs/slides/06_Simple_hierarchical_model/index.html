@@ -1,8 +1,32 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+  <meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
+  <title>Modèles hiérarchiques pour les sciences de la vie - ‘Simple’ hierarchical models</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -631,12 +655,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="how-many-levels-9">How many levels ?</h2>
 <p>So, what to do if the number of level is not high enough for your comfort ?</p>
 <p>You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.</p>
-<p>How does this translate mathematically, with what we have seen so far</p>
-</section>
-<section id="hierarchy-on-the-intercept-3" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-3">Hierarchy on the intercept</h2>
-<section id="focus-on-the-mean" class="level3">
-<h3 class="anchored" data-anchor-id="focus-on-the-mean">Focus on the mean</h3>
+<p>How does this translate mathematically, with what we have seen so far ?</p>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="hierarchy-on-the-intercepts-mean" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
 <div style="font-size: 0.7em">
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
 <p><span class="math display">\[y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
@@ -644,11 +667,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance.</p>
 </div>
 </section>
-</section>
-<section id="hierarchy-on-the-intercept-4" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-4">Hierarchy on the intercept</h2>
-<section id="focus-on-the-mean-1" class="level3">
-<h3 class="anchored" data-anchor-id="focus-on-the-mean-1">Focus on the mean</h3>
+<section id="hierarchy-on-the-intercepts-mean-1" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
 <div style="font-size: 0.7em">
 <p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})\]</span> When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f[l]}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f[l]}\)</span>.</p>
 <p>Technically, we can sample all <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> independently, however, using multivariate Gaussian distribution, we can sample the <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span> for all levels of the factor in one go as</p>
@@ -659,11 +679,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 </div>
 </section>
-</section>
-<section id="hierarchy-on-the-intercept-5" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-5">Hierarchy on the intercept</h2>
-<section id="focus-on-the-mean-2" class="level3">
-<h3 class="anchored" data-anchor-id="focus-on-the-mean-2">Focus on the mean</h3>
+<section id="hierarchy-on-the-intercepts-mean-2" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
 <div style="font-size: 0.7em">
 <p>The structure of matrix <span class="math inline">\(\mathbf{D}_f\)</span> can be considered in two different ways in</p>
 <p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span></p>
@@ -680,14 +697,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         \end{bmatrix}\]</span></p>
 </div>
 </section>
-</section>
-<section id="hierarchy-on-the-intercept-6" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchy-on-the-intercept-6">Hierarchy on the intercept</h2>
-<section id="focus-on-the-mean-3" class="level3">
-<h3 class="anchored" data-anchor-id="focus-on-the-mean-3">Focus on the mean</h3>
+<section id="hierarchy-on-the-intercepts-mean-3" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
 <div style="font-size: 0.7em">
 <p>However, it can be assumed to be all the same variance regardless of the group considered</p>
-<div style="font-size: 0.6em">
+<div style="font-size: 0.68em">
 <p><span class="math display">\[\mathbf{D}_f = \begin{bmatrix}
                 \sigma^2_{f} &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
                 0 &amp; \sigma^2_{f} &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
@@ -697,258 +711,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             0 &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; \sigma^2_{f}\\
         \end{bmatrix}\]</span></p>
 </div>
-<p>In this case,</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span></p>
-<p>can be rewritten as <span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})\]</span></p>
+<p>In this case, <span class="math inline">\(\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\)</span> can be rewritten as <span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})\]</span> <strong>Note</strong>: This is essentially the same thing as a one-way analysis of variance.</p>
 </div>
 </section>
-</section>
-<section id="y-1-fg" class="level2">
-<h2 class="anchored" data-anchor-id="y-1-fg"><code>y ~ (1 | f/g)</code></h2>
-<div style="font-size: 0.7em">
-<p>Other notation used : <code>(1 | f) + (1 | f:g)</code></p>
-<p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
-<p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f[l_f]} + b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes or when the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
-<p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0, \begin{bmatrix}
-                                  \sigma^2_f &amp; 0\\
-                                  0&amp; \sigma^2_{g\in f}\\
-                                \end{bmatrix}
-                                \right)\]</span></p>
-</div>
-</section>
-<section id="y-1-fg-1" class="level2">
-<h2 class="anchored" data-anchor-id="y-1-fg-1"><code>y ~ (1 | f/g)</code></h2>
-<section id="stan-code-for-this-model-2" class="level3">
-<h3 class="anchored" data-anchor-id="stan-code-for-this-model-2">Stan code for this model</h3>
+<section id="hierarchy-on-the-intercepts-mean-4" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
+<h3 id="stan-code">Stan code</h3>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>For Andrew?</p>
 </div>
 </section>
-</section>
-<section id="y-1-fg-2" class="level2">
-<h2 class="anchored" data-anchor-id="y-1-fg-2"><code>y ~ (1 | f/g)</code></h2>
-<div class="cell" data-layout-align="center">
+<section id="hierarchy-on-the-intercepts-mean-5" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
 
-</div>
-</section>
-<section id="y-1-f-1-g" class="level2">
-<h2 class="anchored" data-anchor-id="y-1-f-1-g"><code>y ~ (1 | f) + (1 | g)</code></h2>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="hierarchy-on-the-slopes-mean" class="slide level2">
+<h2>Hierarchy on the slope’s mean</h2>
 <div style="font-size: 0.7em">
-<p>Other notation used : <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
-<p>This model assumes there is a hierarchy that varies among the two factors.</p>
-<p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the interaction the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> and the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> changes.</p>
-<p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
-                                \begin{bmatrix}
-                                  \sigma^2_f &amp; \sigma_f\sigma_g\\
-                                  \sigma_f\sigma_g&amp; \sigma^2_g\\
-                                \end{bmatrix}
-                                \right)\]</span></p>
+<p>Developping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_{f_i[l]}x_i + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})\]</span> In words, this means that all the samples <strong>within</strong> the <span class="math inline">\(l^\text{th}\)</span> level of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>.</p>
+<p>By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance.</p>
 </div>
 </section>
-<section id="y-1-f-1-g-1" class="level2">
-<h2 class="anchored" data-anchor-id="y-1-f-1-g-1"><code>y ~ (1 | f) + (1 | g)</code></h2>
-<p>This model has a number interesting properties</p>
-<ul>
-<li>It does <strong>not</strong> assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.</li>
-<li>If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)</li>
-<li>This can be generalized to as many factors as we want. We will see how this can be useful later.</li>
-</ul>
-</section>
-<section id="y-x-x-g" class="level2">
-<h2 class="anchored" data-anchor-id="y-x-x-g"><code>y ~ x + (x || g)</code></h2>
-</section>
-<section id="second" class="level2">
-<h2 class="anchored" data-anchor-id="second">second</h2>
-<div class="r-fit-text">
-<p>Test your model</p>
-</div>
-</section>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
-<p>img:</p>
-<p><img src="img/bg.jpg" class="img-fluid"></p>
-<p>it is a landscape</p>
-</section>
-<section id="section-1" class="level2" data-auto-animate="true">
-<h2 data-auto-animate="true" class="anchored" data-anchor-id="section-1"></h2>
-<div style="margin-top: 100px;">
-<p>check with simulations</p>
-</div>
-</section>
-<section id="section-2" class="level2" data-auto-animate="true">
-<h2 data-auto-animate="true" class="anchored" data-anchor-id="section-2"></h2>
+<section id="hierarchy-on-the-slopes-mean-1" class="slide level2">
+<h2>Hierarchy on the slope’s mean</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="hierarchy-on-the-slopes-mean-2" class="slide level2">
+<h2>Hierarchy on the slope’s mean</h2>
+<h3 id="stan-code-1">Stan code</h3>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
-<p>check with simulations</p>
+<p>For Andrew?</p>
 </div>
 </section>
-<section id="choose-parameters" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="choose-parameters">choose parameters</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="make-up-an-x-variable" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="make-up-an-x-variable">make up an X variable</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="calculate-the-average" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="calculate-the-average">calculate the average</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="simulate-some-observations" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="simulate-some-observations">simulate some observations</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="tracking-the-estimated-parameters" class="slide level2">
+<h2>Tracking the estimated parameters</h2>
+<div style="font-size: 0.8em;">
+<p>As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.</p>
+<p>However, we need to be careful because the notation used can play trick on us. This is especially true when using matrix notation.</p>
+<p>For example, in</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})\]</span> the number of levels are not explicitly defined and it is not clear if <span class="math inline">\(\mathbf{D}_{f[l]}\)</span> includes the same variance value on the diagonal or different ones.</p>
+<p>In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using.</p>
 </div>
 </section>
-<section id="finally-visualize" class="level2">
-<h2 class="anchored" data-anchor-id="finally-visualize">finally, visualize</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-</section>
-<section id="here-it-is-all-on-one-slide" class="level2">
-<h2 class="anchored" data-anchor-id="here-it-is-all-on-one-slide">here it is all on one slide</h2>
-<div class="cell" data-output-location="column">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-</section>
-<section id="or-we-can-present-the-code-and-results-separately" class="level2">
-<h2 class="anchored" data-anchor-id="or-we-can-present-the-code-and-results-separately">Or we can present the code and results separately</h2>
-<div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">The figure</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>yintercept <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fl">1.3</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>obs_error <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> yintercept <span class="sc">+</span> slope <span class="sc">*</span> x</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> y_mean, <span class="at">sd =</span> obs_error)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="another-equation" class="level2">
-<h2 class="anchored" data-anchor-id="another-equation">another equation</h2>
-<p><span class="math display">\[
-2 + 4 = 6
-\]</span></p>
-</section>
-<section id="the-equation" class="level2">
-<h2 class="anchored" data-anchor-id="the-equation">The equation</h2>
-<p><span class="math display">\[
-\begin{align}
-y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &amp;= a + bx \\
-\end{align}
-\]</span></p>
-</section>
-<section id="the-model" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="the-model">The model</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="declare-the-data" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="declare-the-data">Declare the data</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource stan number-lines code-with-copy"><code class="sourceCode stan"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">data</span> {</span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb10-4"><a href="#cb10-4"></a>}</span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb10-6"><a href="#cb10-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb10-7"><a href="#cb10-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb10-8"><a href="#cb10-8"></a>}</span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="kw">model</span> {</span>
-<span id="cb10-10"><a href="#cb10-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb10-11"><a href="#cb10-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb10-12"><a href="#cb10-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb10-13"><a href="#cb10-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="state-parameters" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="state-parameters">State parameters</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource stan number-lines code-with-copy"><code class="sourceCode stan"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">data</span> {</span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb11-4"><a href="#cb11-4"></a>}</span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb11-6"><a href="#cb11-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb11-7"><a href="#cb11-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb11-8"><a href="#cb11-8"></a>}</span>
-<span id="cb11-9"><a href="#cb11-9"></a><span class="kw">model</span> {</span>
-<span id="cb11-10"><a href="#cb11-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb11-11"><a href="#cb11-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb11-12"><a href="#cb11-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb11-13"><a href="#cb11-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="write-the-likelihood-and-priors" class="level2" data-auto-animate="TRUE">
-<h2 data-auto-animate="TRUE" class="anchored" data-anchor-id="write-the-likelihood-and-priors">Write the likelihood and priors</h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource stan number-lines code-with-copy"><code class="sourceCode stan"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">data</span> {</span>
-<span id="cb12-2"><a href="#cb12-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="dt">vector</span>[N] y;</span>
-<span id="cb12-4"><a href="#cb12-4"></a>}</span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="kw">parameters</span> {</span>
-<span id="cb12-6"><a href="#cb12-6"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb12-8"><a href="#cb12-8"></a>}</span>
-<span id="cb12-9"><a href="#cb12-9"></a><span class="kw">model</span> {</span>
-<span id="cb12-10"><a href="#cb12-10"></a>  y ~ normal(mu, sigma);</span>
-<span id="cb12-11"><a href="#cb12-11"></a>  mu ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);</span>
-<span id="cb12-12"><a href="#cb12-12"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb12-13"><a href="#cb12-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="choosing-the-right-model" class="slide level2">
+<h2>Choosing the right model</h2>
+<p>Although these different models are mathematically quite similar, they approach very different biological questions.</p>
+<p>A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.</p>
+<p>It is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward.</p>
 
 
+<img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
+
+</div>
 </section>
 
 </main> <!-- /main -->

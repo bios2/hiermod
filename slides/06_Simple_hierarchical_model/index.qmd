@@ -549,10 +549,11 @@ So, what to do if the number of level is not high enough for your comfort ?
 
 You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.
 
-How does this translate mathematically, with what we have seen so far
+How does this translate mathematically, with what we have seen so far ?
 
-## Hierarchy on the intercept
-### Focus on the mean
+![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
+
+## Hierarchy on the intercept's mean
 
 ::: {style="font-size: 0.7em"}
 $$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
@@ -567,8 +568,7 @@ In words, this means that all the samples **within** the $l^\text{th}$ level of 
 By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance. 
 :::
 
-## Hierarchy on the intercept
-### Focus on the mean
+## Hierarchy on the intercept's mean
 
 ::: {style="font-size: 0.7em"}
 Let's take a deeper look at 
@@ -585,8 +585,7 @@ where
 
 :::
 
-## Hierarchy on the intercept
-### Focus on the mean
+## Hierarchy on the intercept's mean
 
 ::: {style="font-size: 0.7em"}
 The structure of matrix $\mathbf{D}_f$ can be considered in two different ways in 
@@ -606,13 +605,12 @@ $$\mathbf{D}_f = \begin{bmatrix}
 		\end{bmatrix}$$
 :::
 
-## Hierarchy on the intercept
-### Focus on the mean
+## Hierarchy on the intercept's mean
 
 ::: {style="font-size: 0.7em"}
 However, it can be assumed to be all the same variance regardless of the group considered 
 
-::: {style="font-size: 0.6em"}
+::: {style="font-size: 0.68em"}
 $$\mathbf{D}_f = \begin{bmatrix}
 				\sigma^2_{f} & 0 & \dots & 0 & \dots & 0\\
 				0 & \sigma^2_{f} & \dots & 0 & \dots & 0\\
@@ -623,288 +621,185 @@ $$\mathbf{D}_f = \begin{bmatrix}
 		\end{bmatrix}$$
 :::
 
-In this case, 
-
-$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
-
+In this case, $\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$
 can be rewritten as 
 $$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})$$
-
-
-:::
-
-
-
-
-
-
-
-
-
-
-
-
-## `y ~ (1 | f/g)`
-
-::: {style="font-size: 0.7em"}
-Other notation used : `(1 | f) + (1 | f:g)`
-
-This model assumes there is a hierarchy that varies among the levels of factor `f` and among the levels of factor `g` but only within the levels of factor `f`.
-
-Mathematically, it can be translated to 
-
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
-or 
-
-$$y_i = b_{f[l_f]} + b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that the model values $b$ will change for a sample $i$ only when the level $l_f$ of the factor $f$ changes or when the level $l_g$ of the factor $g$ **within** the level $l_f$ of the factor $f$ changes. 
-
-This is because in this model
-
-$$\mathbf{b} \sim \mathcal{N}\left(0, \begin{bmatrix}
-                                  \sigma^2_f & 0\\
-                                  0& \sigma^2_{g\in f}\\
-                                \end{bmatrix}
-                                \right)$$
+**Note**: This is essentially the same thing as a one-way analysis of variance.
 
 :::
 
-
-## `y ~ (1 | f/g)`
-### Stan code for this model
+## Hierarchy on the intercept's mean
+### Stan code
 
 ::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
 For Andrew?
 :::
 
-## `y ~ (1 | f/g)`
+## Hierarchy on the intercept's mean
+
 ```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-# Stuff
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
+
+val1 <- seq(-2, 2, length = 200)
+marginal1 <- dnorm(val1, mean = 0, sd = 0.25)
+
+val2 <- seq(-3, 3, length = 200)
+marginal2 <- dnorm(val2, mean = -1, sd = 0.75)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(-marginal1,val1,
+     type = "n",
+     ylim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+polygon(x = c(-marginal,-marginal[1]),
+        y = c(val, val[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+polygon(x = c(-marginal1,-marginal1[1]),
+        y = c(val1, val1[1]) ,
+        col = rgb(0,1,0, 0.5),border = NA)
+
+polygon(x = c(-marginal2,-marginal2[1]),
+        y = c(val2, val2[1]) ,
+        col = rgb(1,0.65,0, 0.5),border = NA)
+
+lines(-marginal,val, lwd = 3)
+lines(-marginal1,val1, lwd = 3)
+lines(-marginal2,val2, lwd = 3)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(-3,3),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",) 
+
+set.seed(42)
+
+points(runif(200, 0, 5),
+       rnorm(200, mean = 1, sd = 0.5),
+       pch = 19, col = "blue") 
+
+points(runif(200, 0, 5),
+       rnorm(200, mean = 0, sd = 0.25),
+       pch = 19, col = "green") 
+
+points(runif(200, 0, 5),
+       rnorm(200, mean = -1, sd = 0.75),
+       pch = 19, col = "orange") 
+
+abline(h = c(1, 0, -1),
+       lwd = 8,
+       col = c("blue", "darkgreen", "orange"))
 ```
 
-## `y ~ (1 | f) + (1 | g)`
+## Hierarchy on the slope's mean
 
 ::: {style="font-size: 0.7em"}
-Other notation used : `y ~ 1 + (1 | f) + (1 | g)`
+Developping a hierarchy on the slope's mean translate mathematically in a very similar way as it does for the intercept. 
 
-This model assumes there is a hierarchy that varies among the two factors.
-
-Mathematically, it can be translated to 
-
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
 or 
 
-$$y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that the model values $b$ will change for a sample $i$ only when the interaction the level $l_f$ of the factor $f$ and the  level $l_g$ of the factor $g$ changes. 
+$$y_i = \beta_0 + \beta_{f_i[l]}x_i + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
 
-This is because in this model
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})$$
+In words, this means that all the samples **within** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
 
-$$\mathbf{b} \sim \mathcal{N}\left(0, 
-                                \begin{bmatrix}
-                                  \sigma^2_f & \sigma_f\sigma_g\\
-                                  \sigma_f\sigma_g& \sigma^2_g\\
-                                \end{bmatrix}
-                                \right)$$
+By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance. 
 :::
 
-## `y ~ (1 | f) + (1 | g)`
 
-This model has a number interesting properties
+## Hierarchy on the slope's mean
 
-- It does **not** assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.
-- If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)
-- This can be generalized to as many factors as we want. We will see how this can be useful later.
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
 
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
 
-## `y ~ x + (x || g)`
+val1 <- seq(-2, 2, length = 200)
+marginal1 <- dnorm(val1, mean = 0.5, sd = 0.25)
 
-## second
+val2 <- seq(-3, 3, length = 200)
+marginal2 <- dnorm(val2, mean = 0.25, sd = 0.75)
 
-::: r-fit-text
-Test your model
-:::
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(0,5),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     xaxs = "i",
+     yaxs = "i") 
 
-## 
+x <- runif(200, 0, 5)
+points(x,
+       rnorm(200, mean = x, sd = 0.5),
+       pch = 19, col = "blue") 
 
-img:
+points(x,
+       rnorm(200, mean = 1.25 * x, sd = 0.25),
+       pch = 19, col = "green") 
 
-![](img/bg.jpg)
+points(x,
+       rnorm(200, mean = 0.5 * x, sd = 0.75),
+       pch = 19, col = "orange") 
 
-it is a landscape
+abline(a = 0, b = 1,
+       lwd = 8,
+       col = "blue")
 
-##  {auto-animate="true"}
+abline(a = 0, b = 0.5,
+       lwd = 8,
+       col = "orange")
 
-::: {style="margin-top: 100px;"}
-check with simulations
-:::
+abline(a = 0, b = 1.25,
+       lwd = 8,
+       col = "darkgreen")
+```
 
-##  {auto-animate="true"}
+## Hierarchy on the slope's mean
+### Stan code
 
 ::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-check with simulations
+For Andrew?
 :::
 
-## choose parameters {auto-animate="TRUE"}
+## Tracking the estimated parameters
 
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-```
+::: {style="font-size: 0.8em;"}
+As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.
 
-## make up an X variable {auto-animate="TRUE"}
+However, we need to be careful because the notation used can play trick on us. This is especially true when using matrix notation. 
 
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-```
+For example, in 
 
-## calculate the average {auto-animate="TRUE"}
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})$$
+the number of levels are not explicitly defined and it is not clear if $\mathbf{D}_{f[l]}$ includes the same variance value on the diagonal or different ones. 
 
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-```
+In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using. 
 
-## simulate some observations {auto-animate="TRUE"}
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-## finally, visualize
-
-```{r}
-plot(y_obs ~ x)
-```
-
-## here it is all on one slide
-
-```{r}
-#| output-location: column
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-plot(y_obs, x)
-```
-
-## Or we can present the code and results separately
-
-::: panel-tabset
-### The code
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-### The figure
-
-```{r}
-plot(y_obs ~ x)
-```
 :::
 
-## another equation
+## Choosing the right model
 
-$$
-2 + 4 = 6
-$$
+Although these different models are mathematically quite similar, they approach very different biological questions. 
 
-## The equation
+A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.
 
-$$
-\begin{align}
-y  &\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &= a + bx \\
-\end{align}
-$$
+It is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward.
 
-## The model {auto-animate="TRUE"}
-
-``` stan
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
-
-## Declare the data {auto-animate="TRUE"}
-
-``` {.stan code-line-numbers="1-4"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
-
-## State parameters {auto-animate="TRUE"}
-
-``` {.stan code-line-numbers="5-8"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
-
-## Write the likelihood and priors {auto-animate="TRUE"}
-
-``` {.stan code-line-numbers="9-13"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
