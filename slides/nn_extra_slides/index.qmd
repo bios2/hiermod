@@ -238,3 +238,58 @@ $$\theta^{\alpha-1}(1-\theta)^{\beta-1}$$
 
 <https://en.wikipedia.org/wiki/Conjugate_prior>
 
+
+
+
+
+## Move this in another place 
+Technically, we can sample all $\boldsymbol{\beta}_{f[l]}$ independently, however, using multivariate Gaussian distribution, we can sample the $\boldsymbol{\beta}_{f}$ for all levels of the factor in one go as
+
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
+where 
+
+- $\boldsymbol{\mu}_{f}$ is a vector of $k$ means, one for each level of the factor
+- $\mathbf{D}_f$ is a $k\times k$ diagonal matrix with variance term on the diagonal
+
+## Hierarchy on the intercept's mean
+
+::: {style="font-size: 0.7em"}
+The structure of matrix $\mathbf{D}_f$ can be considered in two different ways in 
+
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
+
+Written in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different
+::: 
+::: {style="font-size: 0.6em"}
+$$\mathbf{D}_f = \begin{bmatrix}
+				\sigma^2_{f[1]} & 0 & \dots & 0 & \dots & 0\\
+				0 & \sigma^2_{f[2]} & \dots & 0 & \dots & 0\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  0 & 0 & \dots & \sigma^2_{f[l]} & \dots & 0\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f[k]}\\
+		\end{bmatrix}$$
+:::
+
+## Hierarchy on the intercept's mean
+
+::: {style="font-size: 0.7em"}
+However, it can be assumed to be all the same variance regardless of the group considered 
+
+::: {style="font-size: 0.68em"}
+$$\mathbf{D}_f = \begin{bmatrix}
+				\sigma^2_{f} & 0 & \dots & 0 & \dots & 0\\
+				0 & \sigma^2_{f} & \dots & 0 & \dots & 0\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  0 & 0 & \dots & \sigma^2_{f} & \dots & 0\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f}\\
+		\end{bmatrix}$$
+:::
+
+In this case, $\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$
+can be rewritten as 
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})$$
+**Note**: This is essentially the same thing as a one-way analysis of variance.
+
+:::

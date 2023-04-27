@@ -29,14 +29,14 @@ When we will have done this, it will be reasonably straight forward to move to n
 ::: {style="font-size: 0.68em"}
 As discuss yesterday, a linear model can be writen as
 
-$$\mathbf{y}\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma^2\mathbf{I})$$
+$$(\mathbf{y}|\mathbf{X}, \boldsymbol{\beta}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma\mathbf{y}^2\mathbf{I})$$
 
 where
 
 - $\mathbf{y}$ is a vector quantifying a response variable of length $n$
 - $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory varaibles) 
 - $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
-- $\sigma^2$ is a measure of variance of the error in the regression model
+- $\sigma_\mathbf{y}^2$ is a measure of variance of the error in the regression model
 - $\mathbf{I}$ is an $n \times n$ identity matrix 
 :::
 
@@ -45,7 +45,7 @@ where
 ::: {style="font-size: 0.8em"}
 A hierarchical model is a generalization of the linear model such that 
 
-$$(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})$$
+$$(\mathbf{y}|\mathbf{X},\mathbf{Z}, \boldsymbol{\beta}, \mathbf{b}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma_\mathbf{y}^2\mathbf{I})$$
 :::
 ::: {style="font-size: 0.68em"}
 
@@ -54,7 +54,7 @@ where
 - $\mathbf{y}$ is a vector quantifying a response variable of length $n$
 - $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory variables) 
 - $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
-- $\sigma^2$ is a measure of variance of the error in the regression model
+- $\sigma_\mathbf{y}^2$ is a measure of variance of the error in the regression model
 - $\mathbf{I}$ is an $n \times n$ identity matrix 
 
 :::: {style="color: blue"}
@@ -128,13 +128,6 @@ $$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
 :::
 
 ## Hierarchy on the intercept
-### Stan code for this model
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-For Andrew?
-:::
-
-## Hierarchy on the intercept
 
 ```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
 zones=matrix(c(1,2), ncol=2, byrow=TRUE)
@@ -192,14 +185,6 @@ This is because in this model
 
 $$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
 :::
-
-## Hierarchy on the slopes
-### Stan code for this model
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-For Andrew?
-:::
-
 
 ## Hierarchy on the slopes
 
@@ -556,83 +541,27 @@ How does this translate mathematically, with what we have seen so far ?
 ## Hierarchy on the intercept's mean
 
 ::: {style="font-size: 0.7em"}
-$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
 or 
 
 $$y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
 In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
 
-$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})$$
-In words, this means that all the samples **within** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+In words, this means that all the samples **among** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
 
 By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance. 
 :::
 
 ## Hierarchy on the intercept's mean
 
-::: {style="font-size: 0.7em"}
+::: {style="font-size: 1em"}
 Let's take a deeper look at 
-$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})$$
-When we study this way of sampling $\boldsymbol{\beta}_{f[l]}$, although our interest is more on $\mu_{f[l]}$, we also have to estimate the variance term $\sigma^2_{f[l]}$.
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+When we study this way of sampling $\boldsymbol{\beta}_{f[l]}$, although our interest is more on $\mu_{f}$, we also have to estimate the variance term $\sigma^2_{f}$.
 
-Technically, we can sample all $\boldsymbol{\beta}_{f[l]}$ independently, however, using multivariate Gaussian distribution, we can sample the $\boldsymbol{\beta}_{f}$ for all levels of the factor in one go as
-
-$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
-where 
-
-- $\boldsymbol{\mu}_{f}$ is a vector of $k$ means, one for each level of the factor
-- $\mathbf{D}_f$ is a $k\times k$ diagonal matrix with variance term on the diagonal
-
-:::
-
-## Hierarchy on the intercept's mean
-
-::: {style="font-size: 0.7em"}
-The structure of matrix $\mathbf{D}_f$ can be considered in two different ways in 
-
-$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
-
-Written in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different
-::: 
-::: {style="font-size: 0.6em"}
-$$\mathbf{D}_f = \begin{bmatrix}
-				\sigma^2_{f[1]} & 0 & \dots & 0 & \dots & 0\\
-				0 & \sigma^2_{f[2]} & \dots & 0 & \dots & 0\\
-				\vdots & \vdots & \ddots & \vdots & & \vdots\\
-			  0 & 0 & \dots & \sigma^2_{f[l]} & \dots & 0\\
-		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
-		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f[k]}\\
-		\end{bmatrix}$$
-:::
-
-## Hierarchy on the intercept's mean
-
-::: {style="font-size: 0.7em"}
-However, it can be assumed to be all the same variance regardless of the group considered 
-
-::: {style="font-size: 0.68em"}
-$$\mathbf{D}_f = \begin{bmatrix}
-				\sigma^2_{f} & 0 & \dots & 0 & \dots & 0\\
-				0 & \sigma^2_{f} & \dots & 0 & \dots & 0\\
-				\vdots & \vdots & \ddots & \vdots & & \vdots\\
-			  0 & 0 & \dots & \sigma^2_{f} & \dots & 0\\
-		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
-		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f}\\
-		\end{bmatrix}$$
-:::
-
-In this case, $\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$
-can be rewritten as 
-$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})$$
 **Note**: This is essentially the same thing as a one-way analysis of variance.
 
-:::
-
-## Hierarchy on the intercept's mean
-### Stan code
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-For Andrew?
 :::
 
 ## Hierarchy on the intercept's mean
@@ -708,14 +637,14 @@ abline(h = c(1, 0, -1),
 ::: {style="font-size: 0.7em"}
 Developping a hierarchy on the slope's mean translate mathematically in a very similar way as it does for the intercept. 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
 or 
 
 $$y_i = \beta_0 + \beta_{f_i[l]}x_i + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
 In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
 
-$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})$$
-In words, this means that all the samples **within** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+In words, this means that all the samples **among** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
 
 By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance. 
 :::
@@ -772,13 +701,6 @@ abline(a = 0, b = 1.25,
        col = "darkgreen")
 ```
 
-## Hierarchy on the slope's mean
-### Stan code
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-For Andrew?
-:::
-
 ## Tracking the estimated parameters
 
 ::: {style="font-size: 0.8em;"}
@@ -788,8 +710,8 @@ However, we need to be careful because the notation used can play trick on us. T
 
 For example, in 
 
-$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})$$
-the number of levels are not explicitly defined and it is not clear if $\mathbf{D}_{f[l]}$ includes the same variance value on the diagonal or different ones. 
+$$\mathbf{b}_{f}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})$$
+the number of levels are not explicitly defined and it is not clear if $ \mathbf{\Sigma}$ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or another values. 
 
 In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using. 
 

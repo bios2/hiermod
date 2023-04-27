@@ -7,7 +7,7 @@
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.2.335">
 
   <meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
   <title>Modèles hiérarchiques pour les sciences de la vie - Extra stuff</title>
@@ -592,6 +592,50 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 </div>
 </div>
 <p><a href="https://en.wikipedia.org/wiki/Conjugate_prior" class="uri">https://en.wikipedia.org/wiki/Conjugate_prior</a></p>
+</section>
+<section id="move-this-in-another-place" class="slide level2">
+<h2>Move this in another place</h2>
+<p>Technically, we can sample all <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> independently, however, using multivariate Gaussian distribution, we can sample the <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span> for all levels of the factor in one go as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span> where</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{\mu}_{f}\)</span> is a vector of <span class="math inline">\(k\)</span> means, one for each level of the factor</li>
+<li><span class="math inline">\(\mathbf{D}_f\)</span> is a <span class="math inline">\(k\times k\)</span> diagonal matrix with variance term on the diagonal</li>
+</ul>
+</section>
+<section id="hierarchy-on-the-intercepts-mean" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
+<div style="font-size: 0.7em">
+<p>The structure of matrix <span class="math inline">\(\mathbf{D}_f\)</span> can be considered in two different ways in</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\]</span></p>
+<p>Written in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different</p>
+</div>
+<div style="font-size: 0.6em">
+<p><span class="math display">\[\mathbf{D}_f = \begin{bmatrix}
+                \sigma^2_{f[1]} &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                0 &amp; \sigma^2_{f[2]} &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; &amp; \vdots\\
+              0 &amp; 0 &amp; \dots &amp; \sigma^2_{f[l]} &amp; \dots &amp; 0\\
+            \vdots &amp; \vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots\\
+            0 &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; \sigma^2_{f[k]}\\
+        \end{bmatrix}\]</span></p>
+</div>
+</section>
+<section id="hierarchy-on-the-intercepts-mean-1" class="slide level2">
+<h2>Hierarchy on the intercept’s mean</h2>
+<div style="font-size: 0.7em">
+<p>However, it can be assumed to be all the same variance regardless of the group considered</p>
+<div style="font-size: 0.68em">
+<p><span class="math display">\[\mathbf{D}_f = \begin{bmatrix}
+                \sigma^2_{f} &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                0 &amp; \sigma^2_{f} &amp; \dots &amp; 0 &amp; \dots &amp; 0\\
+                \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; &amp; \vdots\\
+              0 &amp; 0 &amp; \dots &amp; \sigma^2_{f} &amp; \dots &amp; 0\\
+            \vdots &amp; \vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots\\
+            0 &amp; 0 &amp; \dots &amp; 0 &amp; \dots &amp; \sigma^2_{f}\\
+        \end{bmatrix}\]</span></p>
+</div>
+<p>In this case, <span class="math inline">\(\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)\)</span> can be rewritten as <span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})\]</span> <strong>Note</strong>: This is essentially the same thing as a one-way analysis of variance.</p>
+</div>
 
 
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
