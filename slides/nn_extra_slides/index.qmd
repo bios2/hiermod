@@ -1,0 +1,240 @@
+---
+title: "Extra stuff"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
+date: "2023-02-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## Square matrix
+
+The square matrix has as many rows at it has columns 
+$$
+\mathbf{B} = \begin{bmatrix}
+				B_{11} & B_{12} & \dots & B_{1j} & \dots & B_{1n}\\
+				B_{21} & B_{22} & \dots & B_{2j} & \dots & B_{2n}\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  B_{i1} & B_{i2} & \dots & B_{ij} & \dots & B_{in}\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    B_{n1} & B_{n2} & \dots & B_{nj} & \dots & B_{nn}\\
+		\end{bmatrix}
+$$
+
+## Determinant of a matrix
+
+Not sure if it should be included or not
+
+## Eigenvectors and eigenvalues
+	
+::: {style="font-size: 0.9em"}
+Right eigenvector is :
+	
+$$\mathbf{A}\mathbf{w} = \lambda\mathbf{w}$$
+Left eigenvector is :
+	
+$$\mathbf{v}\mathbf{A} = \lambda\mathbf{v}$$
+	
+**Rules**
+
+- $\mathbf{A}$ has to be a square matrix
+- If $\mathbf{w}$ is an eigenvector of $\mathbf{A}$, so is $c\mathbf{w}$ for any value of $c \neq0$
+- The right eigenvector of $\mathbf{A}^T$ is the left eigenvector of $\mathbf{A}$
+- Eigenvectors are linearly independent
+:::
+
+## Positive definite matrix
+
+It is reasonably common when you build a hierarchical model to get an error message that state :
+
+:::{style="font-size: 0.8em"}
+`Error: Matrix X is not positive definite`
+:::
+
+or similarly
+
+:::{style="font-size: 0.8em"}
+`Error: Matrix X is not positive semi-definite`
+:::
+
+What does this mean ? Any idea ?
+
+## Positive (semi-)definite matrix
+### Nerdy mathematical definition
+
+**Positive definite matrix**
+
+$\mathbf{M}$ is a positive definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} > 0$
+
+**Positive semi-definite matrix**
+
+$\mathbf{M}$ is a positive semi-definite matrix if, for any real vector $\mathbf{z}$, $\mathbf{z}^t\mathbf{M}\mathbf{z} \ge 0$
+
+## Positive (semi-)definite matrix
+### Checking if a matrix is positive (semi-)definite
+
+The properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.
+
+All we have to do is look at the eigenvalue of a square matrix. 
+
+If all eigenvalues of a matrix $\mathbf{M}$ larger than 0, matrix $\mathbf{M}$ is positive definite.
+
+If all eigenvalues of a matrix $\mathbf{M}$ larger than or equal ro 0, matrix $\mathbf{M}$ is positive semi-definite.
+
+## Dot product
+$$\mathbf{v} \cdot \mathbf{x}= v_1x_1+v_2x_2+\dots + v_nx_n$$
+
+:::{style="color: blue;"}
+$$
+			\begin{bmatrix}
+				3 & 1\\
+			\end{bmatrix}
+			\cdot
+			\begin{bmatrix}
+				2\\ 5\\
+			\end{bmatrix} = 
+				3 \times  2 + 1 \times 5 = 11
+$$
+:::
+
+In R
+
+```{r}
+v <- c(3, 1)
+x <- c(2,5)
+sum(v * x)
+```
+
+
+## Solving systems of linear equation
+
+$$
+\begin{align*}
+		1 &= 3\beta_1 + 5\beta_2 - 4\beta_3 \\
+		0 &= \beta_1 - 2\beta_2 + 3\beta_3\\
+		1 &= 4\beta_1 + 6\beta_2 + 5\beta_3\\
+	\end{align*}
+$$
+$$
+\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta} 
+$$
+$$
+		\begin{bmatrix}
+			1\\ 0\\ 1\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			3 & 5 & -4\\
+			1 & -2 & 3\\
+			4 & 6 & 5 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			\beta_1\\ \beta_2\\ \beta_3\\
+		\end{bmatrix}
+$$
+
+## Solving systems of linear equation
+
+::: {style="font-size: 0.9em"}
+$$
+\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta} 
+$$
+$$
+		\begin{bmatrix}
+			1\\ 0\\ 1\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			3 & 5 & -4\\
+			1 & -2 & 3\\
+			4 & 6 & 5 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			\beta_1\\ \beta_2\\ \beta_3\\
+		\end{bmatrix}
+$$
+
+How do we mathematically solve for $\boldsymbol{\beta}$?
+
+$$
+	\begin{align*}
+		\mathbf{y} &= \mathbf{X}\boldsymbol{\beta}\\
+		\mathbf{X}^{-1}\mathbf{y} &= \mathbf{X}^{-1}\mathbf{X}\boldsymbol{\beta}\\
+		\mathbf{X}^{-1}\mathbf{y} &= \mathbf{I}\boldsymbol{\beta}\\
+		\mathbf{X}^{-1}\mathbf{y} &= \boldsymbol{\beta}\\
+	\end{align*}
+$$
+:::
+
+## Solving systems of linear equation
+
+::: {style="font-size: 0.9em"}
+$$
+\mathbf{y} \,\,\,\,\,\,\,\,\,\,\qquad \mathbf{X} \,\,\,\,\,\,\,\,\,\,\,\qquad \boldsymbol{\beta} 
+$$
+$$
+		\begin{bmatrix}
+			1\\ 0\\ 1\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			3 & 5 & -4\\
+			1 & -2 & 3\\
+			4 & 6 & 5 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			\beta_1\\ \beta_2\\ \beta_3\\
+		\end{bmatrix}
+$$
+
+How do we solve for $\boldsymbol{\beta}$ in R?
+
+```{r}
+X <- matrix(c(3, 1, 4, 5, -2, 6, -4, 3, 5), nrow = 3, ncol = 3)
+y <- c(1, 0, 1)
+
+(beta <- solve(X, y))
+```
+:::
+
+
+
+## A few words about the prior
+
+### Conjugate priors
+
+These types of priors are convenient to use because 
+
+- They are computationally faster to use
+- They can be interepreted as additional data
+
+#### Why are they useful?
+
+There is no need to write the likelihood down when using them. All that needs to be done is to sample them to obtain a parameter estimation.
+
+## A few words about the prior
+
+### Conjugate priors
+
+#### What does it mean to be of the same *functional form*?
+
+It means that both distribution have th same mathematical structure. 
+
+:::: {.columns}
+::: {.column width="50%"}
+**Binomial distribution**
+$$\theta^a(1-\theta)^b$$
+:::
+::: {.column width="50%"}
+**Beta distribution**
+$$\theta^{\alpha-1}(1-\theta)^{\beta-1}$$
+:::
+::::
+
+<https://en.wikipedia.org/wiki/Conjugate_prior>
+

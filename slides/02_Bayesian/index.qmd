@@ -1,0 +1,352 @@
+---
+title: "Bayesian modelling"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
+date: "2023-02-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## Frequentist
+::: {style="font-size: 0.8em"}
+
+In introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.
+
+Frequentists want to find the best model parameter(s) for the data at hand
+
+$$\text{Likelihood}\hspace{1.5cm}P(\text{Data}|\text{Model})$$
+
+They are interested in **maximizing** the Likelihood
+
+They need **data**
+
+### Estimating model parameters
+
+- Minimizing the sums of squares
+- Simulated annealing
+- Nelder-Mead Simplex
+- ...
+::: 
+
+
+## Bayesian
+
+::: {style="font-size: 0.75em"}
+Bayesians want to find how good the model parameter(s) are given some data
+
+$$\text{Posterior}\hspace{1.5cm}P(\text{Model}|\text{Data})$$
+
+They are interested in the **posterior** distribution
+
+They need **data** and **prior** information
+
+The general framework used in Bayesian modelling is 
+
+$$\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}$$
+
+### Estimating model parameters
+
+- Markov Chain Monte Carlo
+- Hamiltonian Monte Carlo
+- ...
+
+:::
+
+## Our way of thinking is Bayesian
+
+[![](../img/Fantastic_Beast.png){width=1000 height=500}](https://youtu.be/uoEnGiG9aWA?t=34)
+
+
+## A few words about the prior
+
+::: {style="font-size: 0.75em"}
+### Definition of prior probability
+
+ The **prior probability** informes us about the probability of the model being true *before* the current data is considered.
+
+### Types of priors
+
+#### "Uninformative"
+
+These priors are meant to bring very little information about the model
+
+#### Informative
+
+These priors bring information about the model that is available
+
+#### Conjugate
+
+These priors have the same functional form (mathematically speaking) as the likelihood
+:::
+
+## A few words about the prior
+
+### "Uninformative" priors
+
+:::::{style="font-size: 0.75em"}
+**Example** If we have no idea of how elevation influence sugar maple
+
+#### Gaussian distribution
+:::: {.columns}
+::: {.column width="50%"}
+$$f(x)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$
+::: 
+::: {.column width="50%"}
+$\mu = 0$
+
+$\sigma = \text{Large say 100}$
+:::
+::::
+:::::
+```{r, echo = FALSE, fig.width=5, fig.height=2, fig.align='center'}
+par(mar=c(0.5,5,0.5,0.5))
+couleur<-rainbow(5)
+curve(dnorm, -100, 100, n = 10000, col = couleur[1], xaxt = "n",
+      xlab = "", ylab = "Density", las = 1, cex.lab=1.5, lwd = 3)
+curve(dnorm(x,mean = 0, sd = 2), -1000, 1000, add=TRUE,
+      n=10000, col="orange", lwd = 3)
+curve(dnorm(x,mean = 0, sd = 5), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[3], lwd = 3)
+curve(dnorm(x,mean = 0, sd = 8), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[4], lwd = 3)
+curve(dnorm(x,mean = 0, sd = 10), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[5], lwd = 3)
+curve(dnorm(x,mean = 0, sd = 100), -1000, 1000, add=TRUE,
+      n=10000, lwd = 3)
+legend("topright",legend=c(expression(sigma==1),
+                           expression(sigma==2),
+                           expression(sigma==5),
+                           expression(sigma==8),
+                           expression(sigma==10),
+                           expression(sigma==100)),col=c(couleur[1],
+                                                   "orange",
+                                                   couleur[3:5],
+                                                   "black"),
+       lty=1, lwd=3)
+```
+
+
+## A few words about the prior
+
+### Informative priors
+
+:::::{style="font-size: 0.6em"}
+**Example** If we know that 
+  
+  - There are less sugar maples the higher we go
+  - The influence of elevation on sugar maple cannot be more than two folds
+
+#### Uniform distribution
+
+:::: {.columns}
+::: {.column width="50%"}
+$$f(x)=\left\{
+  \begin{array}{cl}
+    \frac{1}{b-a} & \text{for } x\in [a,b]\\
+    0 &\text{otherwise}\\
+  \end{array}
+\right.$$
+:::
+::: {.column width="50%"}
+  \item $a > -2$
+  
+  \item $b < 0$
+:::
+::::
+:::::
+
+```{r echo=FALSE, fig.width=5, fig.height=2, fig.align='center'}
+par(mar=c(2,5,0,0))
+curve(dunif(x,min = -2, max = 0), n=1000, -2.5, 0.5, xlab = "",
+      ylab = "Density", las = 1, cex.lab=1.5, lwd = 3)
+```
+
+## Estimating Bayesian model
+
+:::{style="font-size: 0.75em;"}
+As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.  
+
+### Typical reasons to favour MCMC
+
+- It is flexible
+- It can be applied to complex models such as models with multiple levels of hierarchy
+
+### Why should we learn about MCMC ?
+
+The goal of this course is **not** to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.
+:::
+
+## Markov Chain Monte Carlo (MCMC)
+
+:::{style="font-size: 0.75em;"}
+Historically, the developments of MCMC are intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.
+
+To explain what is an MCMC, let's imagine that we are interested in understanding the behaviour of the mallard (*Anas platyrhynchos*).
+:::
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg/1024px-Anas_platyrhynchos_male_female_quadrat.jpg){fig-align="center" width=10%}
+
+## Markov Chain Monte Carlo (MCMC)
+
+:::{style="font-size: 0.75em;"}
+For simplicity, let's assume that we are monitoring the behaviour of the mallard every minutes and that we are recording whether it is
+
+#### On land 
+
+![](https://ichef.bbci.co.uk/news/976/cpsprodpb/33B5/production/_127273231_comedy5.jpg){fig-align="center" width=30%}
+
+#### In the water
+
+![](https://img.bbg.org/large/41847802500.jpg){fig-align="center" width=20%}
+
+:::
+
+
+
+## Markov Chain Monte Carlo (MCMC)
+
+Using this information, we can draw diagram defining how the behaviour of the mallard changes at every time steps
+
+![](../img/DAG.png){fig-align="center"}
+
+## *Markov Chain* Monte Carlo (MCMC)
+
+:::{style="font-size: 0.75em;"}
+In a markov chain, we assume that we know how probable it is to go from one behaviour (land) to another (water)
+:::
+
+![](../img/DAG_Markov_chain.png){fig-align="center"}
+
+## Markov Chain *Monte Carlo* (MCMC)
+
+:::{style="font-size: 0.75em;"}
+In an MCMC, we assume that the likeliness of passing from one behaviour (land) to another (water) depends on a statistical distribution. 
+:::
+
+![](../img/DAG_Markov_chain_monte_Carlo.png){fig-align="center"}
+
+## Markov Chain Monte Carlo (MCMC)
+
+When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.
+
+Since we do not know what the "true" characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is. 
+
+## Markov Chain Monte Carlo (MCMC)
+
+MCMC relies on using many random samples to assess what the structure of the distribution is.
+
+![](../img/Drunken_walk.png){fig-align="center"}
+
+## Hamiltonian Monte Carlo
+
+Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the structure of the distribution is.
+
+![](https://www.westcoasttraveller.com/wp-content/uploads/2021/03/24581102_web1_210322-WCT-WestcoastSkateparks_1-800x533.jpg){fig-align="center" width=80%}
+
+## Sampling the parameter
+
+:::{style="font-size: 0.9em;"}
+In MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.
+
+Here is a rough procedure to follow:
+
+1. Perform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes
+2. Decide on a number of steps to run to obtain a result in a reasonable amount of time
+3. Run the algorithm again !
+4. Study the chain visually
+:::
+
+## Studying convergence
+
+```{r trace, fig.width = 10,fig.height = 7,echo=FALSE,eval=TRUE, fig.align='center'}
+set.seed(42) # The answer !
+par(mfrow=c(3,1),mar=c(2,2,3,0.5),oma=c(5,5,0,0))
+
+perfect <- rnorm(5000,mean=3)
+plot(perfect,type="l", ylab="",xlab="",las=1,cex.axis=2, col= "red")
+title("Perfect",cex.main=3)
+
+auto <- as.vector(arima.sim(n=5000,list(ar=c(0.95)),mean=0.1))
+plot(auto,type="l", ylab="",xlab="",las=1,cex.axis=2, col= "blue")
+title("Needs to be ran longer",cex.main=3)
+
+burn <- 3/(1+(1:5000)^(-0.5))+rnorm(5000,sd=0.15)
+plot(burn,type="l", ylab="",xlab="",las=1,cex.axis=2, col= "darkgreen")
+title("Needs burn-in or a better starting value",cex.main=3)
+
+mtext("Steps",side=1,cex=3,outer=TRUE,line=1.75)
+mtext("Parameter",side=2,cex=3,outer=TRUE,line=1.25)
+```
+
+## Studying convergence
+
+```{r thining1 ,fig.width = 10, fig.height = 3.5,echo=FALSE,eval=TRUE}
+set.seed(42) # The answer !
+par(mar=c(5,5,3,0.5))
+
+plot(auto, type = "l", xlab = "Steps",  ylab = "Parameters", 
+     las=1, cex.axis = 1.2, cex.lab = 3, col= "blue")
+```
+
+
+## Studying convergence
+
+:::{style="font-size: 0.7em;"}
+If we ran the same MCMC as above but instead for 50000 steps, we obtain
+:::
+
+```{r thining2,fig.width = 10, fig.height = 3.5,echo=FALSE,eval=TRUE}
+par(mar=c(5,5,3,0.5))
+
+autoLong <- as.vector(arima.sim(n=50000,list(ar=c(0.95)),mean=0.1))
+plot(autoLong, type = "l", xlab = "Steps", 
+     ylab = "Parameter", las = 1, cex.axis = 1.2, cex.lab = 3, 
+     col = "blue")
+#plot(autoLong[seq(10,50000,by=10)], type = "l", xlab = "Steps", 
+#     ylab = "Parameter", las = 1, cex.axis = 1.2, cex.lab = 3, 
+#     col = "blue")
+```
+
+:::{style="font-size: 0.7em;"}
+**Note** It is also possible to *thin* (record only the $n^{\text{th}}$ iteration), but it is better to keep all iterations when possible. Actually, *thinning* should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer.
+:::
+
+## Studying convergence
+#### Burn-in 
+
+Burn-in is throwing away some iterations at the beginning of the MCMC run 
+
+```{r, burnin1 ,fig.width = 10,fig.height = 3.5,echo=FALSE,eval=TRUE}
+par(mar=c(5,5,3,0.5))
+
+plot(burn, type = "l", xlab = "Steps",  ylab = "Parameter", 
+     las=1, cex.axis = 1.2, cex.lab = 3, col= "darkgreen")
+
+abline(v=500,col="red",lwd=3)
+```
+
+## Studying convergence
+#### Burn-in 
+
+After burn-in, we obtain
+
+\vspace{-0.2cm}
+
+```{r, burnin2 ,fig.width = 10,fig.height = 3.5,echo=FALSE,eval=TRUE}
+par(mar=c(5,5,3,0.5))
+
+burnin<-burn
+burnin[1:500]<-NA
+
+plot(burnin, type = "l", xlab = "Steps",
+     ylab = "Parameter", las=1, cex.axis = 1.2, cex.lab = 3, 
+     col= "darkgreen")
+```

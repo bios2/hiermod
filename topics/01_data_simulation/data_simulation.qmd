@@ -1,0 +1,98 @@
+---
+title: "Data simulation"
+description: |
+  Expressing yourself through made-up numbers.
+execute:
+  freeze: true
+format:
+  html:
+    code-tools: true
+---
+
+## Why simulate data?
+
+Why would you want to? there are a few good reasons:
+
+1. Understand your priors. By simulating data from a model we get an idea of what priors actually mean scientifically. With all but the simplest models, this is essential 
+2. Demonstrate your understanding of the model. If you can't simulate data from a model, you probably don't understand it!
+3. Validate that the model works correctly. If you can recover parameters when you know the truth, then we have more confidence that it will work correctly on real data.
+
+## Watching for birds
+
+Let's start by simulating a simple dataset with one parameter: the number of birds each of us is going to see on a hike today. 
+
+What kind of numbers do we expect to get? what is a reasonable limit to how many we would see? 
+
+### Simulation in R 
+
+let's simulate from a poisson distribution. 
+As you probably know, the poisson in R is just `rpois`. 
+Every statistical distribution that is in R (which is a lot! almost all! ) has four functions. 
+For a distribution called `dist`, they are:
+
+* `rdist` = the distribution functions
+* `qdist` = the quantile functions
+* `pdist` = the probability density function
+* `ddist` the density function
+
+
+
+Let's begin by simulating data in R
+
+```{r}
+n_people <- 23
+observations <- rpois(n_people, lambda = 20)
+
+hist(observations)
+
+```
+
+We can do the same process in the programming language Stan
+
+```{r}
+#| class-output: stan
+
+library(cmdstanr)
+
+poisson_simulation <- cmdstan_model(stan_file = "topics/01_data_simulation/poisson_simulation.stan")
+
+poisson_simulation
+```
+
+
+* compare and contrast the R and Stan formulations
+* intro to Stan syntax
+
+```{r}
+poisson_simulation$sample(data = list(n_people = 23,
+                                      avg_observed = 19.5),
+                          fixed_param = TRUE)
+```
+
+
+## Write down model 
+
+```{r}
+
+```
+
+## Fit model to a simulation
+
+
+## learning how to plot a posterior
+
+Now we can move on to the second step outlined above: we can just fit the same data to our model, vice versa, and see if we can recover that parameter.
+
+
+## R based alternatives
+
+In R, there are several ways to do it: first, we can use R do it in two ways: fitdistr, and  glm. 
+
+Then we do the same thing in Stan. 
+
+Then we look to see if we have recovered our parameter. 
+
+The next steop in visualization, which we also do with this simple model. 
+
+
+

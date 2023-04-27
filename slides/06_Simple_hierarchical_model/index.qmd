@@ -1,0 +1,805 @@
+---
+title: "'Simple' hierarchical models"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
+date: "2023-02-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## "Simple" hierarchical model
+
+Here, we use the term "simple" in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others. 
+
+Futhermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory. 
+
+When we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model.
+
+
+## A (very !) general formulation
+
+::: {style="font-size: 0.68em"}
+As discuss yesterday, a linear model can be writen as
+
+$$\mathbf{y}\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma^2\mathbf{I})$$
+
+where
+
+- $\mathbf{y}$ is a vector quantifying a response variable of length $n$
+- $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory varaibles) 
+- $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
+- $\sigma^2$ is a measure of variance of the error in the regression model
+- $\mathbf{I}$ is an $n \times n$ identity matrix 
+:::
+
+## A (very !) general formulation
+
+::: {style="font-size: 0.8em"}
+A hierarchical model is a generalization of the linear model such that 
+
+$$(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})$$
+:::
+::: {style="font-size: 0.68em"}
+
+where
+
+- $\mathbf{y}$ is a vector quantifying a response variable of length $n$
+- $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory variables) 
+- $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
+- $\sigma^2$ is a measure of variance of the error in the regression model
+- $\mathbf{I}$ is an $n \times n$ identity matrix 
+
+:::: {style="color: blue"}
+- $\mathbf{Z}$ is another matrix of explanatory variables with $n$ rows (samples) and $q$ columns (explanatory variables) 
+- $\mathbf{b}$ is a vector $q$ pararameters weighting the importance of each explanatory variables in $\mathbf{Z}$
+::::
+:::
+
+## A (very !) general formulation
+
+::: {style="font-size: 0.8em"}
+A hierarchical model is a generalization of the linear model such that 
+
+$$(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})$$
+What is also noticeable in this model is the conditional relationship between $\mathbf{y}$ and $\mathbf{b}$.
+
+Specifically, in this formulation, 
+
+$$\mathbf{b}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})$$
+where $\mathbf{\Sigma}$ is a covariance matrix.
+
+Based on this  general formulation, we can now define all unconstrained hierarchical models.
+:::
+
+
+## The "`|`"
+
+::: {style="font-size: 0.8em"}
+Most of you have probably already used the packages `lme4` or `brms` to build hierarchical models and so you have used the `|` to include a hierachy in your model.
+
+But do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?
+:::
+
+![](https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png){fig-align="center" width=20%}
+
+::: {style="font-size: 0.8em"}
+Let's look at different `lme4` models to learn about some basic (and not so basic!) hierarchical models.
+:::
+
+## A bit of notation
+
+Before we get into writing math, we need to define a bit of notation in addition of the one we have used so far.
+
+Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript. 
+
+We will use square brackets to define the level of interest
+
+### Example
+
+$$\mathbf{Z}_{f[l]}$$
+This means that, within $\mathbf{Z}$, we focus on $l^{\text{th}}$ level of factor $f$.
+
+## Hierarchy on the intercept
+
+::: {style="font-size: 0.8em"}
+`lme4` notation used `y ~ (1 | f)` or `y ~ 1 + (1 | f)`
+
+This model assumes there is a hierarchy solely on the intercept.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+or 
+
+$$y_i = b_{{f_i[l]}} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, this means that the model values $b$ will change for a sample $i$ only when the level $l$ of the factor $f$ changes. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+:::
+
+## Hierarchy on the intercept
+### Stan code for this model
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+For Andrew?
+:::
+
+## Hierarchy on the intercept
+
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(-marginal,val,
+     type = "n",
+     ylim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+polygon(x = c(-marginal,-marginal[1]),
+        y = c(val, val[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(-marginal,val, lwd = 3)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(-3,3),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",) 
+
+set.seed(42)
+abline(h = rnorm(30, mean = 1, sd = 0.5),
+       lwd = 3,
+       col = "blue")
+```
+
+## Hierarchy on the slopes
+
+::: {style="font-size: 0.7em"}
+`lme4` notation : `y ~ 1 + (x | f)`
+
+This model assumes there is a hierarchy on the parameters associated to variable `x`.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f$$
+or 
+
+$$y_i = \beta_0 + b_{f[l_f]}z_i + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, this means that the weight on variable $z$ will change for a sample $i$ only when the level $l$ of the factor $f$ changes. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+:::
+
+## Hierarchy on the slopes
+### Stan code for this model
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+For Andrew?
+:::
+
+
+## Hierarchy on the slopes
+
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(0,5),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     xaxs = "i",
+     yaxs = "i") 
+
+set.seed(42)
+for(i in 1:30){
+abline(a = 0, b = rnorm(1, mean = 1, sd = 0.2),
+       lwd = 3,
+       col = "blue")
+}
+
+marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
+
+par(xpd = TRUE)
+
+polygon(x = c(marginalRot[,1] + 1.5,marginalRot[1,1] + 1.5),
+        y = c(marginalRot[,2] + 2.5, marginalRot[1,2] + 2.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+polygon(x = c(marginalRot[,1] + 2.5,marginalRot[1,1] + 2.5),
+        y = c(marginalRot[,2] + 3.5, marginalRot[1,2] + 3.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+polygon(x = c(marginalRot[,1] + 3.5,marginalRot[1,1] + 3.5),
+        y = c(marginalRot[,2] + 4.5, marginalRot[1,2] + 4.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(marginalRot[,1]+1.5, marginalRot[,2] + 2.5, lwd = 3)
+lines(marginalRot[,1]+2.5, marginalRot[,2] + 3.5, lwd = 3)
+lines(marginalRot[,1]+3.5, marginalRot[,2] + 4.5, lwd = 3)
+par(xpd = FALSE)
+```
+
+## Hierarchy on intercept and slope
+
+Mathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?
+
+![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
+
+## Hierarchy on intercept and slope
+
+Answer : Very little !
+
+:::{style="font-size: 0.8em"}
+
+Actually, if we return the way $\mathbf{b}$ is defined we see that in both case it is defined as 
+
+$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+with the sole difference that $\mathbf{b}$ linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.
+
+Well... Actually... When a hierarchy is applied on the intercept it is technically associated to a **constant** explanatory variable.
+:::
+
+## How many levels ?
+
+A common question that often gets asked is : 
+
+"How many level is enough ?"
+
+This is a simple questions that sadly does not have a simple answer.
+
+![](https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png){fig-align="center" width=20%}
+
+## How many levels ?
+
+In these types of models we are interested in estimating the variance parameter $\sigma^2_f$ in 
+
+$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+to get the best estimation of $\mathbf{b}$. 
+
+So, another way to ask this question is "What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?" 
+
+However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Is 3 enough ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+
+set.seed(42)
+sampl <- rnorm(3, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Maybe 5 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(5, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Or 10 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(10, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Or 50 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(50, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Or 100 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(100, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+
+## How many levels ?
+
+What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+### Or 1000 ?
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE, fig.width=8,  fig.height=7, fig.align='center'}
+val <- seq(1, 5, length = 200)
+marginal <- dnorm(val, mean = 3, sd = 0.5)
+
+par(mar = c(3, 0.1, 0.1, 0.1))
+plot(val, marginal,
+     type = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     frame.plot = FALSE,
+     cex.axis = 2) 
+
+set.seed(42)
+sampl <- rnorm(1000, mean = 3, sd = 0.5)
+abline(v = sampl,
+       lwd = 3,
+       col = "blue")
+
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(val,marginal, lwd = 8)
+```
+:::
+::: {.column width="50%"}
+True variance : 0.25
+
+Estimated variance : `r round(var(sampl), 3)`
+:::
+::::
+
+## How many levels ?
+
+There is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter $\sigma^2$, 5 or 6 levels is the extreme minimum.
+
+::: {style="font-size: 0.75em"}
+In the book *Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects*, James S. Hodges (2016) makes this very thoughtful statement : 
+
+:::: {style="color: blue"}
+"Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc."
+::::
+:::
+
+## How many levels ?
+
+So, what to do if the number of level is not high enough for your comfort ?
+
+You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.
+
+How does this translate mathematically, with what we have seen so far ?
+
+![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
+
+## Hierarchy on the intercept's mean
+
+::: {style="font-size: 0.7em"}
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+or 
+
+$$y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
+
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})$$
+In words, this means that all the samples **within** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
+
+By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance. 
+:::
+
+## Hierarchy on the intercept's mean
+
+::: {style="font-size: 0.7em"}
+Let's take a deeper look at 
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \sigma^2_{f[l]})$$
+When we study this way of sampling $\boldsymbol{\beta}_{f[l]}$, although our interest is more on $\mu_{f[l]}$, we also have to estimate the variance term $\sigma^2_{f[l]}$.
+
+Technically, we can sample all $\boldsymbol{\beta}_{f[l]}$ independently, however, using multivariate Gaussian distribution, we can sample the $\boldsymbol{\beta}_{f}$ for all levels of the factor in one go as
+
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
+where 
+
+- $\boldsymbol{\mu}_{f}$ is a vector of $k$ means, one for each level of the factor
+- $\mathbf{D}_f$ is a $k\times k$ diagonal matrix with variance term on the diagonal
+
+:::
+
+## Hierarchy on the intercept's mean
+
+::: {style="font-size: 0.7em"}
+The structure of matrix $\mathbf{D}_f$ can be considered in two different ways in 
+
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$$
+
+Written in the general form as we did in the equation above, we assume that all variance on the diagonal are potentially different. Or in other words, the variance in each group is assumed to be different
+::: 
+::: {style="font-size: 0.6em"}
+$$\mathbf{D}_f = \begin{bmatrix}
+				\sigma^2_{f[1]} & 0 & \dots & 0 & \dots & 0\\
+				0 & \sigma^2_{f[2]} & \dots & 0 & \dots & 0\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  0 & 0 & \dots & \sigma^2_{f[l]} & \dots & 0\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f[k]}\\
+		\end{bmatrix}$$
+:::
+
+## Hierarchy on the intercept's mean
+
+::: {style="font-size: 0.7em"}
+However, it can be assumed to be all the same variance regardless of the group considered 
+
+::: {style="font-size: 0.68em"}
+$$\mathbf{D}_f = \begin{bmatrix}
+				\sigma^2_{f} & 0 & \dots & 0 & \dots & 0\\
+				0 & \sigma^2_{f} & \dots & 0 & \dots & 0\\
+				\vdots & \vdots & \ddots & \vdots & & \vdots\\
+			  0 & 0 & \dots & \sigma^2_{f} & \dots & 0\\
+		    \vdots & \vdots & & \vdots & \ddots & \vdots\\
+		    0 & 0 & \dots & 0 & \dots & \sigma^2_{f}\\
+		\end{bmatrix}$$
+:::
+
+In this case, $\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \mathbf{D}_f)$
+can be rewritten as 
+$$\boldsymbol{\beta}_{f} \sim \mathcal{MVN}(\boldsymbol{\mu}_{f}, \sigma^2_{f}\mathbf{I})$$
+**Note**: This is essentially the same thing as a one-way analysis of variance.
+
+:::
+
+## Hierarchy on the intercept's mean
+### Stan code
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+For Andrew?
+:::
+
+## Hierarchy on the intercept's mean
+
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
+
+val1 <- seq(-2, 2, length = 200)
+marginal1 <- dnorm(val1, mean = 0, sd = 0.25)
+
+val2 <- seq(-3, 3, length = 200)
+marginal2 <- dnorm(val2, mean = -1, sd = 0.75)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(-marginal1,val1,
+     type = "n",
+     ylim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+polygon(x = c(-marginal,-marginal[1]),
+        y = c(val, val[1]),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+polygon(x = c(-marginal1,-marginal1[1]),
+        y = c(val1, val1[1]) ,
+        col = rgb(0,1,0, 0.5),border = NA)
+
+polygon(x = c(-marginal2,-marginal2[1]),
+        y = c(val2, val2[1]) ,
+        col = rgb(1,0.65,0, 0.5),border = NA)
+
+lines(-marginal,val, lwd = 3)
+lines(-marginal1,val1, lwd = 3)
+lines(-marginal2,val2, lwd = 3)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(-3,3),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",) 
+
+set.seed(42)
+
+points(runif(200, 0, 5),
+       rnorm(200, mean = 1, sd = 0.5),
+       pch = 19, col = "blue") 
+
+points(runif(200, 0, 5),
+       rnorm(200, mean = 0, sd = 0.25),
+       pch = 19, col = "green") 
+
+points(runif(200, 0, 5),
+       rnorm(200, mean = -1, sd = 0.75),
+       pch = 19, col = "orange") 
+
+abline(h = c(1, 0, -1),
+       lwd = 8,
+       col = c("blue", "darkgreen", "orange"))
+```
+
+## Hierarchy on the slope's mean
+
+::: {style="font-size: 0.7em"}
+Developping a hierarchy on the slope's mean translate mathematically in a very similar way as it does for the intercept. 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+or 
+
+$$y_i = \beta_0 + \beta_{f_i[l]}x_i + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
+
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})$$
+In words, this means that all the samples **within** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
+
+By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance. 
+:::
+
+
+## Hierarchy on the slope's mean
+
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
+
+val1 <- seq(-2, 2, length = 200)
+marginal1 <- dnorm(val1, mean = 0.5, sd = 0.25)
+
+val2 <- seq(-3, 3, length = 200)
+marginal2 <- dnorm(val2, mean = 0.25, sd = 0.75)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(0,5),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     xaxs = "i",
+     yaxs = "i") 
+
+x <- runif(200, 0, 5)
+points(x,
+       rnorm(200, mean = x, sd = 0.5),
+       pch = 19, col = "blue") 
+
+points(x,
+       rnorm(200, mean = 1.25 * x, sd = 0.25),
+       pch = 19, col = "green") 
+
+points(x,
+       rnorm(200, mean = 0.5 * x, sd = 0.75),
+       pch = 19, col = "orange") 
+
+abline(a = 0, b = 1,
+       lwd = 8,
+       col = "blue")
+
+abline(a = 0, b = 0.5,
+       lwd = 8,
+       col = "orange")
+
+abline(a = 0, b = 1.25,
+       lwd = 8,
+       col = "darkgreen")
+```
+
+## Hierarchy on the slope's mean
+### Stan code
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+For Andrew?
+:::
+
+## Tracking the estimated parameters
+
+::: {style="font-size: 0.8em;"}
+As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.
+
+However, we need to be careful because the notation used can play trick on us. This is especially true when using matrix notation. 
+
+For example, in 
+
+$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f[l]}, \mathbf{D}_{f[l]})$$
+the number of levels are not explicitly defined and it is not clear if $\mathbf{D}_{f[l]}$ includes the same variance value on the diagonal or different ones. 
+
+In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using. 
+
+:::
+
+## Choosing the right model
+
+Although these different models are mathematically quite similar, they approach very different biological questions. 
+
+A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.
+
+It is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward.
+
