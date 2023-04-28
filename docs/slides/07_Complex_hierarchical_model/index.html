@@ -400,56 +400,32 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 
   <p class="date">2/10/23</p>
 </section>
-<section id="complexe-hierarchical-model" class="slide level2">
-<h2>“Complexe” hierarchical model</h2>
+<section id="complex-hierarchical-model" class="slide level2">
+<h2>“Complex” hierarchical model</h2>
+<p>By “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.</p>
+<p>As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.</p>
+<p>Before we do this, let’s get back to the general formation of hierarchical models.</p>
 </section>
 <section id="the-general-formulation" class="slide level2">
 <h2>The general formulation</h2>
-<div style="font-size: 0.68em">
-<p>As discuss yesterday, a linear model can be writen as</p>
-<p><span class="math display">\[\mathbf{y}\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma^2\mathbf{I})\]</span></p>
-<p>where</p>
-<ul>
-<li><span class="math inline">\(\mathbf{y}\)</span> is a vector quantifying a response variable of length <span class="math inline">\(n\)</span></li>
-<li><span class="math inline">\(\mathbf{X}\)</span> is a matrix of explanatory variables with <span class="math inline">\(n\)</span> rows (samples) and <span class="math inline">\(p\)</span> columns (explanatory varaibles)</li>
-<li><span class="math inline">\(\boldsymbol{\beta}\)</span> is a vector <span class="math inline">\(p\)</span> pararameters weighting the importance of each explanatory variables in <span class="math inline">\(\mathbf{X}\)</span></li>
-<li><span class="math inline">\(\sigma^2\)</span> is a measure of variance of the error in the regression model</li>
-<li><span class="math inline">\(\mathbf{I}\)</span> is an <span class="math inline">\(n \times n\)</span> identity matrix</li>
-</ul>
-</div>
-</section>
-<section id="a-very-general-formulation" class="slide level2">
-<h2>A (very !) general formulation</h2>
-<div style="font-size: 0.8em">
-<p>A hierarchical model is a generalization of the linear model such that</p>
-<p><span class="math display">\[(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})\]</span></p>
-</div>
+<p><span class="math display">\[(\mathbf{y}|\mathbf{X},\mathbf{Z}, \boldsymbol{\beta}, \mathbf{b}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma_\mathbf{y}^2\mathbf{I})\]</span></p>
 <div style="font-size: 0.68em">
 <p>where</p>
 <ul>
-<li><span class="math inline">\(\mathbf{y}\)</span> is a vector quantifying a response variable of length <span class="math inline">\(n\)</span></li>
-<li><span class="math inline">\(\mathbf{X}\)</span> is a matrix of explanatory variables with <span class="math inline">\(n\)</span> rows (samples) and <span class="math inline">\(p\)</span> columns (explanatory variables)</li>
-<li><span class="math inline">\(\boldsymbol{\beta}\)</span> is a vector <span class="math inline">\(p\)</span> pararameters weighting the importance of each explanatory variables in <span class="math inline">\(\mathbf{X}\)</span></li>
-<li><span class="math inline">\(\sigma^2\)</span> is a measure of variance of the error in the regression model</li>
-<li><span class="math inline">\(\mathbf{I}\)</span> is an <span class="math inline">\(n \times n\)</span> identity matrix</li>
+<li><p><span class="math inline">\(\mathbf{y}\)</span> is a vector quantifying a response variable of length <span class="math inline">\(n\)</span></p></li>
+<li><p><span class="math inline">\(\mathbf{X}\)</span> is a matrix of explanatory variables with <span class="math inline">\(n\)</span> rows (samples) and <span class="math inline">\(p\)</span> columns (explanatory variables)</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> is a vector <span class="math inline">\(p\)</span> pararameters weighting the importance of each explanatory variables in <span class="math inline">\(\mathbf{X}\)</span></p></li>
+<li><p><span class="math inline">\(\sigma_\mathbf{y}^2\)</span> is a measure of variance of the error in the regression model</p></li>
+<li><p><span class="math inline">\(\mathbf{I}\)</span> is an <span class="math inline">\(n \times n\)</span> identity matrix</p></li>
+<li><p><span class="math inline">\(\mathbf{Z}\)</span> is another matrix of explanatory variables with <span class="math inline">\(n\)</span> rows (samples) and <span class="math inline">\(q\)</span> columns (explanatory variables)</p></li>
+<li><p><span class="math inline">\(\mathbf{b}\)</span> is a vector <span class="math inline">\(q\)</span> pararameters weighting the importance of each explanatory variables in <span class="math inline">\(\mathbf{Z}\)</span></p></li>
 </ul>
-<div style="color: blue">
-<ul>
-<li><span class="math inline">\(\mathbf{Z}\)</span> is another matrix of explanatory variables with <span class="math inline">\(n\)</span> rows (samples) and <span class="math inline">\(q\)</span> columns (explanatory variables)</li>
-<li><span class="math inline">\(\mathbf{b}\)</span> is a vector <span class="math inline">\(q\)</span> pararameters weighting the importance of each explanatory variables in <span class="math inline">\(\mathbf{Z}\)</span></li>
-</ul>
-</div>
 </div>
 </section>
-<section id="a-very-general-formulation-1" class="slide level2">
-<h2>A (very !) general formulation</h2>
-<div style="font-size: 0.8em">
-<p>A hierarchical model is a generalization of the linear model such that</p>
-<p><span class="math display">\[(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})\]</span> What is also noticeable in this model is the conditional relationship between <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{b}\)</span>.</p>
-<p>Specifically, in this formulation,</p>
-<p><span class="math display">\[\mathbf{b}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})\]</span> where <span class="math inline">\(\mathbf{\Sigma}\)</span> is a covariance matrix.</p>
-<p>Based on this general formulation, we can now define all unconstrained hierarchical models.</p>
-</div>
+<section>
+<section id="complex-hierarchy-on-the-intercept" class="title-slide slide level1 center">
+<h1>“Complex” hierarchy on the intercept</h1>
+<p>ICI ICI ICI ICI</p>
 </section>
 <section id="y-1-fg" class="slide level2">
 <h2><code>y ~ (1 | f/g)</code></h2>
@@ -699,7 +675,7 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
 
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
@@ -923,10 +899,10 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
         }
-    
+
         function fireSlideChanged(previousSlide, currentSlide) {
           fireSlideEnter();
-    
+
           // dispatch for shiny
           if (window.jQuery) {
             if (previousSlide) {
@@ -937,7 +913,7 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
             }
           }
         }
-    
+
         // hookup for slidy
         if (window.w3c_slidy) {
           window.w3c_slidy.add_observer(function (slide_num) {
@@ -945,10 +921,10 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
           });
         }
-    
+
       })();
     </script>
-    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

@@ -8,7 +8,12 @@
 .DS_Store
 
 # ignore all but the .stan files in the stan directory (ie ignore binary files for compiled models)
-stan/*
-!stan/*.stan
+topics/*
+!topics/*/*.stan
+!topics/*/*.qmd
+!topics/*/index_files/*
+
+
+# ignore executable files 
 *.exe
 andrew_notes.md

@@ -15,64 +15,38 @@ format:
     background-transition: fade
 ---
 
-## "Complexe" hierarchical model
+## "Complex" hierarchical model
 
+By "complex" we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy. 
+
+As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.
+
+Before we do this, let's get back to the general formation of hierarchical models.
 
 ## The general formulation
 
-::: {style="font-size: 0.68em"}
-As discuss yesterday, a linear model can be writen as
+$$(\mathbf{y}|\mathbf{X},\mathbf{Z}, \boldsymbol{\beta}, \mathbf{b}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma_\mathbf{y}^2\mathbf{I})$$
 
-$$\mathbf{y}\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma^2\mathbf{I})$$
-
-where
-
-- $\mathbf{y}$ is a vector quantifying a response variable of length $n$
-- $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory varaibles) 
-- $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
-- $\sigma^2$ is a measure of variance of the error in the regression model
-- $\mathbf{I}$ is an $n \times n$ identity matrix 
-:::
-
-## A (very !) general formulation
-
-::: {style="font-size: 0.8em"}
-A hierarchical model is a generalization of the linear model such that 
-
-$$(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})$$
-:::
-::: {style="font-size: 0.68em"}
+:::{style="font-size: 0.68em"}
 
 where
 
 - $\mathbf{y}$ is a vector quantifying a response variable of length $n$
 - $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory variables) 
 - $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
-- $\sigma^2$ is a measure of variance of the error in the regression model
+- $\sigma_\mathbf{y}^2$ is a measure of variance of the error in the regression model
 - $\mathbf{I}$ is an $n \times n$ identity matrix 
 
-:::: {style="color: blue"}
 - $\mathbf{Z}$ is another matrix of explanatory variables with $n$ rows (samples) and $q$ columns (explanatory variables) 
 - $\mathbf{b}$ is a vector $q$ pararameters weighting the importance of each explanatory variables in $\mathbf{Z}$
-::::
 :::
 
-## A (very !) general formulation
+# "Complex" hierarchy on the intercept
 
-::: {style="font-size: 0.8em"}
-A hierarchical model is a generalization of the linear model such that 
-
-$$(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})$$
-What is also noticeable in this model is the conditional relationship between $\mathbf{y}$ and $\mathbf{b}$.
-
-Specifically, in this formulation, 
-
-$$\mathbf{b}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})$$
-where $\mathbf{\Sigma}$ is a covariance matrix.
-
-Based on this  general formulation, we can now define all unconstrained hierarchical models.
-:::
-
+ICI
+ICI
+ICI
+ICI
 
 ## `y ~ (1 | f/g)`
 
