@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -266,12 +266,13 @@ To disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=T
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> avg_observed;</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[n_people] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; observations;</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n_people){</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    observations[i] = poisson_rng(avg_observed);</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// an array -- like a list in R</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[n_people] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; observations;</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n_people){</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    observations[i] = poisson_rng(avg_observed);</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <ul>
@@ -336,20 +337,20 @@ Chain 4 finished in 0.0 seconds.
 
 All 4 chains finished successfully.
 Mean chain execution time: 0.0 seconds.
-Total execution time: 0.6 seconds.</code></pre>
+Total execution time: 0.7 seconds.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         variable  mean median   sd  mad    q5   q95 rhat ess_bulk ess_tail
- observations[1]  19.50  19.00 4.44 4.45 13.00 27.00 1.00     3717     3780
- observations[2]  19.60  19.00 4.49 4.45 13.00 27.00 1.00     3866     3788
- observations[3]  19.47  19.00 4.42 4.45 12.00 27.00 1.00     3845     3669
- observations[4]  19.57  19.00 4.37 4.45 13.00 27.00 1.00     3968     3943
- observations[5]  19.43  19.00 4.42 4.45 13.00 27.00 1.00     4008     3950
- observations[6]  19.50  19.00 4.40 4.45 13.00 27.00 1.00     3991     3820
- observations[7]  19.50  19.00 4.43 4.45 13.00 27.00 1.00     3971     3947
- observations[8]  19.59  19.00 4.33 4.45 13.00 27.00 1.00     4057     3956
- observations[9]  19.55  19.00 4.40 4.45 13.00 27.00 1.00     3980     4031
- observations[10] 19.51  19.00 4.32 4.45 13.00 27.00 1.00     3932     4028
+ observations[1]  19.48  19.00 4.38 4.45 13.00 27.00 1.00     4235     3960
+ observations[2]  19.51  19.00 4.40 4.45 13.00 27.00 1.00     3806     3632
+ observations[3]  19.67  19.00 4.47 4.45 13.00 27.00 1.00     4170     3829
+ observations[4]  19.53  19.00 4.35 4.45 13.00 27.00 1.00     3827     4003
+ observations[5]  19.38  19.00 4.41 4.45 12.00 27.00 1.00     3630     3159
+ observations[6]  19.43  19.00 4.43 4.45 12.00 27.00 1.00     4021     4033
+ observations[7]  19.48  19.00 4.39 4.45 13.00 27.00 1.00     4136     3827
+ observations[8]  19.55  19.00 4.45 4.45 13.00 27.00 1.00     3875     3756
+ observations[9]  19.47  19.00 4.41 4.45 12.00 27.00 1.00     4165     3994
+ observations[10] 19.41  19.00 4.44 4.45 12.00 27.00 1.00     3985     4005
 
  # showing 10 of 23 rows (change via 'max_rows' argument or 'cmdstanr_max_rows' option)</code></pre>
 </div>

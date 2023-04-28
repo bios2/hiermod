@@ -7,7 +7,7 @@
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.2.335">
 
   <meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
   <title>Modèles hiérarchiques pour les sciences de la vie - ‘Simple’ hierarchical models</title>
@@ -958,10 +958,10 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
         }
-
+    
         function fireSlideChanged(previousSlide, currentSlide) {
           fireSlideEnter();
-
+    
           // dispatch for shiny
           if (window.jQuery) {
             if (previousSlide) {
@@ -972,7 +972,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
             }
           }
         }
-
+    
         // hookup for slidy
         if (window.w3c_slidy) {
           window.w3c_slidy.add_observer(function (slide_num) {
@@ -980,10 +980,10 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
           });
         }
-
+    
       })();
     </script>
-
+    
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
