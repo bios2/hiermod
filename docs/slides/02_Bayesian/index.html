@@ -388,8 +388,6 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <p>These priors are meant to bring very little information about the model</p>
 <h4 id="informative">Informative</h4>
 <p>These priors bring information about the model that is available</p>
-<h4 id="conjugate">Conjugate</h4>
-<p>These priors have the same functional form (mathematically speaking) as the likelihood</p>
 </div>
 </section>
 <section id="a-few-words-about-the-prior-1" class="slide level2">
@@ -495,10 +493,37 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <img data-src="../img/DAG_Markov_chain_monte_Carlo.png" class="r-stretch quarto-figure-center"></section>
 <section id="markov-chain-monte-carlo-mcmc-5" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
+<h4 id="a-simplistic-statistical-example">A simplistic statistical example</h4>
+<div style="font-size: 0.75em;">
+<p>Let’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm.</p>
+</div>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="480" class="r-stretch quarto-figure-center"></section>
+<section id="markov-chain-monte-carlo-mcmc-6" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<h4 id="a-simplistic-statistical-example-1">A simplistic statistical example</h4>
+<div style="font-size: 0.65em;">
+<p>A growth model can be constructed using a simple linear regression</p>
+<p><span class="math display">\[y = \beta_0 + \beta x + \varepsilon\]</span> From this model which the average weight when a Mallard duck hatches is 107 grams (intercept), with an average daily growth of 13.5 grams (intercept).</p>
+</div>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="576" class="r-stretch quarto-figure-center"></section>
+<section id="markov-chain-monte-carlo-mcmc-7" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<h4 id="a-simplistic-statistical-example-2">A simplistic statistical example</h4>
+<div style="font-size: 0.85em;">
+<p>Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling <span class="math inline">\(\beta_0\)</span> as</p>
+<p><span class="math display">\[\beta_0 \sim \mathcal{N}(\mu_I, \sigma_I^2)\]</span> and <span class="math inline">\(\beta\)</span> as</p>
+<p><span class="math display">\[\beta \sim \mathcal{N}(\mu_S, \sigma_S^2)\]</span></p>
+<p>In doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the <strong>distribution</strong> of best parameter values.</p>
+</div>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-8" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p>When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.</p>
 <p>Since we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is.</p>
 </section>
-<section id="markov-chain-monte-carlo-mcmc-6" class="slide level2">
+<section id="markov-chain-monte-carlo-mcmc-9" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p>MCMC relies on using many random samples to assess what the structure of the distribution is.</p>
 
@@ -783,10 +808,10 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
         }
-    
+
         function fireSlideChanged(previousSlide, currentSlide) {
           fireSlideEnter();
-    
+
           // dispatch for shiny
           if (window.jQuery) {
             if (previousSlide) {
@@ -797,7 +822,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
             }
           }
         }
-    
+
         // hookup for slidy
         if (window.w3c_slidy) {
           window.w3c_slidy.add_observer(function (slide_num) {
@@ -805,10 +830,10 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
           });
         }
-    
+
       })();
     </script>
-    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

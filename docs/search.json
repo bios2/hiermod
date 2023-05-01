@@ -1,52 +1,52 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Course contents",
+    "objectID": "topics/discrete_predictor/index.html",
+    "href": "topics/discrete_predictor/index.html",
+    "title": "Palmer penguins and discrete predictors",
     "section": "",
-    "text": "Introduction to the course and location\nData we’ll be using\nBayesian and MCMC\nStan and HMC\n\n\n\n\nData simulation in Ecology\nlunch activity: COUNT BIRDS!\nDiscrete predictors"
+    "text": "Let’s start by taking a look at the Palmer Penguin dataset. Let’s look at the distribution of observations of bill size.\nThere’s quite a lot of variation in these measurements, with a suggestion of perhaps more than one peak in this distribution."
   },
   {
-    "objectID": "index.html#day-2",
-    "href": "index.html#day-2",
-    "title": "Course contents",
-    "section": "DAY 2:",
-    "text": "DAY 2:\n\nSlides\n\nLinear models\nmatrix algebra\nSimple hierarchical models\nreturn to the group intercept model – abundance across plots\nsecret weapon – model for parameters\nmultilevel intercepts\nmultilevel slopes"
+    "objectID": "topics/discrete_predictor/index.html#a-simple-model",
+    "href": "topics/discrete_predictor/index.html#a-simple-model",
+    "title": "Palmer penguins and discrete predictors",
+    "section": "A simple model",
+    "text": "A simple model\n\\[\n\\begin{align}\n\\text{Bill depth} &\\sim \\text{Normal}(\\mu, \\sigma)\\\\\n\\mu &\\sim \\text{Normal}(17.5, 2) \\\\\n\\sigma &\\sim \\text{Exponential}(1) \\\\\n\\end{align}\n\\]\nlet’s express the same model in Stan:\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: /Users/blag1404/.cmdstan/cmdstan-2.31.0\n\n\n- CmdStan version: 2.31.0\n\n\n\nA newer version of CmdStan is available. See ?install_cmdstan() to install it.\nTo disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.\n\nnormal_dist <- cmdstan_model(\"topics/discrete_predictor/normal_dist.stan\")\n\nIn file included from /var/folders/0j/98_mjhrx2hv9t4j9hwknnnch0000gp/T/RtmpRR0WKH/model-ccd53924b4c9.hpp:1:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/src/stan/model/model_header.hpp:4:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math.hpp:19:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev.hpp:10:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev/fun.hpp:198:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor.hpp:14:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned lon\n\n\ng>' is deprecated [-Wdeprecated-declarations]\n        struct hash_base : std::unary_function<T, std::size_t> {};\n                                ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here\n        : public boost::hash_detail::hash_base<T*>\n                 ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here\n        boost::hash<T> hasher;\n                       ^\n\n\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here\n        hash_combine(seed, &v.category());\n        ^\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here\nstruct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function\n                            ^\n\n\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:825:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'\n#    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED\n                                        ^\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:810:49: note: expanded from macro '_LIBCPP_DEPRECATED'\n#      define _LIBCPP_DEPRECATED __attribute__((deprecated))\n                                                ^\n\n\n1 warning generated.\n\nnormal_dist\n\ndata {\n  int N;\n  vector[N] measurements;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  measurements ~ normal(mu, sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\n\n\nThe model section looks very much like the approach shown above. I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. These are for all the probability distribution of all the quantities in the model, both observed and unobserved. Above, we state which is which. Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian defines the world as umeasured or measured quantities – and above we state which are observed (the data block) and which are unobserved (the parameters block).\nWe can fit this model to data and see the result:\n\n# first we drop all NA values\npenguins_nobillNA <- penguins |> \n  #drop NA values\n  filter(!is.na(bill_depth_mm))\n\n## then we assemble the data as a list.\n## I'm using the base function with()\n##  it lets me use the variable name directly \n## without writing penguins_nobillNA$bill_depth_mm\n\nlist_bill_dep <- with(penguins_nobillNA,\n     list(N = length(bill_depth_mm),\n          measurements = bill_depth_mm))\n     \n## sample 4 chains, suppress counting iterations\nsamp_bill_dep <- normal_dist$sample(data = list_bill_dep, \n                                    parallel_chains = 4,\n                                    refresh = 0)\n\nRunning MCMC with 4 parallel chains...\n\nChain 1 finished in 0.0 seconds.\nChain 2 finished in 0.0 seconds.\nChain 3 finished in 0.0 seconds.\nChain 4 finished in 0.0 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.0 seconds.\nTotal execution time: 0.3 seconds.\n\n## summarize the samples for each parameter into a nice table\nsamp_bill_dep |> \n  posterior::summarise_draws() |> \n  flextable::flextable()\n\n\nvariablemeanmediansdmadq5q95rhatess_bulkess_taillp__-405.517903-405.2370000.982886920.7316631-407.417350-404.5640001.0017212,002.2712,730.987mu17.15379917.1543500.107125890.107340216.97806517.3256351.0023723,746.5512,546.023sigma1.9756841.9737050.075586570.07595361.8546292.1010221.0004073,123.8132,491.416"
   },
   {
-    "objectID": "index.html#day-3",
-    "href": "index.html#day-3",
-    "title": "Course contents",
-    "section": "Day 3",
-    "text": "Day 3\n\nLarger hierarchical models\nmodelling multiple intercepts – e.g. intercepts for site and species\nmodelling different slopes for each species\nmodelling multiple slopes and intercepts at the same time\nrandom intercepts with a fixed predictor"
+    "objectID": "topics/discrete_predictor/index.html#plotting-parameters.",
+    "href": "topics/discrete_predictor/index.html#plotting-parameters.",
+    "title": "Palmer penguins and discrete predictors",
+    "section": "Plotting parameters.",
+    "text": "Plotting parameters.\nWe don’t have one distribution for each of our unknown numbers: we have thousands. We need to get a sense of what these possible values mean scientifically. An excellent way to do this is by making as many pictures as possible. We will start with making plots of specific parameters.\nWe can look at the distributions easily using the bayesplot package.\n\ndraws <- samp_bill_dep$draws(variables = c(\"mu\", \"sigma\"))\n\nbayesplot::mcmc_hist(draws, pars = \"mu\")\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\nbayesplot::mcmc_hist(draws, pars = \"sigma\")\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n\n\n\n\n\nNotice that the distributions do not have the same shape as the prior– this is particularly true for \\(\\sigma\\). This shows an important point: the prior distribution does not determine what the posterior looks like. should I sample from the prior and show them that?\n\nlibrary(ggplot2)\nlibrary(ggdist)\n\ndraws |>  \n  posterior::as_draws_df() |> \n  ggplot(aes(x = sigma)) + \n  stat_dotsinterval()\n\n\n\n\n\nFigure 1: the package ggdist has many fun & useful ways to draw pictures of posterior distributions. Here is one called stats_dotsinterval()"
   },
   {
-    "objectID": "index.html#day-4",
-    "href": "index.html#day-4",
-    "title": "Course contents",
-    "section": "Day 4",
-    "text": "Day 4\n\nmodelling slopes and intercepts as correlated\nNC vs centered param\nintro to GPs"
+    "objectID": "topics/discrete_predictor/index.html#posterior-predictions-the-easy-way-to-check-your-model",
+    "href": "topics/discrete_predictor/index.html#posterior-predictions-the-easy-way-to-check-your-model",
+    "title": "Palmer penguins and discrete predictors",
+    "section": "Posterior predictions: the easy way to check your model",
+    "text": "Posterior predictions: the easy way to check your model\nPeople care so much about model diagnostics. And with good reason: you need to know how much to trust a model before using it to make a scientific claim. One way to find out who’s model is best would be to use them to make a prediction, and see how right you are. Nobody has the time for that. so instead the best choice is to see how well the data fit your sample.\n\n# just get some draws\ndraws <- samp_bill_dep$draws(variables = c(\"mu\", \"sigma\"))\ndraws_matrix <- posterior::as_draws_matrix(draws)\n\n## set up a matrix. for every posterior sample, \n## (that is, for a value of mu and a value of sigma) \n## draw a whole fake dataset from a normal distribution with that mean and sd. \nnsamples <- 50\nyrep <- matrix(0, ncol = list_bill_dep$N, nrow = nsamples)\n\n# pick some random rows\nset.seed(1234)\nchosen_samples <- sample(1:nrow(draws_matrix), replace = FALSE, size = nsamples)\nsubset_draws <- draws_matrix[chosen_samples,]\n\nfor (r in 1:nsamples){\n yrep[r,] <- rnorm(n = list_bill_dep$N, \n                   mean = subset_draws[r, \"mu\"], \n                   sd = subset_draws[r, \"sigma\"])\n}\n\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = yrep)\n\n\n\n\n\nPosterior predictions in Stan\nWe can simulate our own data in R if we are comfortable translating between R and Stan. However, if you want, you can do the same process in Stan. Just combine the section we just looked at with the previous work on data simulation we started with:\n\nnormal_dist_rng <- cmdstan_model(stan_file = \"topics/discrete_predictor/normal_dist_rng.stan\")\n\nIn file included from /var/folders/0j/98_mjhrx2hv9t4j9hwknnnch0000gp/T/RtmpRR0WKH/model-ccd53cedaa90.hpp:1:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/src/stan/model/model_header.hpp:4:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math.hpp:19:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev.hpp:10:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev/fun.hpp:198:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor.hpp:14:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned lon\n\n\ng>' is deprecated [-Wdeprecated-declarations]\n        struct hash_base : std::unary_function<T, std::size_t> {};\n                                ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here\n        : public boost::hash_detail::hash_base<T*>\n                 ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here\n        boost::hash<T> hasher;\n                       ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here\n        hash_combine(seed, &v.category());\n        ^\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here\nstruct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function\n                            ^\n\n\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:825:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'\n#    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED\n                                        ^\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:810:49: note: expanded from macro '_LIBCPP_DEPRECATED'\n#      define _LIBCPP_DEPRECATED __attribute__((deprecated))\n                                                ^\n\n\n1 warning generated.\n\nnormal_dist_rng\n\ndata {\n  int N;\n  vector[N] measurements;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  measurements ~ normal(mu, sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu, sigma);\n  }\n}\n\n\nHere we have a handy random number generator inside Stan.\n\nsamp_bill_dep_rng <- normal_dist_rng$sample(\n  data = list_bill_dep,\n  refresh = 0,\n  parallel_chains = 4)\n\nRunning MCMC with 4 parallel chains...\n\nChain 1 finished in 0.2 seconds.\nChain 2 finished in 0.2 seconds.\nChain 3 finished in 0.2 seconds.\nChain 4 finished in 0.2 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.2 seconds.\nTotal execution time: 0.3 seconds.\n\ndraws <- samp_bill_dep_rng$draws(variables = c(\"yrep\"))\ndraws_matrix <- posterior::as_draws_matrix(draws)\n\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = head(draws_matrix, 50))\n\n\n\n\nThe code is much shorter, because there is less to do in R. Both of these gives the same outcome: the posterior predictive distribution. This gives us a straightfoward way to test our model’s performance:\n\nwe use the model to generate fake observations.\nplot these on top of the real data\nif the data is a really poor match, we know our model has a distorted view of the world."
   },
   {
-    "objectID": "index.html#day-5",
-    "href": "index.html#day-5",
-    "title": "Course contents",
-    "section": "Day 5",
-    "text": "Day 5\n\nEverything everywhere all at once (60 to 90 minutes on the Full Models)\nlme4 paper (bates)"
+    "objectID": "topics/discrete_predictor/index.html#different-groups-are-different",
+    "href": "topics/discrete_predictor/index.html#different-groups-are-different",
+    "title": "Palmer penguins and discrete predictors",
+    "section": "Different groups are different",
+    "text": "Different groups are different\nlet’s add in differences among species\n\npenguins |> \n  ggplot(aes(x = bill_depth_mm, fill = species))+ \n  geom_histogram(binwidth = .5) + \n  scale_fill_brewer(palette = \"Dark2\")\n\nWarning: Removed 2 rows containing non-finite values (`stat_bin()`).\n\n\n\n\n\nNow we can see that the distribution is in fact three different shapes, all placed together.\n\n\n\n\n\n\nWarning\n\n\n\nSometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are “normally distributed” or not. This is not helpful! Instead, decide on a model first, and ask yourself what kind of data you expect."
   },
   {
-    "objectID": "index.html#day-4-1",
-    "href": "index.html#day-4-1",
-    "title": "Course contents",
-    "section": "Day 4",
-    "text": "Day 4\n*gaussian process regression\n\nSlides to introduce Stan\nlinear models\n\nbidonia regression simulation\nsimulation – to measure uncertainty\nusing var-covar and simulating confidence intervals\n\nsimple l\n\nnotes: could we rephrase the model to have the central tendency and the sigma cf to baye methods\nTODOS: * need to edit the title slide for the"
+    "objectID": "topics/discrete_predictor/index.html#stan-code-for-species-differences",
+    "href": "topics/discrete_predictor/index.html#stan-code-for-species-differences",
+    "title": "Palmer penguins and discrete predictors",
+    "section": "Stan code for species differences",
+    "text": "Stan code for species differences\n\\[\n\\begin{align}\n\\text{Bill depth}_{\\text{sp}[i]} &\\sim \\text{Normal}(\\mu_{\\text{sp}[i]}, \\sigma) \\\\\n\\mu &\\sim \\text{Normal}(17, 2) \\\\\n\\sigma &\\sim \\text{Exponential}(2) \\\\\n\\end{align}\n\\]\n\nnormal_dist_rng_spp_forloop <- cmdstan_model(stan_file = \"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan\")\n\nnormal_dist_rng_spp_forloop\n\ndata {\n  int N;\n  vector[N] measurements;\n  array[N] int<lower=1,upper=3> spp_id;\n}\nparameters {\n  vector[3] mu;\n  real<lower=0> sigma;\n}\nmodel {\n  for (i in 1:N){\n    measurements[i] ~ normal(mu[spp_id[i]], sigma);\n  }\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu[spp_id[i]], sigma);\n  }\n}\n\n\nThere’s a few differences to notice here:\n\nin the data block: We have a new input! A declaration of the array of integers at the top, saying if this is “species 1”, “species 2”, or “species 3”\nmu is a vector now. why?\nnotice the for-loop.\n\nDo we maybe add an illustration here of how vector indexing works?\nWe can write this model a different way as well:\n\nnormal_dist_rng_spp <- cmdstan_model(stan_file = \"topics/discrete_predictor/normal_dist_rng_spp.stan\")\n\nIn file included from /var/folders/0j/98_mjhrx2hv9t4j9hwknnnch0000gp/T/RtmpRR0WKH/model-ccd542fd48cf.hpp:1:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/src/stan/model/model_header.hpp:4:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math.hpp:19:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev.hpp:10:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev/fun.hpp:198:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor.hpp:14:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:\nIn file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function<const std::error_category *, unsigned lon\n\n\ng>' is deprecated [-Wdeprecated-declarations]\n        struct hash_base : std::unary_function<T, std::size_t> {};\n                                ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base<const std::error_category *>' requested here\n        : public boost::hash_detail::hash_base<T*>\n                 ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash<const std::error_category *>' requested here\n        boost::hash<T> hasher;\n                       ^\n/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine<const std::error_category *>' requested here\n        hash_combine(seed, &v.category());\n        ^\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function<const std::error_category *, unsigned long>' has been explicitly marked deprecated here\nstruct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function\n                            ^\n\n\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:825:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'\n#    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED\n                                        ^\n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:810:49: note: expanded from macro '_LIBCPP_DEPRECATED'\n#      define _LIBCPP_DEPRECATED __attribute__((deprecated))\n                                                ^\n\n\n1 warning generated.\n\nnormal_dist_rng_spp\n\ndata {\n  int N;\n  vector[N] measurements;\n  array[N] int<lower=1,upper=3> spp_id;\n}\nparameters {\n  vector[3] mu;\n  real<lower=0> sigma;\n}\nmodel {\n  measurements ~ normal(mu[spp_id], sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu[spp_id[i]], sigma);\n  }\n}\n\n\nThe only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However its not possible in every case. add a link to the Stan forum\n\nSampling the species model\nWe have to make a new data list, since we’ve added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species.\nwhich model to sample? here i’m doing the vectorized one just because\n\nlist_bill_dep_spp <- with(penguins_nobillNA,\n     list(\n       N = length(bill_depth_mm),\n       measurements = bill_depth_mm,\n       spp_id = as.numeric(as.factor(species))\n     )\n)\n     \nsamp_normal_dist_rng_spp <- normal_dist_rng_spp$sample(\n  data = list_bill_dep_spp, \n  parallel_chains = 4,\n  refresh = 0)\n\nRunning MCMC with 4 parallel chains...\n\nChain 1 finished in 0.2 seconds.\nChain 2 finished in 0.2 seconds.\nChain 3 finished in 0.2 seconds.\nChain 4 finished in 0.2 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.2 seconds.\nTotal execution time: 0.3 seconds.\n\nsamp_normal_dist_rng_spp$draws(variables = c(\"mu\", \"sigma\")) |> \n  posterior::summarise_draws() |> \n  flextable::flextable()\n\n\nvariablemeanmediansdmadq5q95rhatess_bulkess_tailmu[1]18.34227918.3427000.09252550.0937003218.19147518.4962100.99997245,216.5253,465.222mu[2]18.41363518.4135500.13630260.1372146318.19279018.6355501.00229794,489.5223,302.227mu[3]14.98862014.9883500.10279200.1041526514.81868015.1580301.00162314,638.9183,165.413sigma1.1230761.1214150.04331320.042832311.0543661.1965841.00051754,833.2063,186.883\n\n\nand we can repeat the posterior checking from before:\n\nspp_yrep_draws <- samp_normal_dist_rng_spp$draws(variables = c(\"yrep\"))\nspp_draws_matrix <- posterior::as_draws_matrix(spp_yrep_draws)\n\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = head(spp_draws_matrix, 50))\n\n\n\n\nThe predicted distribution is now much more like the real data\nWe can also make figures for each individual species. Here we will move away from using bayesplot and try to visualize our posterior using the handy functions in the tidybayes package add a link\n\nlibrary(tidybayes)\nspp_draws_df <- posterior::as_draws_df(spp_yrep_draws)\n\nnormal_dist_post_samp <- tidybayes::gather_draws(samp_normal_dist_rng_spp,\n                        yrep[row_id], \n                        ndraws = 50)\n\nnormal_dist_post_samp |> \n  mutate(species = penguins_nobillNA$species[row_id]) |> \n  ggplot(aes(x = .value, colour = species)) + \n  geom_density(aes(group = .iteration), alpha = .1) + \n  facet_wrap(~species) + \n  geom_density(aes(x = bill_depth_mm),\n               data = penguins_nobillNA,\n               colour = \"black\") + \n  scale_colour_brewer(palette = \"Dark2\")\n\n\n\n\n\n\nExercises\n\nLevel 1\n\nrepeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)\nuse bayesplot to examine the fit of body size to these data.\n\n\n\nLevel 2\n\ngenerate some random groups of your own, with known means. How well does the model fit these data\nThe present model is fixed for exactly 3 groups. how would you change it for any number of groups?\n\n\n\nLevel 3\n\nthe function tidybayes::compose_data is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of tidybayes::compose_data?\nAs you can see, the model assumes the same sigma for all species. what if you relax this?\n\n\n\n\nOptional!\nTry this on your own data!"
   },
   {
-    "objectID": "slides/07_Complex_hierarchical_model/index.html#complex-hierarchical-model",
-    "href": "slides/07_Complex_hierarchical_model/index.html#complex-hierarchical-model",
+    "objectID": "slides/07_Complex_hierarchical_model/index.html",
+    "href": "slides/07_Complex_hierarchical_model/index.html",
     "title": "Complex hierarchical models",
-    "section": "“Complex” hierarchical model",
-    "text": "“Complex” hierarchical model\nBy “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.\nAs we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.\nBefore we do this, let’s get back to the general formation of hierarchical models."
+    "section": "",
+    "text": "By “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.\nAs we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.\nBefore we do this, let’s get back to the general formation of hierarchical models."
   },
   {
     "objectID": "slides/07_Complex_hierarchical_model/index.html#the-general-formulation",
@@ -67,7 +67,7 @@
     "href": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-1",
     "title": "Complex hierarchical models",
     "section": "y ~ (1 | f/g)",
-    "text": "y ~ (1 | f/g)\nStan code for this model\n\nFor Andrew?"
+    "text": "y ~ (1 | f/g)\n\nStan code for this model\n\nFor Andrew?"
   },
   {
     "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-2",
@@ -165,7 +165,7 @@
     "href": "slides/07_Complex_hierarchical_model/index.html#here-it-is-all-on-one-slide",
     "title": "Complex hierarchical models",
     "section": "here it is all on one slide",
-    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+    "text": "here it is all on one slide\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
   },
   {
     "objectID": "slides/07_Complex_hierarchical_model/index.html#or-we-can-present-the-code-and-results-separately",
@@ -217,11 +217,11 @@
     "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
   },
   {
-    "objectID": "slides/nn_extra_slides/index.html#square-matrix",
-    "href": "slides/nn_extra_slides/index.html#square-matrix",
+    "objectID": "slides/nn_extra_slides/index.html",
+    "href": "slides/nn_extra_slides/index.html",
     "title": "Extra stuff",
-    "section": "Square matrix",
-    "text": "Square matrix\nThe square matrix has as many rows at it has columns \\[\n\\mathbf{B} = \\begin{bmatrix}\n                B_{11} & B_{12} & \\dots & B_{1j} & \\dots & B_{1n}\\\\\n                B_{21} & B_{22} & \\dots & B_{2j} & \\dots & B_{2n}\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              B_{i1} & B_{i2} & \\dots & B_{ij} & \\dots & B_{in}\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            B_{n1} & B_{n2} & \\dots & B_{nj} & \\dots & B_{nn}\\\\\n        \\end{bmatrix}\n\\]"
+    "section": "",
+    "text": "The square matrix has as many rows at it has columns \\[\n\\mathbf{B} = \\begin{bmatrix}\n                B_{11} & B_{12} & \\dots & B_{1j} & \\dots & B_{1n}\\\\\n                B_{21} & B_{22} & \\dots & B_{2j} & \\dots & B_{2n}\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              B_{i1} & B_{i2} & \\dots & B_{ij} & \\dots & B_{in}\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            B_{n1} & B_{n2} & \\dots & B_{nj} & \\dots & B_{nn}\\\\\n        \\end{bmatrix}\n\\]"
   },
   {
     "objectID": "slides/nn_extra_slides/index.html#determinant-of-a-matrix",
@@ -249,14 +249,14 @@
     "href": "slides/nn_extra_slides/index.html#positive-semi-definite-matrix",
     "title": "Extra stuff",
     "section": "Positive (semi-)definite matrix",
-    "text": "Positive (semi-)definite matrix\nNerdy mathematical definition\nPositive definite matrix\n\\(\\mathbf{M}\\) is a positive definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} > 0\\)\nPositive semi-definite matrix\n\\(\\mathbf{M}\\) is a positive semi-definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} \\ge 0\\)"
+    "text": "Positive (semi-)definite matrix\n\nNerdy mathematical definition\nPositive definite matrix\n\\(\\mathbf{M}\\) is a positive definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} > 0\\)\nPositive semi-definite matrix\n\\(\\mathbf{M}\\) is a positive semi-definite matrix if, for any real vector \\(\\mathbf{z}\\), \\(\\mathbf{z}^t\\mathbf{M}\\mathbf{z} \\ge 0\\)"
   },
   {
     "objectID": "slides/nn_extra_slides/index.html#positive-semi-definite-matrix-1",
     "href": "slides/nn_extra_slides/index.html#positive-semi-definite-matrix-1",
     "title": "Extra stuff",
     "section": "Positive (semi-)definite matrix",
-    "text": "Positive (semi-)definite matrix\nChecking if a matrix is positive (semi-)definite\nThe properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.\nAll we have to do is look at the eigenvalue of a square matrix.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than 0, matrix \\(\\mathbf{M}\\) is positive definite.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than or equal ro 0, matrix \\(\\mathbf{M}\\) is positive semi-definite."
+    "text": "Positive (semi-)definite matrix\n\nChecking if a matrix is positive (semi-)definite\nThe properties of eigenvalues can be used to detect if a matrix is positive (semi-) definite.\nAll we have to do is look at the eigenvalue of a square matrix.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than 0, matrix \\(\\mathbf{M}\\) is positive definite.\nIf all eigenvalues of a matrix \\(\\mathbf{M}\\) larger than or equal ro 0, matrix \\(\\mathbf{M}\\) is positive semi-definite."
   },
   {
     "objectID": "slides/nn_extra_slides/index.html#dot-product",
@@ -291,14 +291,14 @@
     "href": "slides/nn_extra_slides/index.html#a-few-words-about-the-prior",
     "title": "Extra stuff",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\nConjugate priors\nThese types of priors are convenient to use because\n\nThey are computationally faster to use\nThey can be interepreted as additional data\n\nWhy are they useful?\nThere is no need to write the likelihood down when using them. All that needs to be done is to sample them to obtain a parameter estimation."
+    "text": "A few words about the prior\n\nConjugate priors\nThese types of priors are convenient to use because\n\nThey are computationally faster to use\nThey can be interepreted as additional data\n\n\nWhy are they useful?\nThere is no need to write the likelihood down when using them. All that needs to be done is to sample them to obtain a parameter estimation."
   },
   {
     "objectID": "slides/nn_extra_slides/index.html#a-few-words-about-the-prior-1",
     "href": "slides/nn_extra_slides/index.html#a-few-words-about-the-prior-1",
     "title": "Extra stuff",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\nConjugate priors\nWhat does it mean to be of the same functional form?\nIt means that both distribution have th same mathematical structure.\n\n\nBinomial distribution \\[\\theta^a(1-\\theta)^b\\]\n\nBeta distribution \\[\\theta^{\\alpha-1}(1-\\theta)^{\\beta-1}\\]\n\n\nhttps://en.wikipedia.org/wiki/Conjugate_prior"
+    "text": "A few words about the prior\n\nConjugate priors\n\nWhat does it mean to be of the same functional form?\nIt means that both distribution have th same mathematical structure.\n\n\nBinomial distribution \\[\\theta^a(1-\\theta)^b\\]\n\nBeta distribution \\[\\theta^{\\alpha-1}(1-\\theta)^{\\beta-1}\\]\n\n\nhttps://en.wikipedia.org/wiki/Conjugate_prior"
   },
   {
     "objectID": "slides/nn_extra_slides/index.html#move-this-in-another-place",
@@ -322,11 +322,11 @@
     "text": "Hierarchy on the intercept’s mean\n\nHowever, it can be assumed to be all the same variance regardless of the group considered\n\n\\[\\mathbf{D}_f = \\begin{bmatrix}\n                \\sigma^2_{f} & 0 & \\dots & 0 & \\dots & 0\\\\\n                0 & \\sigma^2_{f} & \\dots & 0 & \\dots & 0\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              0 & 0 & \\dots & \\sigma^2_{f} & \\dots & 0\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            0 & 0 & \\dots & 0 & \\dots & \\sigma^2_{f}\\\\\n        \\end{bmatrix}\\]\n\nIn this case, \\(\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\mathbf{D}_f)\\) can be rewritten as \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{MVN}(\\boldsymbol{\\mu}_{f}, \\sigma^2_{f}\\mathbf{I})\\] Note: This is essentially the same thing as a one-way analysis of variance."
   },
   {
-    "objectID": "slides/05_Matrix_algebra_advanced/index.html#a-general-way-to-write-matrices",
-    "href": "slides/05_Matrix_algebra_advanced/index.html#a-general-way-to-write-matrices",
+    "objectID": "slides/05_Matrix_algebra_advanced/index.html",
+    "href": "slides/05_Matrix_algebra_advanced/index.html",
     "title": "Matrix algebra",
-    "section": "A general way to write matrices",
-    "text": "A general way to write matrices\n\\[\n\\mathbf{A} = \\begin{bmatrix}\n                A_{11} & A_{12} & \\dots & A_{1j} & \\dots & A_{1n}\\\\\n                A_{21} & A_{22} & \\dots & A_{2j} & \\dots & A_{2n}\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              A_{i1} & A_{i2} & \\dots & A_{ij} & \\dots & A_{in}\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            A_{m1} & A_{m2} & \\dots & A_{mj} & \\dots & A_{mn}\\\\\n        \\end{bmatrix}\n\\] \\[A = \\left[a_{ij}\\right]=\\left[a_{ij}\\right]_{m\\times n}\\]"
+    "section": "",
+    "text": "\\[\n\\mathbf{A} = \\begin{bmatrix}\n                A_{11} & A_{12} & \\dots & A_{1j} & \\dots & A_{1n}\\\\\n                A_{21} & A_{22} & \\dots & A_{2j} & \\dots & A_{2n}\\\\\n                \\vdots & \\vdots & \\ddots & \\vdots & & \\vdots\\\\\n              A_{i1} & A_{i2} & \\dots & A_{ij} & \\dots & A_{in}\\\\\n            \\vdots & \\vdots & & \\vdots & \\ddots & \\vdots\\\\\n            A_{m1} & A_{m2} & \\dots & A_{mj} & \\dots & A_{mn}\\\\\n        \\end{bmatrix}\n\\] \\[A = \\left[a_{ij}\\right]=\\left[a_{ij}\\right]_{m\\times n}\\]"
   },
   {
     "objectID": "slides/05_Matrix_algebra_advanced/index.html#the-transpose-of-a-matrix",
@@ -382,7 +382,7 @@
     "href": "slides/05_Matrix_algebra_advanced/index.html#triangular-matrix",
     "title": "Matrix algebra",
     "section": "Triangular matrix",
-    "text": "Triangular matrix\n\n\nLower triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & 0 & 0\\\\\n        3 & 0 & 0 & 0\\\\\n        0 & 4 & 3 & 0\\\\\n        9 & -5 & 4 & 3\\\\\n\\end{bmatrix}\\]\n\nUpper triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & -5 & 0\\\\\n        0 & 0 & 5 & 6\\\\\n        0 & 0 & 3 & 3\\\\\n        0 & 0 & 0 & 3\\\\\n      \\end{bmatrix}\\]"
+    "text": "Triangular matrix\n\n\n\nLower triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & 0 & 0\\\\\n        3 & 0 & 0 & 0\\\\\n        0 & 4 & 3 & 0\\\\\n        9 & -5 & 4 & 3\\\\\n\\end{bmatrix}\\]\n\n\n\nUpper triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & -5 & 0\\\\\n        0 & 0 & 5 & 6\\\\\n        0 & 0 & 3 & 3\\\\\n        0 & 0 & 0 & 3\\\\\n      \\end{bmatrix}\\]"
   },
   {
     "objectID": "slides/05_Matrix_algebra_advanced/index.html#symmetric-matrix",
@@ -403,7 +403,7 @@
     "href": "slides/05_Matrix_algebra_advanced/index.html#matrix-inversion-1",
     "title": "Matrix algebra",
     "section": "Matrix inversion",
-    "text": "Matrix inversion\nInverting a diagonal matrix\n\\[D^{-1}=\n      \\begin{bmatrix}\n        1/d_1 & 0 & \\dots & 0\\\\\n        0 &  1/d_2 & \\dots & 0\\\\\n        \\vdots & \\vdots & \\ddots & \\vdots\\\\\n        0 & 0 & \\dots &  1/d_n\\\\\n\\end{bmatrix}\\]"
+    "text": "Matrix inversion\n\nInverting a diagonal matrix\n\\[D^{-1}=\n      \\begin{bmatrix}\n        1/d_1 & 0 & \\dots & 0\\\\\n        0 &  1/d_2 & \\dots & 0\\\\\n        \\vdots & \\vdots & \\ddots & \\vdots\\\\\n        0 & 0 & \\dots &  1/d_n\\\\\n\\end{bmatrix}\\]"
   },
   {
     "objectID": "slides/05_Matrix_algebra_advanced/index.html#cholesky-decomposition",
@@ -417,14 +417,14 @@
     "href": "slides/05_Matrix_algebra_advanced/index.html#cholesky-decomposition-1",
     "title": "Matrix algebra",
     "section": "Cholesky decomposition",
-    "text": "Cholesky decomposition\nWhy is it useful ?\nThere are actually two main reasons :\n\nWorking with triangular matrices is computationally more efficient\nIt can be used to rescale matrices and make MCMC algorithms converge more easily"
+    "text": "Cholesky decomposition\n\nWhy is it useful ?\nThere are actually two main reasons :\n\nWorking with triangular matrices is computationally more efficient\nIt can be used to rescale matrices and make MCMC algorithms converge more easily"
   },
   {
-    "objectID": "slides/01_Data/index.html#illustrative-datasets",
-    "href": "slides/01_Data/index.html#illustrative-datasets",
+    "objectID": "slides/01_Data/index.html",
+    "href": "slides/01_Data/index.html",
     "title": "Data used for this course",
-    "section": "Illustrative datasets",
-    "text": "Illustrative datasets\nTo illustrate the different models and methods we will discuss in this course, we will rely on a few data sets, which are directly available in different R package\n\nmite, mite.env and mite.xy available in the vegan R package\npenguins available in the palmerpenguins R package\n\nThese datasets are practical because they are manageable in size and will allow you to see how to work out the different example presented in this course.\nLet’s look at them in more details"
+    "section": "",
+    "text": "To illustrate the different models and methods we will discuss in this course, we will rely on a few data sets, which are directly available in different R package\n\nmite, mite.env and mite.xy available in the vegan R package\npenguins available in the palmerpenguins R package\n\nThese datasets are practical because they are manageable in size and will allow you to see how to work out the different example presented in this course.\nLet’s look at them in more details"
   },
   {
     "objectID": "slides/01_Data/index.html#oribatid-mite-data",
@@ -438,7 +438,7 @@
     "href": "slides/01_Data/index.html#oribatid-mite-data-1",
     "title": "Data used for this course",
     "section": "Oribatid mite data",
-    "text": "Oribatid mite data\nOribatid mites are small (usually ranging in size from 0.2 to 1.4 mm) invertebrates that are part of the Arachnida class (so they have 8 legs).\n\nIn the mite data, 35 morphospecies were identified and counted across 70 samples."
+    "text": "Oribatid mite data\nOribatid mites are small (usually ranging in size from 0.2 to 1.4 mm) invertebrates that are part of the Arachnida class (so they have 8 legs).\n\n\n\n\n\nIn the mite data, 35 morphospecies were identified and counted across 70 samples."
   },
   {
     "objectID": "slides/01_Data/index.html#sites-coordinates",
@@ -469,11 +469,11 @@
     "text": "Substrate density and water content\n{fig-align=“center” width = 105%}"
   },
   {
-    "objectID": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
-    "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
+    "objectID": "slides/06_Simple_hierarchical_model/index.html",
+    "href": "slides/06_Simple_hierarchical_model/index.html",
     "title": "‘Simple’ hierarchical models",
-    "section": "“Simple” hierarchical model",
-    "text": "“Simple” hierarchical model\nHere, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
+    "section": "",
+    "text": "Here, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#a-very-general-formulation",
@@ -672,11 +672,11 @@
     "text": "Choosing the right model\nAlthough these different models are mathematically quite similar, they approach very different biological questions.\nA comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.\nIt is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward."
   },
   {
-    "objectID": "slides/template/index.html#un-beau-titre",
-    "href": "slides/template/index.html#un-beau-titre",
+    "objectID": "slides/template/index.html",
+    "href": "slides/template/index.html",
     "title": "Template for presentations",
-    "section": "Un beau titre",
-    "text": "Un beau titre\nthis is the first slide"
+    "section": "",
+    "text": "this is the first slide"
   },
   {
     "objectID": "slides/template/index.html#second",
@@ -746,7 +746,7 @@
     "href": "slides/template/index.html#here-it-is-all-on-one-slide",
     "title": "Template for presentations",
     "section": "here it is all on one slide",
-    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+    "text": "here it is all on one slide\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
   },
   {
     "objectID": "slides/template/index.html#or-we-can-present-the-code-and-results-separately",
@@ -798,6 +798,13 @@
     "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
   },
   {
+    "objectID": "slides/04_Linear_model/index.html",
+    "href": "slides/04_Linear_model/index.html",
+    "title": "Linear models",
+    "section": "",
+    "text": "Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\nIn its simplest form, a regression model is usually presented as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\nIt is known as a simple linear model, where :\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\\(\\beta_0\\) is the model intercept\n\\(\\beta_1\\) is the model slope\n\\(\\varepsilon\\) is the error term"
+  },
+  {
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model-1",
     "href": "slides/04_Linear_model/index.html#basic-regression-model-1",
     "title": "Linear models",
@@ -823,98 +830,98 @@
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-1",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nModel’s results\n\n\n(summaryReg <- summary(reg))\n\n\nCall:\nlm(formula = b.exemplaris ~ humidity)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.47988 -0.26475  0.00611  0.32590  1.36077 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  2.57389    0.04720   54.53   <2e-16 ***\nhumidity     1.10086    0.07976   13.80   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4718 on 98 degrees of freedom\nMultiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 \nF-statistic: 190.5 on 1 and 98 DF,  p-value: < 2.2e-16\n\n\nLet’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?"
+    "text": "Estimating regression parameters\n\nModel’s results\n\n\n(summaryReg <- summary(reg))\n\n\nCall:\nlm(formula = b.exemplaris ~ humidity)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.47988 -0.26475  0.00611  0.32590  1.36077 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  2.57389    0.04720   54.53   <2e-16 ***\nhumidity     1.10086    0.07976   13.80   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4718 on 98 degrees of freedom\nMultiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 \nF-statistic: 190.5 on 1 and 98 DF,  p-value: < 2.2e-16\n\n\nLet’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-2",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-2",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nWe could sample the model parameters but how can we do this properly ?\nAny suggestions?"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nWe could sample the model parameters but how can we do this properly ?\nAny suggestions?"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-3",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-3",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nIf we look at the estimated regression model coefficient, we can learn a few things\n\nsummaryReg$coefficients\n\n            Estimate Std. Error  t value     Pr(>|t|)\n(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75\nhumidity    1.100865 0.07975800 13.80256 1.035796e-24\n\n\nNotably, there are uncertainty around the parameters.\nMaybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.\nLet’s give it a shot !"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nIf we look at the estimated regression model coefficient, we can learn a few things\n\nsummaryReg$coefficients\n\n            Estimate Std. Error  t value     Pr(>|t|)\n(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75\nhumidity    1.100865 0.07975800 13.80256 1.035796e-24\n\n\nNotably, there are uncertainty around the parameters.\nMaybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.\nLet’s give it a shot !"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-4",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-4",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nIf we assume that the parameters of our particular model follow a Gaussian distribution, we can state that\n\\[\\beta_0 \\sim \\mathcal{N}(2.574, 0.047^2)\\] \\[\\beta_1 \\sim \\mathcal{N}(1.101, 0.080^2)\\]"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nIf we assume that the parameters of our particular model follow a Gaussian distribution, we can state that\n\\[\\beta_0 \\sim \\mathcal{N}(2.574, 0.047^2)\\] \\[\\beta_1 \\sim \\mathcal{N}(1.101, 0.080^2)\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-5",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-5",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nIn R, we can do this as follow\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta_0 <- rnorm(100, mean = regCoef[1,1], sd = regCoef[1,2])\nbeta_1 <- rnorm(100, mean = regCoef[2,1], sd = regCoef[2,2])"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nIn R, we can do this as follow\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta_0 <- rnorm(100, mean = regCoef[1,1], sd = regCoef[1,2])\nbeta_1 <- rnorm(100, mean = regCoef[2,1], sd = regCoef[2,2])"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-6",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-6",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters"
+    "text": "Estimating regression parameters\n\nSampling model parameters"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-7",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-7",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nBut is this the right way to do it ?"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nBut is this the right way to do it ?"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-8",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-8",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nActually, even if the model’s confidence interval look about right, they are wrong !"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nActually, even if the model’s confidence interval look about right, they are wrong !"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-9",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-9",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nThe approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.\nA situation that happens only in very specific circumstances.\nSo… We need to find a way to account for the non-independencies between the parameters.\nHow can we do this ? Any ideas ?"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nThe approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.\nA situation that happens only in very specific circumstances.\nSo… We need to find a way to account for the non-independencies between the parameters.\nHow can we do this ? Any ideas ?"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-10",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-10",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\n\nAssuming that the regression parameters are normally distributed is not a bad assumption.\nHowever to consider a dependencies between the parameters we need to sample them from a multivariate normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.\nThe good news is that this covariance matrix is given by summary.lm function\n\n\n(covReg <- summaryReg$cov.unscaled)\n\n              (Intercept)      humidity\n(Intercept)  0.0100098513 -0.0005305969\nhumidity    -0.0005305969  0.0285782940"
+    "text": "Estimating regression parameters\n\nSampling model parameters\n\nAssuming that the regression parameters are normally distributed is not a bad assumption.\nHowever to consider a dependencies between the parameters we need to sample them from a multivariate normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.\nThe good news is that this covariance matrix is given by summary.lm function\n\n\n(covReg <- summaryReg$cov.unscaled)\n\n              (Intercept)      humidity\n(Intercept)  0.0100098513 -0.0005305969\nhumidity    -0.0005305969  0.0285782940"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-11",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-11",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nFor our specific model, mathematically, we assume that\n\\[\\begin{bmatrix}\n  \\beta_0\\\\\n  \\beta_1\\\\\n\\end{bmatrix} \\sim \\mathcal{MVN} \\left( \\begin{bmatrix}\n  2.574\\\\\n  1.101\\\\\n\\end{bmatrix}, \\begin{bmatrix}\n  0.0100 & -0.0005 \\\\\n  -0.0005 & 0.0286 \\\\\n\\end{bmatrix} \\right)\\]\nNote To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course."
+    "text": "Estimating regression parameters\n\nSampling model parameters\nFor our specific model, mathematically, we assume that\n\\[\\begin{bmatrix}\n  \\beta_0\\\\\n  \\beta_1\\\\\n\\end{bmatrix} \\sim \\mathcal{MVN} \\left( \\begin{bmatrix}\n  2.574\\\\\n  1.101\\\\\n\\end{bmatrix}, \\begin{bmatrix}\n  0.0100 & -0.0005 \\\\\n  -0.0005 & 0.0286 \\\\\n\\end{bmatrix} \\right)\\]\nNote To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-12",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-12",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters\nIn R, we can sample the parameters using a multivariate normal distribution using the following code\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta <- MASS::mvrnorm(100, regCoef[,1], Sigma = covReg)"
+    "text": "Estimating regression parameters\n\nSampling model parameters\nIn R, we can sample the parameters using a multivariate normal distribution using the following code\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta <- MASS::mvrnorm(100, regCoef[,1], Sigma = covReg)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-13",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-13",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters"
+    "text": "Estimating regression parameters\n\nSampling model parameters"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-14",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-14",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nSampling model parameters - Comparison"
+    "text": "Estimating regression parameters\n\nSampling model parameters - Comparison"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-15",
@@ -942,21 +949,21 @@
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-18",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)"
+    "text": "Estimating regression parameters\n\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-19",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-19",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n\n# Regression model\nregBexemplaris <- lm(b.exemplaris ~ humidity)\nregIchicktighii <- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris <- summary(regBexemplaris)\nsummaryRegIchicktighii <- summary(regIchicktighii)"
+    "text": "Estimating regression parameters\n\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n\n# Regression model\nregBexemplaris <- lm(b.exemplaris ~ humidity)\nregIchicktighii <- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris <- summary(regBexemplaris)\nsummaryRegIchicktighii <- summary(regIchicktighii)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#estimating-regression-parameters-20",
     "href": "slides/04_Linear_model/index.html#estimating-regression-parameters-20",
     "title": "Linear models",
     "section": "Estimating regression parameters",
-    "text": "Estimating regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\n\nFor Bidonia exemplaris\n\n# Estimated coefficients\nsummaryRegBexemplaris$coefficients[,1:2]\n\n            Estimate Std. Error\n(Intercept) 2.573889 0.04720304\nhumidity    1.100865 0.07975800\n\n# Estimated variance\nsummaryRegBexemplaris$sigma\n\n[1] 0.471798\n\n\n\nFor Ilovea chicktighii\n\n# Estimated coefficients\nsummaryRegIchicktighii$coefficients[,1:2]\n\n            Estimate  Std. Error\n(Intercept) 3.991785 0.008928294\nhumidity    1.271250 0.015085956\n\n# Estimated variance\nsummaryRegIchicktighii$sigma\n\n[1] 0.089239"
+    "text": "Estimating regression parameters\n\nVariance of the model (\\(\\sigma^2\\))\n\n\nFor Bidonia exemplaris\n\n# Estimated coefficients\nsummaryRegBexemplaris$coefficients[,1:2]\n\n            Estimate Std. Error\n(Intercept) 2.573889 0.04720304\nhumidity    1.100865 0.07975800\n\n# Estimated variance\nsummaryRegBexemplaris$sigma\n\n[1] 0.471798\n\n\n\nFor Ilovea chicktighii\n\n# Estimated coefficients\nsummaryRegIchicktighii$coefficients[,1:2]\n\n            Estimate  Std. Error\n(Intercept) 3.991785 0.008928294\nhumidity    1.271250 0.015085956\n\n# Estimated variance\nsummaryRegIchicktighii$sigma\n\n[1] 0.089239"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#limits-of-the-simple-linear-regression",
@@ -1033,7 +1040,7 @@
     "href": "slides/04_Linear_model/index.html#triangular-matrix",
     "title": "Linear models",
     "section": "Triangular matrix",
-    "text": "Triangular matrix\n\n\nLower triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & 0 & 0\\\\\n        3 & 0 & 0 & 0\\\\\n        0 & 4 & 3 & 0\\\\\n        9 & -5 & 4 & 3\\\\\n\\end{bmatrix}\\]\n\nUpper triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & -5 & 0\\\\\n        0 & 0 & 5 & 6\\\\\n        0 & 0 & 3 & 3\\\\\n        0 & 0 & 0 & 3\\\\\n      \\end{bmatrix}\\]"
+    "text": "Triangular matrix\n\n\n\nLower triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & 0 & 0\\\\\n        3 & 0 & 0 & 0\\\\\n        0 & 4 & 3 & 0\\\\\n        9 & -5 & 4 & 3\\\\\n\\end{bmatrix}\\]\n\n\n\nUpper triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & -5 & 0\\\\\n        0 & 0 & 5 & 6\\\\\n        0 & 0 & 3 & 3\\\\\n        0 & 0 & 0 & 3\\\\\n      \\end{bmatrix}\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#symmetric-matrix",
@@ -1054,7 +1061,7 @@
     "href": "slides/04_Linear_model/index.html#matrix-inversion-1",
     "title": "Linear models",
     "section": "Matrix inversion",
-    "text": "Matrix inversion\nInverting a diagonal matrix\n\\[D^{-1}=\n      \\begin{bmatrix}\n        1/d_1 & 0 & \\dots & 0\\\\\n        0 &  1/d_2 & \\dots & 0\\\\\n        \\vdots & \\vdots & \\ddots & \\vdots\\\\\n        0 & 0 & \\dots &  1/d_n\\\\\n\\end{bmatrix}\\]"
+    "text": "Matrix inversion\n\nInverting a diagonal matrix\n\\[D^{-1}=\n      \\begin{bmatrix}\n        1/d_1 & 0 & \\dots & 0\\\\\n        0 &  1/d_2 & \\dots & 0\\\\\n        \\vdots & \\vdots & \\ddots & \\vdots\\\\\n        0 & 0 & \\dots &  1/d_n\\\\\n\\end{bmatrix}\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#multiple-linear-regression-1",
@@ -1068,7 +1075,7 @@
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression-2",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\nMatrix notation\n\\[\n\\mathbf{y} = \\boldsymbol{\\beta}\\mathbf{X} + \\boldsymbol{\\varepsilon}\n\\]\nUsing the matrix notation, we assume that\n\n\\(\\mathbf{y}\\) is a vector of length \\(n\\) (samples)\n\\(\\mathbf{X}\\) is a matrix with \\(n\\) samples (rows) and representing \\(p\\) explanatory variables (columns)\n\\(\\boldsymbol{\\beta}\\) is a vector of \\(p\\) regression coefficients\n\\(\\boldsymbol{\\varepsilon}\\) is a vector of residuals of length \\(n\\)"
+    "text": "Multiple linear regression\n\nMatrix notation\n\\[\n\\mathbf{y} = \\boldsymbol{\\beta}\\mathbf{X} + \\boldsymbol{\\varepsilon}\n\\]\nUsing the matrix notation, we assume that\n\n\\(\\mathbf{y}\\) is a vector of length \\(n\\) (samples)\n\\(\\mathbf{X}\\) is a matrix with \\(n\\) samples (rows) and representing \\(p\\) explanatory variables (columns)\n\\(\\boldsymbol{\\beta}\\) is a vector of \\(p\\) regression coefficients\n\\(\\boldsymbol{\\varepsilon}\\) is a vector of residuals of length \\(n\\)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#error-in-linear-models",
@@ -1089,42 +1096,21 @@
     "href": "slides/04_Linear_model/index.html#generalized-linear-models-1",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\nLink functions\n\nThere are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.\nArguably the most common link function in ecology are\nlogit link function\nIt is commonly used for modelling binary (0-1) data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\frac{\\widehat{\\mathbf{y}}}{1 - \\widehat{\\mathbf{y}}}\\right)\n\\] The inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\frac{\\exp(\\mathbf{X}\\boldsymbol{\\beta})}{1 + \\exp(\\mathbf{X}\\boldsymbol{\\beta})} = \\frac{1}{1 + \\exp(-\\mathbf{X}\\boldsymbol{\\beta})}\n\\]"
+    "text": "Generalized linear models\n\nLink functions\n\nThere are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.\nArguably the most common link function in ecology are\n\nlogit link function\nIt is commonly used for modelling binary (0-1) data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\frac{\\widehat{\\mathbf{y}}}{1 - \\widehat{\\mathbf{y}}}\\right)\n\\] The inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\frac{\\exp(\\mathbf{X}\\boldsymbol{\\beta})}{1 + \\exp(\\mathbf{X}\\boldsymbol{\\beta})} = \\frac{1}{1 + \\exp(-\\mathbf{X}\\boldsymbol{\\beta})}\n\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models-2",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models-2",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\nLink functions\n\nAnother commonly used link function is\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\] The inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
+    "text": "Generalized linear models\n\nLink functions\n\nAnother commonly used link function is\n\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\] The inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
   },
   {
-    "objectID": "slides/00_Introduction/index.html#internet",
-    "href": "slides/00_Introduction/index.html#internet",
+    "objectID": "slides/00_Introduction/index.html",
+    "href": "slides/00_Introduction/index.html",
     "title": "Introduction",
-    "section": "Internet",
-    "text": "Internet\nNetwork : \nPassword :"
-  },
-  {
-    "objectID": "slides/00_Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
-    "href": "slides/00_Introduction/index.html#dos-and-donts-at-the-station-biologique-des-laurentides",
-    "title": "Introduction",
-    "section": "Dos and don’ts at the Station biologique des Laurentides",
-    "text": "Dos and don’ts at the Station biologique des Laurentides"
-  },
-  {
-    "objectID": "slides/00_Introduction/index.html#course-material",
-    "href": "slides/00_Introduction/index.html#course-material",
-    "title": "Introduction",
-    "section": "Course material",
-    "text": "Course material\nWebsite :\nOn it, you will find the slides but also Rmarkdown files with practical examples.\nYou will also find course syllabus\nLet’s take a look…"
-  },
-  {
-    "objectID": "slides/00_Introduction/index.html#general-daily-schedule",
-    "href": "slides/00_Introduction/index.html#general-daily-schedule",
-    "title": "Introduction",
-    "section": "General daily schedule",
-    "text": "General daily schedule\n9h00 - Start of the day\n9h00 to 12h00 - Lecture/Practice\n12h00 to 13h00 - Lunch\n13h00 to 17h00 - Lecture/Practice\n17h00 to 18h00 - Project presentations"
+    "section": "",
+    "text": "Network : \nPassword : \n\n\n\n\n\n\n\n\nOn it, you will find the slides but also Rmarkdown files with practical examples.\nYou will also find course syllabus\nLet’s take a look…\n\n\n\n\n9h00 - Start of the day\n9h00 to 12h00 - Lecture/Practice\n12h00 to 13h00 - Lunch\n13h00 to 17h00 - Lecture/Practice\n17h00 to 18h00 - Project presentations"
   },
   {
     "objectID": "slides/00_Introduction/index.html#what-are-hierarchical-models",
@@ -1159,14 +1145,14 @@
     "href": "slides/00_Introduction/index.html#a-bit-of-vocabulary-2",
     "title": "Introduction",
     "section": "A bit of vocabulary",
-    "text": "A bit of vocabulary\nMultiple Definition of fixed and random effects\n\n(Kreft and De Leeuw 1998) Fixed effects are constant and random effect vary\n(Searl et al. 1992) Effects are fixed if they are interesting in themselves or random if there is interest in the underlying population\n(Green and Tukey 1960) When a sample exhausts the population, the corresponding variable is fixed; when the sample is a small (i.e., negligible) part of the population the corresponding variable is random\n(Roy LaMotte 2014) If an effect is assumed to be a realized value of a random variable, it is called a random effect\n(Robinson 1991) Fixed effects are estimated using least squares (or, more generally, maximum likelihood) and random effects are estimated with shrinkage."
+    "text": "A bit of vocabulary\n\nMultiple Definition of fixed and random effects\n\n(Kreft and De Leeuw 1998) Fixed effects are constant and random effect vary\n(Searl et al. 1992) Effects are fixed if they are interesting in themselves or random if there is interest in the underlying population\n(Green and Tukey 1960) When a sample exhausts the population, the corresponding variable is fixed; when the sample is a small (i.e., negligible) part of the population the corresponding variable is random\n(Roy LaMotte 2014) If an effect is assumed to be a realized value of a random variable, it is called a random effect\n(Robinson 1991) Fixed effects are estimated using least squares (or, more generally, maximum likelihood) and random effects are estimated with shrinkage."
   },
   {
     "objectID": "slides/00_Introduction/index.html#a-bit-of-history",
     "href": "slides/00_Introduction/index.html#a-bit-of-history",
     "title": "Introduction",
     "section": "A bit of history",
-    "text": "A bit of history\nBecause of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
+    "text": "A bit of history\nBecause of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably\n\n\n\n\n\n\n\n\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
   },
   {
     "objectID": "slides/00_Introduction/index.html#implementation",
@@ -1180,28 +1166,28 @@
     "href": "slides/00_Introduction/index.html#implementation-1",
     "title": "Introduction",
     "section": "Implementation",
-    "text": "Implementation\nWhat we will use\nWe will not use any of these software packages… because under specific circumstances, what may seem like the same implementation of a model may lead to different answers… and both can actually be right !\nThis is because the underlying model implemented in the software package may actually be slightly different.\nInstead we will implement our own models from scratch using Stan."
+    "text": "Implementation\n\nWhat we will use\nWe will not use any of these software packages… because under specific circumstances, what may seem like the same implementation of a model may lead to different answers… and both can actually be right !\nThis is because the underlying model implemented in the software package may actually be slightly different.\nInstead we will implement our own models from scratch using Stan."
   },
   {
     "objectID": "slides/00_Introduction/index.html#good-reference",
     "href": "slides/00_Introduction/index.html#good-reference",
     "title": "Introduction",
     "section": "Good reference",
-    "text": "Good reference\n\nA good portion of this course material is based on this book."
+    "text": "Good reference\n\n\n\n\n\n\n\n\n\nA good portion of this course material is based on this book."
   },
   {
     "objectID": "slides/00_Introduction/index.html#great-technical-references",
     "href": "slides/00_Introduction/index.html#great-technical-references",
     "title": "Introduction",
     "section": "Great technical references",
-    "text": "Great technical references\n\nEverything is there but it can gets technical !"
+    "text": "Great technical references\n\n\n\n\n\n\n\n\n\nEverything is there but it can gets technical !"
   },
   {
     "objectID": "slides/00_Introduction/index.html#r-and-stan",
     "href": "slides/00_Introduction/index.html#r-and-stan",
     "title": "Introduction",
     "section": "R and Stan",
-    "text": "R and Stan\nAll of the practical aspect of the course will be done with R and Stan.\nRStudio\nWe strongly (!) encourage you to use RStudio and to start a project for the course."
+    "text": "R and Stan\nAll of the practical aspect of the course will be done with R and Stan.\n\nRStudio\nWe strongly (!) encourage you to use RStudio and to start a project for the course."
   },
   {
     "objectID": "slides/00_Introduction/index.html#r-package-to-install",
@@ -1211,11 +1197,11 @@
     "text": "R package to install\n\ninstall.packages(c(\"vegan\"))"
   },
   {
-    "objectID": "slides/03_Stan/index.html#un-beau-titre",
-    "href": "slides/03_Stan/index.html#un-beau-titre",
+    "objectID": "slides/03_Stan/index.html",
+    "href": "slides/03_Stan/index.html",
     "title": "Template for presentations",
-    "section": "Un beau titre",
-    "text": "Un beau titre\nthis is the first slide"
+    "section": "",
+    "text": "this is the first slide"
   },
   {
     "objectID": "slides/03_Stan/index.html#second",
@@ -1285,7 +1271,7 @@
     "href": "slides/03_Stan/index.html#here-it-is-all-on-one-slide",
     "title": "Template for presentations",
     "section": "here it is all on one slide",
-    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+    "text": "here it is all on one slide\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
   },
   {
     "objectID": "slides/03_Stan/index.html#or-we-can-present-the-code-and-results-separately",
@@ -1337,11 +1323,11 @@
     "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
   },
   {
-    "objectID": "slides/02_Bayesian/index.html#frequentist",
-    "href": "slides/02_Bayesian/index.html#frequentist",
+    "objectID": "slides/02_Bayesian/index.html",
+    "href": "slides/02_Bayesian/index.html",
     "title": "Bayesian modelling",
-    "section": "Frequentist",
-    "text": "Frequentist\n\nIn introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.\nFrequentists want to find the best model parameter(s) for the data at hand\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\]\nThey are interested in maximizing the Likelihood\nThey need data\nEstimating model parameters\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
+    "section": "",
+    "text": "In introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.\nFrequentists want to find the best model parameter(s) for the data at hand\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\]\nThey are interested in maximizing the Likelihood\nThey need data\n\n\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#bayesian",
@@ -1362,7 +1348,7 @@
     "href": "slides/02_Bayesian/index.html#a-few-words-about-the-prior",
     "title": "Bayesian modelling",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\n\nDefinition of prior probability\nThe prior probability informes us about the probability of the model being true before the current data is considered.\nTypes of priors\n“Uninformative”\nThese priors are meant to bring very little information about the model\nInformative\nThese priors bring information about the model that is available\nConjugate\nThese priors have the same functional form (mathematically speaking) as the likelihood"
+    "text": "A few words about the prior\n\nDefinition of prior probability\nThe prior probability informes us about the probability of the model being true before the current data is considered.\nTypes of priors\n“Uninformative”\nThese priors are meant to bring very little information about the model\nInformative\nThese priors bring information about the model that is available"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-1",
@@ -1425,14 +1411,14 @@
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-5",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nWhen using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.\nSince we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nLet’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nMCMC relies on using many random samples to assess what the structure of the distribution is."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nA growth model can be constructed using a simple linear regression\n\\[y = \\beta_0 + \\beta x + \\varepsilon\\] From this model which the average weight when a Mallard duck hatches is 107 grams (intercept), with an average daily growth of 13.5 grams (intercept)."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo",
@@ -1484,20 +1470,6 @@
     "text": "Studying convergence\nBurn-in\nAfter burn-in, we obtain"
   },
   {
-    "objectID": "about.html#cibles-de-formation",
-    "href": "about.html#cibles-de-formation",
-    "title": "Advanced Statistics and hierarchical models",
-    "section": "Cibles de formation",
-    "text": "Cibles de formation\nApprendre la théorie statistique pour mieux construire, appliquer et interpréter différents modèles statistiques appliqués à des systèmes biologiques. Devenir familier avec la recherche primaire en en modélisation statistique de systèmes biologiques. Développer des connaissances et gagner de l’expérience à travailler de façon collaborative sur des problématiques lié au développement et à l’application de méthodes statisiques.\nThis course will feature hierarchical models and spatial statistics."
-  },
-  {
-    "objectID": "about.html#course-instructors",
-    "href": "about.html#course-instructors",
-    "title": "Advanced Statistics and hierarchical models",
-    "section": "Course Instructors",
-    "text": "Course Instructors\n\n\n\n\n\n\nDr Guillaume Blanchet\n\n\n\n\n\n\n\nDr Andrew MacDonald\n\n\n\n\n\n\n\nDr Vincent Tolon"
-  },
-  {
     "objectID": "topics/intercept_only/index.html",
     "href": "topics/intercept_only/index.html",
     "title": "Modèles hiérarchiques pour les sciences de la vie",
@@ -1517,146 +1489,6 @@
     "title": "Modèles hiérarchiques pour les sciences de la vie",
     "section": "Regularization: a simple simulation",
     "text": "Regularization: a simple simulation\none of the best and most useful aspects of hierarchical models is one which is not easy to see in our chosen datasets! Instead, I’m going to simulate some data to demonstrate it.\n\nset.seed(1234)\nfake_clutch_size_data <- tibble::tibble(\n  site_id = 1:42,\n  n_nests_per_site = sample(size = max(site_id),\n                            x = c(33, 13, 3),\n                            prob = c(.1, .2, .7),\n                            replace = TRUE),\n  site_mean = rnorm(n = max(site_id),\n                    mean = log(10), \n                    sd = .7)) |> \n  rowwise() |> \n  mutate(clutch_size = list(rpois(n = n_nests_per_site, \n                                  lambda = exp(site_mean))))\n\n\nfake_clutch_size_data |> \n  # unnest(clutch_size) |> \n  mutate(mean_cs = mean(clutch_size)) |> \n  ggplot(aes(x = exp(site_mean), y = mean_cs,\n             fill = as.factor(n_nests_per_site))) + \n  geom_point(pch = 21, size = 5) + \n  scale_fill_brewer(palette = \"Dark2\") + \n  geom_abline(slope = 1, intercept = 0)\n\n\n\n\ncan also look at it going through 0\n\nnopool_fig <- fake_clutch_size_data |> \n  # unnest(clutch_size) |> \n  mutate(mean_cs = mean(clutch_size)) |> \n  ggplot(aes(x = exp(site_mean), y = mean_cs - exp(site_mean),\n             fill = as.factor(n_nests_per_site))) + \n  geom_point(pch = 21, size = 5) + \n  scale_fill_brewer(palette = \"Dark2\") + \n  geom_abline(slope = 0, intercept = 0)\n\nin both cases you can see that the green values are off of the true value – just by chance they ended up above or below the real value\nlet’s fit our model from above to this!\n\nunnest_fake_cs <- unnest(fake_clutch_size_data, cols = \"clutch_size\")\n\ngroup_avg_partpool_nests_samp <- group_avg_partpool$sample(\n  data = with(unnest_fake_cs, \n              list(N = length(clutch_size),\n                   N_groups = max(site_id),\n                   group_id = site_id,\n                   abd = clutch_size\n              ))\n)\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 1 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 1 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 1 finished in 0.2 seconds.\nChain 2 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 2 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) \n\n\nChain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:\n\n\nChain 2 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in 'C:/Users/UTILIS~1/AppData/Local/Temp/RtmpgT7jTq/model-62a0151f72ab.stan', line 14, column 2 to column 33)\n\n\nChain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,\n\n\nChain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.\n\n\nChain 2 \n\n\nChain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 2 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 2 finished in 0.2 seconds.\nChain 3 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 3 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 3 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 3 finished in 0.2 seconds.\nChain 4 Iteration:    1 / 2000 [  0%]  (Warmup) \nChain 4 Iteration:  100 / 2000 [  5%]  (Warmup) \nChain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) \nChain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) \nChain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) \nChain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) \nChain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) \nChain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) \nChain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) \nChain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) \nChain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) \nChain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) \nChain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) \nChain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) \nChain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) \nChain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) \nChain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) \nChain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) \nChain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) \nChain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) \nChain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) \nChain 4 Iteration: 2000 / 2000 [100%]  (Sampling) \nChain 4 finished in 0.3 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.2 seconds.\nTotal execution time: 1.4 seconds.\n\n\n\ntruth_posterior_combined <- group_avg_partpool_nests_samp |> \n  gather_rvars(group_mean[site_id]) |> \n  mutate(mean_cs = median(.value)) |> \n  select(-.value) |> \n  left_join(fake_clutch_size_data |> select(site_id, n_nests_per_site, site_mean))\n\nJoining, by = \"site_id\"\n\ntruth_posterior_combined |> \n  ggplot(\n    aes(\n      x = site_mean,\n      y = mean_cs - site_mean,\n      fill = as.factor(n_nests_per_site))) + \n  geom_point(pch = 21, size = 5) + \n  scale_fill_brewer(palette = \"Dark2\") + \n  geom_abline(slope = 0, intercept = 0)\n\n\n\nnopool_fig + \n  geom_point(\n    aes(\n      x = site_mean,\n      y = mean_cs - site_mean),\n    data = truth_posterior_combined) + \n  facet_wrap(~n_nests_per_site)\n\n\n\ntruth_posterior_combined |> \n  filter(exp(site_mean)>50)\n\n# A tibble: 1 × 5\n  site_id .variable  mean_cs n_nests_per_site site_mean\n    <int> <chr>        <dbl>            <dbl>     <dbl>\n1      41 group_mean    3.98                3      4.09\n\nfake_clutch_size_data |> \n  filter(site_id == 41) |> \n  pull(clutch_size)\n\n[[1]]\n[1] 64 54 46\n\n\nSmall exercise for you: demonstrate that all 3 models described here produce answers that are exactly the same.\n\n\n\nIn the ohter, you have standard normal variation\nAnimation showing overa ll mean and error, then group means and error\nprogrssion later to negative binomial perhaps??\nanimation showing averages – group averages – species averages\nreally want to show my own style here! I think I can see how this would build together.\nI wonder, if there is a way to simulate predator-prey dynamics in space, in a model where the predator needs to have both prey and environment conditions, but they prey need only the environment. what would happen if we use causal models (or the wrong causal model) on those data, measuring predators affecting prey when there is nothing\ngroup-mean-centering as a main topic Not as a new topic but as an interesting way to describe multilevel, slope models.\nanimation of points moving together, after group-mean-centering"
-  },
-  {
-    "objectID": "topics/discrete_predictor/index.html",
-    "href": "topics/discrete_predictor/index.html",
-    "title": "Palmer penguins and discrete predictors",
-    "section": "",
-    "text": "Let’s start by taking a look at the Palmer Penguin dataset. Let’s look at the distribution of observations of bill size.\nThere’s quite a lot of variation in these measurements, with a suggestion of perhaps more than one peak in this distribution."
-  },
-  {
-    "objectID": "topics/discrete_predictor/index.html#a-simple-model",
-    "href": "topics/discrete_predictor/index.html#a-simple-model",
-    "title": "Palmer penguins and discrete predictors",
-    "section": "A simple model",
-    "text": "A simple model\n\\[\n\\begin{align}\n\\text{Bill depth} &\\sim \\text{Normal}(\\mu, \\sigma)\\\\\n\\mu &\\sim \\text{Normal}(17.5, 2) \\\\\n\\sigma &\\sim \\text{Exponential}(1) \\\\\n\\end{align}\n\\]\nlet’s express the same model in Stan:\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: /Users/amacdonald/.cmdstan/cmdstan-2.31.0\n\n\n- CmdStan version: 2.31.0\n\n\n\nA newer version of CmdStan is available. See ?install_cmdstan() to install it.\nTo disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.\n\nnormal_dist <- cmdstan_model(\"topics/discrete_predictor/normal_dist.stan\")\nnormal_dist\n\ndata {\n  int N;\n  vector[N] measurements;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  measurements ~ normal(mu, sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\n\n\nThe model section looks very much like the approach shown above. I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. These are for all the probability distribution of all the quantities in the model, both observed and unobserved. Above, we state which is which. Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian defines the world as umeasured or measured quantities – and above we state which are observed (the data block) and which are unobserved (the parameters block).\nWe can fit this model to data and see the result:\n\n# first we drop all NA values\npenguins_nobillNA <- penguins |> \n  #drop NA values\n  filter(!is.na(bill_depth_mm))\n\n## then we assemble the data as a list.\n## I'm using the base function with()\n##  it lets me use the variable name directly \n## without writing penguins_nobillNA$bill_depth_mm\n\nlist_bill_dep <- with(penguins_nobillNA,\n     list(N = length(bill_depth_mm),\n          measurements = bill_depth_mm))\n     \n## sample 4 chains, suppress counting iterations\nsamp_bill_dep <- normal_dist$sample(data = list_bill_dep, \n                                    parallel_chains = 4,\n                                    refresh = 0)\n\nRunning MCMC with 4 parallel chains...\n\nChain 1 finished in 0.0 seconds.\nChain 2 finished in 0.0 seconds.\nChain 3 finished in 0.0 seconds.\nChain 4 finished in 0.0 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.0 seconds.\nTotal execution time: 0.4 seconds.\n\n## summarize the samples for each parameter into a nice table\nsamp_bill_dep |> \n  posterior::summarise_draws() |> \n  flextable::flextable()\n\n\nvariablemeanmediansdmadq5q95rhatess_bulkess_taillp__-405.501081-405.1905000.976940160.70275240-407.459800-404.5589501.00094441,908.5852,491.217mu17.15092417.1500000.106337270.1063024216.98030017.3270100.99995124,063.0322,529.957sigma1.9750741.9729750.074859590.075723791.8553112.1035641.00041273,807.0192,713.862"
-  },
-  {
-    "objectID": "topics/discrete_predictor/index.html#plotting-parameters.",
-    "href": "topics/discrete_predictor/index.html#plotting-parameters.",
-    "title": "Palmer penguins and discrete predictors",
-    "section": "Plotting parameters.",
-    "text": "Plotting parameters.\nWe don’t have one distribution for each of our unknown numbers: we have thousands. We need to get a sense of what these possible values mean scientifically. An excellent way to do this is by making as many pictures as possible. We will start with making plots of specific parameters.\nWe can look at the distributions easily using the bayesplot package.\n\ndraws <- samp_bill_dep$draws(variables = c(\"mu\", \"sigma\"))\n\nbayesplot::mcmc_hist(draws, pars = \"mu\")\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\nbayesplot::mcmc_hist(draws, pars = \"sigma\")\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n\n\n\n\n\nNotice that the distributions do not have the same shape as the prior– this is particularly true for \\(\\sigma\\). This shows an important point: the prior distribution does not determine what the posterior looks like. should I sample from the prior and show them that?\n\nlibrary(ggplot2)\nlibrary(ggdist)\n\ndraws |>  \n  posterior::as_draws_df() |> \n  ggplot(aes(x = sigma)) + \n  stat_dotsinterval()\n\nWarning: Using the `size` aesthetic with geom_segment was deprecated in ggplot2 3.4.0.\nℹ Please use the `linewidth` aesthetic instead.\n\n\n\n\n\n\nFigure 1: the package ggdist has many fun & useful ways to draw pictures of posterior distributions. Here is one called stats_dotsinterval()"
-  },
-  {
-    "objectID": "topics/discrete_predictor/index.html#posterior-predictions-the-easy-way-to-check-your-model",
-    "href": "topics/discrete_predictor/index.html#posterior-predictions-the-easy-way-to-check-your-model",
-    "title": "Palmer penguins and discrete predictors",
-    "section": "Posterior predictions: the easy way to check your model",
-    "text": "Posterior predictions: the easy way to check your model\nPeople care so much about model diagnostics. And with good reason: you need to know how much to trust a model before using it to make a scientific claim. One way to find out who’s model is best would be to use them to make a prediction, and see how right you are. Nobody has the time for that. so instead the best choice is to see how well the data fit your sample.\n\n# just get some draws\ndraws <- samp_bill_dep$draws(variables = c(\"mu\", \"sigma\"))\ndraws_matrix <- posterior::as_draws_matrix(draws)\n\n## set up a matrix. for every posterior sample, \n## (that is, for a value of mu and a value of sigma) \n## draw a whole fake dataset from a normal distribution with that mean and sd. \nnsamples <- 50\nyrep <- matrix(0, ncol = list_bill_dep$N, nrow = nsamples)\n\n# pick some random rows\nset.seed(1234)\nchosen_samples <- sample(1:nrow(draws_matrix), replace = FALSE, size = nsamples)\nsubset_draws <- draws_matrix[chosen_samples,]\n\nfor (r in 1:nsamples){\n yrep[r,] <- rnorm(n = list_bill_dep$N, \n                   mean = subset_draws[r, \"mu\"], \n                   sd = subset_draws[r, \"sigma\"])\n}\n\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = yrep)\n\n\n\n\n\nPosterior predictions in Stan\nWe can simulate our own data in R if we are comfortable translating between R and Stan. However, if you want, you can do the same process in Stan. Just combine the section we just looked at with the previous work on data simulation we started with:\n\nnormal_dist_rng <- cmdstan_model(stan_file = \"topics/discrete_predictor/normal_dist_rng.stan\")\n\nnormal_dist_rng\n\ndata {\n  int N;\n  vector[N] measurements;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  measurements ~ normal(mu, sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu, sigma);\n  }\n}\n\n\nHere we have a handy random number generator inside Stan.\n\nsamp_bill_dep_rng <- normal_dist_rng$sample(\n  data = list_bill_dep,\n  refresh = 0,\n  parallel_chains = 4)\n\nRunning MCMC with 4 parallel chains...\n\n\nChain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:\n\n\nChain 2 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/var/folders/x7/l08zn2396g797m5ws54np_6w0000gp/T/RtmpjkCX3Q/model-2b064a36d475.stan', line 10, column 2 to column 35)\n\n\nChain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,\n\n\nChain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.\n\n\nChain 2 \n\n\nChain 1 finished in 0.3 seconds.\nChain 2 finished in 0.4 seconds.\nChain 3 finished in 0.4 seconds.\nChain 4 finished in 0.4 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.4 seconds.\nTotal execution time: 0.6 seconds.\n\ndraws <- samp_bill_dep_rng$draws(variables = c(\"yrep\"))\ndraws_matrix <- posterior::as_draws_matrix(draws)\n\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = head(draws_matrix, 50))\n\n\n\n\nThe code is much shorter, because there is less to do in R. Both of these gives the same outcome: the posterior predictive distribution. This gives us a straightfoward way to test our model’s performance:\n\nwe use the model to generate fake observations.\nplot these on top of the real data\nif the data is a really poor match, we know our model has a distorted view of the world."
-  },
-  {
-    "objectID": "topics/discrete_predictor/index.html#different-groups-are-different",
-    "href": "topics/discrete_predictor/index.html#different-groups-are-different",
-    "title": "Palmer penguins and discrete predictors",
-    "section": "Different groups are different",
-    "text": "Different groups are different\nlet’s add in differences among species\n\npenguins |> \n  ggplot(aes(x = bill_depth_mm, fill = species))+ \n  geom_histogram(binwidth = .5) + \n  scale_fill_brewer(palette = \"Dark2\")\n\nWarning: Removed 2 rows containing non-finite values (`stat_bin()`).\n\n\n\n\n\nNow we can see that the distribution is in fact three different shapes, all placed together.\n\n\n\n\n\n\nWarning\n\n\n\nSometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are “normally distributed” or not. This is not helpful! Instead, decide on a model first, and ask yourself what kind of data you expect."
-  },
-  {
-    "objectID": "topics/discrete_predictor/index.html#stan-code-for-species-differences",
-    "href": "topics/discrete_predictor/index.html#stan-code-for-species-differences",
-    "title": "Palmer penguins and discrete predictors",
-    "section": "Stan code for species differences",
-    "text": "Stan code for species differences\n\\[\n\\begin{align}\n\\text{Bill depth}_{\\text{sp}[i]} &\\sim \\text{Normal}(\\mu_{\\text{sp}[i]}, \\sigma) \\\\\n\\mu &\\sim \\text{Normal}(17, 2) \\\\\n\\sigma &\\sim \\text{Exponential}(2) \\\\\n\\end{align}\n\\]\n\nnormal_dist_rng_spp_forloop <- cmdstan_model(stan_file = \"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan\")\n\nnormal_dist_rng_spp_forloop\n\ndata {\n  int N;\n  vector[N] measurements;\n  array[N] int<lower=1,upper=3> spp_id;\n}\nparameters {\n  vector[3] mu;\n  real<lower=0> sigma;\n}\nmodel {\n  for (i in 1:N){\n    measurements[i] ~ normal(mu[spp_id[i]], sigma);\n  }\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu[spp_id[i]], sigma);\n  }\n}\n\n\nThere’s a few differences to notice here:\n\nin the data block: We have a new input! A declaration of the array of integers at the top, saying if this is “species 1”, “species 2”, or “species 3”\nmu is a vector now. why?\nnotice the for-loop.\n\nDo we maybe add an illustration here of how vector indexing works?\nWe can write this model a different way as well:\n\nnormal_dist_rng_spp <- cmdstan_model(stan_file = \"topics/discrete_predictor/normal_dist_rng_spp.stan\")\n\nnormal_dist_rng_spp\n\ndata {\n  int N;\n  vector[N] measurements;\n  array[N] int<lower=1,upper=3> spp_id;\n}\nparameters {\n  vector[3] mu;\n  real<lower=0> sigma;\n}\nmodel {\n  measurements ~ normal(mu[spp_id], sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu[spp_id[i]], sigma);\n  }\n}\n\n\nThe only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However its not possible in every case. add a link to the Stan forum\n\nSampling the species model\nWe have to make a new data list, since we’ve added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species.\nwhich model to sample? here i’m doing the vectorized one just because\n\nlist_bill_dep_spp <- with(penguins_nobillNA,\n     list(\n       N = length(bill_depth_mm),\n       measurements = bill_depth_mm,\n       spp_id = as.numeric(as.factor(species))\n     )\n)\n     \nsamp_normal_dist_rng_spp <- normal_dist_rng_spp$sample(\n  data = list_bill_dep_spp, \n  parallel_chains = 4,\n  refresh = 0)\n\nRunning MCMC with 4 parallel chains...\n\nChain 1 finished in 0.4 seconds.\nChain 2 finished in 0.5 seconds.\nChain 3 finished in 0.5 seconds.\nChain 4 finished in 0.5 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.5 seconds.\nTotal execution time: 0.7 seconds.\n\nsamp_normal_dist_rng_spp$draws(variables = c(\"mu\", \"sigma\")) |> \n  posterior::summarise_draws() |> \n  flextable::flextable()\n\n\nvariablemeanmediansdmadq5q95rhatess_bulkess_tailmu[1]18.34376318.343850.091489780.0945157518.19167018.4940000.99974815,234.2703,519.726mu[2]18.41388418.412400.136261920.1361026818.19059018.6411001.00017724,179.2503,084.304mu[3]14.98588014.986400.103612610.1052646014.81409515.1549051.00017144,091.1652,887.654sigma1.1228741.121340.044096080.044196311.0532761.1949621.00093014,778.9653,315.725\n\n\nand we can repeat the posterior checking from before:\n\nspp_yrep_draws <- samp_normal_dist_rng_spp$draws(variables = c(\"yrep\"))\nspp_draws_matrix <- posterior::as_draws_matrix(spp_yrep_draws)\n\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = head(spp_draws_matrix, 50))\n\n\n\n\nThe predicted distribution is now much more like the real data\nWe can also make figures for each individual species. Here we will move away from using bayesplot and try to visualize our posterior using the handy functions in the tidybayes package add a link\n\nlibrary(tidybayes)\nspp_draws_df <- posterior::as_draws_df(spp_yrep_draws)\n\nnormal_dist_post_samp <- tidybayes::gather_draws(samp_normal_dist_rng_spp,\n                        yrep[row_id], \n                        ndraws = 50)\n\nnormal_dist_post_samp |> \n  mutate(species = penguins_nobillNA$species[row_id]) |> \n  ggplot(aes(x = .value, colour = species)) + \n  geom_density(aes(group = .iteration), alpha = .1) + \n  facet_wrap(~species) + \n  geom_density(aes(x = bill_depth_mm),\n               data = penguins_nobillNA,\n               colour = \"black\") + \n  scale_colour_brewer(palette = \"Dark2\")\n\n\n\n\n\n\nExercises\n\nLevel 1\n\nrepeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)\nuse bayesplot to examine the fit of body size to these data.\n\n\n\nLevel 2\n\ngenerate some random groups of your own, with known means. How well does the model fit these data\nThe present model is fixed for exactly 3 groups. how would you change it for any number of groups?\n\n\n\nLevel 3\n\nthe function tidybayes::compose_data is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of tidybayes::compose_data?\nAs you can see, the model assumes the same sigma for all species. what if you relax this?\n\n\n\n\nOptional!\nTry this on your own data!"
-  },
-  {
-    "objectID": "topics/parameter_resampling/day_1.html#content",
-    "href": "topics/parameter_resampling/day_1.html#content",
-    "title": "Day 1",
-    "section": "Content",
-    "text": "Content\nThe Secret Weapon\nregression with discrete predictors\n\nAfternoon practical exercises"
-  },
-  {
-    "objectID": "topics/parameter_resampling/day_1.html#course-setup-information",
-    "href": "topics/parameter_resampling/day_1.html#course-setup-information",
-    "title": "Day 1",
-    "section": "Course setup information",
-    "text": "Course setup information\n\nsite information\nplagiarism"
-  },
-  {
-    "objectID": "topics/parameter_resampling/day_1.html#simulation",
-    "href": "topics/parameter_resampling/day_1.html#simulation",
-    "title": "Day 1",
-    "section": "Simulation",
-    "text": "Simulation"
-  },
-  {
-    "objectID": "topics/parameter_resampling/day_1.html#quantifying-uncertainty",
-    "href": "topics/parameter_resampling/day_1.html#quantifying-uncertainty",
-    "title": "Day 1",
-    "section": "Quantifying uncertainty",
-    "text": "Quantifying uncertainty"
-  },
-  {
-    "objectID": "topics/parameter_resampling/day_1.html#resampling",
-    "href": "topics/parameter_resampling/day_1.html#resampling",
-    "title": "Day 1",
-    "section": "Resampling",
-    "text": "Resampling\nIn frequentist models, we can use the variance covariance matrix of parameters to resample new parameters values. This lets us propagate uncertainty from the estimated parameters to the predicted relationship.\nLet’s demonstrate this with one specific mite:\n\nlrug_water <- mite_water |> \n  filter(sp == \"LRUG\")\n\nlrug_glm <- glm(pa ~ water, data = lrug_water, family = \"binomial\")\n\nNow, with our model object, we can create the resampling distribution of the model predicitons:\n\n# Set seed\nset.seed(42) # The answer !\n\n# a sequence along the range of water values in the data\npredVal <- seq(from = min(lrug_water$water),\n               to = max(lrug_water$water),\n               length.out = 30)\n\nn_resamp <- 500\n\n# Result object\nresampModel <- array(NA_real_,\n                   dim = c(length(predVal), n_resamp))\n\n# Resample model parameters and calculate model predictions\nparamMean <- summary(lrug_glm)$coefficients[,1]\nparamCov <- summary(lrug_glm)$cov.unscaled\n\n# Resample model parameters\nparamSmpl <- MASS::mvrnorm(n_resamp, paramMean, paramCov)\n\n# Calculate model predictions using the resampled model parameters\nfor(j in 1:n_resamp){\n  resampModel[,j] <- binomial(link = \"logit\")$linkinv(\n    paramSmpl[j,1] + paramSmpl[j,2] * predVal)\n}\n\n# make a plot of these predictions\nmatplot(predVal, resampModel, type = \"l\", col = \"grey\", lty = 1)\n\n\n\n\nIf we want to find some kind of confidence interval for this line, we can take the quantiles of this resampling:\n\nlow <- apply(resampModel, 1, quantile, probs = .015)\nhigh <- apply(resampModel, 1, quantile, probs = .985)\n\n# plot\nwith(lrug_water, plot(pa ~ water, pch = 21, bg = \"lightblue\"))\npolygon(c(predVal,rev(predVal)),\n        c(low,rev(high)), col=\"thistle\", border=NA)\nlines(predVal, \n      predict(lrug_glm, newdata = list(water = predVal), type = \"response\")\n      )\n\n\n\n\nWe can also do this in a tidyverse style, if you are more comfortable with that:\n\ntibble(predVal) |> \n  rowwise() |> \n  mutate(intercept = list(paramSmpl[,1]),\n         slope = list(paramSmpl[,2]),\n         prediction = list(intercept + slope*predVal),\n         prediction_probability = list(plogis(prediction)),\n         low  = quantile(prediction_probability, .015),\n         high = quantile(prediction_probability, .985)) |> \n  ggplot(aes(x = predVal, ymin = low, ymax = high)) + \n  geom_ribbon(fill = \"thistle\") + \n  theme_bw() + \n  ylim(c(0,1))"
-  },
-  {
-    "objectID": "topics/parameter_resampling/day_1.html#bayesian-approach",
-    "href": "topics/parameter_resampling/day_1.html#bayesian-approach",
-    "title": "Day 1",
-    "section": "Bayesian approach",
-    "text": "Bayesian approach\nhere is a simple bayesian model to generate the same inference:\n\\[\n\\begin{align}\ny &\\sim \\text{Bernoulli}(p)\\\\\n\\text{logit}(p) &= \\alpha + X\\beta\\\\\n\\alpha &\\sim \\text{Normal}(-2.5, .5)\\\\\n\\beta &\\sim \\text{Normal}(0, .5)\\\\\n\\end{align}\n\\]\nnormally we would go through a careful process of checking our priors here. At this time we won’t because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.\nFirst we compile the model, then we’ll look at the Stan code:\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: /Users/amacdonald/.cmdstan/cmdstan-2.31.0\n\n\n- CmdStan version: 2.31.0\n\n\n\nA newer version of CmdStan is available. See ?install_cmdstan() to install it.\nTo disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.\n\nlogistic_glm_stan <- cmdstan_model(stan_file = \"topics/parameter_resampling/logistic_bern_logit.stan\", \n                               pedantic = TRUE)\n\nlogistic_glm_stan\n\ndata {\n  int<lower=0> n;\n  vector[n] x;\n  array[n] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  real slope;\n}\nmodel {\n  y ~ bernoulli_logit(intercept + slope * x);\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n}\n\n\nHere we see the same three parts of a Stan model that we have reviewed already:\n\ndata\nparameters\nprobability statements\n\nAs you can see, we are using a handy Stan function called bernoulli_logit. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.\n\n\nAs a quick review, the logit equation, or inverse-log-odds, is written as \\[\n\\frac{e^\\mu}{1 + e^\\mu}\n\\] Which is also written as\n\\[\n\\frac{1}{1 + e^{-\\mu}}\n\\]\nStan expects our data as a list.\n\nlogistic_glm_stan_samples <- logistic_glm_stan$sample(\n  data = list(n = nrow(lrug_water),\n              y = lrug_water$pa,\n              x = lrug_water$water),\n  refresh = 0)\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 finished in 0.3 seconds.\nChain 2 finished in 0.3 seconds.\nChain 3 finished in 0.4 seconds.\nChain 4 finished in 0.4 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 0.3 seconds.\nTotal execution time: 1.9 seconds.\n\ncoef(lrug_glm)\n\n(Intercept)       water \n-2.48153943  0.00874349 \n\nlibrary(tidybayes)\n\nspread_rvars(logistic_glm_stan_samples, intercept, slope[]) |> \n  bind_cols(predVal = predVal) |> \n  mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |> \n  ggplot(aes(x = predVal, ydist = pred)) + \n  stat_dist_lineribbon() + \n  guides(fill = \"none\") + \n  ylim(c(0,1))\n\nWarning: Using the `size` aesthetic with geom_ribbon was deprecated in ggplot2 3.4.0.\nℹ Please use the `linewidth` aesthetic instead.\n\n\nWarning: Unknown or uninitialised column: `linewidth`.\n\n\nWarning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.\nℹ Please use the `linewidth` aesthetic instead.\n\n\nWarning: Unknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\n\n\n\n\n\n\nAlternative parameterization\nStan contains many functions intended to facilitate writing statistical models. Above, we used the function bernoulli_logit so that we could provide the expression for the average on the logit scale.  Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints – only some values are “allowed”. For example, the only parameter of a Bernoulli distribution is \\(p\\), the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for \\(p\\).\n\n\n\n\n\n\nWarning\n\n\n\nPLEASE NOTE below you will see the relative path to the stan file (stan/logistic.stan). Immediately below you will see the Stan file content. You can copy and paste this to your own computer!\n\n\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nlogistic_bern_glm <- cmdstan_model(stan_file = \"topics/parameter_resampling/logistic.stan\", \n                               pedantic = TRUE)\n\nlogistic_bern_glm\n\ndata {\n  int<lower=0> N;\n  matrix[N, 1] x;\n  array[N] int<lower=0,upper=1> y;\n}\nparameters {\n  real intercept;\n  vector[1] slope;\n}\nmodel {\n  intercept ~ normal(-2.5, .5);\n  slope ~ normal(0, .5);\n  y ~ bernoulli_logit_glm(x, intercept, slope);\n}"
-  },
-  {
-    "objectID": "topics/correlated_effects/secret_weapon.html",
-    "href": "topics/correlated_effects/secret_weapon.html",
-    "title": "Summarizing many univariate models",
-    "section": "",
-    "text": "We’ve already looked at univariate models. When we fit the same model to multiple different groups, we don’t expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.\nHierarchial models represent a way to model this variation, in ways that range from simple to complex.\nBefore we dive in with hierarchical structure, let’s build a bridge between these two approaches.\nThis is useful to help us understand what a hierarchical model does.\nHowever it is also useful from a strict model-building perspective – so useful that Andrew Gelman calls it a “Secret Weapon” tk link\nTo keep things simple and univariate, let’s consider only water:\nFirst, a quick word about centering and scaling a predictor variable:\nsome things to notice about this figure:\nTK add description of the workflow, link to split-apply-combine\nAs you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.\nOnce again, the two parameters of this model represent:"
-  },
-  {
-    "objectID": "topics/correlated_effects/secret_weapon.html#say-it-in-stan",
-    "href": "topics/correlated_effects/secret_weapon.html#say-it-in-stan",
-    "title": "Summarizing many univariate models",
-    "section": "Say it in Stan",
-    "text": "Say it in Stan\nThe above tidyverse approach is very appealing and intuitive, but we can also do the same procedure in Stan.\n\nlibrary(cmdstanr)\n\nThis is cmdstanr version 0.5.3\n\n\n- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr\n\n\n- CmdStan path: /Users/amacdonald/.cmdstan/cmdstan-2.31.0\n\n\n- CmdStan version: 2.31.0\n\n\n\nA newer version of CmdStan is available. See ?install_cmdstan() to install it.\nTo disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.\n\nall_species_unpooled <- cmdstan_model(\n  stan_file = \"topics/correlated_effects/all_species_unpooled.stan\", \n  pedantic = TRUE)\n\nmite_bin <- mite\nmite_bin[mite_bin>0] <- 1\n\nall_species_unpooled_posterior <- \n  all_species_unpooled$sample(\n    data = list(\n      n = nrow(mite_bin),\n      S = ncol(mite_bin),\n      x = with(mite.env, (WatrCont - mean(WatrCont))/100),\n      y = as.matrix(mite_bin)\n    ), \n    refresh = 0\n    )\n\nRunning MCMC with 4 sequential chains...\n\nChain 1 finished in 4.6 seconds.\nChain 2 finished in 4.4 seconds.\nChain 3 finished in 3.9 seconds.\nChain 4 finished in 2.9 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 3.9 seconds.\nTotal execution time: 16.1 seconds.\n\n\nnow let’s try to plot this:\n\n# start by looking at the names of variables\n# get_variables(all_species_unpooled_posterior)\n\npost_pred <- tidybayes::spread_rvars(all_species_unpooled_posterior, \n             intercept[spp_id], slope[spp_id]) |> \n  expand_grid(water = seq(from = -4, to = 4, length.out = 10)) |> \n  mutate(prob = posterior::rfun(plogis)(intercept + slope*water),\n         spp = colnames(mite_bin)[spp_id]) |> \n  ggplot(aes(x = water, dist = prob)) + \n  tidybayes::stat_lineribbon() + \n  facet_wrap(~spp) + \n  scale_fill_brewer(palette = \"Greens\")\n\npost_pred\n\nWarning: Using the `size` aesthetic with geom_ribbon was deprecated in ggplot2 3.4.0.\nℹ Please use the `linewidth` aesthetic instead.\n\n\nWarning: Unknown or uninitialised column: `linewidth`.\n\n\nWarning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.\nℹ Please use the `linewidth` aesthetic instead.\n\n\nWarning: Unknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\n\n\n\n\n\n\npost_pred + \n  geom_point(aes(x = water, y = presabs), \n             inherit.aes = FALSE, \n             data = mite_data_long_transformed,\n             pch = 21, \n             fill = \"orange\")\n\nWarning: Unknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\nUnknown or uninitialised column: `linewidth`.\n\n\n\n\n\nPlot and compare to frequentist point estimates\n\nlong_rvars <- tidybayes::gather_rvars(all_species_unpooled_posterior, \n             intercept[spp_id], slope[spp_id]) \n\n\nmite_many_glm_coefs |> \n  select(spp, term, estimate)\n\n# A tibble: 70 × 3\n# Groups:   spp [35]\n   spp      term        estimate\n   <chr>    <chr>          <dbl>\n 1 Brachy   (Intercept)   2.43  \n 2 Brachy   water        -0.547 \n 3 Ceratoz1 (Intercept)   0.466 \n 4 Ceratoz1 water         0.0273\n 5 Ceratoz3 (Intercept)  -0.237 \n 6 Ceratoz3 water         0.280 \n 7 Eupelops (Intercept)  -0.464 \n 8 Eupelops water        -0.535 \n 9 FSET     (Intercept)  -0.644 \n10 FSET     water        -1.82  \n# ℹ 60 more rows"
-  },
-  {
-    "objectID": "topics/correlated_effects/secret_weapon.html#modelling-variation-in-slopes",
-    "href": "topics/correlated_effects/secret_weapon.html#modelling-variation-in-slopes",
-    "title": "Summarizing many univariate models",
-    "section": "Modelling variation in slopes",
-    "text": "Modelling variation in slopes\nClearly there is variation among species in the values of these parameters. Like all variation, we can develop a scientific model to describe it. The simplest model we’ll consider is a simple univariate distribution.\n\nsuppressPackageStartupMessages(library(cmdstanr))\n\nall_species_partpooled_diag <- cmdstan_model(\n  stan_file = \"topics/correlated_effects/all_species_partpooled_diag.stan\", \n  pedantic = TRUE)\n\nmite_bin <- mite\nmite_bin[mite_bin>0] <- 1\n\nmite_data_list <- list(\n  Nsites = nrow(mite_bin),\n  K = 2,\n  S = ncol(mite_bin),\n  x = cbind(1, with(mite.env, (WatrCont - mean(WatrCont))/100)),\n  y = as.matrix(mite_bin))\n\nall_species_partpooled_diag_posterior <- all_species_partpooled_diag$sample(\n  data = mite_data_list,\n  refresh = 0, parallel_chains = 4)\n\nRunning MCMC with 4 parallel chains...\n\nChain 2 finished in 12.3 seconds.\nChain 1 finished in 12.7 seconds.\nChain 3 finished in 12.7 seconds.\nChain 4 finished in 12.9 seconds.\n\nAll 4 chains finished successfully.\nMean chain execution time: 12.7 seconds.\nTotal execution time: 13.1 seconds.\n\n\nplot these, reproducing the figure from earlier:\n\n# get the unpooled numbers\nunpooled_slopes <- all_species_unpooled_posterior |> \n  tidybayes::gather_rvars(slope[spp])\n\ntidybayes::get_variables(all_species_partpooled_diag_posterior)\n\n  [1] \"lp__\"          \"z[1,1]\"        \"z[2,1]\"        \"z[1,2]\"       \n  [5] \"z[2,2]\"        \"z[1,3]\"        \"z[2,3]\"        \"z[1,4]\"       \n  [9] \"z[2,4]\"        \"z[1,5]\"        \"z[2,5]\"        \"z[1,6]\"       \n [13] \"z[2,6]\"        \"z[1,7]\"        \"z[2,7]\"        \"z[1,8]\"       \n [17] \"z[2,8]\"        \"z[1,9]\"        \"z[2,9]\"        \"z[1,10]\"      \n [21] \"z[2,10]\"       \"z[1,11]\"       \"z[2,11]\"       \"z[1,12]\"      \n [25] \"z[2,12]\"       \"z[1,13]\"       \"z[2,13]\"       \"z[1,14]\"      \n [29] \"z[2,14]\"       \"z[1,15]\"       \"z[2,15]\"       \"z[1,16]\"      \n [33] \"z[2,16]\"       \"z[1,17]\"       \"z[2,17]\"       \"z[1,18]\"      \n [37] \"z[2,18]\"       \"z[1,19]\"       \"z[2,19]\"       \"z[1,20]\"      \n [41] \"z[2,20]\"       \"z[1,21]\"       \"z[2,21]\"       \"z[1,22]\"      \n [45] \"z[2,22]\"       \"z[1,23]\"       \"z[2,23]\"       \"z[1,24]\"      \n [49] \"z[2,24]\"       \"z[1,25]\"       \"z[2,25]\"       \"z[1,26]\"      \n [53] \"z[2,26]\"       \"z[1,27]\"       \"z[2,27]\"       \"z[1,28]\"      \n [57] \"z[2,28]\"       \"z[1,29]\"       \"z[2,29]\"       \"z[1,30]\"      \n [61] \"z[2,30]\"       \"z[1,31]\"       \"z[2,31]\"       \"z[1,32]\"      \n [65] \"z[2,32]\"       \"z[1,33]\"       \"z[2,33]\"       \"z[1,34]\"      \n [69] \"z[2,34]\"       \"z[1,35]\"       \"z[2,35]\"       \"gamma[1]\"     \n [73] \"gamma[2]\"      \"sd_params[1]\"  \"sd_params[2]\"  \"beta[1,1]\"    \n [77] \"beta[2,1]\"     \"beta[1,2]\"     \"beta[2,2]\"     \"beta[1,3]\"    \n [81] \"beta[2,3]\"     \"beta[1,4]\"     \"beta[2,4]\"     \"beta[1,5]\"    \n [85] \"beta[2,5]\"     \"beta[1,6]\"     \"beta[2,6]\"     \"beta[1,7]\"    \n [89] \"beta[2,7]\"     \"beta[1,8]\"     \"beta[2,8]\"     \"beta[1,9]\"    \n [93] \"beta[2,9]\"     \"beta[1,10]\"    \"beta[2,10]\"    \"beta[1,11]\"   \n [97] \"beta[2,11]\"    \"beta[1,12]\"    \"beta[2,12]\"    \"beta[1,13]\"   \n[101] \"beta[2,13]\"    \"beta[1,14]\"    \"beta[2,14]\"    \"beta[1,15]\"   \n[105] \"beta[2,15]\"    \"beta[1,16]\"    \"beta[2,16]\"    \"beta[1,17]\"   \n[109] \"beta[2,17]\"    \"beta[1,18]\"    \"beta[2,18]\"    \"beta[1,19]\"   \n[113] \"beta[2,19]\"    \"beta[1,20]\"    \"beta[2,20]\"    \"beta[1,21]\"   \n[117] \"beta[2,21]\"    \"beta[1,22]\"    \"beta[2,22]\"    \"beta[1,23]\"   \n[121] \"beta[2,23]\"    \"beta[1,24]\"    \"beta[2,24]\"    \"beta[1,25]\"   \n[125] \"beta[2,25]\"    \"beta[1,26]\"    \"beta[2,26]\"    \"beta[1,27]\"   \n[129] \"beta[2,27]\"    \"beta[1,28]\"    \"beta[2,28]\"    \"beta[1,29]\"   \n[133] \"beta[2,29]\"    \"beta[1,30]\"    \"beta[2,30]\"    \"beta[1,31]\"   \n[137] \"beta[2,31]\"    \"beta[1,32]\"    \"beta[2,32]\"    \"beta[1,33]\"   \n[141] \"beta[2,33]\"    \"beta[1,34]\"    \"beta[2,34]\"    \"beta[1,35]\"   \n[145] \"beta[2,35]\"    \"treedepth__\"   \"divergent__\"   \"energy__\"     \n[149] \"accept_stat__\" \"stepsize__\"    \"n_leapfrog__\" \n\npartpooled_slopes <- all_species_partpooled_diag_posterior |> \n  tidybayes::gather_rvars(beta[param, spp]) |> \n  filter(param == 2)\n\nleft_join(unpooled_slopes, partpooled_slopes, by = \"spp\") |> \n  ggplot(aes(x = mean(.value.x), y = mean(.value.y))) + \n  geom_point() + \n  geom_abline(intercept = 0, slope = 1)\n\n\n\n\nRoadmap:\n\nSimple model\n\nformula\nvalidation with bayesplot\nextraction and visualization with tidybayes\n\n\n\nThe secret weapon\n\nfit one model to each group\nplot their estimates\nextend the simple one-species model to use a vector of coefficients\nBONUS: tidy, nest by way\n\n\n\nsingle species, no pooling regressions\n\nformula\nposterior predicitons with bayesplot\nextraction and visualization"
-  },
-  {
-    "objectID": "topics/correlated_effects/secret_weapon.html#single-species-partial-pooling-but-no-correlation",
-    "href": "topics/correlated_effects/secret_weapon.html#single-species-partial-pooling-but-no-correlation",
-    "title": "Summarizing many univariate models",
-    "section": "single species, partial pooling but no correlation",
-    "text": "single species, partial pooling but no correlation\n\nformula\nposterior predictions\nextract and visualize\ncompare\nvalidation with bayesplot\nmodel comparison with LOO-ic, adding LogLik to the generated quantities\n\nlet’s take a look at these values:\n\ndata(\"mite.xy\", package = \"vegan\")\nmite.xy\n\n      x   y\n1  0.20 0.1\n2  1.00 0.1\n3  1.20 0.3\n4  1.40 0.5\n5  2.40 0.7\n6  1.80 0.9\n7  0.05 1.1\n8  2.00 1.3\n9  2.00 1.5\n10 1.20 1.7\n11 2.40 1.9\n12 0.20 2.1\n13 0.40 2.1\n14 2.00 2.3\n15 2.20 2.3\n16 0.05 2.7\n17 0.20 2.7\n18 2.20 2.7\n19 2.40 2.7\n20 1.20 2.9\n21 0.05 3.1\n22 1.40 3.1\n23 2.40 3.1\n24 0.20 3.5\n25 1.20 3.7\n26 0.80 3.9\n27 1.60 3.9\n28 0.20 4.1\n29 0.80 4.1\n30 1.80 4.5\n31 0.20 4.7\n32 1.40 4.7\n33 0.60 5.3\n34 1.00 5.3\n35 2.40 5.3\n36 1.40 5.5\n37 1.80 5.5\n38 0.40 5.9\n39 1.00 5.9\n40 1.80 5.9\n41 2.00 5.9\n42 0.05 6.1\n43 0.20 6.1\n44 0.40 6.1\n45 1.20 6.1\n46 1.60 6.1\n47 1.60 6.3\n48 0.40 6.5\n49 1.80 6.7\n50 0.60 6.9\n51 2.00 7.1\n52 0.05 7.3\n53 0.40 7.3\n54 1.40 7.5\n55 2.20 7.5\n56 0.20 7.9\n57 1.60 7.9\n58 2.40 7.9\n59 0.05 8.1\n60 1.20 8.1\n61 1.40 8.1\n62 2.00 8.1\n63 1.60 8.5\n64 1.60 8.7\n65 1.00 8.9\n66 1.60 8.9\n67 2.40 9.1\n68 2.20 9.3\n69 1.80 9.5\n70 0.40 9.7\n\nnrow(mite)\n\n[1] 70"
-  },
-  {
-    "objectID": "topics/correlated_effects/secret_weapon.html#ongoing-discussions-to-have",
-    "href": "topics/correlated_effects/secret_weapon.html#ongoing-discussions-to-have",
-    "title": "Summarizing many univariate models",
-    "section": "Ongoing discussions to have:",
-    "text": "Ongoing discussions to have:\n\nhow much “tooling” would we like to try and do? for me, there is a difference between a “minimal” approach that is base R + cmdstanr, vs a bigger approach such as:\n\ntidyverse tidybayes (compose_data) the posterior package (possibly interacting with tidybayes) bayesplot\nThen the bigger, more “meta” packages: brms rstanarm\ncorrelated:\n\n# logistic_bern_glm_corr <- cmdstan_model(\n#   stan_file = \"topics/secret_weapon_correlated.stan\", \n#   pedantic = TRUE)\n# \n# \n# partpooling_samples <- logistic_bern_glm_corr$sample(data = mite_data_list)"
-  },
-  {
-    "objectID": "topics/mcmc/day_2.html#convergence-diagnostics",
-    "href": "topics/mcmc/day_2.html#convergence-diagnostics",
-    "title": "Day 2",
-    "section": "Convergence Diagnostics",
-    "text": "Convergence Diagnostics"
-  },
-  {
-    "objectID": "topics/mcmc/day_2.html#model-validation-with-simulation",
-    "href": "topics/mcmc/day_2.html#model-validation-with-simulation",
-    "title": "Day 2",
-    "section": "Model validation with simulation",
-    "text": "Model validation with simulation"
-  },
-  {
-    "objectID": "topics/mcmc/day_2.html#dags",
-    "href": "topics/mcmc/day_2.html#dags",
-    "title": "Day 2",
-    "section": "DAGs",
-    "text": "DAGs\n\nforks, pipes and colliders\nsimulation from a DAG\ndemonstration of errors from disregarding DAGs"
   },
   {
     "objectID": "topics/01_simulation/index.html",
@@ -1685,5 +1517,40 @@
     "title": "Data simulation",
     "section": "parameter recovery",
     "text": "parameter recovery\nOk so now we can see our first simple stan model! we are using this powerful tool to draw forty random numbers.\nin R : fitdistr, glm\nNow we can move on to the second step outlined above: we can just fit the same data to our model, vice versa, and see if we can recover that parameter.\nIn R, there are several ways to do it: first, we can use R do it in two ways: fitdistr, and glm.\nThen we do the same thing in Stan.\nThen we look to see if we have recovered our parameter.\nThe next steop in visualization, which we also do with this simple model."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#frequentist",
+    "href": "slides/02_Bayesian/index.html#frequentist",
+    "title": "Bayesian modelling",
+    "section": "Frequentist",
+    "text": "Frequentist\n\nIn introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.\nFrequentists want to find the best model parameter(s) for the data at hand\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\]\nThey are interested in maximizing the Likelihood\nThey need data\nEstimating model parameters\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
+    "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
+    "title": "‘Simple’ hierarchical models",
+    "section": "“Simple” hierarchical model",
+    "text": "“Simple” hierarchical model\nHere, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-7",
+    "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-7",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nEstimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling \\(\\beta_0\\) as\n\\[\\beta_0 \\sim \\mathcal{N}(\\mu_I, \\sigma_I^2)\\] and \\(\\beta\\) as\n\\[\\beta \\sim \\mathcal{N}(\\mu_S, \\sigma_S^2)\\]\nIn doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the distribution of best parameter values."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-8",
+    "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-8",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nWhen using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.\nSince we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-9",
+    "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-9",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nMCMC relies on using many random samples to assess what the structure of the distribution is."
   }
 ]

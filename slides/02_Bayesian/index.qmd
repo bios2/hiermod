@@ -81,10 +81,6 @@ These priors are meant to bring very little information about the model
 #### Informative
 
 These priors bring information about the model that is available
-
-#### Conjugate
-
-These priors have the same functional form (mathematically speaking) as the likelihood
 :::
 
 ## A few words about the prior
@@ -232,6 +228,75 @@ In an MCMC, we assume that the likeliness of passing from one behaviour (land) t
 :::
 
 ![](../img/DAG_Markov_chain_monte_Carlo.png){fig-align="center"}
+
+## Markov Chain Monte Carlo (MCMC)
+#### A simplistic statistical example
+
+::: {style="font-size: 0.75em;"}
+Let's say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm.
+:::
+
+```{r, echo =FALSE, fig.height=5, fig.width=5, fig.align='center'}
+set.seed(42)
+x <- 1:100
+#x <- seq(0.25, 1.36, length = 40)
+y <- rnorm(length(x), 100 + x * 13.6, sd = 100)
+
+plot(x,y,
+     bty ="L",
+     las = 1,
+     xlab = "Days",
+     ylab = "Weight (g)",
+     pch = 19, 
+     col = " blue",
+     xaxs = "i",
+     xlim = c(0,100),
+     ylim = range(0,y),
+     cex.lab = 1.5)
+
+reg <- lm(y ~ x)
+```
+
+## Markov Chain Monte Carlo (MCMC)
+#### A simplistic statistical example
+
+::: {style="font-size: 0.65em;"}
+A growth model can be constructed using a simple linear regression
+
+$$y = \beta_0 + \beta x + \varepsilon$$
+From this model which the average weight when a Mallard duck hatches is `r round(coef(reg)[1])` grams (intercept), with an average daily growth of `r round(coef(reg)[2], 1)` grams (intercept).
+:::
+
+```{r, echo =FALSE, fig.height=6, fig.width=6, fig.align='center'}
+plot(x,y,
+     bty ="L",
+     las = 1,
+     xlab = "Days",
+     ylab = "Weight (g)",
+     pch = 19, 
+     col = " blue",
+     xaxs = "i",
+     xlim = c(0,100),
+     ylim = range(0,y),
+     cex.lab = 1.5,
+     cex = 2)
+
+abline(reg = reg, col = "orange", lwd = 8)
+```
+
+## Markov Chain Monte Carlo (MCMC)
+#### A simplistic statistical example
+
+::: {style="font-size: 0.85em;"}
+Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling $\beta_0$ as
+
+$$\beta_0 \sim \mathcal{N}(\mu_I, \sigma_I^2)$$
+and $\beta$ as 
+
+$$\beta \sim \mathcal{N}(\mu_S, \sigma_S^2)$$
+
+In doing so, we are not focusing on finding the 'best' parameter values. Rather, we are focused on finding the **distribution** of best parameter values.
+:::
 
 ## Markov Chain Monte Carlo (MCMC)
 
