@@ -60,14 +60,14 @@
     "href": "slides/07_Complex_hierarchical_model/index.html#y-1-fg",
     "title": "Complex hierarchical models",
     "section": "y ~ (1 | f/g)",
-    "text": "y ~ (1 | f/g)\n\nOther notation used : (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]} + \\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f[l_f]} + b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the level \\(l_f\\) of the factor \\(f\\) changes or when the level \\(l_g\\) of the factor \\(g\\) within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0, \\begin{bmatrix}\n                                  \\sigma^2_f & 0\\\\\n                                  0& \\sigma^2_{g\\in f}\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+    "text": "y ~ (1 | f/g)\nStan code for this model\n\nFor Andrew?"
   },
   {
     "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-1",
     "href": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-1",
     "title": "Complex hierarchical models",
     "section": "y ~ (1 | f/g)",
-    "text": "y ~ (1 | f/g)\n\nStan code for this model\n\nFor Andrew?"
+    "text": "y ~ (1 | f/g)"
   },
   {
     "objectID": "slides/07_Complex_hierarchical_model/index.html#y-1-fg-2",
@@ -165,7 +165,7 @@
     "href": "slides/07_Complex_hierarchical_model/index.html#here-it-is-all-on-one-slide",
     "title": "Complex hierarchical models",
     "section": "here it is all on one slide",
-    "text": "here it is all on one slide\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
   },
   {
     "objectID": "slides/07_Complex_hierarchical_model/index.html#or-we-can-present-the-code-and-results-separately",
@@ -1622,5 +1622,33 @@
     "title": "Extra stuff",
     "section": "A (very !) general formulation",
     "text": "A (very !) general formulation\n\nA hierarchical model is a generalization of the linear model such that\n\\[(\\mathbf{y}|\\mathbf{b} )\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma^2\\mathbf{I})\\] What is also noticeable in this model is the conditional relationship between \\(\\mathbf{y}\\) and \\(\\mathbf{b}\\).\nSpecifically, in this formulation,\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mathbf{0}, \\mathbf{\\Sigma})\\] where \\(\\mathbf{\\Sigma}\\) is a covariance matrix.\nBased on this general formulation, we can now define all unconstrained hierarchical models."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#complex-hierarchical-model",
+    "href": "slides/07_Complex_hierarchical_model/index.html#complex-hierarchical-model",
+    "title": "Complex hierarchical models",
+    "section": "“Complex” hierarchical model",
+    "text": "“Complex” hierarchical model\nBy “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.\nAs we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#interacting-hierarchies",
+    "href": "slides/07_Complex_hierarchical_model/index.html#interacting-hierarchies",
+    "title": "Complex hierarchical models",
+    "section": "Interacting hierarchies",
+    "text": "Interacting hierarchies\n\nlme4 notation : y ~ (1 | f:g)\nThis model assumes that factors f and g interact to make a hierarchy.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g] },\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f[l_f]\\times g[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, a multi-factor hierarchy can be constructed my multiplying the levels of individual factors to account for a more complexe hierarchy. Another way to think about this structure is to construct a complexe hierarchy using multiple simpler hierarchies.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0, \\sigma^2_{f\\times g}\\right)\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#hierarchies-within-hierarchies",
+    "href": "slides/07_Complex_hierarchical_model/index.html#hierarchies-within-hierarchies",
+    "title": "Complex hierarchical models",
+    "section": "Hierarchies within hierarchies",
+    "text": "Hierarchies within hierarchies\n\nlme4 notation : y ~ (1 | f/g) or y ~ (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, the model parameter \\(b\\) will change for a sample \\(i\\) only when the level \\(l_g\\) of the factor \\(g\\) within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\\sigma^2_{g\\in f}\n                                \\right)\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#interacting-hierarchies-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#interacting-hierarchies-1",
+    "title": "Complex hierarchical models",
+    "section": "Interacting hierarchies",
+    "text": "Interacting hierarchies"
   }
 ]
