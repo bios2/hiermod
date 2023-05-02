@@ -9,6 +9,12 @@ format:
     code-tools: true
 ---
 
+```{r, message=FALSE}
+library(tidyverse)
+library(cmdstanr)
+```
+
+
 Before starting work on real data, we are going to begin by learning how to make up some of our own.
 There are at least three reasons why this is a good idea:
 
@@ -22,80 +28,154 @@ If you can't, then you don't know quite how it works yet.
 
 Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds each of us is going to see on our hike?
 
-:::{.callout-note}
-Simulating data really helps a scientist to ask an important question: "Where do my numbers come from?".
-What kind of numbers do we expect to get? Do they have an upper limit? a lower limit?
-What kind of observation would be a little suprising? VERY surprising?
-:::
+### Some questions to ask about simulated data
+
+1. What kind of observations are you going to make? Do they have a minimum or maximum value?
+Are they integers, or are they decimal numbers, or something else?
+1. Where do the numbers come from? This could be anything, from simple linear approximations (ie the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. 
+1. How many observations will we be making?
 
 ### The process
 
-We might imagine that each one of us is likely to see about the same number of birds. 
-We know our data (number of birds) is going to be a positive integer: 0 or more birds. 
+let's try to answer these questions for birds
+
+1. We're going to count birds, so we'll have count data: a number that is either 0 or some positive, round number
+2. We'll make a simplifying assumption: everybody has the same chance of seeing a bird (ie no differences in skill or equipment), and everyone is the class is an independent observer (ie nobody is working in pairs, etc) 
+3. Everyone in the class makes only one count, so we have 23 (?) numbers.
+
+We're bayesians, so we need to write a probability distribution for all the possible values
 
 $$
 \begin{align}
-\text{Number of Birds} &\sim \text{Poisson}(\lambda) \\
-\lambda &= 20 
+\text{Number of Birds}_{\text{seen by person i}} &\sim \text{Poisson}(\lambda) \\
+\lambda &\sim \text{Uniform}(0, 60)
 \end{align}
 $$
 
+A quick note about notation for models like these:
 
-$$
-\begin{align}
-\text{Number of Birds} &\sim \text{Poisson}(\lambda_i) \\
-\lambda_i &= \mu \\
+* We use a subscript $i$ to indicate the "label" for each observation in our dataset. You can think of this as the row number of the data spreadsheet, and imagine sliding your finger down the column of measurements, modelling each value in turn.
+* Usually we'll use more general language, such as $y_i$. But for this simple example I wanted to make things as explicit as possible. 
+* Notice the symbol $\sim$. This is read as "distributed as", and indicates the probability distribution from which the values might come.  When the values we're talking about are data that we can observe (in this case, ), we call the distribution the likelihood. When the value is something we can't observe (in this case, the average count $\lambda$) we call the distribution the prior.
 
-\end{align}
-$$
-
-
-```{r}
-abd ~ 1 + (1 | person)
-```
-
-
+::: {.callout-warning}
+We'll be talking about better ways to model count data in a later exercise! For now, I'm using the Uniform distribution for simplicity. It's not usually a very good choice! 
+:::
 
 ### Simulation in R
 
-let's simulate from a poisson distribution.
+One of the most useful traits of bayesian models is that they are _generative_: they can be used to make a simulated dataset. 
+We'll do that now for our bird example.
+
+let's simulate from a poisson distribution:
 
 ```{r}
-set.seed(1234)
+set.seed(525600)
 n_people <- 21
-rpois(n_people, lambda = 20)
+avg_birds_per_person <- runif(1, min = 0, max = 30)
+bird_count <- rpois(n_people, lambda = avg_birds_per_person)
 ```
 
+Some things to note in the code above: 
 
-as you probably know, to draw random numbers in R we use the function `rpois`
+#### R statistical distributions 
 
-Every statistical distribution that is in R (which is a lot! almost all! ) has a distirbution has four functions.
-of the distribution is called `dist`, then they are:
+Every statistical distribution that is in R (which is a lot! almost all! ) has four different functions. 
+If the distribution is called `dist`, then they are:
 
-`rdist` = the distribution functions 
-`qdist` = the quantile functions 
-`pdist` = the probability density function 
-`ddist` the density function
+* `rdist` = the distribution functions 
+* `qdist` = the quantile functions 
+* `pdist` = the probability density function 
+* `ddist` the density function
 
+Let's take a look at our simulated values:
 
-:::{.callout-note}
+```{r}
+#| fig-cap: Histogram of simulated counts of birds
 
-In these simulations we can see that we are expressing ourselves with a sort of great, big shrug: we have no idea what these numbers might be, and so we are working to just make up fake ones.
-we start with very little -- with literally no information -- about what our data might be when we see it.
-for a bayeisan, there is no practical difference between data and parameters in a model
+hist(bird_count, col = "lightblue", xlim = c(0, 50))
+```
 
-what makes a person and approach Bayesian is not the use of Bayes rule.
-Bayes rule is just a fact about conditional probability, which everyone uses regardless of their framework for scientific inference.
-no, to be bayesian is to use probability to measure uncertainty.
-:::
+This is pretty great, and represents one possible realization of sampling. 
+However, one sample isn't enough to tell us about what our $\text{Uniform}(0, 60)$ prior really means. Let's do a few different simulations:
 
-.. plot it..
+```{r}
+#| fig-cap: Twelve different simulations of a possible bird dataset. Do all of these seem plausible? 
+
+library(tidyverse)
+
+set.seed(525600)
+
+simulate_some_birds <- function() {
+  lambda <- runif(1, min = 0, max = 60)
+  data.frame(obs = rpois(23, lambda = lambda))
+}
+  
+purrr::rerun(.n = 12, simulate_some_birds()) |> 
+  dplyr::bind_rows(.id = "sample") |> 
+  ggplot(aes(x = obs)) + 
+  geom_histogram() + 
+  facet_wrap(~sample) + 
+  theme_bw() + 
+  labs(x = "Number of birds observed per person")
+```
+
+This figure shows different simulations of what, according to our prior, might be reasonable datasets for us to study. Do any of them seem implausible to you? If so, try changing the prior. The goal is to make fake datasets that _seem_ plausible, but which still include the possiblity of suprising observations. 
 
 ## Simulating data in Stan
 
+Let's look back at the equation:
 
-write model
-walk through it
+$$
+\begin{align}
+\text{Number of Birds}_{\text{seen by person i}} &\sim \text{Poisson}(\lambda) \\
+\lambda &\sim \text{Uniform}(0, 60)
+\end{align}
+$$
+
+And then translate it into Stan:
+
+```{r}
+#| class-output: stan
+poisson_simulation <- cmdstan_model(
+  stan_file = "topics/01_simulation/poisson_simulation.stan")
+
+poisson_simulation
+```
+
+This stan program has two parts
+
+```stan
+
+data {
+  int<lower=0> n_people;
+}
+```
+
+And the generated quantites block
+
+```stan
+generated quantities {
+  // simulate a population average
+  real<lower=0> avg_observed;
+  avg_observed = uniform_rng(0, 60);
+  // simulate observations with that average
+  // an array -- like a list in R
+  array[n_people] int<lower=0> observations;
+  for (i in 1:n_people){
+    observations[i] = poisson_rng(avg_observed);
+  }
+}
+```
+
+Let's look at similarities and differences to R 
+
+similarities: 
+* we have a random number generating function for each of our distributions
+* 
+
+PINEAPPLE could this be a two-column output so they are side by side?
+
 
 
 ## parameter recovery
@@ -115,3 +195,11 @@ Then we do the same thing in Stan.
 Then we look to see if we have recovered our parameter.
 
 The next steop in visualization, which we also do with this simple model.
+
+## Bonus material: conjugacy
+
+You would never actually do the analysis on this page. In reality, for simple distributions such as the Poisson, we would 
+
+## Exercises
+
+* 
