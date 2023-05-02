@@ -9,7 +9,7 @@
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.335">
 
-  <meta name="author" content="Andrew MacDonald and Guillaume Blanchet and Vincent Tolon">
+  <meta name="author" content="Guillaume Blanchet – Andrew MacDonald – Vincent Tolon">
   <title>Modèles hiérarchiques pour les sciences de la vie - Complex hierarchical models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -393,64 +393,60 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Andrew MacDonald and Guillaume Blanchet and Vincent Tolon 
+Guillaume Blanchet – Andrew MacDonald – Vincent Tolon 
 </div>
 </div>
 </div>
 
-  <p class="date">2/10/23</p>
+  <p class="date">5/10/23</p>
 </section>
 <section id="complex-hierarchical-model" class="slide level2">
 <h2>“Complex” hierarchical model</h2>
 <p>By “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.</p>
 <p>As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.</p>
-<p>Before we do this, let’s get back to the general formation of hierarchical models.</p>
-</section>
-<section id="the-general-formulation" class="slide level2">
-<h2>The general formulation</h2>
-<p><span class="math display">\[(\mathbf{y}|\mathbf{X},\mathbf{Z}, \boldsymbol{\beta}, \mathbf{b}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma_\mathbf{y}^2\mathbf{I})\]</span></p>
-<div style="font-size: 0.68em">
-<p>where</p>
-<ul>
-<li><p><span class="math inline">\(\mathbf{y}\)</span> is a vector quantifying a response variable of length <span class="math inline">\(n\)</span></p></li>
-<li><p><span class="math inline">\(\mathbf{X}\)</span> is a matrix of explanatory variables with <span class="math inline">\(n\)</span> rows (samples) and <span class="math inline">\(p\)</span> columns (explanatory variables)</p></li>
-<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> is a vector <span class="math inline">\(p\)</span> pararameters weighting the importance of each explanatory variables in <span class="math inline">\(\mathbf{X}\)</span></p></li>
-<li><p><span class="math inline">\(\sigma_\mathbf{y}^2\)</span> is a measure of variance of the error in the regression model</p></li>
-<li><p><span class="math inline">\(\mathbf{I}\)</span> is an <span class="math inline">\(n \times n\)</span> identity matrix</p></li>
-<li><p><span class="math inline">\(\mathbf{Z}\)</span> is another matrix of explanatory variables with <span class="math inline">\(n\)</span> rows (samples) and <span class="math inline">\(q\)</span> columns (explanatory variables)</p></li>
-<li><p><span class="math inline">\(\mathbf{b}\)</span> is a vector <span class="math inline">\(q\)</span> pararameters weighting the importance of each explanatory variables in <span class="math inline">\(\mathbf{Z}\)</span></p></li>
-</ul>
-</div>
 </section>
 <section>
 <section id="complex-hierarchy-on-the-intercept" class="title-slide slide level1 center">
 <h1>“Complex” hierarchy on the intercept</h1>
-<p>ICI ICI ICI ICI</p>
+
 </section>
-<section id="y-1-fg" class="slide level2">
-<h2><code>y ~ (1 | f/g)</code></h2>
+<section id="interacting-hierarchies" class="slide level2">
+<h2>Interacting hierarchies</h2>
 <div style="font-size: 0.7em">
-<p>Other notation used : <code>(1 | f) + (1 | f:g)</code></p>
+<p><code>lme4</code> notation : <code>y ~ (1 | f:g)</code></p>
+<p>This model assumes that factors <code>f</code> and <code>g</code> interact to make a hierarchy.</p>
+<p>Mathematically, it can be translated to</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g] },\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f[l_f]\times g[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, a multi-factor hierarchy can be constructed my multiplying the levels of individual factors to account for a more complexe hierarchy. Another way to think about this structure is to construct a complexe hierarchy using multiple simpler hierarchies.</p>
+<p>This is because in this model</p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)\]</span></p>
+</div>
+</section>
+<section id="interacting-hierarchies-1" class="slide level2">
+<h2>Interacting hierarchies</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="hierarchies-within-hierarchies" class="slide level2">
+<h2>Hierarchies within hierarchies</h2>
+<div style="font-size: 0.7em">
+<p><code>lme4</code> notation : <code>y ~ (1 | f/g)</code> or <code>y ~ (1 | f) + (1 | f:g)</code></p>
 <p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f[l_f]} + b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes or when the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, the model parameter <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
 <p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0, \begin{bmatrix}
-                                  \sigma^2_f &amp; 0\\
-                                  0&amp; \sigma^2_{g\in f}\\
-                                \end{bmatrix}
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,\sigma^2_{g\in f}
                                 \right)\]</span></p>
 </div>
 </section>
-<section id="y-1-fg-1" class="slide level2">
+<section id="y-1-fg" class="slide level2">
 <h2><code>y ~ (1 | f/g)</code></h2>
 <h3 id="stan-code-for-this-model">Stan code for this model</h3>
 <div style="margin-top: 200px; font-size: 2.5em; color: red;">
 <p>For Andrew?</p>
 </div>
 </section>
-<section id="y-1-fg-2" class="slide level2">
+<section id="y-1-fg-1" class="slide level2">
 <h2><code>y ~ (1 | f/g)</code></h2>
 <div class="cell" data-layout-align="center">
 
@@ -547,7 +543,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
 <section id="here-it-is-all-on-one-slide" class="slide level2">
 <h2>here it is all on one slide</h2>
 <div class="cell columns column-output-location">
@@ -561,7 +557,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -585,7 +581,7 @@ Andrew MacDonald and Guillaume Blanchet and Vincent Tolon
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
 </div>
 </div>
 </div>

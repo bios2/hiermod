@@ -398,7 +398,7 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </div>
 </div>
 
-  <p class="date">2/10/23</p>
+  <p class="date">5/8/23</p>
 </section>
 <section>
 <section id="the-very-basic" class="title-slide slide level1 center">
@@ -412,21 +412,23 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="dos-and-donts-at-the-station-biologique-des-laurentides" class="slide level2">
 <h2>Dos and don’ts at the Station biologique des Laurentides</h2>
+<p>Meeting with Gabriel Lanthier, the lord of these premises</p>
 </section>
 <section id="course-material" class="slide level2">
 <h2>Course material</h2>
-<h3 id="website">Website :</h3>
+<h3 id="website-httpsbios2.github.iohiermod2023">Website : <a href="https://bios2.github.io/hiermod2023/">https://bios2.github.io/hiermod2023/</a></h3>
 <p>On it, you will find the slides but also Rmarkdown files with practical examples.</p>
 <p>You will also find course syllabus</p>
 <p>Let’s take a look…</p>
 </section>
 <section id="general-daily-schedule" class="slide level2">
 <h2>General daily schedule</h2>
-<p>9h00 - Start of the day</p>
+<p>8h00 to 9h00 - Breakfast</p>
 <p>9h00 to 12h00 - Lecture/Practice</p>
 <p>12h00 to 13h00 - Lunch</p>
 <p>13h00 to 17h00 - Lecture/Practice</p>
-<p>17h00 to 18h00 - Project presentations</p>
+<p>17h00 to 17h30 - Project presentations</p>
+<p>17h30 to 18h30 - Supper</p>
 </section></section>
 <section>
 <section id="the-course-basics" class="title-slide slide level1 center">
@@ -759,10 +761,10 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
         }
-    
+
         function fireSlideChanged(previousSlide, currentSlide) {
           fireSlideEnter();
-    
+
           // dispatch for shiny
           if (window.jQuery) {
             if (previousSlide) {
@@ -773,7 +775,7 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
             }
           }
         }
-    
+
         // hookup for slidy
         if (window.w3c_slidy) {
           window.w3c_slidy.add_observer(function (slide_num) {
@@ -781,10 +783,10 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
           });
         }
-    
+
       })();
     </script>
-    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

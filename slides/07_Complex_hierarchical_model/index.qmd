@@ -3,8 +3,8 @@ title: "Complex hierarchical models"
 title-slide-attributes: 
   data-background-image: ../img/bg.jpg
   data-background-size: full
-author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
-date: "2023-02-10"
+author: "Guillaume Blanchet -- Andrew MacDonald -- Vincent Tolon"
+date: "2023-05-10"
 execute:
   echo: true
 format: 
@@ -21,57 +21,99 @@ By "complex" we refer to hierarchical models for which more than one parameters 
 
 As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.
 
-Before we do this, let's get back to the general formation of hierarchical models.
-
-## The general formulation
-
-$$(\mathbf{y}|\mathbf{X},\mathbf{Z}, \boldsymbol{\beta}, \mathbf{b}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma_\mathbf{y}^2\mathbf{I})$$
-
-:::{style="font-size: 0.68em"}
-
-where
-
-- $\mathbf{y}$ is a vector quantifying a response variable of length $n$
-- $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory variables) 
-- $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
-- $\sigma_\mathbf{y}^2$ is a measure of variance of the error in the regression model
-- $\mathbf{I}$ is an $n \times n$ identity matrix 
-
-- $\mathbf{Z}$ is another matrix of explanatory variables with $n$ rows (samples) and $q$ columns (explanatory variables) 
-- $\mathbf{b}$ is a vector $q$ pararameters weighting the importance of each explanatory variables in $\mathbf{Z}$
-:::
-
 # "Complex" hierarchy on the intercept
 
-ICI
-ICI
-ICI
-ICI
-
-## `y ~ (1 | f/g)`
+## Interacting hierarchies
 
 ::: {style="font-size: 0.7em"}
-Other notation used : `(1 | f) + (1 | f:g)`
+`lme4` notation : `y ~ (1 | f:g)`
+
+This model assumes that factors `f` and `g` interact to make a hierarchy.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g] },\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+or 
+
+$$y_i = b_{f[l_f]\times g[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, a multi-factor hierarchy can be constructed my multiplying the levels of individual factors to account for a more complexe hierarchy. Another way to think about this structure is to construct a complexe hierarchy using multiple simpler hierarchies. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)$$
+:::
+
+## Interacting hierarchies
+
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(-marginal,val,
+     type = "n",
+     ylim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+polygon(x = c(-marginal,-marginal[1]),
+        y = c(val, val[1]),
+        col = rgb(170/255, 103/255, 57/255, 0.5),
+        border = NA)
+
+lines(-marginal,val, lwd = 3)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(-3,3),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",) 
+
+set.seed(40)
+abline(h = rnorm(30, mean = 1, sd = 0.5),
+       lwd = 3,
+       col = rgb(170/255, 103/255, 57/255))
+
+legend("topright",
+       legend = c("f", "g"),
+       fill = c("blue", "orange"),
+       cex = 2.5)
+```
+
+
+## Hierarchies within hierarchies
+
+::: {style="font-size: 0.7em"}
+`lme4` notation : `y ~ (1 | f/g)` or `y ~ (1 | f) + (1 | f:g)`
 
 This model assumes there is a hierarchy that varies among the levels of factor `f` and among the levels of factor `g` but only within the levels of factor `f`.
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
 or 
 
-$$y_i = b_{f[l_f]} + b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that the model values $b$ will change for a sample $i$ only when the level $l_f$ of the factor $f$ changes or when the level $l_g$ of the factor $g$ **within** the level $l_f$ of the factor $f$ changes. 
+$$y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, the model parameter $b$ will change for a sample $i$ only when the level $l_g$ of the factor $g$ **within** the level $l_f$ of the factor $f$ changes. 
 
 This is because in this model
 
-$$\mathbf{b} \sim \mathcal{N}\left(0, \begin{bmatrix}
-                                  \sigma^2_f & 0\\
-                                  0& \sigma^2_{g\in f}\\
-                                \end{bmatrix}
+$$\mathbf{b} \sim \mathcal{N}\left(0,\sigma^2_{g\in f}
                                 \right)$$
-
 :::
+
+## Hierarchies within hierarchies
+
+ICI
+
 
 
 ## `y ~ (1 | f/g)`

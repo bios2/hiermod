@@ -3,8 +3,8 @@ title: "'Simple' hierarchical models"
 title-slide-attributes: 
   data-background-image: ../img/bg.jpg
   data-background-size: full
-author: "Andrew MacDonald and Guillaume Blanchet and Vincent Tolon"
-date: "2023-02-10"
+author: "Guillaume Blanchet -- Andrew MacDonald -- Vincent Tolon"
+date: "2023-05-09"
 execute:
   echo: true
 format: 
@@ -23,61 +23,6 @@ Futhermore, for most of this lecture, we will focus on models with a Gaussian er
 
 When we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model.
 
-
-## A (very !) general formulation
-
-::: {style="font-size: 0.68em"}
-As discuss yesterday, a linear model can be writen as
-
-$$(\mathbf{y}|\mathbf{X}, \boldsymbol{\beta}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta}, \sigma\mathbf{y}^2\mathbf{I})$$
-
-where
-
-- $\mathbf{y}$ is a vector quantifying a response variable of length $n$
-- $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory varaibles) 
-- $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
-- $\sigma_\mathbf{y}^2$ is a measure of variance of the error in the regression model
-- $\mathbf{I}$ is an $n \times n$ identity matrix 
-:::
-
-## A (very !) general formulation
-
-::: {style="font-size: 0.8em"}
-A hierarchical model is a generalization of the linear model such that 
-
-$$(\mathbf{y}|\mathbf{X},\mathbf{Z}, \boldsymbol{\beta}, \mathbf{b}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma_\mathbf{y}^2\mathbf{I})$$
-:::
-::: {style="font-size: 0.68em"}
-
-where
-
-- $\mathbf{y}$ is a vector quantifying a response variable of length $n$
-- $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory variables) 
-- $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
-- $\sigma_\mathbf{y}^2$ is a measure of variance of the error in the regression model
-- $\mathbf{I}$ is an $n \times n$ identity matrix 
-
-:::: {style="color: blue"}
-- $\mathbf{Z}$ is another matrix of explanatory variables with $n$ rows (samples) and $q$ columns (explanatory variables) 
-- $\mathbf{b}$ is a vector $q$ pararameters weighting the importance of each explanatory variables in $\mathbf{Z}$
-::::
-:::
-
-## A (very !) general formulation
-
-::: {style="font-size: 0.8em"}
-A hierarchical model is a generalization of the linear model such that 
-
-$$(\mathbf{y}|\mathbf{b} )\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma^2\mathbf{I})$$
-What is also noticeable in this model is the conditional relationship between $\mathbf{y}$ and $\mathbf{b}$.
-
-Specifically, in this formulation, 
-
-$$\mathbf{b}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})$$
-where $\mathbf{\Sigma}$ is a covariance matrix.
-
-Based on this  general formulation, we can now define all unconstrained hierarchical models.
-:::
 
 
 ## The "`|`"
