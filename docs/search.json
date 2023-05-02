@@ -1804,5 +1804,117 @@
     "title": "Complex hierarchical models",
     "section": "Playing with the Gaussian distribution",
     "text": "Playing with the Gaussian distribution\nTranslation\nMathematically"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-1",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\nTranslation"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-2",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-2",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\nTranslation\nMathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.\nThis means that\n\\[\\beta \\sim \\mathcal{N}(\\mu, \\sigma^2)\\] is exactly the same as\n\\[\\beta \\sim \\left(\\mathcal{N}(0, \\sigma^2) + \\mu\\right)\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-3",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-3",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\nScaling"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-4",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-4",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\nScaling\nMathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.\nThis means that\n\\[\\beta \\sim \\mathcal{N}(\\mu, \\sigma^2)\\] is exactly the same as\n\\[\\beta \\sim \\left(\\mathcal{N}(\\mu, 1) \\times \\sigma^2\\right)\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-5",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-5",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\nThe convergence trick amounts to sampling a standard Gaussian distribution and adjusting its mean and variance from outside the distribution\n\\[\\beta \\sim \\left(\\mathcal{N}(0, 1) \\times \\sigma^2 + \\mu\\right)\\] When implementing an MCMC in Stan (or any other such software), this trick allows for convergence to be much more efficient."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-6",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-6",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\n\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-7",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-7",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\n\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\n\nTo do this, we need to work with a multivariate Gaussian distribution."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-8",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-8",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\n\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\nTo do this, we need to work with a multivariate Gaussian distribution.\nThe good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-9",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-9",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\n\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\nTo do this, we need to work with a multivariate Gaussian distribution.\nThe good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.\nTo show how our convergence trick works for a multivariate Gaussian distribution, let’s first visualize the two dimensional version of this distribution."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#bivariate-gaussian-distribution",
+    "href": "slides/07_Complex_hierarchical_model/index.html#bivariate-gaussian-distribution",
+    "title": "Complex hierarchical models",
+    "section": "Bivariate Gaussian distribution",
+    "text": "Bivariate Gaussian distribution\n\\[\\mathcal{MVN}\\left(\n\\begin{bmatrix}\n  0\\\\\n  0\\\\\n\\end{bmatrix},\n\\begin{bmatrix}\n  2 & -1\\\\\n  -1 & 2\\\\\n\\end{bmatrix}\\right)\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}",
+    "text": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em-1",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}",
+    "text": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\nTo do this, we need to work with a multivariate Gaussian distribution."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em-2",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em-2",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}",
+    "text": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\nTo do this, we need to work with a multivariate Gaussian distribution.\nThe good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em-3",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-auto-animatetrue-stylefont-size-0.9em-3",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}",
+    "text": "The convergence trick {auto-animate=“true”; style=“font-size: 0.9em”}\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\nTo do this, we need to work with a multivariate Gaussian distribution.\nThe good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.\nTo show how our convergence trick works for a multivariate Gaussian distribution, let’s first visualize the two dimensional version of this distribution."
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-10",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-10",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\nMultivariate Gaussian distribution\nTranslation\nFor a multivariate distribution, a translation amounts to adding a vector of values to make the translation.\nMathematically, this means that\n\\[\\mathcal{MVN}\\left(\n\\begin{bmatrix}\n  \\mu_1\\\\\n  \\vdots\\\\\n  \\mu_n\\\\\n\\end{bmatrix},\n\\mathbf{\\Sigma}\\right)=\\mathcal{MVN}\\left(\n\\begin{bmatrix}\n  0\\\\\n  \\vdots\\\\\n  0\\\\\n\\end{bmatrix},\n\\mathbf{\\Sigma}\\right) + \\begin{bmatrix}\n  \\mu_1\\\\\n  \\vdots\\\\\n  \\mu_n\\\\\n\\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-11",
+    "href": "slides/07_Complex_hierarchical_model/index.html#the-convergence-trick-11",
+    "title": "Complex hierarchical models",
+    "section": "The convergence trick",
+    "text": "The convergence trick\nMultivariate Gaussian distribution\nScaling\nUnlike for the univariate Gaussian distribution, scalling for a multivariate distribution is a little trickier to perform… But mathematician and statistician have worked hard to figure out how to do this properly.\nHowever, we need to delve deeper into matrix algebra.\nICICI"
   }
 ]

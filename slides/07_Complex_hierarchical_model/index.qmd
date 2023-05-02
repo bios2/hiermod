@@ -73,7 +73,7 @@ Any ideas how to do this ?
 :::
 
 ::: {style="font-size: 0.9em"}
-## Playing with the Gaussian distribution
+## The convergence trick
 
 ### Translation
 
@@ -102,7 +102,8 @@ lines(val, marginal,lwd = 3)
 # After
 polygon(x = c(val, val[1]) + 4,
         y = c(marginal,marginal[1]),
-        col = rgb(1, 165/ 255, 0, 0.5),
+#        col = rgb(1, 165/ 255, 0, 0.5),
+        col = rgb(0, 0, 1, 0.5),
         border = NA)
 
 lines(val + 4, marginal,lwd = 3)
@@ -121,6 +122,189 @@ arrows(x0 = -1 ,
 
 ```
 :::
+
+## The convergence trick
+
+### Translation
+
+Mathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.
+
+This means that 
+
+$$\beta \sim \mathcal{N}(\mu, \sigma^2)$$
+is exactly the same as 
+
+$$\beta \sim \left(\mathcal{N}(0, \sigma^2) + \mu\right)$$
+
+## The convergence trick
+
+### Scaling
+
+```{r, echo = FALSE, fig.width=10, fig.height=5, fig.align='center'}
+par(mar=c(0.5,5,0.5,0.5))
+couleur<-rainbow(5)
+curve(dnorm, -20, 20, n = 10000, col = couleur[1], xaxt = "n",
+      xlab = "", ylab = "Density", las = 1, cex.lab=3, lwd = 5, cex.axis = 1.5)
+curve(dnorm(x,mean = 0, sd = 2), -1000, 1000, add=TRUE,
+      n=10000, col="orange", lwd = 5)
+curve(dnorm(x,mean = 0, sd = 5), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[3], lwd = 5)
+curve(dnorm(x,mean = 0, sd = 8), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[4], lwd = 5)
+curve(dnorm(x,mean = 0, sd = 10), -1000, 1000, add=TRUE,
+      n=10000,col=couleur[5], lwd = 5)
+curve(dnorm(x,mean = 0, sd = 50), -1000, 1000, add=TRUE,
+      n=10000, lwd = 5)
+legend("topright",legend=c(expression(sigma==1),
+                           expression(sigma==2),
+                           expression(sigma==5),
+                           expression(sigma==8),
+                           expression(sigma==10),
+                           expression(sigma==50)),col=c(couleur[1],
+                                                   "orange",
+                                                   couleur[3:5],
+                                                   "black"),
+       lty=1, lwd=5, cex = 1.8)
+```
+
+## The convergence trick
+
+### Scaling
+
+Mathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.
+
+This means that 
+
+$$\beta \sim \mathcal{N}(\mu, \sigma^2)$$
+is exactly the same as 
+
+$$\beta \sim \left(\mathcal{N}(\mu, 1) \times \sigma^2\right)$$
+
+## The convergence trick
+
+The convergence trick amounts to sampling a standard Gaussian distribution and adjusting its mean and variance from **outside** the distribution
+
+$$\beta \sim \left(\mathcal{N}(0, 1) \times \sigma^2 + \mu\right)$$
+When implementing an MCMC in Stan (or any other such software), this trick allows for convergence to be much more efficient.
+
+## The convergence trick {auto-animate="true"}
+
+:::{style="font-size: 0.95em"}
+The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.
+:::
+
+## The convergence trick {auto-animate="true"}
+
+:::{style="font-size: 0.95em"}
+The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.
+:::
+
+To do this, we need to work with a multivariate Gaussian distribution.
+
+## The convergence trick {auto-animate="true"}
+
+:::{style="font-size: 0.95em"}
+The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.
+
+To do this, we need to work with a multivariate Gaussian distribution.
+
+The good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.
+:::
+
+## The convergence trick {auto-animate="true"}
+
+:::{style="font-size: 0.95em"}
+The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.
+
+To do this, we need to work with a multivariate Gaussian distribution.
+
+The good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.
+
+To show how our convergence trick works for a multivariate Gaussian distribution, let's first visualize the two dimensional version of this distribution.
+:::
+
+## Bivariate Gaussian distribution
+
+$$\mathcal{MVN}\left(
+\begin{bmatrix}
+  0\\
+  0\\
+\end{bmatrix},
+\begin{bmatrix}
+  2 & -1\\
+  -1 & 2\\
+\end{bmatrix}\right)$$
+```{r, echo = FALSE, fig.align="center"}
+library(mnormt)
+
+#make this example reproducible
+set.seed(42)
+
+#create bivariate normal distribution
+x     <- seq(-3, 3, 0.1) 
+y     <- seq(-3, 3, 0.1)
+mu    <- c(0, 0)
+sigma <- matrix(c(2, -1, -1, 2), nrow=2)
+f     <- function(x, y) dmnorm(cbind(x, y), mu, sigma)
+z     <- outer(x, y, f)
+
+
+par(mfrow = c(1,2), mar = c(2,2,2,2))
+#create contour plot
+contour(x, y, z, 
+        asp =1, 
+        las = 1, 
+        col ="blue",
+        lwd = 3)
+
+#create surface plot
+persp(x, y, z, 
+      theta=-30,
+      phi=25,
+      expand=0.6,
+      ticktype='detailed', 
+      col = "blue")
+```
+
+## The convergence trick {auto-animate="true"}
+
+### Multivariate Gaussian distribution
+
+#### Translation
+
+For a multivariate distribution, a translation amounts to adding a **vector** of values to make the translation. 
+
+Mathematically, this means that
+
+$$\mathcal{MVN}\left(
+\begin{bmatrix}
+  \mu_1\\
+  \vdots\\
+  \mu_n\\
+\end{bmatrix},
+\mathbf{\Sigma}\right)=\mathcal{MVN}\left(
+\begin{bmatrix}
+  0\\
+  \vdots\\
+  0\\
+\end{bmatrix},
+\mathbf{\Sigma}\right) + \begin{bmatrix}
+  \mu_1\\
+  \vdots\\
+  \mu_n\\
+\end{bmatrix}$$
+
+## The convergence trick {auto-animate="true"}
+
+### Multivariate Gaussian distribution
+
+#### Scaling
+
+Unlike for the univariate Gaussian distribution, scalling for a multivariate distribution is a little trickier to perform... But mathematician and statistician have worked hard to figure out how to do this properly.
+
+However, we need to delve deeper into matrix algebra.
+
+ICICI
 
 # "Complex" hierarchy on the intercept
 

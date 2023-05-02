@@ -427,12 +427,112 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p>Any ideas how to do this ?</p>
 </div>
 </section>
-<section id="playing-with-the-gaussian-distribution-3" class="slide level2" style="font-size: 0.9em">
-<h2>Playing with the Gaussian distribution</h2>
+<section id="the-convergence-trick-1" class="slide level2" style="font-size: 0.9em">
+<h2>The convergence trick</h2>
 <h3 id="translation">Translation</h3>
-<p>Mathematically</p>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="1920" class="r-stretch quarto-figure-center"></section>
+<section id="the-convergence-trick-2" class="slide level2">
+<h2>The convergence trick</h2>
+<h3 id="translation-1">Translation</h3>
+<p>Mathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.</p>
+<p>This means that</p>
+<p><span class="math display">\[\beta \sim \mathcal{N}(\mu, \sigma^2)\]</span> is exactly the same as</p>
+<p><span class="math display">\[\beta \sim \left(\mathcal{N}(0, \sigma^2) + \mu\right)\]</span></p>
+</section>
+<section id="the-convergence-trick-3" class="slide level2">
+<h2>The convergence trick</h2>
+<h3 id="scaling">Scaling</h3>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="the-convergence-trick-4" class="slide level2">
+<h2>The convergence trick</h2>
+<h3 id="scaling-1">Scaling</h3>
+<p>Mathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.</p>
+<p>This means that</p>
+<p><span class="math display">\[\beta \sim \mathcal{N}(\mu, \sigma^2)\]</span> is exactly the same as</p>
+<p><span class="math display">\[\beta \sim \left(\mathcal{N}(\mu, 1) \times \sigma^2\right)\]</span></p>
+</section>
+<section id="the-convergence-trick-5" class="slide level2">
+<h2>The convergence trick</h2>
+<p>The convergence trick amounts to sampling a standard Gaussian distribution and adjusting its mean and variance from <strong>outside</strong> the distribution</p>
+<p><span class="math display">\[\beta \sim \left(\mathcal{N}(0, 1) \times \sigma^2 + \mu\right)\]</span> When implementing an MCMC in Stan (or any other such software), this trick allows for convergence to be much more efficient.</p>
+</section>
+<section id="the-convergence-trick-6" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">The convergence trick</h2>
+<div style="font-size: 0.95em">
+<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
+</div>
+</section>
+<section id="the-convergence-trick-7" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">The convergence trick</h2>
+<div style="font-size: 0.95em">
+<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
+</div>
+<p>To do this, we need to work with a multivariate Gaussian distribution.</p>
+</section>
+<section id="the-convergence-trick-8" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">The convergence trick</h2>
+<div style="font-size: 0.95em">
+<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
+<p>To do this, we need to work with a multivariate Gaussian distribution.</p>
+<p>The good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.</p>
+</div>
+</section>
+<section id="the-convergence-trick-9" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">The convergence trick</h2>
+<div style="font-size: 0.95em">
+<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
+<p>To do this, we need to work with a multivariate Gaussian distribution.</p>
+<p>The good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.</p>
+<p>To show how our convergence trick works for a multivariate Gaussian distribution, let’s first visualize the two dimensional version of this distribution.</p>
+</div>
+</section>
+<section id="bivariate-gaussian-distribution" class="slide level2">
+<h2>Bivariate Gaussian distribution</h2>
+<p><span class="math display">\[\mathcal{MVN}\left(
+\begin{bmatrix}
+  0\\
+  0\\
+\end{bmatrix},
+\begin{bmatrix}
+  2 &amp; -1\\
+  -1 &amp; 2\\
+\end{bmatrix}\right)\]</span></p>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="the-convergence-trick-10" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">The convergence trick</h2>
+<h3 id="multivariate-gaussian-distribution">Multivariate Gaussian distribution</h3>
+<h4 id="translation-2">Translation</h4>
+<p>For a multivariate distribution, a translation amounts to adding a <strong>vector</strong> of values to make the translation.</p>
+<p>Mathematically, this means that</p>
+<p><span class="math display">\[\mathcal{MVN}\left(
+\begin{bmatrix}
+  \mu_1\\
+  \vdots\\
+  \mu_n\\
+\end{bmatrix},
+\mathbf{\Sigma}\right)=\mathcal{MVN}\left(
+\begin{bmatrix}
+  0\\
+  \vdots\\
+  0\\
+\end{bmatrix},
+\mathbf{\Sigma}\right) + \begin{bmatrix}
+  \mu_1\\
+  \vdots\\
+  \mu_n\\
+\end{bmatrix}\]</span></p>
+</section>
+<section id="the-convergence-trick-11" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">The convergence trick</h2>
+<h3 id="multivariate-gaussian-distribution-1">Multivariate Gaussian distribution</h3>
+<h4 id="scaling-2">Scaling</h4>
+<p>Unlike for the univariate Gaussian distribution, scalling for a multivariate distribution is a little trickier to perform… But mathematician and statistician have worked hard to figure out how to do this properly.</p>
+<p>However, we need to delve deeper into matrix algebra.</p>
+<p>ICICI</p>
+</section>
 <section>
 <section id="complex-hierarchy-on-the-intercept" class="title-slide slide level1 center">
 <h1>“Complex” hierarchy on the intercept</h1>
@@ -453,7 +553,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="interacting-hierarchies-1" class="slide level2">
 <h2>Interacting hierarchies</h2>
 
-<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchies-within-hierarchies" class="slide level2">
 <h2>Hierarchies within hierarchies</h2>
 <div style="font-size: 0.7em">
@@ -575,7 +675,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="here-it-is-all-on-one-slide" class="slide level2">
 <h2>here it is all on one slide</h2>
 <div class="cell columns column-output-location">
@@ -589,7 +689,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -613,7 +713,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </div>
 </div>
 </div>
