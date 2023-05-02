@@ -21,6 +21,107 @@ By "complex" we refer to hierarchical models for which more than one parameters 
 
 As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.
 
+::: {style="font-size: 0.9em"}
+## Playing with the Gaussian distribution
+
+When estimating regression parameters, the Gaussian distribution is commonly used. Often what we need to do is figure out the mean and/or the variance of the Gaussian distribution that best fit the data given a particular model structure. 
+
+However, for technical reasons, it is sometimes (actually, more often than we would care to advertize broadly !) very difficult to reach convergence for a particular parameter. Visually, a trace plot would look like this
+
+```{r, echo = FALSE, fig.width = 25,fig.height = 5,fig.align="center"}
+set.seed(42)
+auto <- as.vector(arima.sim(n=5000,
+                            list(ar=c(0.999)),
+                            mean=0.1))
+plot(auto,
+     type="l",
+     ylab="",
+     xlab="Iterations",
+     las=1,
+     cex.axis=2,
+     cex.lab = 5,
+     col= "blue",
+     lwd = 4,
+     xaxt = "n")
+```
+::: 
+
+::: {style="font-size: 0.9em"}
+## Playing with the Gaussian distribution
+
+Even if you run the model for many, many (many !) iterations, it never seems to converge.
+
+What should we do ?
+
+![](https://www.i2symbol.com/pictures/emojis/a/3/6/b/a36b215220fc0153c107ee9d022cb75e_384.png){fig-align="center" width=20%}
+::: 
+
+::: {style="font-size: 0.9em"}
+## Playing with the Gaussian distribution
+
+There is a very cool trick that can help us here. 
+
+Before we start to discuss this trick, it is important to know that sampling a standard Gaussian distribution ($\mathcal{N}(0,1)$) is very straight forward computationally. So, the closer we get to a standard Gaussian distribution the better it is.
+
+### The convergence trick
+
+If we think about it, the Gaussian distribution can be translated and scaled. If we can find a way to do this mathematically, we can incorporate this into our estimation procedure.
+
+:::: {style="text-align: center; font-size: 2em; color: red "}
+Any ideas how to do this ?
+::::
+:::
+
+::: {style="font-size: 0.9em"}
+## Playing with the Gaussian distribution
+
+### Translation
+
+```{r, echo=FALSE, fig.width=20,  fig.height=8, fig.align='center'}
+val <- seq(-3.5, -0.75, length = 200)
+marginal <- dnorm(val, mean = -2, sd = 0.2)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(val,marginal,
+     type = "n",
+     xlim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+axis(1, tick = NA)
+
+# Before
+polygon(x = c(val, val[1]),
+        y = c(marginal,marginal[1]),
+        col = rgb(0, 0, 1, 0.5),
+        border = NA)
+
+lines(val, marginal,lwd = 3)
+
+# After
+polygon(x = c(val, val[1]) + 4,
+        y = c(marginal,marginal[1]),
+        col = rgb(1, 165/ 255, 0, 0.5),
+        border = NA)
+
+lines(val + 4, marginal,lwd = 3)
+
+arrows(x0 = -1 ,
+       y0 = 1, 
+       x1 = 1,
+       y1 = 1,
+       length = 0.75,
+       angle = 20,
+       code = 2,
+       col = "red",
+       lwd = 10,
+       lend = "round",
+       ljoin = "mitre")
+
+```
+:::
+
 # "Complex" hierarchy on the intercept
 
 ## Interacting hierarchies

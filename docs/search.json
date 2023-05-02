@@ -1769,5 +1769,40 @@
     "title": "Template for presentations",
     "section": "HMC",
     "text": "HMC\nMetropolis and Gibbs limitations:\n\nA lot of tuning to find the best spot between large and small steps\nInefficient in high-dimensional spaces\nCan’t travel long distances between isolated local minimums\n\nHamiltonian Monte Carlo:\n\nUses a gradient-based MCMC to reduce the random walk (hence autocorrelation)\n\nStatic HMC\nNo-U-Turn Sampler (NUTS)\n\nDon’t get it? Viz it!"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#hierarchies-within-hierarchies-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#hierarchies-within-hierarchies-1",
+    "title": "Complex hierarchical models",
+    "section": "Hierarchies within hierarchies",
+    "text": "Hierarchies within hierarchies\nICI"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution",
+    "href": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution",
+    "title": "Complex hierarchical models",
+    "section": "Playing with the Gaussian distribution",
+    "text": "Playing with the Gaussian distribution\nWhen estimating regression parameters, the Gaussian distribution is commonly used. Often what we need to do is figure out the mean and/or the variance of the Gaussian distribution that best fit the data given a particular model structure.\nHowever, for technical reasons, it is sometimes (actually, more often than we would care to advertize broadly !) very difficult to reach convergence for a particular parameter. Visually, a trace plot would look like this"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution-1",
+    "href": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution-1",
+    "title": "Complex hierarchical models",
+    "section": "Playing with the Gaussian distribution",
+    "text": "Playing with the Gaussian distribution\nEven if you run the model for many, many (many !) iterations, it never seems to converge.\nWhat should we do ?"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution-2",
+    "href": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution-2",
+    "title": "Complex hierarchical models",
+    "section": "Playing with the Gaussian distribution",
+    "text": "Playing with the Gaussian distribution\nThere is a very cool trick that can help us here.\nBefore we start to discuss this trick, it is important to know that sampling a standard Gaussian distribution (\\(\\mathcal{N}(0,1)\\)) is very straight forward computationally. So, the closer we get to a standard Gaussian distribution the better it is.\nThe convergence trick\nIf we think about it, the Gaussian distribution can be translated and scaled. If we can find a way to do this mathematically, we can incorporate this into our estimation procedure.\n\nAny ideas how to do this ?"
+  },
+  {
+    "objectID": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution-3",
+    "href": "slides/07_Complex_hierarchical_model/index.html#playing-with-the-gaussian-distribution-3",
+    "title": "Complex hierarchical models",
+    "section": "Playing with the Gaussian distribution",
+    "text": "Playing with the Gaussian distribution\nTranslation\nMathematically"
   }
 ]
