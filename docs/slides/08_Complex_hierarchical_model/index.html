@@ -405,215 +405,6 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p>By “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.</p>
 <p>As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.</p>
 </section>
-<section id="playing-with-the-gaussian-distribution" class="slide level2" style="font-size: 0.9em">
-<h2>Playing with the Gaussian distribution</h2>
-<p>When estimating regression parameters, the Gaussian distribution is commonly used. Often what we need to do is figure out the mean and/or the variance of the Gaussian distribution that best fit the data given a particular model structure.</p>
-<p>However, for technical reasons, it is sometimes (actually, more often than we would care to advertize broadly !) very difficult to reach convergence for a particular parameter. Visually, a trace plot would look like this</p>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="2400" class="r-stretch quarto-figure-center"></section>
-<section id="playing-with-the-gaussian-distribution-1" class="slide level2" style="font-size: 0.9em">
-<h2>Playing with the Gaussian distribution</h2>
-<p>Even if you run the model for many, many (many !) iterations, it never seems to converge.</p>
-<p>What should we do ?</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/a/3/6/b/a36b215220fc0153c107ee9d022cb75e_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="playing-with-the-gaussian-distribution-2" class="slide level2" style="font-size: 0.9em">
-<h2>Playing with the Gaussian distribution</h2>
-<p>There is a very cool trick that can help us here.</p>
-<p>Before we start to discuss this trick, it is important to know that sampling a standard Gaussian distribution (<span class="math inline">\(\mathcal{N}(0,1)\)</span>) is very straight forward computationally. So, the closer we get to a standard Gaussian distribution the better it is.</p>
-<h3 id="the-convergence-trick">The convergence trick</h3>
-<p>If we think about it, the Gaussian distribution can be translated and scaled. If we can find a way to do this mathematically, we can incorporate this into our estimation procedure.</p>
-<div style="text-align: center; font-size: 2em; color: red ">
-<p>Any ideas how to do this ?</p>
-</div>
-</section>
-<section id="the-convergence-trick-1" class="slide level2" style="font-size: 0.9em">
-<h2>The convergence trick</h2>
-<h3 id="translation">Translation</h3>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="1920" class="r-stretch quarto-figure-center"></section>
-<section id="the-convergence-trick-2" class="slide level2">
-<h2>The convergence trick</h2>
-<h3 id="translation-1">Translation</h3>
-<p>Mathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.</p>
-<p>This means that</p>
-<p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span> is exactly the same as</p>
-<p><span class="math display">\[\mathcal{N}(0, \sigma^2) + \mu\]</span></p>
-</section>
-<section id="the-convergence-trick-3" class="slide level2">
-<h2>The convergence trick</h2>
-<h3 id="scaling">Scaling</h3>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch quarto-figure-center"></section>
-<section id="the-convergence-trick-4" class="slide level2">
-<h2>The convergence trick</h2>
-<h3 id="scaling-1">Scaling</h3>
-<p>Mathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.</p>
-<p>This means that</p>
-<p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span> is exactly the same as</p>
-<p><span class="math display">\[\mathcal{N}(\mu, 1) \times \sigma^2\]</span></p>
-</section>
-<section id="the-convergence-trick-5" class="slide level2">
-<h2>The convergence trick</h2>
-<p>The convergence trick amounts to sampling a standard Gaussian distribution and adjusting its mean and variance from <strong>outside</strong> the distribution</p>
-<p><span class="math display">\[\mathcal{N}(0, 1) \times \sigma^2 + \mu\]</span> When implementing an MCMC in Stan (or any other such software), this trick allows for convergence to be much more efficient.</p>
-</section>
-<section id="the-convergence-trick-6" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<div style="font-size: 0.95em">
-<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
-</div>
-</section>
-<section id="the-convergence-trick-7" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<div style="font-size: 0.95em">
-<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
-</div>
-<p>To do this, we need to work with a multivariate Gaussian distribution.</p>
-</section>
-<section id="the-convergence-trick-8" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<div style="font-size: 0.95em">
-<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
-<p>To do this, we need to work with a multivariate Gaussian distribution.</p>
-<p>The good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.</p>
-</div>
-</section>
-<section id="the-convergence-trick-9" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<div style="font-size: 0.95em">
-<p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
-<p>To do this, we need to work with a multivariate Gaussian distribution.</p>
-<p>The good news is that the convergence trick works also with a multivariate Gaussian distribution. However, we need to rely on matrix algebra to translate and scale a multivariate Gaussian distribution properly.</p>
-<p>To show how our convergence trick works for a multivariate Gaussian distribution, let’s first visualize the two dimensional version of this distribution.</p>
-</div>
-</section>
-<section id="bivariate-gaussian-distribution" class="slide level2">
-<h2>Bivariate Gaussian distribution</h2>
-<p><span class="math display">\[\mathcal{MVN}\left(
-\begin{bmatrix}
-  0\\
-  0\\
-\end{bmatrix},
-\begin{bmatrix}
-  2 &amp; -1\\
-  -1 &amp; 2\\
-\end{bmatrix}\right)\]</span></p>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch quarto-figure-center"></section>
-<section id="the-convergence-trick-10" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<h3 id="multivariate-gaussian-distribution">Multivariate Gaussian distribution</h3>
-<h4 id="translation-2">Translation</h4>
-<p>For a multivariate distribution, a translation amounts to adding a <strong>vector</strong> of values to make the translation.</p>
-<p>Mathematically, this means that</p>
-<p><span class="math display">\[\mathcal{MVN}\left(
-\begin{bmatrix}
-  \mu_1\\
-  \vdots\\
-  \mu_n\\
-\end{bmatrix},
-\mathbf{\Sigma}\right)=\mathcal{MVN}\left(
-\begin{bmatrix}
-  0\\
-  \vdots\\
-  0\\
-\end{bmatrix},
-\mathbf{\Sigma}\right) + \begin{bmatrix}
-  \mu_1\\
-  \vdots\\
-  \mu_n\\
-\end{bmatrix}\]</span></p>
-</section>
-<section id="the-convergence-trick-11" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<h3 id="multivariate-gaussian-distribution-1">Multivariate Gaussian distribution</h3>
-<h4 id="scaling-2">Scaling</h4>
-<p>Unlike for the univariate Gaussian distribution, scalling for a multivariate distribution is a little trickier to perform… But mathematician and statistician have worked hard to figure out how to do this properly.</p>
-<p>However, we need to delve a little deeper into matrix algebra to understand how to scale a multivariate Gaussian distribution.</p>
-</section>
-<section>
-<section id="matrix-algebra-interlude-part-2" class="title-slide slide level1 center">
-<h1>Matrix algebra interlude (part 2!)</h1>
-
-</section>
-<section id="scaling-a-covariance-matrix" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Scaling a covariance matrix</h2>
-<div style="font-size: 0.8em">
-<p>First recall that an covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span> is a square matrix (i.e.&nbsp;it is an <span class="math inline">\(n\times n\)</span> matrix).</p>
-<p>To scale <span class="math inline">\(\mathbf{\Sigma}\)</span>, we cannot only multiply it by a scalar or even by a single matrix, we need to use the following matrix multiplication</p>
-<p><span class="math display">\[\mathbf{A}\mathbf{\Sigma}\mathbf{A}^t\]</span> where <span class="math inline">\(\mathbf{A}\)</span> is a <span class="math inline">\(p\times n\)</span> matrix of weight to be used for the scaling (a “scaling” matrix) and <span class="math inline">\(\mathbf{A}^t\)</span> is its tranpose.</p>
-<p>The technical reason why we <strong>need</strong> to use the equation above is to ensure that the resulting scaled covariance matrix also has an <span class="math inline">\(n \times n\)</span> dimension.</p>
-<p>If only <span class="math display">\[\mathbf{A}\mathbf{\Sigma}\]</span> is used the dimension of the resulting matrix also would be <span class="math inline">\(p \times p\)</span>.</p>
-</div>
-</section>
-<section id="square-root-of-a-matrix" class="slide level2">
-<h2>Square-root of a matrix</h2>
-<div style="font-size: 0.8em">
-<p>Because in our problem weighting (or scaling) matrices are usually other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way square-root a matrix.</p>
-<p>This where the genious of André-Louis Cholesky comes to the rescue.</p>
-</div>
-
-<img data-src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Andre_Cholesky.jpg" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="square-root-of-a-matrix-1" class="slide level2">
-<h2>Square-root of a matrix</h2>
-<h3 id="cholesky-decomposition">Cholesky decomposition</h3>
-<div style="font-size: 0.8em">
-<p>André-Louis Cholesky discovered a matrix decomposition approach probably around 1902 (so when he was 27 years old!), although it was attributed to him a few years after his death.</p>
-<p>The Cholesky decomposition allows to decompose a square matrix in a triangular matrix, which, when multiplied by its transposed will allow us to recover the initial matrix.</p>
-<p>In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice</p>
-<p>In math terms the Cholesky decomposition is defined as <span class="math display">\[\mathbf{A} = \mathbf{L}\mathbf{L}^t\]</span></p>
-</div>
-</section>
-<section id="square-root-of-a-matrix-2" class="slide level2">
-<h2>Square-root of a matrix</h2>
-<h3 id="cholesky-decomposition-1">Cholesky decomposition</h3>
-<h4 id="example">Example</h4>
-<p><span class="math display">\[\mathbf{A} = \mathbf{L}\mathbf{L}^t\]</span></p>
-<p><span class="math display">\[
-        \begin{bmatrix}
-            1 &amp; 1 &amp; 1\\
-            1 &amp; 5 &amp; 5\\
-            1 &amp; 5 &amp; 14\\
-        \end{bmatrix}=
-        \begin{bmatrix}
-            1 &amp; 0 &amp; 0\\
-            1 &amp; 2 &amp; 0\\
-            1 &amp; 2 &amp; 3 \\
-        \end{bmatrix}
-        \begin{bmatrix}
-            1 &amp; 1 &amp; 1\\
-            0 &amp; 2 &amp; 2\\
-            0 &amp; 0 &amp; 3 \\
-        \end{bmatrix}
-\]</span></p>
-</section></section>
-<section>
-<section id="end-of-matrix-algebra-interlude" class="title-slide slide level1 center">
-<h1>End of matrix algebra interlude</h1>
-
-</section>
-<section id="the-convergence-trick-12" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<h3 id="multivariate-gaussian-distribution-2">Multivariate Gaussian distribution</h3>
-<h4 id="scaling-3">Scaling</h4>
-<div style="font-size: 0.7em">
-<p>To scale the following multivariate Gaussian distribution <span class="math display">\[\mathcal{MVN}\left(\boldsymbol{\mu},\mathbf{\Sigma}\right),\]</span></p>
-<p>The following steps need to be applied</p>
-<ol type="1">
-<li>Apply the Cholesky decomposition on the scaling matrix, here <span class="math inline">\(\mathbf{\Sigma}\)</span> <span class="math display">\[\mathbf{\Sigma} = \mathbf{L}\mathbf{L}^t\]</span></li>
-<li>Multiply the <span class="math inline">\(\mathbf{L}\)</span> matrix to a standard variance multivariate Gaussian distribution</li>
-</ol>
-<p><span class="math display">\[\mathbf{L}\cdot \mathcal{MVN}\left(\boldsymbol{\mu},\mathbf{I}\right)\cdot\mathbf{L}^t.\]</span></p>
-<p>Recall, that <span class="math inline">\(\mathbf{I}\)</span> is the identity matrix.</p>
-</div>
-</section>
-<section id="the-convergence-trick-13" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The convergence trick</h2>
-<h3 id="multivariate-gaussian-distribution-3">Multivariate Gaussian distribution</h3>
-<p>If we apply translation and scaling together on a multivariate Gaussian distribution, we get</p>
-<p><span class="math display">\[\mathbf{L}\cdot \mathcal{MVN}\left(\mathbf{0},\mathbf{I}\right)\cdot\mathbf{L}^t + \boldsymbol{\mu}\]</span> When implementing in Stan some of the models we will discuss in this course, this convergence trick becomes very practical because it can lead a model to convergence much faster than without using this trick.</p>
-</section></section>
 <section>
 <section id="complex-hierarchy-on-the-intercept" class="title-slide slide level1 center">
 <h1>“Complex” hierarchy on the intercept</h1>
@@ -634,7 +425,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="interacting-hierarchies-1" class="slide level2">
 <h2>Interacting hierarchies</h2>
 
-<img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchies-within-hierarchies" class="slide level2">
 <h2>Hierarchies within hierarchies</h2>
 <div style="font-size: 0.7em">
@@ -756,7 +547,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
 <section id="here-it-is-all-on-one-slide" class="slide level2">
 <h2>here it is all on one slide</h2>
 <div class="cell columns column-output-location">
@@ -770,7 +561,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -794,7 +585,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
 </div>
 </div>
 </div>

@@ -1,5 +1,5 @@
 ---
-title: "Complex hierarchical models"
+title: "Convergence trick"
 title-slide-attributes: 
   data-background-image: ../img/bg.jpg
   data-background-size: full
@@ -14,12 +14,6 @@ format:
     transition: slide
     background-transition: fade
 ---
-
-## "Complex" hierarchical model
-
-By "complex" we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy. 
-
-As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.
 
 ::: {style="font-size: 0.9em"}
 ## Playing with the Gaussian distribution
@@ -131,10 +125,10 @@ Mathematically, translation is the equivalent of adding or subtracting a value f
 
 This means that 
 
-$$\beta \sim \mathcal{N}(\mu, \sigma^2)$$
+$$\mathcal{N}(\mu, \sigma^2)$$
 is exactly the same as 
 
-$$\beta \sim \left(\mathcal{N}(0, \sigma^2) + \mu\right)$$
+$$\mathcal{N}(0, \sigma^2) + \mu$$
 
 ## The convergence trick
 
@@ -175,16 +169,16 @@ Mathematically, scaling amounts to multiplying the Gaussian distribution by a po
 
 This means that 
 
-$$\beta \sim \mathcal{N}(\mu, \sigma^2)$$
+$$\mathcal{N}(\mu, \sigma^2)$$
 is exactly the same as 
 
-$$\beta \sim \left(\mathcal{N}(\mu, 1) \times \sigma^2\right)$$
+$$\mathcal{N}(\mu, 1) \times \sigma^2$$
 
 ## The convergence trick
 
 The convergence trick amounts to sampling a standard Gaussian distribution and adjusting its mean and variance from **outside** the distribution
 
-$$\beta \sim \left(\mathcal{N}(0, 1) \times \sigma^2 + \mu\right)$$
+$$\mathcal{N}(0, 1) \times \sigma^2 + \mu$$
 When implementing an MCMC in Stan (or any other such software), this trick allows for convergence to be much more efficient.
 
 ## The convergence trick {auto-animate="true"}
@@ -302,340 +296,105 @@ $$\mathcal{MVN}\left(
 
 Unlike for the univariate Gaussian distribution, scalling for a multivariate distribution is a little trickier to perform... But mathematician and statistician have worked hard to figure out how to do this properly.
 
-However, we need to delve deeper into matrix algebra.
+However, we need to delve a little deeper into matrix algebra to understand how to scale a multivariate Gaussian distribution.
 
-ICICI
+# Matrix algebra interlude (part 2!)
 
-# "Complex" hierarchy on the intercept
+## Scaling a covariance matrix {auto-animate="true"}
 
-## Interacting hierarchies
+::: {style="font-size: 0.8em"}
+First recall that an covariance matrix $\mathbf{\Sigma}$ is a square matrix (i.e. it is an $n\times n$ matrix).
 
-::: {style="font-size: 0.7em"}
-`lme4` notation : `y ~ (1 | f:g)`
+To scale $\mathbf{\Sigma}$, we cannot only multiply it by a scalar or even by a single matrix, we need to use the following matrix multiplication
 
-This model assumes that factors `f` and `g` interact to make a hierarchy.
+$$\mathbf{A}\mathbf{\Sigma}\mathbf{A}^t$$
+where $\mathbf{A}$ is a $p\times n$ matrix of weight to be used for the scaling (a "scaling" matrix) and $\mathbf{A}^t$ is its tranpose.
 
-Mathematically, it can be translated to 
+The technical reason why we **need** to use the equation above is to ensure that the resulting scaled covariance matrix also has an $n \times n$ dimension. 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g] },\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
-or 
-
-$$y_i = b_{f[l_f]\times g[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, a multi-factor hierarchy can be constructed my multiplying the levels of individual factors to account for a more complexe hierarchy. Another way to think about this structure is to construct a complexe hierarchy using multiple simpler hierarchies. 
-
-This is because in this model
-
-$$\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)$$
+If only
+$$\mathbf{A}\mathbf{\Sigma}$$
+is used the dimension of the resulting matrix also would be $p \times p$.
 :::
 
-## Interacting hierarchies
+## Square-root of a matrix
 
-```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-zones=matrix(c(1,2), ncol=2, byrow=TRUE)
-layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+::: {style="font-size: 0.8em"}
+Because in our problem weighting (or scaling) matrices are usually other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way square-root a matrix.
 
-val <- seq(-1, 3, length = 200)
-marginal <- dnorm(val, mean = 1, sd = 0.5)
-
-par(mar = c(0.1, 0.1, 0.1, 0.1))
-plot(-marginal,val,
-     type = "n",
-     ylim = c(-3,3),
-     axes = FALSE,
-     xlab = "",
-     ylab = "") 
-
-polygon(x = c(-marginal,-marginal[1]),
-        y = c(val, val[1]),
-        col = rgb(170/255, 103/255, 57/255, 0.5),
-        border = NA)
-
-lines(-marginal,val, lwd = 3)
-
-plot(0,0,
-     type = "n",
-     xlim = c(0,5),
-     ylim = c(-3,3),
-     bty="L",
-     xaxt = "n",
-     yaxt = "n",
-     xlab = "",
-     ylab = "",) 
-
-set.seed(40)
-abline(h = rnorm(30, mean = 1, sd = 0.5),
-       lwd = 3,
-       col = rgb(170/255, 103/255, 57/255))
-
-legend("topright",
-       legend = c("f", "g"),
-       fill = c("blue", "orange"),
-       cex = 2.5)
-```
-
-
-## Hierarchies within hierarchies
-
-::: {style="font-size: 0.7em"}
-`lme4` notation : `y ~ (1 | f/g)` or `y ~ (1 | f) + (1 | f:g)`
-
-This model assumes there is a hierarchy that varies among the levels of factor `f` and among the levels of factor `g` but only within the levels of factor `f`.
-
-Mathematically, it can be translated to 
-
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
-or 
-
-$$y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, the model parameter $b$ will change for a sample $i$ only when the level $l_g$ of the factor $g$ **within** the level $l_f$ of the factor $f$ changes. 
-
-This is because in this model
-
-$$\mathbf{b} \sim \mathcal{N}\left(0,\sigma^2_{g\in f}
-                                \right)$$
+This where the genious of André-Louis Cholesky comes to the rescue.
 :::
 
-## Hierarchies within hierarchies
+![](https://upload.wikimedia.org/wikipedia/commons/5/5f/Andre_Cholesky.jpg){fig-align="center" width=20%}
 
-ICI
+## Square-root of a matrix
 
+### Cholesky decomposition
 
+::: { style="font-size: 0.8em"}
+André-Louis Cholesky discovered a matrix decomposition approach probably around 1902 (so when he was 27 years old!), although it was attributed to him a few years after his death.
 
-## `y ~ (1 | f/g)`
-### Stan code for this model
+The Cholesky decomposition allows to decompose a square matrix in a triangular matrix, which, when multiplied by its transposed will allow us to recover the initial matrix. 
 
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-For Andrew?
+In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice
+
+In math terms the Cholesky decomposition is defined as 
+$$\mathbf{A} = \mathbf{L}\mathbf{L}^t$$
 :::
 
-## `y ~ (1 | f/g)`
-```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-# Stuff
-```
+## Square-root of a matrix
 
-## `y ~ (1 | f) + (1 | g)`
+### Cholesky decomposition
 
-::: {style="font-size: 0.7em"}
-Other notation used : `y ~ 1 + (1 | f) + (1 | g)`
-
-This model assumes there is a hierarchy that varies among the two factors.
-
-Mathematically, it can be translated to 
-
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
-or 
-
-$$y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that the model values $b$ will change for a sample $i$ only when the interaction the level $l_f$ of the factor $f$ and the  level $l_g$ of the factor $g$ changes. 
-
-This is because in this model
-
-$$\mathbf{b} \sim \mathcal{N}\left(0, 
-                                \begin{bmatrix}
-                                  \sigma^2_f & \sigma_f\sigma_g\\
-                                  \sigma_f\sigma_g& \sigma^2_g\\
-                                \end{bmatrix}
-                                \right)$$
-:::
-
-## `y ~ (1 | f) + (1 | g)`
-
-This model has a number interesting properties
-
-- It does **not** assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.
-- If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)
-- This can be generalized to as many factors as we want. We will see how this can be useful later.
-
-
-## `y ~ x + (x || g)`
-
-## second
-
-::: r-fit-text
-Test your model
-:::
-
-## 
-
-img:
-
-![](img/bg.jpg)
-
-it is a landscape
-
-##  {auto-animate="true"}
-
-::: {style="margin-top: 100px;"}
-check with simulations
-:::
-
-##  {auto-animate="true"}
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-check with simulations
-:::
-
-## choose parameters {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-```
-
-## make up an X variable {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-```
-
-## calculate the average {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-```
-
-## simulate some observations {auto-animate="TRUE"}
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-## finally, visualize
-
-```{r}
-plot(y_obs ~ x)
-```
-
-## here it is all on one slide
-
-```{r}
-#| output-location: column
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-plot(y_obs, x)
-```
-
-## Or we can present the code and results separately
-
-::: panel-tabset
-### The code
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-### The figure
-
-```{r}
-plot(y_obs ~ x)
-```
-:::
-
-## another equation
+#### Example
+$$\mathbf{A} = \mathbf{L}\mathbf{L}^t$$
 
 $$
-2 + 4 = 6
+		\begin{bmatrix}
+			1 & 1 & 1\\
+			1 & 5 & 5\\
+			1 & 5 & 14\\
+		\end{bmatrix}=
+		\begin{bmatrix}
+			1 & 0 & 0\\
+			1 & 2 & 0\\
+			1 & 2 & 3 \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			1 & 1 & 1\\
+			0 & 2 & 2\\
+			0 & 0 & 3 \\
+		\end{bmatrix}
 $$
 
-## The equation
+# End of matrix algebra interlude
 
-$$
-\begin{align}
-y  &\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &= a + bx \\
-\end{align}
-$$
+## The convergence trick {auto-animate="true"}
 
-## The model {auto-animate="TRUE"}
+### Multivariate Gaussian distribution
 
-``` stan
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+#### Scaling
 
-## Declare the data {auto-animate="TRUE"}
+::: { style="font-size: 0.7em"}
+To scale the following multivariate Gaussian distribution
+$$\mathcal{MVN}\left(\boldsymbol{\mu},\mathbf{\Sigma}\right),$$ 
 
-``` {.stan code-line-numbers="1-4"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+The following steps need to be applied 
 
-## State parameters {auto-animate="TRUE"}
+1. Apply the Cholesky decomposition on the scaling matrix, here $\mathbf{\Sigma}$
+$$\mathbf{\Sigma} = \mathbf{L}\mathbf{L}^t$$
+2. Multiply the $\mathbf{L}$ matrix to a standard variance multivariate Gaussian distribution
 
-``` {.stan code-line-numbers="5-8"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+$$\mathbf{L}\cdot \mathcal{MVN}\left(\boldsymbol{\mu},\mathbf{I}\right)\cdot\mathbf{L}^t.$$
 
-## Write the likelihood and priors {auto-animate="TRUE"}
+Recall, that $\mathbf{I}$ is the identity matrix.
+:::
 
-``` {.stan code-line-numbers="9-13"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
+## The convergence trick {auto-animate="true"}
+
+### Multivariate Gaussian distribution
+
+If we apply translation and scaling together on a multivariate Gaussian distribution, we get
+
+$$\mathbf{L}\cdot \mathcal{MVN}\left(\mathbf{0},\mathbf{I}\right)\cdot\mathbf{L}^t + \boldsymbol{\mu}$$
+When implementing in Stan some of the models we will discuss in this course, this convergence trick becomes very practical because it can lead a model to convergence much faster than without using this trick.

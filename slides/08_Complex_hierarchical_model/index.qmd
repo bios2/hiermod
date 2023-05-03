@@ -1,0 +1,356 @@
+---
+title: "Complex hierarchical models"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Guillaume Blanchet -- Andrew MacDonald -- Vincent Tolon"
+date: "2023-05-10"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## "Complex" hierarchical model
+
+By "complex" we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy. 
+
+As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.
+
+# "Complex" hierarchy on the intercept
+
+## Interacting hierarchies
+
+::: {style="font-size: 0.7em"}
+`lme4` notation : `y ~ (1 | f:g)`
+
+This model assumes that factors `f` and `g` interact to make a hierarchy.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g] },\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+or 
+
+$$y_i = b_{f[l_f]\times g[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, a multi-factor hierarchy can be constructed my multiplying the levels of individual factors to account for a more complexe hierarchy. Another way to think about this structure is to construct a complexe hierarchy using multiple simpler hierarchies. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)$$
+:::
+
+## Interacting hierarchies
+
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(-marginal,val,
+     type = "n",
+     ylim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+polygon(x = c(-marginal,-marginal[1]),
+        y = c(val, val[1]),
+        col = rgb(170/255, 103/255, 57/255, 0.5),
+        border = NA)
+
+lines(-marginal,val, lwd = 3)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(-3,3),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",) 
+
+set.seed(40)
+abline(h = rnorm(30, mean = 1, sd = 0.5),
+       lwd = 3,
+       col = rgb(170/255, 103/255, 57/255))
+
+legend("topright",
+       legend = c("f", "g"),
+       fill = c("blue", "orange"),
+       cex = 2.5)
+```
+
+
+## Hierarchies within hierarchies
+
+::: {style="font-size: 0.7em"}
+`lme4` notation : `y ~ (1 | f/g)` or `y ~ (1 | f) + (1 | f:g)`
+
+This model assumes there is a hierarchy that varies among the levels of factor `f` and among the levels of factor `g` but only within the levels of factor `f`.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+or 
+
+$$y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, the model parameter $b$ will change for a sample $i$ only when the level $l_g$ of the factor $g$ **within** the level $l_f$ of the factor $f$ changes. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}\left(0,\sigma^2_{g\in f}
+                                \right)$$
+:::
+
+## Hierarchies within hierarchies
+
+ICI
+
+
+
+## `y ~ (1 | f/g)`
+### Stan code for this model
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+For Andrew?
+:::
+
+## `y ~ (1 | f/g)`
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+# Stuff
+```
+
+## `y ~ (1 | f) + (1 | g)`
+
+::: {style="font-size: 0.7em"}
+Other notation used : `y ~ 1 + (1 | f) + (1 | g)`
+
+This model assumes there is a hierarchy that varies among the two factors.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+or 
+
+$$y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, this means that the model values $b$ will change for a sample $i$ only when the interaction the level $l_f$ of the factor $f$ and the  level $l_g$ of the factor $g$ changes. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}\left(0, 
+                                \begin{bmatrix}
+                                  \sigma^2_f & \sigma_f\sigma_g\\
+                                  \sigma_f\sigma_g& \sigma^2_g\\
+                                \end{bmatrix}
+                                \right)$$
+:::
+
+## `y ~ (1 | f) + (1 | g)`
+
+This model has a number interesting properties
+
+- It does **not** assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.
+- If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)
+- This can be generalized to as many factors as we want. We will see how this can be useful later.
+
+
+## `y ~ x + (x || g)`
+
+## second
+
+::: r-fit-text
+Test your model
+:::
+
+## 
+
+img:
+
+![](img/bg.jpg)
+
+it is a landscape
+
+##  {auto-animate="true"}
+
+::: {style="margin-top: 100px;"}
+check with simulations
+:::
+
+##  {auto-animate="true"}
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+check with simulations
+:::
+
+## choose parameters {auto-animate="TRUE"}
+
+``` r
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+```
+
+## make up an X variable {auto-animate="TRUE"}
+
+``` r
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+```
+
+## calculate the average {auto-animate="TRUE"}
+
+``` r
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+```
+
+## simulate some observations {auto-animate="TRUE"}
+
+```{r}
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+```
+
+## finally, visualize
+
+```{r}
+plot(y_obs ~ x)
+```
+
+## here it is all on one slide
+
+```{r}
+#| output-location: column
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+plot(y_obs, x)
+```
+
+## Or we can present the code and results separately
+
+::: panel-tabset
+### The code
+
+```{r}
+yintercept <- 4
+slope <- 1.3
+obs_error <- .5
+x <- runif(200, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
+```
+
+### The figure
+
+```{r}
+plot(y_obs ~ x)
+```
+:::
+
+## another equation
+
+$$
+2 + 4 = 6
+$$
+
+## The equation
+
+$$
+\begin{align}
+y  &\sim \text{N}(\mu, \sigma_{obs}) \\
+\mu &= a + bx \\
+\end{align}
+$$
+
+## The model {auto-animate="TRUE"}
+
+``` stan
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## Declare the data {auto-animate="TRUE"}
+
+``` {.stan code-line-numbers="1-4"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## State parameters {auto-animate="TRUE"}
+
+``` {.stan code-line-numbers="5-8"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
+
+## Write the likelihood and priors {auto-animate="TRUE"}
+
+``` {.stan code-line-numbers="9-13"}
+data {
+  int<lower=0> N;
+  vector[N] y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  y ~ normal(mu, sigma);
+  mu ~ normal(0, 1);
+  sigma ~ exponential(1);
+}
+```
