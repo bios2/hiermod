@@ -417,18 +417,30 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="course-material" class="slide level2">
 <h2>Course material</h2>
 <h3 id="website-httpsbios2.github.iohiermod2023">Website : <a href="https://bios2.github.io/hiermod2023/">https://bios2.github.io/hiermod2023/</a></h3>
-<p>On it, you will find the slides but also Rmarkdown files with practical examples.</p>
+<div class="fragment">
+<p>On it, you will find the slides but also practical examples.</p>
+</div>
+<div class="fragment">
 <p>You will also find course syllabus</p>
+</div>
+<div class="fragment">
 <p>Let’s take a look…</p>
+</div>
 </section>
 <section id="general-daily-schedule" class="slide level2">
 <h2>General daily schedule</h2>
+<div style="color: blue;">
 <p>8h00 to 9h00 - Breakfast</p>
+</div>
 <p>9h00 to 12h00 - Lecture/Practice</p>
+<div style="color: blue;">
 <p>12h00 to 13h00 - Lunch</p>
+</div>
 <p>13h00 to 17h00 - Lecture/Practice</p>
 <p>17h00 to 17h30 - Project presentations</p>
+<div style="color: blue;">
 <p>17h30 to 18h30 - Supper</p>
+</div>
 </section></section>
 <section>
 <section id="the-course-basics" class="title-slide slide level1 center">
@@ -442,31 +454,62 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="particularities-of-hierarchical-models" class="slide level2">
 <h2>Particularities of hierarchical models</h2>
 <p>Hierarchical models are</p>
+<div class="fragment">
 <ul>
 <li>A challenging bit of technology (probably more than you might think!).</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li>Very flexible models (in many more ways that are usually expected!)</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li>Constrained to the same particularities as (generalized) (non) linear models (sometimes to a more severe extent)</li>
 </ul>
+</div>
 </section>
 <section id="a-bit-of-vocabulary" class="slide level2">
 <h2>A bit of vocabulary</h2>
 <p>Hierarchical models, as we will see them in this course, are also known under different names</p>
+<div class="fragment">
 <ul>
 <li>Random effect models</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li>Mixed models</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li>Multilevel models</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li>Variance component models</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li>Error component models</li>
 </ul>
+</div>
 </section>
 <section id="a-bit-of-vocabulary-1" class="slide level2">
 <h2>A bit of vocabulary</h2>
 <p>We decided to use the term hierachical model to prevent confusions that sometimes arises in the litterature about <em>random</em> and <em>fixed</em> effects, which are terms commonly used when referring to mixed effect models.</p>
-<p>Actually, <em>random</em> and <em>fixed</em> effects have multiple definitions, which leads to confusion</p>
+<div class="fragment">
+<p>Actually, <em>random</em> and <em>fixed</em> effects have multiple definitions, which leads to confusion.</p>
+</div>
 </section>
 <section id="a-bit-of-vocabulary-2" class="slide level2">
 <h2>A bit of vocabulary</h2>
 <h3 id="multiple-definition-of-fixed-and-random-effects">Multiple Definition of <em>fixed</em> and <em>random</em> effects</h3>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p><a href="https://methods.sagepub.com/book/introducing-multilevel-modeling">(Kreft and De Leeuw 1998)</a> <em>Fixed</em> effects are constant and <em>random</em> effect vary</p>
 <p><a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316856">(Searl et al.&nbsp;1992)</a> Effects are <em>fixed</em> if they are interesting in themselves or <em>random</em> if there is interest in the underlying population</p>
@@ -474,42 +517,69 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><a href="https://doi.org/10.1002/9781118445112.stat03169">(Roy LaMotte 2014)</a> If an effect is assumed to be a realized value of a random variable, it is called a <em>random</em> effect</p>
 <p><a href="https://www.jstor.org/stable/2245695">(Robinson 1991)</a> <em>Fixed</em> effects are estimated using least squares (or, more generally, maximum likelihood) and <em>random</em> effects are estimated with shrinkage.</p>
 </div>
+</div>
 </section>
 <section id="a-bit-of-history" class="slide level2">
 <h2>A bit of history</h2>
 <p>Because of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably</p>
-
-<img data-src="https://www.bibmath.net/bios/images/fisher.jpg" style="width:10.0%" class="r-stretch quarto-figure-center"><div style="font-size: 0.5em">
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.bibmath.net/bios/images/fisher.jpg" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="font-size: 0.5em">
 <p>Fisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. <em>Transactions of the Royal Society of Edinburgh</em>, <strong>52</strong> 399–433.</p>
+</div>
 </div>
 </section>
 <section id="implementation" class="slide level2">
 <h2>Implementation</h2>
 <ul>
-<li>Hierarchical models have been implemented in many software packages,
+<li>Hierarchical models have been implemented in many software packages,</li>
+</ul>
+<div class="fragment">
 <ul>
 <li>in R
 <ul>
 <li><code>lme4</code>, <code>brms</code>, <code>nlme</code>, <code>glmmTMB</code>, <code>MCMCglmm</code>, …</li>
 </ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li>in SAS
 <ul>
 <li><code>MIXED</code>, <code>HPMIXED</code>, <code>GLMMIX</code>, …</li>
 </ul></li>
-<li>in julia
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>in Julia
 <ul>
 <li><code>MixedModels.jl</code></li>
 </ul></li>
 <li>…</li>
-</ul></li>
 </ul>
+</div>
 </section>
 <section id="implementation-1" class="slide level2">
 <h2>Implementation</h2>
 <h3 id="what-we-will-use">What we will use</h3>
+<div class="fragment">
 <p>We will not use any of these software packages… because under specific circumstances, what may seem like the same implementation of a model may lead to different answers… and both can actually be right !</p>
+</div>
+<div class="fragment">
 <p>This is because the underlying model implemented in the software package may actually be slightly different.</p>
+</div>
+<div class="fragment">
 <p>Instead we will implement our own models from scratch using Stan.</p>
+</div>
 </section>
 <section id="good-reference" class="slide level2">
 <h2>Good reference</h2>

@@ -33,28 +33,38 @@ Meeting with Gabriel Lanthier, the lord of these premises
 
 ### Website : [https://bios2.github.io/hiermod2023/](https://bios2.github.io/hiermod2023/)
 
+. . . 
 
-On it, you will find the slides but also Rmarkdown files with practical examples.
+On it, you will find the slides but also practical examples.
+
+. . . 
 
 You will also find course syllabus
+
+. . . 
 
 Let's take a look...
 
 
 ## General daily schedule
 
+:::{style="color: blue;"}
 8h00 to 9h00 - Breakfast
+:::
 
 9h00 to 12h00 - Lecture/Practice
 
+:::{style="color: blue;"}
 12h00 to 13h00 - Lunch
+:::
 
 13h00 to 17h00 - Lecture/Practice
 
 17h00 to 17h30 - Project presentations
 
+:::{style="color: blue;"}
 17h30 to 18h30 - Supper
-
+:::
 # The course basics
 
 ## What are hierarchical models ?
@@ -65,28 +75,54 @@ For this course, hierarchical models are regression models in which the paramete
 
 Hierarchical models are
 
+. . .
+
 - A challenging bit of technology (probably more than you might think!). 
+
+. . .
+
 - Very flexible models (in many more ways that are usually expected!)
+
+. . .
+
 - Constrained to the same particularities as (generalized) (non) linear models (sometimes to a more severe extent)
 
 ## A bit of vocabulary
 
 Hierarchical models, as we will see them in this course, are also known under different names
 
+. . .
+
   - Random effect models
+
+. . .
+
   - Mixed models
+
+. . .
+
   - Multilevel models
+
+. . .
+
   - Variance component models
+
+. . .
+
   - Error component models
 
 ## A bit of vocabulary
   
 We decided to use the term hierachical model to prevent confusions that sometimes arises in the litterature about *random* and *fixed* effects, which are terms commonly used when referring to mixed effect models. 
 
-Actually, *random* and *fixed* effects have multiple definitions, which leads to confusion
+. . .
+
+Actually, *random* and *fixed* effects have multiple definitions, which leads to confusion.
 
 ## A bit of vocabulary
 ### Multiple Definition of *fixed* and *random* effects
+
+. . .
 
 ::: {style="font-size: 0.8em"}
 [(Kreft and De Leeuw 1998)](https://methods.sagepub.com/book/introducing-multilevel-modeling) *Fixed* effects are constant and *random* effect vary
@@ -104,7 +140,10 @@ Actually, *random* and *fixed* effects have multiple definitions, which leads to
 
 Because of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably
 
-```{r echo=FALSE, out.width="10%", fig.align='center'}
+. . .
+
+
+```{r echo=FALSE, out.width="20%", fig.align='center'}
 knitr::include_graphics("https://www.bibmath.net/bios/images/fisher.jpg")
 ```
 
@@ -115,11 +154,20 @@ Fisher R.A. (1919). The Correlation between Relatives on the Supposition of Mend
 ## Implementation
 
 - Hierarchical models have been implemented in many software packages,
+
+. . .
+
   - in R 
     - `lme4`, `brms`, `nlme`, `glmmTMB`, `MCMCglmm`, ...
+
+. . .
+
   - in SAS
     - `MIXED`, `HPMIXED`, `GLMMIX`, ...
-  - in julia
+
+. . .
+
+  - in Julia
     - `MixedModels.jl`
   - ...
 
@@ -127,9 +175,15 @@ Fisher R.A. (1919). The Correlation between Relatives on the Supposition of Mend
 
 ### What we will use 
 
+. . .
+
 We will not use any of these software packages... because under specific circumstances, what may seem like the same implementation of a model may lead to different answers... and both can actually be right ! 
 
+. . .
+
 This is because the underlying model implemented in the software package may actually be slightly different.
+
+. . .
 
 Instead we will implement our own models from scratch using Stan.
 
