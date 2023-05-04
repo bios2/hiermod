@@ -404,7 +404,8 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>“Complex” hierarchical model</h2>
 <p>By “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.</p>
 <p>As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.</p>
-</section>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/b/e/f/7/bef79dd05db0e97d4124fa885f2c0522_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
 <section>
 <section id="complex-hierarchy-on-the-intercept" class="title-slide slide level1 center">
 <h1>“Complex” hierarchy on the intercept</h1>
@@ -428,52 +429,43 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchies-within-hierarchies" class="slide level2">
 <h2>Hierarchies within hierarchies</h2>
-<div style="font-size: 0.7em">
+<div style="font-size: 0.65em">
 <p><code>lme4</code> notation : <code>y ~ (1 | f/g)</code> or <code>y ~ (1 | f) + (1 | f:g)</code></p>
 <p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, the model parameter <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]}+\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f[l_f]}+b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, the model has two independent hierarchy, one changes for a sample <span class="math inline">\(i\)</span> as a single intercept hierarchy and the other will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_g\)</span> of factor <span class="math inline">\(g\)</span> is <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
 <p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,\sigma^2_{g\in f}
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
+                                \begin{bmatrix}
+                                  \sigma^2_f &amp; 0\\
+                                  0&amp; \sigma^2_{f\in g}\\
+                                \end{bmatrix}
                                 \right)\]</span></p>
 </div>
 </section>
 <section id="hierarchies-within-hierarchies-1" class="slide level2">
 <h2>Hierarchies within hierarchies</h2>
-<p>ICI</p>
-</section>
-<section id="y-1-fg" class="slide level2">
-<h2><code>y ~ (1 | f/g)</code></h2>
-<h3 id="stan-code-for-this-model">Stan code for this model</h3>
-<div style="margin-top: 200px; font-size: 2.5em; color: red;">
-<p>For Andrew?</p>
-</div>
-</section>
-<section id="y-1-fg-1" class="slide level2">
-<h2><code>y ~ (1 | f/g)</code></h2>
-<div class="cell" data-layout-align="center">
 
-</div>
-</section>
-<section id="y-1-f-1-g" class="slide level2">
-<h2><code>y ~ (1 | f) + (1 | g)</code></h2>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="multiple-independent-hierarchy" class="slide level2">
+<h2>Multiple independent hierarchy</h2>
 <div style="font-size: 0.7em">
-<p>Other notation used : <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
-<p>This model assumes there is a hierarchy that varies among the two factors.</p>
+<p><code>lme4</code> notation : <code>y ~ (1 | f) + (1 | g)</code> or <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
+<p>This model assumes there is a hierarchy that varies among two factors that are independent from one another.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the interaction the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> and the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> changes.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that we are dealing with a model that has two intercepts that are sampled independently the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the interaction the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> and the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> changes.</p>
 <p>This is because in this model</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
                                 \begin{bmatrix}
-                                  \sigma^2_f &amp; \sigma_f\sigma_g\\
-                                  \sigma_f\sigma_g&amp; \sigma^2_g\\
+                                  \sigma^2_f &amp; 0\\
+                                  0&amp; \sigma^2_g\\
                                 \end{bmatrix}
                                 \right)\]</span></p>
 </div>
 </section>
-<section id="y-1-f-1-g-1" class="slide level2">
+<section id="y-1-f-1-g" class="slide level2">
 <h2><code>y ~ (1 | f) + (1 | g)</code></h2>
 <p>This model has a number interesting properties</p>
 <ul>
@@ -499,6 +491,12 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="section-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
+                                \begin{bmatrix}
+                                  \sigma^2_f &amp; \sigma_f\sigma_g\\
+                                  \sigma_f\sigma_g&amp; \sigma^2_g\\
+                                \end{bmatrix}
+                                \right)\]</span></p>
 <div style="margin-top: 100px;">
 <p>check with simulations</p>
 </div>

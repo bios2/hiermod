@@ -21,6 +21,8 @@ By "complex" we refer to hierarchical models for which more than one parameters 
 
 As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.
 
+![](https://www.i2symbol.com/pictures/emojis/b/e/f/7/bef79dd05db0e97d4124fa885f2c0522_384.png){fig-align="center" width=20%}
+
 # "Complex" hierarchy on the intercept
 
 ## Interacting hierarchies
@@ -91,64 +93,109 @@ legend("topright",
 
 ## Hierarchies within hierarchies
 
-::: {style="font-size: 0.7em"}
+::: {style="font-size: 0.65em"}
 `lme4` notation : `y ~ (1 | f/g)` or `y ~ (1 | f) + (1 | f:g)`
 
 This model assumes there is a hierarchy that varies among the levels of factor `f` and among the levels of factor `g` but only within the levels of factor `f`.
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]}+\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
 or 
 
-$$y_i = b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, the model parameter $b$ will change for a sample $i$ only when the level $l_g$ of the factor $g$ **within** the level $l_f$ of the factor $f$ changes. 
-
-This is because in this model
-
-$$\mathbf{b} \sim \mathcal{N}\left(0,\sigma^2_{g\in f}
-                                \right)$$
-:::
-
-## Hierarchies within hierarchies
-
-ICI
-
-
-
-## `y ~ (1 | f/g)`
-### Stan code for this model
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-For Andrew?
-:::
-
-## `y ~ (1 | f/g)`
-```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-# Stuff
-```
-
-## `y ~ (1 | f) + (1 | g)`
-
-::: {style="font-size: 0.7em"}
-Other notation used : `y ~ 1 + (1 | f) + (1 | g)`
-
-This model assumes there is a hierarchy that varies among the two factors.
-
-Mathematically, it can be translated to 
-
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
-or 
-
-$$y_i = b_{f_i[l_f]\times g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that the model values $b$ will change for a sample $i$ only when the interaction the level $l_f$ of the factor $f$ and the  level $l_g$ of the factor $g$ changes. 
+$$y_i = b_{f[l_f]}+b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, the model has two independent hierarchy, one changes for a sample $i$ as a single intercept hierarchy and the other will change for a sample $i$ only when the level $l_g$ of factor $g$ is **within** the level $l_f$ of the factor $f$ changes. 
 
 This is because in this model
 
 $$\mathbf{b} \sim \mathcal{N}\left(0, 
                                 \begin{bmatrix}
-                                  \sigma^2_f & \sigma_f\sigma_g\\
-                                  \sigma_f\sigma_g& \sigma^2_g\\
+                                  \sigma^2_f & 0\\
+                                  0& \sigma^2_{f\in g}\\
+                                \end{bmatrix}
+                                \right)$$
+:::
+
+## Hierarchies within hierarchies
+
+
+```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+
+val <- seq(-1, 3, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.5)
+
+valIn <- seq(0, 1.8, length = 200)
+marginalIn <- dnorm(val, mean = 0.8, sd = 0.4)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(-marginalIn,valIn,
+     type = "n",
+     ylim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+polygon(x = c(-marginal,-marginal[1]),
+        y = c(val, val[1]),
+        col = rgb(0, 0, 1, 0.5),
+        border = NA)
+
+polygon(x = c(-marginalIn,-marginalIn[1]),
+        y = c(valIn, valIn[1]),
+        col = rgb(255/255, 165/255, 0, 0.5),
+        border = NA)
+
+lines(-marginal,val, lwd = 3)
+lines(-marginalIn,valIn, lwd = 3)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(-3,3),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",) 
+
+set.seed(41)
+abline(h = rnorm(15, mean = 1, sd = 0.5),
+       lwd = 3,
+       col = "blue")
+
+abline(h = rnorm(15, mean = 0.8, sd = 0.3),
+       lwd = 3,
+       col = rgb(170/255, 103/255, 57/255))
+
+legend("topright",
+       legend = c("f", "g"),
+       fill = c("blue", "orange"),
+       cex = 2.5)
+```
+
+## Multiple independent hierarchy
+
+::: {style="font-size: 0.7em"}
+`lme4` notation : `y ~ (1 | f) + (1 | g)` or `y ~ 1 + (1 | f) + (1 | g)`
+
+This model assumes there is a hierarchy that varies among two factors that are independent from one another.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+or 
+
+$$y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+In words, this means that we are dealing with a model that has two intercepts that are sampled independently the model values $b$ will change for a sample $i$ only when the interaction the level $l_f$ of the factor $f$ and the  level $l_g$ of the factor $g$ changes. 
+
+This is because in this model
+
+$$\mathbf{b} \sim \mathcal{N}\left(0, 
+                                \begin{bmatrix}
+                                  \sigma^2_f & 0\\
+                                  0& \sigma^2_g\\
                                 \end{bmatrix}
                                 \right)$$
 :::
@@ -179,6 +226,15 @@ img:
 it is a landscape
 
 ##  {auto-animate="true"}
+
+
+$$\mathbf{b} \sim \mathcal{N}\left(0, 
+                                \begin{bmatrix}
+                                  \sigma^2_f & \sigma_f\sigma_g\\
+                                  \sigma_f\sigma_g& \sigma^2_g\\
+                                \end{bmatrix}
+                                \right)$$
+
 
 ::: {style="margin-top: 100px;"}
 check with simulations

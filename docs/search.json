@@ -2132,14 +2132,14 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#hierarchies-within-hierarchies",
     "title": "Complex hierarchical models",
     "section": "Hierarchies within hierarchies",
-    "text": "Hierarchies within hierarchies\n\nlme4 notation : y ~ (1 | f/g) or y ~ (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, the model parameter \\(b\\) will change for a sample \\(i\\) only when the level \\(l_g\\) of the factor \\(g\\) within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\\sigma^2_{g\\in f}\n                                \\right)\\]"
+    "text": "Hierarchies within hierarchies\n\nlme4 notation : y ~ (1 | f/g) or y ~ (1 | f) + (1 | f:g)\nThis model assumes there is a hierarchy that varies among the levels of factor f and among the levels of factor g but only within the levels of factor f.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]}+\\mathbf{b}_{g[l_g]\\in f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f[l_f]}+b_{g[l_g]\\in f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, the model has two independent hierarchy, one changes for a sample \\(i\\) as a single intercept hierarchy and the other will change for a sample \\(i\\) only when the level \\(l_g\\) of factor \\(g\\) is within the level \\(l_f\\) of the factor \\(f\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & 0\\\\\n                                  0& \\sigma^2_{f\\in g}\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#hierarchies-within-hierarchies-1",
     "href": "slides/08_Complex_hierarchical_model/index.html#hierarchies-within-hierarchies-1",
     "title": "Complex hierarchical models",
     "section": "Hierarchies within hierarchies",
-    "text": "Hierarchies within hierarchies\nICI"
+    "text": "Hierarchies within hierarchies"
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#y-1-fg",
@@ -2160,7 +2160,7 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#y-1-f-1-g",
     "title": "Complex hierarchical models",
     "section": "y ~ (1 | f) + (1 | g)",
-    "text": "y ~ (1 | f) + (1 | g)\n\nOther notation used : y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among the two factors.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]\\times g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]\\times g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+    "text": "y ~ (1 | f) + (1 | g)\nThis model has a number interesting properties\n\nIt does not assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.\nIf a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)\nThis can be generalized to as many factors as we want. We will see how this can be useful later."
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#y-1-f-1-g-1",
@@ -2195,7 +2195,7 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#section-1",
     "title": "Complex hierarchical models",
     "section": "",
-    "text": "check with simulations"
+    "text": "\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & \\sigma_f\\sigma_g\\\\\n                                  \\sigma_f\\sigma_g& \\sigma^2_g\\\\\n                                \\end{bmatrix}\n                                \\right)\\]\n\ncheck with simulations"
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#section-2",
@@ -2294,5 +2294,12 @@
     "title": "Complex hierarchical models",
     "section": "Write the likelihood and priors",
     "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#multiple-independent-hierarchy",
+    "href": "slides/08_Complex_hierarchical_model/index.html#multiple-independent-hierarchy",
+    "title": "Complex hierarchical models",
+    "section": "Multiple independent hierarchy",
+    "text": "Multiple independent hierarchy\n\nlme4 notation : y ~ (1 | f) + (1 | g) or y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among two factors that are independent from one another.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]} + \\mathbf{b}_{g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that we are dealing with a model that has two intercepts that are sampled independently the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & 0\\\\\n                                  0& \\sigma^2_g\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
   }
 ]
