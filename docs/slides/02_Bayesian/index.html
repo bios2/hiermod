@@ -338,13 +338,30 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="frequentist" class="slide level2">
 <h2>Frequentist</h2>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p>In introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.</p>
-<p>Frequentists want to find the best model parameter(s) for the data at hand</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>Frequentists want to find the best model parameter(s) for the data at hand.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p><span class="math display">\[\text{Likelihood}\hspace{1.5cm}P(\text{Data}|\text{Model})\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>They are interested in <strong>maximizing</strong> the Likelihood</p>
 <p>They need <strong>data</strong></p>
+</div>
+</div>
+<div class="fragment">
 <h3 id="estimating-model-parameters">Estimating model parameters</h3>
+<div style="font-size: 0.8em">
 <ul>
 <li>Minimizing the sums of squares</li>
 <li>Simulated annealing</li>
@@ -352,22 +369,47 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <li>…</li>
 </ul>
 </div>
+</div>
 </section>
 <section id="bayesian" class="slide level2">
 <h2>Bayesian</h2>
+<div class="fragment">
 <div style="font-size: 0.75em">
 <p>Bayesians want to find how good the model parameter(s) are given some data</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
 <p><span class="math display">\[\text{Posterior}\hspace{1.5cm}P(\text{Model}|\text{Data})\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
 <p>They are interested in the <strong>posterior</strong> distribution</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
 <p>They need <strong>data</strong> and <strong>prior</strong> information</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
 <p>The general framework used in Bayesian modelling is</p>
+</div>
+<div style="font-size: 0.75em">
 <p><span class="math display">\[\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}\]</span></p>
-<h3 id="estimating-model-parameters-1">Estimating model parameters</h3>
+</div>
+</div>
+<div class="fragment">
+<h4 id="estimating-model-parameters-1">Estimating model parameters</h4>
+<div style="font-size: 0.75em">
 <ul>
 <li>Markov Chain Monte Carlo</li>
 <li>Hamiltonian Monte Carlo</li>
 <li>…</li>
 </ul>
+</div>
 </div>
 </section>
 <section id="our-way-of-thinking-is-bayesian" class="slide level2">
@@ -380,14 +422,24 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="a-few-words-about-the-prior" class="slide level2">
 <h2>A few words about the prior</h2>
-<div style="font-size: 0.75em">
+<div class="fragment">
 <h3 id="definition-of-prior-probability">Definition of prior probability</h3>
-<p>The <strong>prior probability</strong> informes us about the probability of the model being true <em>before</em> the current data is considered.</p>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<p>The <strong>prior probability</strong> informes us about the probability of the model being true <em>before</em> the current data is considered</p>
+</div>
+</div>
 <h3 id="types-of-priors">Types of priors</h3>
+<div class="fragment">
 <h4 id="uninformative">“Uninformative”</h4>
+<div style="font-size: 0.75em">
 <p>These priors are meant to bring very little information about the model</p>
+</div>
 <h4 id="informative">Informative</h4>
+<div style="font-size: 0.75em">
 <p>These priors bring information about the model that is available</p>
+</div>
+</div>
 </div>
 </section>
 <section id="a-few-words-about-the-prior-1" class="slide level2">
@@ -410,6 +462,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="a-few-words-about-the-prior-2" class="slide level2">
 <h2>A few words about the prior</h2>
 <h3 id="informative-priors">Informative priors</h3>
+<div class="fragment">
 <div style="font-size: 0.6em">
 <p><strong>Example</strong> If we know that</p>
 <ul>
@@ -431,25 +484,46 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </div>
 </div>
 </div>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="480" class="r-stretch quarto-figure-center"></section>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="estimating-bayesian-model" class="slide level2">
 <h2>Estimating Bayesian model</h2>
+<div class="fragment">
 <div style="font-size: 0.75em;">
-<p>As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.</p>
+<p>As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan</p>
+</div>
+</div>
+<div class="fragment">
 <h3 id="typical-reasons-to-favour-mcmc">Typical reasons to favour MCMC</h3>
+<div class="fragment">
+<div style="font-size: 0.75em;">
 <ul>
 <li>It is flexible</li>
 <li>It can be applied to complex models such as models with multiple levels of hierarchy</li>
 </ul>
+</div>
+</div>
 <h3 id="why-should-we-learn-about-mcmc">Why should we learn about MCMC ?</h3>
+<div class="fragment">
+<div style="font-size: 0.75em;">
 <p>The goal of this course is <strong>not</strong> to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.</p>
+</div>
+</div>
 </div>
 </section>
 <section id="markov-chain-monte-carlo-mcmc" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <div style="font-size: 0.75em;">
-<p>Historically, the developments of MCMC are intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.</p>
+<p>Historically, the developments of MCMC have been intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.</p>
 <p>To explain what is an MCMC, let’s imagine that we are interested in understanding the behaviour of the mallard (<em>Anas platyrhynchos</em>).</p>
 </div>
 
@@ -475,68 +549,121 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="markov-chain-monte-carlo-mcmc-2" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p>Using this information, we can draw diagram defining how the behaviour of the mallard changes at every time steps</p>
-
-<img data-src="../img/DAG.png" class="r-stretch quarto-figure-center"></section>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/DAG.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</section>
 <section id="markov-chain-monte-carlo-mcmc-3" class="slide level2">
 <h2><em>Markov Chain</em> Monte Carlo (MCMC)</h2>
 <div style="font-size: 0.75em;">
 <p>In a markov chain, we assume that we know how probable it is to go from one behaviour (land) to another (water)</p>
 </div>
-
-<img data-src="../img/DAG_Markov_chain.png" class="r-stretch quarto-figure-center"></section>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/DAG_Markov_chain.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</section>
 <section id="markov-chain-monte-carlo-mcmc-4" class="slide level2">
 <h2>Markov Chain <em>Monte Carlo</em> (MCMC)</h2>
 <div style="font-size: 0.75em;">
 <p>In an MCMC, we assume that the likeliness of passing from one behaviour (land) to another (water) depends on a statistical distribution.</p>
 </div>
-
-<img data-src="../img/DAG_Markov_chain_monte_Carlo.png" class="r-stretch quarto-figure-center"></section>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/DAG_Markov_chain_monte_Carlo.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</section>
 <section id="markov-chain-monte-carlo-mcmc-5" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <h4 id="a-simplistic-statistical-example">A simplistic statistical example</h4>
+<div class="fragment">
 <div style="font-size: 0.75em;">
 <p>Let’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm.</p>
 </div>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="480" class="r-stretch quarto-figure-center"></section>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="markov-chain-monte-carlo-mcmc-6" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <h4 id="a-simplistic-statistical-example-1">A simplistic statistical example</h4>
+<div class="fragment">
 <div style="font-size: 0.65em;">
 <p>A growth model can be constructed using a simple linear regression</p>
-<p><span class="math display">\[y = \beta_0 + \beta x + \varepsilon\]</span> From this model which the average weight when a Mallard duck hatches is 107 grams (intercept), with an average daily growth of 13.5 grams (intercept).</p>
+<p><span class="math display">\[y = \beta_0 + \beta x + \varepsilon\]</span> From this model we can infer that the average weight of a Mallard duck when it hatches is 107 grams (intercept), and the average daily growth of the Mallard is 13.5 grams (slope).</p>
 </div>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="576" class="r-stretch quarto-figure-center"></section>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="markov-chain-monte-carlo-mcmc-7" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <h4 id="a-simplistic-statistical-example-2">A simplistic statistical example</h4>
 <div style="font-size: 0.85em;">
-<p>Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling <span class="math inline">\(\beta_0\)</span> as</p>
-<p><span class="math display">\[\beta_0 \sim \mathcal{N}(\mu_I, \sigma_I^2)\]</span> and <span class="math inline">\(\beta\)</span> as</p>
+<p>Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling</p>
+<p><span class="math inline">\(\beta_0\)</span> as</p>
+<p><span class="math display">\[\beta_0 \sim \mathcal{N}(\mu_I, \sigma_I^2)\]</span></p>
+<p>and <span class="math inline">\(\beta\)</span> as</p>
 <p><span class="math display">\[\beta \sim \mathcal{N}(\mu_S, \sigma_S^2)\]</span></p>
 <p>In doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the <strong>distribution</strong> of best parameter values.</p>
 </div>
 </section>
 <section id="markov-chain-monte-carlo-mcmc-8" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
+<div class="fragment">
 <p>When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.</p>
+</div>
+<div class="fragment">
 <p>Since we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is.</p>
+</div>
 </section>
 <section id="markov-chain-monte-carlo-mcmc-9" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
-<p>MCMC relies on using many random samples to assess what the structure of the distribution is.</p>
+<p>MCMC relies on using many random samples to assess the structure of the distribution.</p>
 
 <img data-src="../img/Drunken_walk.png" class="r-stretch quarto-figure-center"></section>
 <section id="hamiltonian-monte-carlo" class="slide level2">
 <h2>Hamiltonian Monte Carlo</h2>
-<p>Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the structure of the distribution is.</p>
+<p>Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure of the distribution.</p>
 
 <img data-src="https://www.westcoasttraveller.com/wp-content/uploads/2021/03/24581102_web1_210322-WCT-WestcoastSkateparks_1-800x533.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"></section>
-<section id="sampling-the-parameter" class="slide level2">
-<h2>Sampling the parameter</h2>
+<section id="sampling-the-parameters" class="slide level2">
+<h2>Sampling the parameters</h2>
+<div class="fragment">
 <div style="font-size: 0.9em;">
-<p>In MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.</p>
+<p>In MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough ?</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em;">
 <p>Here is a rough procedure to follow:</p>
 <ol type="1">
 <li>Perform a pilot run with a reduced number of iterations (e.g.&nbsp;10) and measure the time it takes</li>
@@ -544,6 +671,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <li>Run the algorithm again !</li>
 <li>Study the chain visually</li>
 </ol>
+</div>
 </div>
 </section>
 <section id="studying-convergence" class="slide level2">
@@ -559,21 +687,36 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div style="font-size: 0.7em;">
 <p>If we ran the same MCMC as above but instead for 50000 steps, we obtain</p>
 </div>
-
-<img data-src="index_files/figure-revealjs/thining2-1.png" width="960" class="r-stretch"><div style="font-size: 0.7em;">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="index_files/figure-revealjs/thining2-1.png" width="960"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em;">
 <p><strong>Note</strong> It is also possible to <em>thin</em> (record only the <span class="math inline">\(n^{\text{th}}\)</span> iteration), but it is better to keep all iterations when possible. Actually, <em>thinning</em> should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer.</p>
+</div>
 </div>
 </section>
 <section id="studying-convergence-3" class="slide level2">
 <h2>Studying convergence</h2>
 <h4 id="burn-in">Burn-in</h4>
 <p>Burn-in is throwing away some iterations at the beginning of the MCMC run</p>
-
-<img data-src="index_files/figure-revealjs/burnin1 -1.png" width="960" class="r-stretch"></section>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="index_files/figure-revealjs/burnin1 -1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
 <section id="studying-convergence-4" class="slide level2">
 <h2>Studying convergence</h2>
 <h4 id="burn-in-1">Burn-in</h4>
 <p>After burn-in, we obtain</p>
+<div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
 <p><img data-src="index_files/figure-revealjs/burnin2 -1.png" width="960"></p>
@@ -583,6 +726,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
 <div class="footer footer-default">
 
+</div>
 </div>
 </section>
     </div>

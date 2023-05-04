@@ -15,21 +15,38 @@ format:
     background-transition: fade
 ---
 
-## Frequentist
+## Frequentist 
+. . . 
+
 ::: {style="font-size: 0.8em"}
-
 In introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.
+::: 
 
-Frequentists want to find the best model parameter(s) for the data at hand
+. . . 
 
+::: {style="font-size: 0.8em"}
+Frequentists want to find the best model parameter(s) for the data at hand.
+::: 
+
+. . . 
+
+::: {style="font-size: 0.8em"}
 $$\text{Likelihood}\hspace{1.5cm}P(\text{Data}|\text{Model})$$
+::: 
 
+. . . 
+
+::: {style="font-size: 0.8em"}
 They are interested in **maximizing** the Likelihood
 
 They need **data**
+::: 
+
+. . . 
 
 ### Estimating model parameters
 
+::: {style="font-size: 0.8em"}
 - Minimizing the sums of squares
 - Simulated annealing
 - Nelder-Mead Simplex
@@ -39,47 +56,83 @@ They need **data**
 
 ## Bayesian
 
+. . . 
+
 ::: {style="font-size: 0.75em"}
 Bayesians want to find how good the model parameter(s) are given some data
+:::
 
+. . . 
+
+::: {style="font-size: 0.75em"}
 $$\text{Posterior}\hspace{1.5cm}P(\text{Model}|\text{Data})$$
+:::
 
+. . . 
+
+::: {style="font-size: 0.75em"}
 They are interested in the **posterior** distribution
+:::
 
+. . . 
+
+::: {style="font-size: 0.75em"}
 They need **data** and **prior** information
+:::
 
+. . . 
+
+::: {style="font-size: 0.75em"}
 The general framework used in Bayesian modelling is 
+:::
 
+::: {style="font-size: 0.75em"}
 $$\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}$$
+:::
 
-### Estimating model parameters
+. . . 
 
+#### Estimating model parameters
+
+::: {style="font-size: 0.75em"}
 - Markov Chain Monte Carlo
 - Hamiltonian Monte Carlo
 - ...
-
 :::
 
 ## Our way of thinking is Bayesian
 
 [![](../img/Fantastic_Beast.png){width=1000 height=500}](https://youtu.be/uoEnGiG9aWA?t=34)
 
-
 ## A few words about the prior
 
-::: {style="font-size: 0.75em"}
-### Definition of prior probability
+. . .
 
- The **prior probability** informes us about the probability of the model being true *before* the current data is considered.
+### Definition of prior probability 
+
+. . .
+
+::: {style="font-size: 0.75em"}
+The **prior probability** informes us about the probability of the model being true *before* the current data is considered
+:::
+. . .
 
 ### Types of priors
 
+. . .
+
 #### "Uninformative"
 
+::: {style="font-size: 0.75em"}
 These priors are meant to bring very little information about the model
+:::
+
+. . .
+
 
 #### Informative
 
+::: {style="font-size: 0.75em"}
 These priors bring information about the model that is available
 :::
 
@@ -134,6 +187,8 @@ legend("topright",legend=c(expression(sigma==1),
 
 ### Informative priors
 
+. . . 
+
 :::::{style="font-size: 0.6em"}
 **Example** If we know that 
   
@@ -167,23 +222,35 @@ curve(dunif(x,min = -2, max = 0), n=1000, -2.5, 0.5, xlab = "",
 
 ## Estimating Bayesian model
 
+. . .
+
 :::{style="font-size: 0.75em;"}
-As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.  
+As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan 
+:::
+. . .
 
 ### Typical reasons to favour MCMC
 
+. . .
+
+:::{style="font-size: 0.75em;"}
 - It is flexible
 - It can be applied to complex models such as models with multiple levels of hierarchy
+:::
+. . .
 
 ### Why should we learn about MCMC ?
 
+. . .
+
+:::{style="font-size: 0.75em;"}
 The goal of this course is **not** to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.
 :::
 
 ## Markov Chain Monte Carlo (MCMC)
 
 :::{style="font-size: 0.75em;"}
-Historically, the developments of MCMC are intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.
+Historically, the developments of MCMC have been intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.
 
 To explain what is an MCMC, let's imagine that we are interested in understanding the behaviour of the mallard (*Anas platyrhynchos*).
 :::
@@ -202,7 +269,6 @@ For simplicity, let's assume that we are monitoring the behaviour of the mallard
 #### In the water
 
 ![](https://img.bbg.org/large/41847802500.jpg){fig-align="center" width=20%}
-
 :::
 
 
@@ -211,7 +277,9 @@ For simplicity, let's assume that we are monitoring the behaviour of the mallard
 
 Using this information, we can draw diagram defining how the behaviour of the mallard changes at every time steps
 
-![](../img/DAG.png){fig-align="center"}
+. . .
+
+![](../img/DAG.png){fig-align="center" width=70%}
 
 ## *Markov Chain* Monte Carlo (MCMC)
 
@@ -219,7 +287,9 @@ Using this information, we can draw diagram defining how the behaviour of the ma
 In a markov chain, we assume that we know how probable it is to go from one behaviour (land) to another (water)
 :::
 
-![](../img/DAG_Markov_chain.png){fig-align="center"}
+. . .
+
+![](../img/DAG_Markov_chain.png){fig-align="center" width=70%}
 
 ## Markov Chain *Monte Carlo* (MCMC)
 
@@ -227,16 +297,20 @@ In a markov chain, we assume that we know how probable it is to go from one beha
 In an MCMC, we assume that the likeliness of passing from one behaviour (land) to another (water) depends on a statistical distribution. 
 :::
 
-![](../img/DAG_Markov_chain_monte_Carlo.png){fig-align="center"}
+. . .
+
+![](../img/DAG_Markov_chain_monte_Carlo.png){fig-align="center" width=70%}
 
 ## Markov Chain Monte Carlo (MCMC)
 #### A simplistic statistical example
 
+. . .
+
 ::: {style="font-size: 0.75em;"}
 Let's say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm.
 :::
-
-```{r, echo =FALSE, fig.height=5, fig.width=5, fig.align='center'}
+. . .
+```{r, echo =FALSE, fig.height=4.5, fig.width=5, fig.align='center'}
 set.seed(42)
 x <- 1:100
 #x <- seq(0.25, 1.36, length = 40)
@@ -260,14 +334,20 @@ reg <- lm(y ~ x)
 ## Markov Chain Monte Carlo (MCMC)
 #### A simplistic statistical example
 
+. . .
+
 ::: {style="font-size: 0.65em;"}
 A growth model can be constructed using a simple linear regression
 
 $$y = \beta_0 + \beta x + \varepsilon$$
-From this model which the average weight when a Mallard duck hatches is `r round(coef(reg)[1])` grams (intercept), with an average daily growth of `r round(coef(reg)[2], 1)` grams (intercept).
+From this model we can infer that the average weight of a Mallard duck when it hatches is `r round(coef(reg)[1])` grams (intercept), and the average daily growth of the Mallard is `r round(coef(reg)[2], 1)` grams (slope).
 :::
 
-```{r, echo =FALSE, fig.height=6, fig.width=6, fig.align='center'}
+. . .
+
+```{r, echo =FALSE, fig.height=4, fig.width=6, fig.align='center'}
+par(mar = c(5.1, 4.1, 0.1, 2.1))
+
 plot(x,y,
      bty ="L",
      las = 1,
@@ -288,9 +368,12 @@ abline(reg = reg, col = "orange", lwd = 8)
 #### A simplistic statistical example
 
 ::: {style="font-size: 0.85em;"}
-Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling $\beta_0$ as
+Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling 
+
+$\beta_0$ as
 
 $$\beta_0 \sim \mathcal{N}(\mu_I, \sigma_I^2)$$
+
 and $\beta$ as 
 
 $$\beta \sim \mathcal{N}(\mu_S, \sigma_S^2)$$
@@ -300,27 +383,37 @@ In doing so, we are not focusing on finding the 'best' parameter values. Rather,
 
 ## Markov Chain Monte Carlo (MCMC)
 
+. . .
+
 When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.
+
+. . . 
 
 Since we do not know what the "true" characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is. 
 
 ## Markov Chain Monte Carlo (MCMC)
 
-MCMC relies on using many random samples to assess what the structure of the distribution is.
+MCMC relies on using many random samples to assess the structure of the distribution.
 
 ![](../img/Drunken_walk.png){fig-align="center"}
 
 ## Hamiltonian Monte Carlo
 
-Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the structure of the distribution is.
+Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure of the distribution.
 
 ![](https://www.westcoasttraveller.com/wp-content/uploads/2021/03/24581102_web1_210322-WCT-WestcoastSkateparks_1-800x533.jpg){fig-align="center" width=80%}
 
-## Sampling the parameter
+## Sampling the parameters
+
+. . .
 
 :::{style="font-size: 0.9em;"}
-In MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough.
+In MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough ?
+:::
 
+. . .
+
+:::{style="font-size: 0.9em;"}
 Here is a rough procedure to follow:
 
 1. Perform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes
@@ -368,6 +461,8 @@ plot(auto, type = "l", xlab = "Steps",  ylab = "Parameters",
 If we ran the same MCMC as above but instead for 50000 steps, we obtain
 :::
 
+. . .
+
 ```{r thining2,fig.width = 10, fig.height = 3.5,echo=FALSE,eval=TRUE}
 par(mar=c(5,5,3,0.5))
 
@@ -380,6 +475,8 @@ plot(autoLong, type = "l", xlab = "Steps",
 #     col = "blue")
 ```
 
+. . .
+
 :::{style="font-size: 0.7em;"}
 **Note** It is also possible to *thin* (record only the $n^{\text{th}}$ iteration), but it is better to keep all iterations when possible. Actually, *thinning* should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer.
 :::
@@ -388,6 +485,8 @@ plot(autoLong, type = "l", xlab = "Steps",
 #### Burn-in 
 
 Burn-in is throwing away some iterations at the beginning of the MCMC run 
+
+. . .
 
 ```{r, burnin1 ,fig.width = 10,fig.height = 3.5,echo=FALSE,eval=TRUE}
 par(mar=c(5,5,3,0.5))
@@ -403,7 +502,7 @@ abline(v=500,col="red",lwd=3)
 
 After burn-in, we obtain
 
-\vspace{-0.2cm}
+. . . 
 
 ```{r, burnin2 ,fig.width = 10,fig.height = 3.5,echo=FALSE,eval=TRUE}
 par(mar=c(5,5,3,0.5))

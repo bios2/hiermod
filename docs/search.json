@@ -1068,14 +1068,14 @@
     "href": "slides/02_Bayesian/index.html#frequentist",
     "title": "Bayesian modelling",
     "section": "Frequentist",
-    "text": "Frequentist\n\nIn introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.\nFrequentists want to find the best model parameter(s) for the data at hand\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\]\nThey are interested in maximizing the Likelihood\nThey need data\nEstimating model parameters\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
+    "text": "Frequentist\n\n\nIn introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data.\n\n\n\n\nFrequentists want to find the best model parameter(s) for the data at hand.\n\n\n\n\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\]\n\n\n\n\nThey are interested in maximizing the Likelihood\nThey need data\n\n\n\nEstimating model parameters\n\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#bayesian",
     "href": "slides/02_Bayesian/index.html#bayesian",
     "title": "Bayesian modelling",
     "section": "Bayesian",
-    "text": "Bayesian\n\nBayesians want to find how good the model parameter(s) are given some data\n\\[\\text{Posterior}\\hspace{1.5cm}P(\\text{Model}|\\text{Data})\\]\nThey are interested in the posterior distribution\nThey need data and prior information\nThe general framework used in Bayesian modelling is\n\\[\\underbrace{P(\\text{Model}|\\text{Data})}_\\text{Posterior}\\propto \\underbrace{P(\\text{Data}|\\text{Model})}_\\text{Likelihood}\\underbrace{P(\\text{Model})}_\\text{Prior}\\]\nEstimating model parameters\n\nMarkov Chain Monte Carlo\nHamiltonian Monte Carlo\n…"
+    "text": "Bayesian\n\n\nBayesians want to find how good the model parameter(s) are given some data\n\n\n\n\n\\[\\text{Posterior}\\hspace{1.5cm}P(\\text{Model}|\\text{Data})\\]\n\n\n\n\nThey are interested in the posterior distribution\n\n\n\n\nThey need data and prior information\n\n\n\n\nThe general framework used in Bayesian modelling is\n\n\n\\[\\underbrace{P(\\text{Model}|\\text{Data})}_\\text{Posterior}\\propto \\underbrace{P(\\text{Data}|\\text{Model})}_\\text{Likelihood}\\underbrace{P(\\text{Model})}_\\text{Prior}\\]\n\n\n\nEstimating model parameters\n\n\nMarkov Chain Monte Carlo\nHamiltonian Monte Carlo\n…"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#our-way-of-thinking-is-bayesian",
@@ -1089,7 +1089,7 @@
     "href": "slides/02_Bayesian/index.html#a-few-words-about-the-prior",
     "title": "Bayesian modelling",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\n\nDefinition of prior probability\nThe prior probability informes us about the probability of the model being true before the current data is considered.\nTypes of priors\n“Uninformative”\nThese priors are meant to bring very little information about the model\nInformative\nThese priors bring information about the model that is available"
+    "text": "A few words about the prior\n\nDefinition of prior probability\n\n\nThe prior probability informes us about the probability of the model being true before the current data is considered\n\n\nTypes of priors\n\n“Uninformative”\n\nThese priors are meant to bring very little information about the model\n\nInformative\n\nThese priors bring information about the model that is available"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-1",
@@ -1103,21 +1103,21 @@
     "href": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-2",
     "title": "Bayesian modelling",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\nInformative priors\n\nExample If we know that\n\nThere are less sugar maples the higher we go\nThe influence of elevation on sugar maple cannot be more than two folds\n\nUniform distribution\n\n\n\\[f(x)=\\left\\{\n  \\begin{array}{cl}\n    \\frac{1}{b-a} & \\text{for } x\\in [a,b]\\\\\n    0 &\\text{otherwise}\\\\\n  \\end{array}\n\\right.\\]\n\n\\(a > -2\\)\n\\(b < 0\\)"
+    "text": "A few words about the prior\nInformative priors\n\n\nExample If we know that\n\nThere are less sugar maples the higher we go\nThe influence of elevation on sugar maple cannot be more than two folds\n\nUniform distribution\n\n\n\\[f(x)=\\left\\{\n  \\begin{array}{cl}\n    \\frac{1}{b-a} & \\text{for } x\\in [a,b]\\\\\n    0 &\\text{otherwise}\\\\\n  \\end{array}\n\\right.\\]\n\n\\(a > -2\\)\n\\(b < 0\\)"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#estimating-bayesian-model",
     "href": "slides/02_Bayesian/index.html#estimating-bayesian-model",
     "title": "Bayesian modelling",
     "section": "Estimating Bayesian model",
-    "text": "Estimating Bayesian model\n\nAs I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.\nTypical reasons to favour MCMC\n\nIt is flexible\nIt can be applied to complex models such as models with multiple levels of hierarchy\n\nWhy should we learn about MCMC ?\nThe goal of this course is not to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC."
+    "text": "Estimating Bayesian model\n\n\nAs I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan\n\n\n\nTypical reasons to favour MCMC\n\n\n\nIt is flexible\nIt can be applied to complex models such as models with multiple levels of hierarchy\n\n\n\nWhy should we learn about MCMC ?\n\n\nThe goal of this course is not to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\n\nHistorically, the developments of MCMC are intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.\nTo explain what is an MCMC, let’s imagine that we are interested in understanding the behaviour of the mallard (Anas platyrhynchos)."
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nHistorically, the developments of MCMC have been intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.\nTo explain what is an MCMC, let’s imagine that we are interested in understanding the behaviour of the mallard (Anas platyrhynchos)."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-1",
@@ -1152,42 +1152,42 @@
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-5",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nLet’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nLet’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nA growth model can be constructed using a simple linear regression\n\\[y = \\beta_0 + \\beta x + \\varepsilon\\] From this model which the average weight when a Mallard duck hatches is 107 grams (intercept), with an average daily growth of 13.5 grams (intercept)."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nA growth model can be constructed using a simple linear regression\n\\[y = \\beta_0 + \\beta x + \\varepsilon\\] From this model we can infer that the average weight of a Mallard duck when it hatches is 107 grams (intercept), and the average daily growth of the Mallard is 13.5 grams (slope)."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-7",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-7",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nEstimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling \\(\\beta_0\\) as\n\\[\\beta_0 \\sim \\mathcal{N}(\\mu_I, \\sigma_I^2)\\] and \\(\\beta\\) as\n\\[\\beta \\sim \\mathcal{N}(\\mu_S, \\sigma_S^2)\\]\nIn doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the distribution of best parameter values."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nEstimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling\n\\(\\beta_0\\) as\n\\[\\beta_0 \\sim \\mathcal{N}(\\mu_I, \\sigma_I^2)\\]\nand \\(\\beta\\) as\n\\[\\beta \\sim \\mathcal{N}(\\mu_S, \\sigma_S^2)\\]\nIn doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the distribution of best parameter values."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-8",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-8",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nWhen using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.\nSince we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is."
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nWhen using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.\n\n\nSince we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-9",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-9",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nMCMC relies on using many random samples to assess what the structure of the distribution is."
+    "text": "Markov Chain Monte Carlo (MCMC)\nMCMC relies on using many random samples to assess the structure of the distribution."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo",
     "href": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo",
     "title": "Bayesian modelling",
     "section": "Hamiltonian Monte Carlo",
-    "text": "Hamiltonian Monte Carlo\nHamiltonial Monte Carlo relies on Hamiltonian dynamics to assess what the structure of the distribution is."
+    "text": "Hamiltonian Monte Carlo\nHamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure of the distribution."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#sampling-the-parameter",
@@ -1215,7 +1215,7 @@
     "href": "slides/02_Bayesian/index.html#studying-convergence-2",
     "title": "Bayesian modelling",
     "section": "Studying convergence",
-    "text": "Studying convergence\n\nIf we ran the same MCMC as above but instead for 50000 steps, we obtain\n\n\n\nNote It is also possible to thin (record only the \\(n^{\\text{th}}\\) iteration), but it is better to keep all iterations when possible. Actually, thinning should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer."
+    "text": "Studying convergence\n\nIf we ran the same MCMC as above but instead for 50000 steps, we obtain\n\n\n\n\n\n\n\n\n\n\nNote It is also possible to thin (record only the \\(n^{\\text{th}}\\) iteration), but it is better to keep all iterations when possible. Actually, thinning should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#studying-convergence-3",
@@ -1825,5 +1825,33 @@
     "title": "Data simulation",
     "section": "Exercises",
     "text": "Exercises"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#frequentist.-.-.",
+    "href": "slides/02_Bayesian/index.html#frequentist.-.-.",
+    "title": "Bayesian modelling",
+    "section": "Frequentist. . .",
+    "text": "Frequentist. . .\n\nIn introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data. . . .\nFrequentists want to find the best model parameter(s) for the data at hand . . .\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\] . . .\nThey are interested in maximizing the Likelihood\nThey need data . . .\nEstimating model parameters\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#frequentist-.-.-.",
+    "href": "slides/02_Bayesian/index.html#frequentist-.-.-.",
+    "title": "Bayesian modelling",
+    "section": "Frequentist . . .",
+    "text": "Frequentist . . .\n\nIn introductory statistics course, it is common to rely on the frequentist paradigm when inferring results from data. . . .\nFrequentists want to find the best model parameter(s) for the data at hand . . .\n\\[\\text{Likelihood}\\hspace{1.5cm}P(\\text{Data}|\\text{Model})\\] . . .\nThey are interested in maximizing the Likelihood\nThey need data . . .\nEstimating model parameters\n\nMinimizing the sums of squares\nSimulated annealing\nNelder-Mead Simplex\n…"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-3",
+    "href": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-3",
+    "title": "Bayesian modelling",
+    "section": "A few words about the prior",
+    "text": "A few words about the prior\nInformative priors\n\nExample If we know that\n\nThere are less sugar maples the higher we go\nThe influence of elevation on sugar maple cannot be more than two folds\n\nUniform distribution\n\n\n\\[f(x)=\\left\\{\n  \\begin{array}{cl}\n    \\frac{1}{b-a} & \\text{for } x\\in [a,b]\\\\\n    0 &\\text{otherwise}\\\\\n  \\end{array}\n\\right.\\]\n\n\\(a > -2\\)\n\\(b < 0\\)"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#sampling-the-parameters",
+    "href": "slides/02_Bayesian/index.html#sampling-the-parameters",
+    "title": "Bayesian modelling",
+    "section": "Sampling the parameters",
+    "text": "Sampling the parameters\n\n\nIn MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough ?\n\n\n\n\nHere is a rough procedure to follow:\n\nPerform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes\nDecide on a number of steps to run to obtain a result in a reasonable amount of time\nRun the algorithm again !\nStudy the chain visually"
   }
 ]
