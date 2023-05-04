@@ -427,6 +427,27 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Interacting hierarchies</h2>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="multiple-independent-hierarchy" class="slide level2">
+<h2>Multiple independent hierarchy</h2>
+<div style="font-size: 0.65em">
+<p><code>lme4</code> notation : <code>y ~ (1 | f) + (1 | g)</code> or <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
+<p>This model assumes there is a hierarchy that varies among two factors that are independent from one another.</p>
+<p>Mathematically, it can be translated to</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that we are dealing with a model that has two intercepts, which are sampled independently so that the <span class="math inline">\(b\)</span>s will change for a sample <span class="math inline">\(i\)</span> only when the interaction the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> and the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> changes independently.</p>
+<p>This is because in this model</p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
+                                \begin{bmatrix}
+                                  \sigma^2_f &amp; 0\\
+                                  0&amp; \sigma^2_g\\
+                                \end{bmatrix}
+                                \right)\]</span></p>
+</div>
+</section>
+<section id="multiple-independent-hierarchy-1" class="slide level2">
+<h2>Multiple independent hierarchy</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchies-within-hierarchies" class="slide level2">
 <h2>Hierarchies within hierarchies</h2>
 <div style="font-size: 0.65em">
@@ -447,35 +468,44 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="hierarchies-within-hierarchies-1" class="slide level2">
 <h2>Hierarchies within hierarchies</h2>
 
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="multiple-independent-hierarchy" class="slide level2">
-<h2>Multiple independent hierarchy</h2>
-<div style="font-size: 0.7em">
-<p><code>lme4</code> notation : <code>y ~ (1 | f) + (1 | g)</code> or <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
-<p>This model assumes there is a hierarchy that varies among two factors that are independent from one another.</p>
-<p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that we are dealing with a model that has two intercepts that are sampled independently the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the interaction the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> and the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> changes.</p>
-<p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
-                                \begin{bmatrix}
-                                  \sigma^2_f &amp; 0\\
-                                  0&amp; \sigma^2_g\\
-                                \end{bmatrix}
-                                \right)\]</span></p>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="variations-on-multiple-independent-hierarchy" class="slide level2" style="font-size: 0.8em">
+<h2>Variations on multiple independent hierarchy</h2>
+<div style="font-size: 1.1em">
+<p>The two models discussed previously have a few interesting properties:</p>
+<ul>
+<li>They are mathematically equivalent. They present a similar mathematical structure but can be used to answer slightly different biological questions.</li>
+<li>If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter).</li>
+<li>They can be generalized to as many factors as we want.</li>
+<li>Models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy.</li>
+</ul>
 </div>
 </section>
-<section id="y-1-f-1-g" class="slide level2">
-<h2><code>y ~ (1 | f) + (1 | g)</code></h2>
-<p>This model has a number interesting properties</p>
-<ul>
-<li>It does <strong>not</strong> assumes that the two factors act independent. Actually, if you are interested in such a model, the code to use is not as straight forward to write with these packages.</li>
-<li>If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter)</li>
-<li>This can be generalized to as many factors as we want. We will see how this can be useful later.</li>
-</ul>
+<section id="correlated-intercept-and-slope-hierarchy" class="slide level2" style="font-size: 0.9em">
+<h2>Correlated intercept and slope hierarchy</h2>
+<div style="font-size: 0.9em">
+<p><code>lme4</code> notation : <code>y ~ x + (x | g)</code> or <code>y ~ 1 + x + (1 + x | g)</code></p>
+<p>This model assumes the hierarchy between the intercept and the slope is correlated.</p>
+<p>Mathematically, it can be translated to</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f[l_f]} +\mathbf{Z}\mathbf{b}_{1f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
+<p><span class="math display">\[y_i = b_{0f_i[l_f]} + zb_{1f_i[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model</p>
+<p><span class="math display">\[\begin{bmatrix}
+    b_0\\
+    b_1\\
+\end{bmatrix}
+\sim \mathcal{N}\left(0,
+                      \begin{bmatrix}
+                        \sigma^2_{b_0} &amp; \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} \\
+                        \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} &amp; \sigma^2_{b_1}
+                      \end{bmatrix}
+                \right)\]</span></p>
+</div>
 </section>
-<section id="y-x-x-g" class="slide level2">
-<h2><code>y ~ x + (x || g)</code></h2>
+<section id="correlated-intercept-and-slope-hierarchy-1" class="slide level2" style="font-size: 0.9em">
+<h2>Correlated intercept and slope hierarchy</h2>
+<div style="font-size: 2.5em; color: red;">
+<p>ICI</p>
+</div>
 </section>
 <section id="second" class="slide level2">
 <h2>second</h2>
@@ -545,7 +575,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
 <section id="here-it-is-all-on-one-slide" class="slide level2">
 <h2>here it is all on one slide</h2>
 <div class="cell columns column-output-location">
@@ -559,7 +589,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -583,7 +613,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
 </div>
 </div>
 </div>

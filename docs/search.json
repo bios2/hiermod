@@ -2300,6 +2300,41 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#multiple-independent-hierarchy",
     "title": "Complex hierarchical models",
     "section": "Multiple independent hierarchy",
-    "text": "Multiple independent hierarchy\n\nlme4 notation : y ~ (1 | f) + (1 | g) or y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among two factors that are independent from one another.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]} + \\mathbf{b}_{g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that we are dealing with a model that has two intercepts that are sampled independently the model values \\(b\\) will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & 0\\\\\n                                  0& \\sigma^2_g\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+    "text": "Multiple independent hierarchy\n\nlme4 notation : y ~ (1 | f) + (1 | g) or y ~ 1 + (1 | f) + (1 | g)\nThis model assumes there is a hierarchy that varies among two factors that are independent from one another.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f[l_f]} + \\mathbf{b}_{g[l_g]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,l_g = 1\\dots k_g\\] or\n\\[y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,,\\,\\,\\,l_g = 1\\dots k_g\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In words, this means that we are dealing with a model that has two intercepts, which are sampled independently so that the \\(b\\)s will change for a sample \\(i\\) only when the interaction the level \\(l_f\\) of the factor \\(f\\) and the level \\(l_g\\) of the factor \\(g\\) changes independently.\nThis is because in this model\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_f & 0\\\\\n                                  0& \\sigma^2_g\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#multiple-independent-hierarchy-1",
+    "href": "slides/08_Complex_hierarchical_model/index.html#multiple-independent-hierarchy-1",
+    "title": "Complex hierarchical models",
+    "section": "Multiple independent hierarchy",
+    "text": "Multiple independent hierarchy"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#hierarchy-on-the-slope-with-correlated-intercept",
+    "href": "slides/08_Complex_hierarchical_model/index.html#hierarchy-on-the-slope-with-correlated-intercept",
+    "title": "Complex hierarchical models",
+    "section": "Hierarchy on the slope with correlated intercept",
+    "text": "Hierarchy on the slope with correlated intercept\n\nlme4 notation : y ~ (x | f) or y ~ (1 + x | f)"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#variations-on-multiple-independent-hierarchy",
+    "href": "slides/08_Complex_hierarchical_model/index.html#variations-on-multiple-independent-hierarchy",
+    "title": "Complex hierarchical models",
+    "section": "Variations on multiple independent hierarchy",
+    "text": "Variations on multiple independent hierarchy\n\nThe two models discussed previously have a few interesting properties:\n\nThey are mathematically equivalent. They present a similar mathematical structure but can be used to answer slightly different biological questions.\nIf a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter).\nThey can be generalized to as many factors as we want.\nModels with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy."
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy",
+    "href": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy",
+    "title": "Complex hierarchical models",
+    "section": "Correlated intercept and slope hierarchy",
+    "text": "Correlated intercept and slope hierarchy\n\nlme4 notation : y ~ x + (x | g) or y ~ 1 + x + (1 + x | g)\nThis model assumes the hierarchy between the intercept and the slope is correlated.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{0f[l_f]} +\\mathbf{Z}\\mathbf{b}_{1f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\] or\n\\[y_i = b_{0f_i[l_f]} + zb_{1f_i[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] In this model\n\\[\\begin{bmatrix}\n    b_0\\\\\n    b_1\\\\\n\\end{bmatrix}\n\\sim \\mathcal{N}\\left(0,\n                      \\begin{bmatrix}\n                        \\sigma^2_{b_0} & \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} \\\\\n                        \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} & \\sigma^2_{b_1}\n                      \\end{bmatrix}\n                \\right)\\]"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-1",
+    "href": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-1",
+    "title": "Complex hierarchical models",
+    "section": "Correlated intercept and slope hierarchy",
+    "text": "Correlated intercept and slope hierarchy\n\nICI"
   }
 ]
