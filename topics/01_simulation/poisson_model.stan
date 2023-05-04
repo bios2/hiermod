@@ -3,11 +3,11 @@ data {
   array[n_people] int<lower=0> bird_count_observed;
 }
 parameters {
-  real avg_birds_per_person;
+  real<lower=0> avg_birds_per_person;
 }
 model {
   bird_count_observed ~ poisson(avg_birds_per_person);
-  avg_birds_per_person ~ normal(1, 1);
+  avg_birds_per_person ~ uniform(0, 60);
 }
 generated quantities {
   // an array -- like a list in R

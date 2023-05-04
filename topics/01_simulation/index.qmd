@@ -4,12 +4,11 @@ description: |
   Expressing yourself through made-up numbers.
 execute:
   freeze: true
+comments:
+  hypothesis: true
 format:
   html:
     code-tools: true
-comments:
-  hypothesis: 
-    theme: clean
 ---
 
 ```{r, message=FALSE}
@@ -200,10 +199,18 @@ differences:
 * note the syntax for creating an `array` of integers. Arrays in Stan are a little like lists in R: they can hold any other kind of object, and are of a certain length. 
 
 ```{r}
-poisson_sim_stan <- poisson_simulation$sample(data = list(n_people = 21), 
-                          # usually not necessary -- this model has no parameters 
-                          fixed_param = TRUE
-                          )
+# We connect the data in R to the model in Stan using a 
+# named list!
+poisson_simulation_datalist <- list(
+  n_people = 21
+)
+
+poisson_sim_stan <- poisson_simulation$sample(
+  data = poisson_simulation_datalist, 
+  refresh = 0,
+  # usually not necessary -- this model has no parameters 
+  fixed_param = TRUE)
+
 ```
 
 This generates a large number of simulated datasets -- the default is 4000 datasets! 
@@ -237,7 +244,7 @@ avg_birds_per_person
 bird_count
 ```
 
-and let's see if we can recapture these parameters.
+and let's see if we can recapture the only known parameter, `avg_birds_per_person`, which is equal to `r avg_birds_per_person`.
 
 We'll do it first in R, using the function `fitdistr` from the `MASS` package:
 
@@ -293,17 +300,35 @@ poisson_model
 
 :::
 
-What's different in this second Stan program
+What's different in this second Stan program? There are two new sections:
 
-* parameters block
-* model block
-* the average is now moved to the model, no longer in the generated quantities
+* *parameters block*  : Indicated by `parameters {}`, this block includes all the unobserved quantities. In this case there is only one: `avg_birds_per_person`. We have to give this value a name and say what kind of number it is. Here is also the place to declare any constraints. In our example, we state that the parameter is always positive (because it is an average of counts).
+* *model block*  indicated by `model {}`, this block contains the model. What this means in a Bayesian model is that it lists the probability distribution for all the observations, and for all the unobserved parameters. In other words, it looks just like our mathematical expressions above. The model block can also contain intermediate calculations, for example combining data and parameters with an equation. We'll see examples later. 
 
-## Prior vs Posterior predictive checks
+This Stan program also contains one line that's been moved. 
+
+```Stan
+  avg_birds_per_person ~ uniform(0, 60);
+```
+
+has been moved to the `model` block. This has two consequences. 
+
+First, when the model sees our data, it's going to try to find values of `avg_birds_per_person` which make those data probable -- in other words, it is going to find the posterior distribution of possible values of the average. Together, the prior and the data constrain what those values can be.
+
+Second, the `generated quantities` block means something different now. Previously, we had no idea what `avg_birds_per_person` should be, so we had the computer choose a random number from a wide range. We called this "the prior" Now, when the computer draws new values of `bird_count`, it is going to use the values from the posterior that it is finding in the `model {}` block . This means that the simulations, rather than being *prior* predictive checks, are now *posterior* predictive checks.
+
 
 ## Parameter recovery
 
-Then we look to see if we have recovered our parameter.
+Let us see if the model recovers our parameters. Once again, we connect a dataset to our model with a list:
+
+```{r}
+poisson_model_samp <- poisson_model$sample(data  = list(bird_count_observed = bird_count,
+                                  n_people = length(bird_count)), refresh = 0)
+
+poisson_model_samp$summary()
+```
+
 
 
 ## Bonus material: conjugacy
@@ -312,4 +337,13 @@ You would never actually do the analysis on this page. In reality, for simple di
 
 ## Exercises
 
-* 
+#### Level 1
+
+* Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?
+* take a closer look at `poisson_model_samp$summary()` all the values of `bird_count` are the same. That's correct, but why?
+* what would you do next to add complexity this model?
+
+#### Level 2
+* We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? how to these compare to the real data?
+
+#### Level 3
