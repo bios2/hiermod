@@ -181,9 +181,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#sampling-the-posterior-distribution-in-stan" id="toc-sampling-the-posterior-distribution-in-stan" class="nav-link" data-scroll-target="#sampling-the-posterior-distribution-in-stan">Sampling the posterior distribution in Stan</a></li>
   </ul></li>
-  <li><a href="#prior-vs-posterior-predictive-checks" id="toc-prior-vs-posterior-predictive-checks" class="nav-link" data-scroll-target="#prior-vs-posterior-predictive-checks">Prior vs Posterior predictive checks</a></li>
   <li><a href="#parameter-recovery-1" id="toc-parameter-recovery-1" class="nav-link" data-scroll-target="#parameter-recovery-1">Parameter recovery</a></li>
-  <li><a href="#bonus-material-conjugacy" id="toc-bonus-material-conjugacy" class="nav-link" data-scroll-target="#bonus-material-conjugacy">Bonus material: conjugacy</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 </nav>
@@ -408,60 +406,23 @@ differences:
 ::: {.cell}
 
 ```{.r .cell-code}
-poisson_sim_stan &lt;- poisson_simulation$sample(data = list(n_people = 21), 
-                          # usually not necessary -- this model has no parameters 
-                          fixed_param = TRUE
-                          )</code></pre>
+# We connect the data in R to the model in Stan using a 
+# named list!
+poisson_simulation_datalist &lt;- list(
+  n_people = 21
+)
+
+poisson_sim_stan &lt;- poisson_simulation$sample(
+  data = poisson_simulation_datalist, 
+  refresh = 0,
+  # usually not necessary -- this model has no parameters 
+  fixed_param = TRUE)</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Running MCMC with 4 sequential chains...
 
-Chain 1 Iteration:   1 / 1000 [  0%]  (Sampling) 
-Chain 1 Iteration: 100 / 1000 [ 10%]  (Sampling) 
-Chain 1 Iteration: 200 / 1000 [ 20%]  (Sampling) 
-Chain 1 Iteration: 300 / 1000 [ 30%]  (Sampling) 
-Chain 1 Iteration: 400 / 1000 [ 40%]  (Sampling) 
-Chain 1 Iteration: 500 / 1000 [ 50%]  (Sampling) 
-Chain 1 Iteration: 600 / 1000 [ 60%]  (Sampling) 
-Chain 1 Iteration: 700 / 1000 [ 70%]  (Sampling) 
-Chain 1 Iteration: 800 / 1000 [ 80%]  (Sampling) 
-Chain 1 Iteration: 900 / 1000 [ 90%]  (Sampling) 
-Chain 1 Iteration: 1000 / 1000 [100%]  (Sampling) 
 Chain 1 finished in 0.0 seconds.
-Chain 2 Iteration:   1 / 1000 [  0%]  (Sampling) 
-Chain 2 Iteration: 100 / 1000 [ 10%]  (Sampling) 
-Chain 2 Iteration: 200 / 1000 [ 20%]  (Sampling) 
-Chain 2 Iteration: 300 / 1000 [ 30%]  (Sampling) 
-Chain 2 Iteration: 400 / 1000 [ 40%]  (Sampling) 
-Chain 2 Iteration: 500 / 1000 [ 50%]  (Sampling) 
-Chain 2 Iteration: 600 / 1000 [ 60%]  (Sampling) 
-Chain 2 Iteration: 700 / 1000 [ 70%]  (Sampling) 
-Chain 2 Iteration: 800 / 1000 [ 80%]  (Sampling) 
-Chain 2 Iteration: 900 / 1000 [ 90%]  (Sampling) 
-Chain 2 Iteration: 1000 / 1000 [100%]  (Sampling) 
 Chain 2 finished in 0.0 seconds.
-Chain 3 Iteration:   1 / 1000 [  0%]  (Sampling) 
-Chain 3 Iteration: 100 / 1000 [ 10%]  (Sampling) 
-Chain 3 Iteration: 200 / 1000 [ 20%]  (Sampling) 
-Chain 3 Iteration: 300 / 1000 [ 30%]  (Sampling) 
-Chain 3 Iteration: 400 / 1000 [ 40%]  (Sampling) 
-Chain 3 Iteration: 500 / 1000 [ 50%]  (Sampling) 
-Chain 3 Iteration: 600 / 1000 [ 60%]  (Sampling) 
-Chain 3 Iteration: 700 / 1000 [ 70%]  (Sampling) 
-Chain 3 Iteration: 800 / 1000 [ 80%]  (Sampling) 
-Chain 3 Iteration: 900 / 1000 [ 90%]  (Sampling) 
-Chain 3 Iteration: 1000 / 1000 [100%]  (Sampling) 
 Chain 3 finished in 0.0 seconds.
-Chain 4 Iteration:   1 / 1000 [  0%]  (Sampling) 
-Chain 4 Iteration: 100 / 1000 [ 10%]  (Sampling) 
-Chain 4 Iteration: 200 / 1000 [ 20%]  (Sampling) 
-Chain 4 Iteration: 300 / 1000 [ 30%]  (Sampling) 
-Chain 4 Iteration: 400 / 1000 [ 40%]  (Sampling) 
-Chain 4 Iteration: 500 / 1000 [ 50%]  (Sampling) 
-Chain 4 Iteration: 600 / 1000 [ 60%]  (Sampling) 
-Chain 4 Iteration: 700 / 1000 [ 70%]  (Sampling) 
-Chain 4 Iteration: 800 / 1000 [ 80%]  (Sampling) 
-Chain 4 Iteration: 900 / 1000 [ 90%]  (Sampling) 
-Chain 4 Iteration: 1000 / 1000 [100%]  (Sampling) 
 Chain 4 finished in 0.0 seconds.
 
 All 4 chains finished successfully.
@@ -506,7 +467,7 @@ Total execution time: 0.7 seconds.</code></pre>
 <pre><code> [1] 23 10 19 27 20 15 16 18 18 22 14 14 14 18 17 13 26 19 16 13 10</code></pre>
 </div>
 </div>
-<p>and let’s see if we can recapture these parameters.</p>
+<p>and let’s see if we can recapture the only known parameter, <code>avg_birds_per_person</code>, which is equal to 17.127887.</p>
 <p>We’ll do it first in R, using the function <code>fitdistr</code> from the <code>MASS</code> package:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>MASS<span class="sc">::</span><span class="fu">fitdistr</span>(bird_count, dpois, <span class="at">start =</span> <span class="fu">list</span>(<span class="at">lambda=</span><span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -544,11 +505,11 @@ use "Brent" or optimize() directly</code></pre>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[n_people] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; bird_count_observed;</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> avg_birds_per_person;</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; avg_birds_per_person;</span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  bird_count_observed ~ poisson(avg_birds_per_person);</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  avg_birds_per_person ~ normal(<span class="dv">1</span>, <span class="dv">1</span>);</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  avg_birds_per_person ~ uniform(<span class="dv">0</span>, <span class="dv">60</span>);</span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
 <span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// an array -- like a list in R</span></span>
@@ -594,11 +555,11 @@ use "Brent" or optimize() directly</code></pre>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[n_people] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; bird_count_observed;</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> avg_birds_per_person;</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; avg_birds_per_person;</span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
 <span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  bird_count_observed ~ poisson(avg_birds_per_person);</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  avg_birds_per_person ~ normal(<span class="dv">1</span>, <span class="dv">1</span>);</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  avg_birds_per_person ~ uniform(<span class="dv">0</span>, <span class="dv">60</span>);</span>
 <span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// an array -- like a list in R</span></span>
@@ -614,34 +575,80 @@ use "Brent" or optimize() directly</code></pre>
 </div>
 </div>
 </div>
-<p>What’s different in this second Stan program</p>
+<p>What’s different in this second Stan program? There are two new sections:</p>
 <ul>
-<li>parameters block</li>
-<li>model block</li>
-<li>the average is now moved to the model, no longer in the generated quantities</li>
+<li><em>parameters block</em> : Indicated by <code>parameters {}</code>, this block includes all the unobserved quantities. In this case there is only one: <code>avg_birds_per_person</code>. We have to give this value a name and say what kind of number it is. Here is also the place to declare any constraints. In our example, we state that the parameter is always positive (because it is an average of counts).</li>
+<li><em>model block</em> indicated by <code>model {}</code>, this block contains the model. What this means in a Bayesian model is that it lists the probability distribution for all the observations, and for all the unobserved parameters. In other words, it looks just like our mathematical expressions above. The model block can also contain intermediate calculations, for example combining data and parameters with an equation. We’ll see examples later.</li>
 </ul>
+<p>This Stan program also contains one line that’s been moved.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>  avg_birds_per_person ~ uniform(<span class="dv">0</span>, <span class="dv">60</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>has been moved to the <code>model</code> block. This has two consequences.</p>
+<p>First, when the model sees our data, it’s going to try to find values of <code>avg_birds_per_person</code> which make those data probable – in other words, it is going to find the posterior distribution of possible values of the average. Together, the prior and the data constrain what those values can be.</p>
+<p>Second, the <code>generated quantities</code> block means something different now. Previously, we had no idea what <code>avg_birds_per_person</code> should be, so we had the computer choose a random number from a wide range. We called this “the prior” Now, when the computer draws new values of <code>bird_count</code>, it is going to use the values from the posterior that it is finding in the <code>model {}</code> block . This means that the simulations, rather than being <em>prior</em> predictive checks, are now <em>posterior</em> predictive checks.</p>
 </section>
-</section>
-<section id="prior-vs-posterior-predictive-checks" class="level2">
-<h2 class="anchored" data-anchor-id="prior-vs-posterior-predictive-checks">Prior vs Posterior predictive checks</h2>
 </section>
 <section id="parameter-recovery-1" class="level2">
 <h2 class="anchored" data-anchor-id="parameter-recovery-1">Parameter recovery</h2>
-<p>Then we look to see if we have recovered our parameter.</p>
-</section>
-<section id="bonus-material-conjugacy" class="level2">
-<h2 class="anchored" data-anchor-id="bonus-material-conjugacy">Bonus material: conjugacy</h2>
-<p>You would never actually do the analysis on this page. In reality, for simple distributions such as the Poisson, we would</p>
+<p>Let us see if the model recovers our parameters. Once again, we connect a dataset to our model with a list:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>poisson_model_samp <span class="ot">&lt;-</span> poisson_model<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data  =</span> <span class="fu">list</span>(<span class="at">bird_count_observed =</span> bird_count,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">n_people =</span> <span class="fu">length</span>(bird_count)), <span class="at">refresh =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running MCMC with 4 sequential chains...
+
+Chain 1 finished in 0.0 seconds.
+Chain 2 finished in 0.0 seconds.
+Chain 3 finished in 0.0 seconds.
+Chain 4 finished in 0.0 seconds.
+
+All 4 chains finished successfully.
+Mean chain execution time: 0.0 seconds.
+Total execution time: 0.5 seconds.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>poisson_model_samp<span class="sc">$</span><span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 23 × 10
+   variable          mean median    sd   mad    q5   q95  rhat ess_bulk ess_tail
+   &lt;chr&gt;            &lt;num&gt;  &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;    &lt;num&gt;    &lt;num&gt;
+ 1 lp__             671.   671.  0.699 0.329 670.  672.   1.00    1912.    2347.
+ 2 avg_birds_per_p…  17.2   17.2 0.907 0.919  15.8  18.8  1.00    1800.    2084.
+ 3 bird_count[1]     17.2   17   4.30  4.45   10    25    1.00    3756.    4108.
+ 4 bird_count[2]     17.1   17   4.29  4.45   10    24    1.00    3749.    3290.
+ 5 bird_count[3]     17.3   17   4.29  4.45   11.0  25    1.00    3866.    3935.
+ 6 bird_count[4]     17.3   17   4.20  4.45   11    24    1.00    3554.    3727.
+ 7 bird_count[5]     17.1   17   4.19  4.45   11    24    1.00    3870.    3959.
+ 8 bird_count[6]     17.2   17   4.26  4.45   11    25    1.00    3814.    3771.
+ 9 bird_count[7]     17.2   17   4.29  4.45   10    25    1.00    3930.    3644.
+10 bird_count[8]     17.2   17   4.26  4.45   10    25    1.00    4151.    3893.
+# ℹ 13 more rows</code></pre>
+</div>
+</div>
+<p>The distribution of the parameter here covers the real value of 17.127887 pretty well!</p>
+<p>TK Conclusion paragraph??</p>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="level-1" class="level4">
+<h4 class="anchored" data-anchor-id="level-1">Level 1</h4>
 <ul>
-<li></li>
+<li>Let’s go birding! everyone in the class, over lunch, will go and count birds by eye! we’ll collect the vector, run and sample the model. Did our prior turn out to be appropriate?</li>
+<li>take a closer look at <code>poisson_model_samp$summary()</code> all the values of <code>bird_count</code> are the same. That’s correct, but why?</li>
+<li>what would you do next to add complexity this model?</li>
 </ul>
+</section>
+<section id="level-2" class="level4">
+<h4 class="anchored" data-anchor-id="level-2">Level 2</h4>
+<ul>
+<li>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? how to these compare to the real data?</li>
+</ul>
+</section>
+<section id="level-3" class="level4">
+<h4 class="anchored" data-anchor-id="level-3">Level 3</h4>
 
 
 <!-- -->
 
+</section>
 </section>
 
 
@@ -835,354 +842,354 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb29" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Data simulation"</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">  Expressing yourself through made-up numbers.</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: true</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="an">comments:</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">  hypothesis: true</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE}</span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>Before starting work on real data, we are going to begin by learning how to make up some of our own.</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>There are at least three reasons why this is a good idea:</span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? or should the standard deviation be bigger? smaller? As we'll see, simulation will demystify the process. </span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Validate your model.** Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Test your understanding.** Perhaps most importantly, simulation helps you to test your own intuition.  If you can simulate data from your model, then you really understand it!</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>If you can't, then you don't know quite how it works yet. It's rare^<span class="co">[</span><span class="ot">in Andrew's experience anyway</span><span class="co">]</span> that a biologist will fail to learn something by simulating a dataset.</span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simple exercise in simulation</span></span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds each of us is going to see on our hike?</span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a><span class="fu">### Some questions to ask about simulated data</span></span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>What kind of observations are you going to make? Do they have a minimum or maximum value?</span>
-<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>Are they integers, or are they decimal numbers, or something else?</span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Where do the numbers come from? This could be anything, from simple linear approximations (ie the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. </span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>How many observations will we be making?</span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### The process</span></span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>let's try to answer these questions for the bird walk we are about to take.</span>
-<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>We're going to count birds, so we'll have count data: a number that is either 0 or some positive, round number</span>
-<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We'll make a simplifying assumption: everybody has the same chance of seeing a bird (i.e. no differences in skill or equipment), and everyone in the class is an independent observer (i.e. nobody is working in pairs, etc) </span>
-<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Everyone in the class makes only one count, so we have 23 (?) numbers.</span>
-<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a>We're bayesians, so we need to write a probability distribution for all the possible values</span>
-<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a>\text{Number of Birds}_{\text{seen by person i}} &amp;\sim \text{Poisson}(\lambda) <span class="sc">\\</span></span>
-<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a>\lambda &amp;\sim \text{Uniform}(0, 60)</span>
-<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-56"><a href="#cb29-56" aria-hidden="true" tabindex="-1"></a>A quick note about notation for models like these:</span>
-<span id="cb29-57"><a href="#cb29-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-58"><a href="#cb29-58" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We use a subscript $i$ to indicate the "label" for each observation in our dataset. You can think of this as the row number of the data spreadsheet, and imagine sliding your finger down the column of measurements, modelling each value in turn.</span>
-<span id="cb29-59"><a href="#cb29-59" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Usually we'll use more general language, such as $y_i$. But for this simple example I wanted to make things as explicit as possible. </span>
-<span id="cb29-60"><a href="#cb29-60" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Notice the symbol $\sim$. This is read as "distributed as", and indicates the probability distribution from which the values might come.  When the values we're talking about are data that we can observe (in this case, counts of birds), we call the distribution the likelihood. When the value is something we can't observe (in this case, the average count $\lambda$) we call the distribution the prior.</span>
-<span id="cb29-61"><a href="#cb29-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-62"><a href="#cb29-62" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb29-63"><a href="#cb29-63" aria-hidden="true" tabindex="-1"></a>We'll be talking about better ways to model count data in a later exercise! For now, I'm using the Uniform distribution for simplicity. It's not usually a very good choice! </span>
-<span id="cb29-64"><a href="#cb29-64" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb29-65"><a href="#cb29-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-66"><a href="#cb29-66" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulation in R</span></span>
-<span id="cb29-67"><a href="#cb29-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-68"><a href="#cb29-68" aria-hidden="true" tabindex="-1"></a>One of the most useful traits of bayesian models is that they are _generative_: they can be used to make a simulated dataset. </span>
-<span id="cb29-69"><a href="#cb29-69" aria-hidden="true" tabindex="-1"></a>We'll do that now for our bird example.</span>
-<span id="cb29-70"><a href="#cb29-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-71"><a href="#cb29-71" aria-hidden="true" tabindex="-1"></a>let's simulate from a poisson distribution:</span>
-<span id="cb29-72"><a href="#cb29-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-75"><a href="#cb29-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-76"><a href="#cb29-76" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
-<span id="cb29-77"><a href="#cb29-77" aria-hidden="true" tabindex="-1"></a>n_people <span class="ot">&lt;-</span> <span class="dv">21</span></span>
-<span id="cb29-78"><a href="#cb29-78" aria-hidden="true" tabindex="-1"></a>avg_birds_per_person <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">30</span>)</span>
-<span id="cb29-79"><a href="#cb29-79" aria-hidden="true" tabindex="-1"></a>bird_count <span class="ot">&lt;-</span> <span class="fu">rpois</span>(n_people, <span class="at">lambda =</span> avg_birds_per_person)</span>
-<span id="cb29-80"><a href="#cb29-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-81"><a href="#cb29-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-82"><a href="#cb29-82" aria-hidden="true" tabindex="-1"></a>Some things to note in the code above: </span>
-<span id="cb29-83"><a href="#cb29-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-84"><a href="#cb29-84" aria-hidden="true" tabindex="-1"></a>Every statistical distribution that is in R (which is a lot! almost all! ) has four different functions. </span>
-<span id="cb29-85"><a href="#cb29-85" aria-hidden="true" tabindex="-1"></a>If the distribution is called <span class="in">`dist`</span>, then they are:</span>
-<span id="cb29-86"><a href="#cb29-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-87"><a href="#cb29-87" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`rdist`</span> = the distribution functions </span>
-<span id="cb29-88"><a href="#cb29-88" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`qdist`</span> = the quantile functions </span>
-<span id="cb29-89"><a href="#cb29-89" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`pdist`</span> = the probability density function </span>
-<span id="cb29-90"><a href="#cb29-90" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`ddist`</span> the density function</span>
-<span id="cb29-91"><a href="#cb29-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-92"><a href="#cb29-92" aria-hidden="true" tabindex="-1"></a>The other thing to note is that there are TWO simulation steps here: first, simulating a value of the average ($\lambda$) and second, simulating observations. </span>
-<span id="cb29-93"><a href="#cb29-93" aria-hidden="true" tabindex="-1"></a>In our model, the Uniform distribution was referred to as the _prior_, and the Poisson distribution was referred to as a _likelihood_, but here you can see that they are very nearly the same thing: just statements about what distribution of values might be most consistent with the data.</span>
-<span id="cb29-94"><a href="#cb29-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-95"><a href="#cb29-95" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Plotting the result</span></span>
-<span id="cb29-96"><a href="#cb29-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-97"><a href="#cb29-97" aria-hidden="true" tabindex="-1"></a>Let's take a look at our simulated values:</span>
-<span id="cb29-98"><a href="#cb29-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-101"><a href="#cb29-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-102"><a href="#cb29-102" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Histogram of simulated counts of birds</span></span>
-<span id="cb29-103"><a href="#cb29-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-104"><a href="#cb29-104" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bird_count, <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
-<span id="cb29-105"><a href="#cb29-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-106"><a href="#cb29-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-107"><a href="#cb29-107" aria-hidden="true" tabindex="-1"></a>This is pretty great, and represents one possible realization of sampling. </span>
-<span id="cb29-108"><a href="#cb29-108" aria-hidden="true" tabindex="-1"></a>However, one sample isn't enough to tell us about what our $\text{Uniform}(0, 60)$ prior really means. Let's do a few different simulations:</span>
-<span id="cb29-109"><a href="#cb29-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-112"><a href="#cb29-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-113"><a href="#cb29-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Twelve different simulations of a possible bird dataset. Do all of these seem plausible? </span></span>
-<span id="cb29-114"><a href="#cb29-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-115"><a href="#cb29-115" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb29-116"><a href="#cb29-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-117"><a href="#cb29-117" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
-<span id="cb29-118"><a href="#cb29-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-119"><a href="#cb29-119" aria-hidden="true" tabindex="-1"></a>simulate_some_birds <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb29-120"><a href="#cb29-120" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">60</span>)</span>
-<span id="cb29-121"><a href="#cb29-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">obs =</span> <span class="fu">rpois</span>(<span class="dv">23</span>, <span class="at">lambda =</span> lambda))</span>
-<span id="cb29-122"><a href="#cb29-122" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb29-123"><a href="#cb29-123" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb29-124"><a href="#cb29-124" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">rerun</span>(<span class="at">.n =</span> <span class="dv">12</span>, <span class="fu">simulate_some_birds</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb29-125"><a href="#cb29-125" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"sample"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb29-126"><a href="#cb29-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> obs)) <span class="sc">+</span> </span>
-<span id="cb29-127"><a href="#cb29-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
-<span id="cb29-128"><a href="#cb29-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sample) <span class="sc">+</span> </span>
-<span id="cb29-129"><a href="#cb29-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb29-130"><a href="#cb29-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of birds observed per person"</span>)</span>
-<span id="cb29-131"><a href="#cb29-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-132"><a href="#cb29-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-133"><a href="#cb29-133" aria-hidden="true" tabindex="-1"></a>This figure shows different simulations of what, according to our prior, might be reasonable datasets for us to study. Do any of them seem implausible to you? If so, try changing the prior. The goal is to make fake datasets that _seem_ plausible, but which still include the possibility of some surprising observations. </span>
-<span id="cb29-134"><a href="#cb29-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-135"><a href="#cb29-135" aria-hidden="true" tabindex="-1"></a>When you have a prior that generates observations that cover a range of scientifically reasonable values, then you are ready to move on to fitting real data.</span>
-<span id="cb29-136"><a href="#cb29-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-137"><a href="#cb29-137" aria-hidden="true" tabindex="-1"></a>However before we actually do that, let's do the whole thing again: this time in Stan.</span>
-<span id="cb29-138"><a href="#cb29-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-139"><a href="#cb29-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simulating data in Stan</span></span>
-<span id="cb29-140"><a href="#cb29-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-141"><a href="#cb29-141" aria-hidden="true" tabindex="-1"></a>Let's look back at the equation:</span>
-<span id="cb29-142"><a href="#cb29-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-143"><a href="#cb29-143" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb29-144"><a href="#cb29-144" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb29-145"><a href="#cb29-145" aria-hidden="true" tabindex="-1"></a>\text{Number of Birds}_{\text{seen by person i}} &amp;\sim \text{Poisson}(\lambda) <span class="sc">\\</span></span>
-<span id="cb29-146"><a href="#cb29-146" aria-hidden="true" tabindex="-1"></a>\lambda &amp;\sim \text{Uniform}(0, 60)</span>
-<span id="cb29-147"><a href="#cb29-147" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb29-148"><a href="#cb29-148" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb29-149"><a href="#cb29-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-150"><a href="#cb29-150" aria-hidden="true" tabindex="-1"></a>And then translate it into Stan:</span>
-<span id="cb29-151"><a href="#cb29-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-154"><a href="#cb29-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-155"><a href="#cb29-155" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb29-156"><a href="#cb29-156" aria-hidden="true" tabindex="-1"></a>poisson_simulation <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb29-157"><a href="#cb29-157" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/01_simulation/poisson_simulation.stan"</span>)</span>
-<span id="cb29-158"><a href="#cb29-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-159"><a href="#cb29-159" aria-hidden="true" tabindex="-1"></a>poisson_simulation</span>
-<span id="cb29-160"><a href="#cb29-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-161"><a href="#cb29-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-162"><a href="#cb29-162" aria-hidden="true" tabindex="-1"></a>What you see just above is not R, but is the first Stan program we will see in this course. </span>
-<span id="cb29-163"><a href="#cb29-163" aria-hidden="true" tabindex="-1"></a>Stan code is written in a text file, which you then bring into R with the function <span class="in">`cmdstan_model`</span> as shown above. </span>
-<span id="cb29-164"><a href="#cb29-164" aria-hidden="true" tabindex="-1"></a>This does more than read the program, it compiles the code into a computer program. </span>
-<span id="cb29-165"><a href="#cb29-165" aria-hidden="true" tabindex="-1"></a>When you sample the model, as we'll do later, Stan samples the posterior distribution using Hamiltonian Monte Carlo.</span>
-<span id="cb29-166"><a href="#cb29-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-167"><a href="#cb29-167" aria-hidden="true" tabindex="-1"></a>This Stan program has two parts. Each part is separated with curly braces <span class="in">`{}`</span>. The are they <span class="in">`data`</span> block and the <span class="in">`generated quantities`</span> block:</span>
-<span id="cb29-168"><a href="#cb29-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-169"><a href="#cb29-169" aria-hidden="true" tabindex="-1"></a><span class="in">```stan</span></span>
-<span id="cb29-170"><a href="#cb29-170" aria-hidden="true" tabindex="-1"></a><span class="in">data {</span></span>
-<span id="cb29-171"><a href="#cb29-171" aria-hidden="true" tabindex="-1"></a><span class="in">  int&lt;lower=0&gt; n_people;</span></span>
-<span id="cb29-172"><a href="#cb29-172" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb29-173"><a href="#cb29-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-174"><a href="#cb29-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-175"><a href="#cb29-175" aria-hidden="true" tabindex="-1"></a>And the generated quantites block.</span>
-<span id="cb29-176"><a href="#cb29-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-177"><a href="#cb29-177" aria-hidden="true" tabindex="-1"></a><span class="in">```stan</span></span>
-<span id="cb29-178"><a href="#cb29-178" aria-hidden="true" tabindex="-1"></a><span class="in">generated quantities {</span></span>
-<span id="cb29-179"><a href="#cb29-179" aria-hidden="true" tabindex="-1"></a><span class="in">  real&lt;lower=0&gt; avg_observed;</span></span>
-<span id="cb29-180"><a href="#cb29-180" aria-hidden="true" tabindex="-1"></a><span class="in">  // an array -- like a list in R</span></span>
-<span id="cb29-181"><a href="#cb29-181" aria-hidden="true" tabindex="-1"></a><span class="in">  array[n_people] int&lt;lower=0&gt; bird_count;</span></span>
-<span id="cb29-182"><a href="#cb29-182" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
-<span id="cb29-183"><a href="#cb29-183" aria-hidden="true" tabindex="-1"></a><span class="in">  // simulate averages</span></span>
-<span id="cb29-184"><a href="#cb29-184" aria-hidden="true" tabindex="-1"></a><span class="in">  avg_birds_per_person = uniform_rng(0, 60);</span></span>
-<span id="cb29-185"><a href="#cb29-185" aria-hidden="true" tabindex="-1"></a><span class="in">  // simulate observations with that average</span></span>
-<span id="cb29-186"><a href="#cb29-186" aria-hidden="true" tabindex="-1"></a><span class="in">  for (i in 1:n_people){</span></span>
-<span id="cb29-187"><a href="#cb29-187" aria-hidden="true" tabindex="-1"></a><span class="in">    bird_count[i] = poisson_rng(avg_birds_per_person);</span></span>
-<span id="cb29-188"><a href="#cb29-188" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
-<span id="cb29-189"><a href="#cb29-189" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb29-190"><a href="#cb29-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-191"><a href="#cb29-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-192"><a href="#cb29-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-193"><a href="#cb29-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-194"><a href="#cb29-194" aria-hidden="true" tabindex="-1"></a><span class="in">Let's look at similarities and differences to the procedure in R:</span></span>
-<span id="cb29-195"><a href="#cb29-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-196"><a href="#cb29-196" aria-hidden="true" tabindex="-1"></a><span class="in">similarities: </span></span>
-<span id="cb29-197"><a href="#cb29-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-198"><a href="#cb29-198" aria-hidden="true" tabindex="-1"></a><span class="in">* We have a random number generating function for each of our distributions. </span></span>
-<span id="cb29-199"><a href="#cb29-199" aria-hidden="true" tabindex="-1"></a><span class="in">In R, these were called `runif` and `rpois`, here they are `uniform_rng` and `poisson_rng`.</span></span>
-<span id="cb29-200"><a href="#cb29-200" aria-hidden="true" tabindex="-1"></a><span class="in">* Once again, the only thing we need to provide is `n_people`, the number of observers we have</span></span>
-<span id="cb29-201"><a href="#cb29-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-202"><a href="#cb29-202" aria-hidden="true" tabindex="-1"></a><span class="in">differences:</span></span>
-<span id="cb29-203"><a href="#cb29-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-204"><a href="#cb29-204" aria-hidden="true" tabindex="-1"></a><span class="in">* every line ends with a semicolon `;`</span></span>
-<span id="cb29-205"><a href="#cb29-205" aria-hidden="true" tabindex="-1"></a><span class="in">* in Stan, the name of a variable is on the RIGHT of a line, while in R it's on the left.</span></span>
-<span id="cb29-206"><a href="#cb29-206" aria-hidden="true" tabindex="-1"></a><span class="in">* we need to use a for-loop to generate random variables.</span></span>
-<span id="cb29-207"><a href="#cb29-207" aria-hidden="true" tabindex="-1"></a><span class="in">* note the syntax for creating an `array` of integers. Arrays in Stan are a little like lists in R: they can hold any other kind of object, and are of a certain length. </span></span>
-<span id="cb29-208"><a href="#cb29-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-211"><a href="#cb29-211" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-212"><a href="#cb29-212" aria-hidden="true" tabindex="-1"></a><span class="in"># We connect the data in R to the model in Stan using a </span></span>
-<span id="cb29-213"><a href="#cb29-213" aria-hidden="true" tabindex="-1"></a><span class="in"># named list!</span></span>
-<span id="cb29-214"><a href="#cb29-214" aria-hidden="true" tabindex="-1"></a><span class="in">poisson_simulation_datalist &lt;- list(</span></span>
-<span id="cb29-215"><a href="#cb29-215" aria-hidden="true" tabindex="-1"></a><span class="in">  n_people = 21</span></span>
-<span id="cb29-216"><a href="#cb29-216" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb29-217"><a href="#cb29-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-218"><a href="#cb29-218" aria-hidden="true" tabindex="-1"></a><span class="in">poisson_sim_stan &lt;- poisson_simulation$sample(</span></span>
-<span id="cb29-219"><a href="#cb29-219" aria-hidden="true" tabindex="-1"></a><span class="in">  data = poisson_simulation_datalist, </span></span>
-<span id="cb29-220"><a href="#cb29-220" aria-hidden="true" tabindex="-1"></a><span class="in">  refresh = 0,</span></span>
-<span id="cb29-221"><a href="#cb29-221" aria-hidden="true" tabindex="-1"></a><span class="in">  # usually not necessary -- this model has no parameters </span></span>
-<span id="cb29-222"><a href="#cb29-222" aria-hidden="true" tabindex="-1"></a><span class="in">  fixed_param = TRUE)</span></span>
-<span id="cb29-223"><a href="#cb29-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-224"><a href="#cb29-224" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-225"><a href="#cb29-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-226"><a href="#cb29-226" aria-hidden="true" tabindex="-1"></a>This generates a large number of simulated datasets -- the default is 4000 datasets! </span>
-<span id="cb29-227"><a href="#cb29-227" aria-hidden="true" tabindex="-1"></a>Each time the model samples, it draws a new value for the unobserved average (<span class="in">`avg_birds_per_person`</span>) and for the number of birds seen by each person. </span>
-<span id="cb29-228"><a href="#cb29-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-229"><a href="#cb29-229" aria-hidden="true" tabindex="-1"></a>Let's pull out just a few of these datasets and visualize them.</span>
-<span id="cb29-230"><a href="#cb29-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-231"><a href="#cb29-231" aria-hidden="true" tabindex="-1"></a>We'll use a wonderful package called <span class="co">[</span><span class="ot">`tidybayes`</span><span class="co">]()</span> to easily extract posterior draws from <span class="in">`cmdstan`</span> objects. </span>
-<span id="cb29-232"><a href="#cb29-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-235"><a href="#cb29-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-236"><a href="#cb29-236" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb29-237"><a href="#cb29-237" aria-hidden="true" tabindex="-1"></a>pois_sim <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(poisson_sim_stan, </span>
-<span id="cb29-238"><a href="#cb29-238" aria-hidden="true" tabindex="-1"></a>                                    avg_birds_per_person,</span>
-<span id="cb29-239"><a href="#cb29-239" aria-hidden="true" tabindex="-1"></a>                                    bird_count[],</span>
-<span id="cb29-240"><a href="#cb29-240" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">ndraws =</span> <span class="dv">20</span>,</span>
-<span id="cb29-241"><a href="#cb29-241" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">seed =</span> <span class="dv">525600</span>)</span>
-<span id="cb29-242"><a href="#cb29-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-243"><a href="#cb29-243" aria-hidden="true" tabindex="-1"></a>pois_sim <span class="sc">|&gt;</span> </span>
-<span id="cb29-244"><a href="#cb29-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bird_count)) <span class="sc">+</span> </span>
-<span id="cb29-245"><a href="#cb29-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
-<span id="cb29-246"><a href="#cb29-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> avg_birds_per_person), <span class="at">col =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span> </span>
-<span id="cb29-247"><a href="#cb29-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>.draw)</span>
-<span id="cb29-248"><a href="#cb29-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-249"><a href="#cb29-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-250"><a href="#cb29-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parameter recovery</span></span>
-<span id="cb29-251"><a href="#cb29-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-252"><a href="#cb29-252" aria-hidden="true" tabindex="-1"></a>Let's go back and look at the fake datasets we created in R </span>
-<span id="cb29-253"><a href="#cb29-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-256"><a href="#cb29-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-257"><a href="#cb29-257" aria-hidden="true" tabindex="-1"></a>avg_birds_per_person</span>
-<span id="cb29-258"><a href="#cb29-258" aria-hidden="true" tabindex="-1"></a>bird_count</span>
-<span id="cb29-259"><a href="#cb29-259" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-260"><a href="#cb29-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-261"><a href="#cb29-261" aria-hidden="true" tabindex="-1"></a>and let's see if we can recapture the only known parameter, <span class="in">`avg_birds_per_person`</span>, which is equal to <span class="in">`r avg_birds_per_person`</span>.</span>
-<span id="cb29-262"><a href="#cb29-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-263"><a href="#cb29-263" aria-hidden="true" tabindex="-1"></a>We'll do it first in R, using the function <span class="in">`fitdistr`</span> from the <span class="in">`MASS`</span> package:</span>
-<span id="cb29-264"><a href="#cb29-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-267"><a href="#cb29-267" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-268"><a href="#cb29-268" aria-hidden="true" tabindex="-1"></a>MASS<span class="sc">::</span><span class="fu">fitdistr</span>(bird_count, dpois, <span class="at">start =</span> <span class="fu">list</span>(<span class="at">lambda=</span><span class="dv">10</span>))</span>
-<span id="cb29-269"><a href="#cb29-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-270"><a href="#cb29-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-271"><a href="#cb29-271" aria-hidden="true" tabindex="-1"></a>This could also be done with <span class="in">`glm`</span></span>
-<span id="cb29-272"><a href="#cb29-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-275"><a href="#cb29-275" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-276"><a href="#cb29-276" aria-hidden="true" tabindex="-1"></a>bird_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(bird_count <span class="sc">~</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
-<span id="cb29-277"><a href="#cb29-277" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(bird_glm))</span>
-<span id="cb29-278"><a href="#cb29-278" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-279"><a href="#cb29-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-280"><a href="#cb29-280" aria-hidden="true" tabindex="-1"></a>You can see that in all cases we are getting close to the value of <span class="in">`avg_birds_per_person`</span>, which in these simulations is the true value.</span>
-<span id="cb29-281"><a href="#cb29-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-282"><a href="#cb29-282" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling the posterior distribution in Stan</span></span>
-<span id="cb29-283"><a href="#cb29-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-284"><a href="#cb29-284" aria-hidden="true" tabindex="-1"></a>We will be doing a lot of Stan models this week, and we will begin by replicating the above GLM in Stan.</span>
-<span id="cb29-285"><a href="#cb29-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-288"><a href="#cb29-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-289"><a href="#cb29-289" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb29-290"><a href="#cb29-290" aria-hidden="true" tabindex="-1"></a>poisson_model <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb29-291"><a href="#cb29-291" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/01_simulation/poisson_model.stan"</span>)</span>
-<span id="cb29-292"><a href="#cb29-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-293"><a href="#cb29-293" aria-hidden="true" tabindex="-1"></a>poisson_model</span>
-<span id="cb29-294"><a href="#cb29-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-295"><a href="#cb29-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-296"><a href="#cb29-296" aria-hidden="true" tabindex="-1"></a>This model has all the same code as the previous one, but has two additional parts. </span>
-<span id="cb29-297"><a href="#cb29-297" aria-hidden="true" tabindex="-1"></a>Let's compare them</span>
-<span id="cb29-298"><a href="#cb29-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-299"><a href="#cb29-299" aria-hidden="true" tabindex="-1"></a>:::{.column-screen}</span>
-<span id="cb29-300"><a href="#cb29-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-301"><a href="#cb29-301" aria-hidden="true" tabindex="-1"></a>::::{.columns}</span>
-<span id="cb29-302"><a href="#cb29-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-303"><a href="#cb29-303" aria-hidden="true" tabindex="-1"></a>::: {.column width="50%"}</span>
-<span id="cb29-306"><a href="#cb29-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-307"><a href="#cb29-307" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb29-308"><a href="#cb29-308" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
-<span id="cb29-309"><a href="#cb29-309" aria-hidden="true" tabindex="-1"></a>poisson_simulation</span>
-<span id="cb29-310"><a href="#cb29-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-311"><a href="#cb29-311" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb29-312"><a href="#cb29-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-313"><a href="#cb29-313" aria-hidden="true" tabindex="-1"></a>::: {.column width="50%"}</span>
-<span id="cb29-316"><a href="#cb29-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-317"><a href="#cb29-317" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb29-318"><a href="#cb29-318" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
-<span id="cb29-319"><a href="#cb29-319" aria-hidden="true" tabindex="-1"></a>poisson_model</span>
-<span id="cb29-320"><a href="#cb29-320" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-321"><a href="#cb29-321" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb29-322"><a href="#cb29-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-323"><a href="#cb29-323" aria-hidden="true" tabindex="-1"></a>::::</span>
-<span id="cb29-324"><a href="#cb29-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-325"><a href="#cb29-325" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb29-326"><a href="#cb29-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-327"><a href="#cb29-327" aria-hidden="true" tabindex="-1"></a>What's different in this second Stan program? There are two new sections:</span>
-<span id="cb29-328"><a href="#cb29-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-329"><a href="#cb29-329" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>*parameters block*  : Indicated by <span class="in">`parameters {}`</span>, this block includes all the unobserved quantities. In this case there is only one: <span class="in">`avg_birds_per_person`</span>. We have to give this value a name and say what kind of number it is. Here is also the place to declare any constraints. In our example, we state that the parameter is always positive (because it is an average of counts).</span>
-<span id="cb29-330"><a href="#cb29-330" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>*model block*  indicated by <span class="in">`model {}`</span>, this block contains the model. What this means in a Bayesian model is that it lists the probability distribution for all the observations, and for all the unobserved parameters. In other words, it looks just like our mathematical expressions above. The model block can also contain intermediate calculations, for example combining data and parameters with an equation. We'll see examples later. </span>
-<span id="cb29-331"><a href="#cb29-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-332"><a href="#cb29-332" aria-hidden="true" tabindex="-1"></a>This Stan program also contains one line that's been moved. </span>
-<span id="cb29-333"><a href="#cb29-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-334"><a href="#cb29-334" aria-hidden="true" tabindex="-1"></a><span class="in">```Stan</span></span>
-<span id="cb29-335"><a href="#cb29-335" aria-hidden="true" tabindex="-1"></a><span class="in">  avg_birds_per_person ~ uniform(0, 60);</span></span>
-<span id="cb29-336"><a href="#cb29-336" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-337"><a href="#cb29-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-338"><a href="#cb29-338" aria-hidden="true" tabindex="-1"></a>has been moved to the <span class="in">`model`</span> block. This has two consequences. </span>
-<span id="cb29-339"><a href="#cb29-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-340"><a href="#cb29-340" aria-hidden="true" tabindex="-1"></a>First, when the model sees our data, it's going to try to find values of <span class="in">`avg_birds_per_person`</span> which make those data probable -- in other words, it is going to find the posterior distribution of possible values of the average. Together, the prior and the data constrain what those values can be.</span>
-<span id="cb29-341"><a href="#cb29-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-342"><a href="#cb29-342" aria-hidden="true" tabindex="-1"></a>Second, the <span class="in">`generated quantities`</span> block means something different now. Previously, we had no idea what <span class="in">`avg_birds_per_person`</span> should be, so we had the computer choose a random number from a wide range. We called this "the prior" Now, when the computer draws new values of <span class="in">`bird_count`</span>, it is going to use the values from the posterior that it is finding in the <span class="in">`model {}`</span> block . This means that the simulations, rather than being *prior* predictive checks, are now *posterior* predictive checks.</span>
-<span id="cb29-343"><a href="#cb29-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-344"><a href="#cb29-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-345"><a href="#cb29-345" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parameter recovery</span></span>
-<span id="cb29-346"><a href="#cb29-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-347"><a href="#cb29-347" aria-hidden="true" tabindex="-1"></a>Let us see if the model recovers our parameters. Once again, we connect a dataset to our model with a list:</span>
-<span id="cb29-348"><a href="#cb29-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-351"><a href="#cb29-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-352"><a href="#cb29-352" aria-hidden="true" tabindex="-1"></a>poisson_model_samp <span class="ot">&lt;-</span> poisson_model<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data  =</span> <span class="fu">list</span>(<span class="at">bird_count_observed =</span> bird_count,</span>
-<span id="cb29-353"><a href="#cb29-353" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">n_people =</span> <span class="fu">length</span>(bird_count)), <span class="at">refresh =</span> <span class="dv">0</span>)</span>
-<span id="cb29-354"><a href="#cb29-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-355"><a href="#cb29-355" aria-hidden="true" tabindex="-1"></a>poisson_model_samp<span class="sc">$</span><span class="fu">summary</span>()</span>
-<span id="cb29-356"><a href="#cb29-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-357"><a href="#cb29-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-358"><a href="#cb29-358" aria-hidden="true" tabindex="-1"></a>The distribution of the parameter here covers the real value of <span class="in">`r avg_birds_per_person`</span> pretty well! </span>
-<span id="cb29-359"><a href="#cb29-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-360"><a href="#cb29-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-361"><a href="#cb29-361" aria-hidden="true" tabindex="-1"></a>TK Conclusion paragraph??</span>
-<span id="cb29-362"><a href="#cb29-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-363"><a href="#cb29-363" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
-<span id="cb29-364"><a href="#cb29-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-365"><a href="#cb29-365" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
-<span id="cb29-366"><a href="#cb29-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-367"><a href="#cb29-367" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?</span>
-<span id="cb29-368"><a href="#cb29-368" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>take a closer look at <span class="in">`poisson_model_samp$summary()`</span> all the values of <span class="in">`bird_count`</span> are the same. That's correct, but why?</span>
-<span id="cb29-369"><a href="#cb29-369" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>what would you do next to add complexity this model?</span>
-<span id="cb29-370"><a href="#cb29-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-371"><a href="#cb29-371" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
-<span id="cb29-372"><a href="#cb29-372" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? how to these compare to the real data?</span>
-<span id="cb29-373"><a href="#cb29-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-374"><a href="#cb29-374" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
+<div class="sourceCode" id="cb34" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Data simulation"</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">  Expressing yourself through made-up numbers.</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: true</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="an">comments:</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co">  hypothesis: true</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE}</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>Before starting work on real data, we are going to begin by learning how to make up some of our own.</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>There are at least three reasons why this is a good idea:</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? or should the standard deviation be bigger? smaller? As we'll see, simulation will demystify the process. </span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Validate your model.** Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Test your understanding.** Perhaps most importantly, simulation helps you to test your own intuition.  If you can simulate data from your model, then you really understand it!</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>If you can't, then you don't know quite how it works yet. It's rare^<span class="co">[</span><span class="ot">in Andrew's experience anyway</span><span class="co">]</span> that a biologist will fail to learn something by simulating a dataset.</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simple exercise in simulation</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds each of us is going to see on our hike?</span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a><span class="fu">### Some questions to ask about simulated data</span></span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>What kind of observations are you going to make? Do they have a minimum or maximum value?</span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a>Are they integers, or are they decimal numbers, or something else?</span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Where do the numbers come from? This could be anything, from simple linear approximations (ie the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. </span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>How many observations will we be making?</span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### The process</span></span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>let's try to answer these questions for the bird walk we are about to take.</span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>We're going to count birds, so we'll have count data: a number that is either 0 or some positive, round number</span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>We'll make a simplifying assumption: everybody has the same chance of seeing a bird (i.e. no differences in skill or equipment), and everyone in the class is an independent observer (i.e. nobody is working in pairs, etc) </span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Everyone in the class makes only one count, so we have 23 (?) numbers.</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>We're bayesians, so we need to write a probability distribution for all the possible values</span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>\text{Number of Birds}_{\text{seen by person i}} &amp;\sim \text{Poisson}(\lambda) <span class="sc">\\</span></span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a>\lambda &amp;\sim \text{Uniform}(0, 60)</span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a>A quick note about notation for models like these:</span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We use a subscript $i$ to indicate the "label" for each observation in our dataset. You can think of this as the row number of the data spreadsheet, and imagine sliding your finger down the column of measurements, modelling each value in turn.</span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Usually we'll use more general language, such as $y_i$. But for this simple example I wanted to make things as explicit as possible. </span>
+<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Notice the symbol $\sim$. This is read as "distributed as", and indicates the probability distribution from which the values might come.  When the values we're talking about are data that we can observe (in this case, counts of birds), we call the distribution the likelihood. When the value is something we can't observe (in this case, the average count $\lambda$) we call the distribution the prior.</span>
+<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>We'll be talking about better ways to model count data in a later exercise! For now, I'm using the Uniform distribution for simplicity. It's not usually a very good choice! </span>
+<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulation in R</span></span>
+<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a>One of the most useful traits of bayesian models is that they are _generative_: they can be used to make a simulated dataset. </span>
+<span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a>We'll do that now for our bird example.</span>
+<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a>let's simulate from a poisson distribution:</span>
+<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
+<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a>n_people <span class="ot">&lt;-</span> <span class="dv">21</span></span>
+<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a>avg_birds_per_person <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">30</span>)</span>
+<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a>bird_count <span class="ot">&lt;-</span> <span class="fu">rpois</span>(n_people, <span class="at">lambda =</span> avg_birds_per_person)</span>
+<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-82"><a href="#cb34-82" aria-hidden="true" tabindex="-1"></a>Some things to note in the code above: </span>
+<span id="cb34-83"><a href="#cb34-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-84"><a href="#cb34-84" aria-hidden="true" tabindex="-1"></a>Every statistical distribution that is in R (which is a lot! almost all! ) has four different functions. </span>
+<span id="cb34-85"><a href="#cb34-85" aria-hidden="true" tabindex="-1"></a>If the distribution is called <span class="in">`dist`</span>, then they are:</span>
+<span id="cb34-86"><a href="#cb34-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-87"><a href="#cb34-87" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`rdist`</span> = the distribution functions </span>
+<span id="cb34-88"><a href="#cb34-88" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`qdist`</span> = the quantile functions </span>
+<span id="cb34-89"><a href="#cb34-89" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`pdist`</span> = the probability density function </span>
+<span id="cb34-90"><a href="#cb34-90" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`ddist`</span> the density function</span>
+<span id="cb34-91"><a href="#cb34-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-92"><a href="#cb34-92" aria-hidden="true" tabindex="-1"></a>The other thing to note is that there are TWO simulation steps here: first, simulating a value of the average ($\lambda$) and second, simulating observations. </span>
+<span id="cb34-93"><a href="#cb34-93" aria-hidden="true" tabindex="-1"></a>In our model, the Uniform distribution was referred to as the _prior_, and the Poisson distribution was referred to as a _likelihood_, but here you can see that they are very nearly the same thing: just statements about what distribution of values might be most consistent with the data.</span>
+<span id="cb34-94"><a href="#cb34-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-95"><a href="#cb34-95" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Plotting the result</span></span>
+<span id="cb34-96"><a href="#cb34-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-97"><a href="#cb34-97" aria-hidden="true" tabindex="-1"></a>Let's take a look at our simulated values:</span>
+<span id="cb34-98"><a href="#cb34-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-101"><a href="#cb34-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-102"><a href="#cb34-102" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Histogram of simulated counts of birds</span></span>
+<span id="cb34-103"><a href="#cb34-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-104"><a href="#cb34-104" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(bird_count, <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span>
+<span id="cb34-105"><a href="#cb34-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-106"><a href="#cb34-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-107"><a href="#cb34-107" aria-hidden="true" tabindex="-1"></a>This is pretty great, and represents one possible realization of sampling. </span>
+<span id="cb34-108"><a href="#cb34-108" aria-hidden="true" tabindex="-1"></a>However, one sample isn't enough to tell us about what our $\text{Uniform}(0, 60)$ prior really means. Let's do a few different simulations:</span>
+<span id="cb34-109"><a href="#cb34-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-112"><a href="#cb34-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-113"><a href="#cb34-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Twelve different simulations of a possible bird dataset. Do all of these seem plausible? </span></span>
+<span id="cb34-114"><a href="#cb34-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-115"><a href="#cb34-115" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb34-116"><a href="#cb34-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-117"><a href="#cb34-117" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
+<span id="cb34-118"><a href="#cb34-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-119"><a href="#cb34-119" aria-hidden="true" tabindex="-1"></a>simulate_some_birds <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb34-120"><a href="#cb34-120" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">60</span>)</span>
+<span id="cb34-121"><a href="#cb34-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">obs =</span> <span class="fu">rpois</span>(<span class="dv">23</span>, <span class="at">lambda =</span> lambda))</span>
+<span id="cb34-122"><a href="#cb34-122" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-123"><a href="#cb34-123" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-124"><a href="#cb34-124" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">rerun</span>(<span class="at">.n =</span> <span class="dv">12</span>, <span class="fu">simulate_some_birds</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb34-125"><a href="#cb34-125" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"sample"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-126"><a href="#cb34-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> obs)) <span class="sc">+</span> </span>
+<span id="cb34-127"><a href="#cb34-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
+<span id="cb34-128"><a href="#cb34-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sample) <span class="sc">+</span> </span>
+<span id="cb34-129"><a href="#cb34-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb34-130"><a href="#cb34-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of birds observed per person"</span>)</span>
+<span id="cb34-131"><a href="#cb34-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-132"><a href="#cb34-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-133"><a href="#cb34-133" aria-hidden="true" tabindex="-1"></a>This figure shows different simulations of what, according to our prior, might be reasonable datasets for us to study. Do any of them seem implausible to you? If so, try changing the prior. The goal is to make fake datasets that _seem_ plausible, but which still include the possibility of some surprising observations. </span>
+<span id="cb34-134"><a href="#cb34-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-135"><a href="#cb34-135" aria-hidden="true" tabindex="-1"></a>When you have a prior that generates observations that cover a range of scientifically reasonable values, then you are ready to move on to fitting real data.</span>
+<span id="cb34-136"><a href="#cb34-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-137"><a href="#cb34-137" aria-hidden="true" tabindex="-1"></a>However before we actually do that, let's do the whole thing again: this time in Stan.</span>
+<span id="cb34-138"><a href="#cb34-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-139"><a href="#cb34-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simulating data in Stan</span></span>
+<span id="cb34-140"><a href="#cb34-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-141"><a href="#cb34-141" aria-hidden="true" tabindex="-1"></a>Let's look back at the equation:</span>
+<span id="cb34-142"><a href="#cb34-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-143"><a href="#cb34-143" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-144"><a href="#cb34-144" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb34-145"><a href="#cb34-145" aria-hidden="true" tabindex="-1"></a>\text{Number of Birds}_{\text{seen by person i}} &amp;\sim \text{Poisson}(\lambda) <span class="sc">\\</span></span>
+<span id="cb34-146"><a href="#cb34-146" aria-hidden="true" tabindex="-1"></a>\lambda &amp;\sim \text{Uniform}(0, 60)</span>
+<span id="cb34-147"><a href="#cb34-147" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb34-148"><a href="#cb34-148" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-149"><a href="#cb34-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-150"><a href="#cb34-150" aria-hidden="true" tabindex="-1"></a>And then translate it into Stan:</span>
+<span id="cb34-151"><a href="#cb34-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-154"><a href="#cb34-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-155"><a href="#cb34-155" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-156"><a href="#cb34-156" aria-hidden="true" tabindex="-1"></a>poisson_simulation <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb34-157"><a href="#cb34-157" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/01_simulation/poisson_simulation.stan"</span>)</span>
+<span id="cb34-158"><a href="#cb34-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-159"><a href="#cb34-159" aria-hidden="true" tabindex="-1"></a>poisson_simulation</span>
+<span id="cb34-160"><a href="#cb34-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-161"><a href="#cb34-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-162"><a href="#cb34-162" aria-hidden="true" tabindex="-1"></a>What you see just above is not R, but is the first Stan program we will see in this course. </span>
+<span id="cb34-163"><a href="#cb34-163" aria-hidden="true" tabindex="-1"></a>Stan code is written in a text file, which you then bring into R with the function <span class="in">`cmdstan_model`</span> as shown above. </span>
+<span id="cb34-164"><a href="#cb34-164" aria-hidden="true" tabindex="-1"></a>This does more than read the program, it compiles the code into a computer program. </span>
+<span id="cb34-165"><a href="#cb34-165" aria-hidden="true" tabindex="-1"></a>When you sample the model, as we'll do later, Stan samples the posterior distribution using Hamiltonian Monte Carlo.</span>
+<span id="cb34-166"><a href="#cb34-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-167"><a href="#cb34-167" aria-hidden="true" tabindex="-1"></a>This Stan program has two parts. Each part is separated with curly braces <span class="in">`{}`</span>. The are they <span class="in">`data`</span> block and the <span class="in">`generated quantities`</span> block:</span>
+<span id="cb34-168"><a href="#cb34-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-169"><a href="#cb34-169" aria-hidden="true" tabindex="-1"></a><span class="in">```stan</span></span>
+<span id="cb34-170"><a href="#cb34-170" aria-hidden="true" tabindex="-1"></a><span class="in">data {</span></span>
+<span id="cb34-171"><a href="#cb34-171" aria-hidden="true" tabindex="-1"></a><span class="in">  int&lt;lower=0&gt; n_people;</span></span>
+<span id="cb34-172"><a href="#cb34-172" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb34-173"><a href="#cb34-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-174"><a href="#cb34-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-175"><a href="#cb34-175" aria-hidden="true" tabindex="-1"></a>And the generated quantites block.</span>
+<span id="cb34-176"><a href="#cb34-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-177"><a href="#cb34-177" aria-hidden="true" tabindex="-1"></a><span class="in">```stan</span></span>
+<span id="cb34-178"><a href="#cb34-178" aria-hidden="true" tabindex="-1"></a><span class="in">generated quantities {</span></span>
+<span id="cb34-179"><a href="#cb34-179" aria-hidden="true" tabindex="-1"></a><span class="in">  real&lt;lower=0&gt; avg_observed;</span></span>
+<span id="cb34-180"><a href="#cb34-180" aria-hidden="true" tabindex="-1"></a><span class="in">  // an array -- like a list in R</span></span>
+<span id="cb34-181"><a href="#cb34-181" aria-hidden="true" tabindex="-1"></a><span class="in">  array[n_people] int&lt;lower=0&gt; bird_count;</span></span>
+<span id="cb34-182"><a href="#cb34-182" aria-hidden="true" tabindex="-1"></a><span class="in">  </span></span>
+<span id="cb34-183"><a href="#cb34-183" aria-hidden="true" tabindex="-1"></a><span class="in">  // simulate averages</span></span>
+<span id="cb34-184"><a href="#cb34-184" aria-hidden="true" tabindex="-1"></a><span class="in">  avg_birds_per_person = uniform_rng(0, 60);</span></span>
+<span id="cb34-185"><a href="#cb34-185" aria-hidden="true" tabindex="-1"></a><span class="in">  // simulate observations with that average</span></span>
+<span id="cb34-186"><a href="#cb34-186" aria-hidden="true" tabindex="-1"></a><span class="in">  for (i in 1:n_people){</span></span>
+<span id="cb34-187"><a href="#cb34-187" aria-hidden="true" tabindex="-1"></a><span class="in">    bird_count[i] = poisson_rng(avg_birds_per_person);</span></span>
+<span id="cb34-188"><a href="#cb34-188" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
+<span id="cb34-189"><a href="#cb34-189" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb34-190"><a href="#cb34-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-191"><a href="#cb34-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-192"><a href="#cb34-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-193"><a href="#cb34-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-194"><a href="#cb34-194" aria-hidden="true" tabindex="-1"></a><span class="in">Let's look at similarities and differences to the procedure in R:</span></span>
+<span id="cb34-195"><a href="#cb34-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-196"><a href="#cb34-196" aria-hidden="true" tabindex="-1"></a><span class="in">similarities: </span></span>
+<span id="cb34-197"><a href="#cb34-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-198"><a href="#cb34-198" aria-hidden="true" tabindex="-1"></a><span class="in">* We have a random number generating function for each of our distributions. </span></span>
+<span id="cb34-199"><a href="#cb34-199" aria-hidden="true" tabindex="-1"></a><span class="in">In R, these were called `runif` and `rpois`, here they are `uniform_rng` and `poisson_rng`.</span></span>
+<span id="cb34-200"><a href="#cb34-200" aria-hidden="true" tabindex="-1"></a><span class="in">* Once again, the only thing we need to provide is `n_people`, the number of observers we have</span></span>
+<span id="cb34-201"><a href="#cb34-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-202"><a href="#cb34-202" aria-hidden="true" tabindex="-1"></a><span class="in">differences:</span></span>
+<span id="cb34-203"><a href="#cb34-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-204"><a href="#cb34-204" aria-hidden="true" tabindex="-1"></a><span class="in">* every line ends with a semicolon `;`</span></span>
+<span id="cb34-205"><a href="#cb34-205" aria-hidden="true" tabindex="-1"></a><span class="in">* in Stan, the name of a variable is on the RIGHT of a line, while in R it's on the left.</span></span>
+<span id="cb34-206"><a href="#cb34-206" aria-hidden="true" tabindex="-1"></a><span class="in">* we need to use a for-loop to generate random variables.</span></span>
+<span id="cb34-207"><a href="#cb34-207" aria-hidden="true" tabindex="-1"></a><span class="in">* note the syntax for creating an `array` of integers. Arrays in Stan are a little like lists in R: they can hold any other kind of object, and are of a certain length. </span></span>
+<span id="cb34-208"><a href="#cb34-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-211"><a href="#cb34-211" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-212"><a href="#cb34-212" aria-hidden="true" tabindex="-1"></a><span class="in"># We connect the data in R to the model in Stan using a </span></span>
+<span id="cb34-213"><a href="#cb34-213" aria-hidden="true" tabindex="-1"></a><span class="in"># named list!</span></span>
+<span id="cb34-214"><a href="#cb34-214" aria-hidden="true" tabindex="-1"></a><span class="in">poisson_simulation_datalist &lt;- list(</span></span>
+<span id="cb34-215"><a href="#cb34-215" aria-hidden="true" tabindex="-1"></a><span class="in">  n_people = 21</span></span>
+<span id="cb34-216"><a href="#cb34-216" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb34-217"><a href="#cb34-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-218"><a href="#cb34-218" aria-hidden="true" tabindex="-1"></a><span class="in">poisson_sim_stan &lt;- poisson_simulation$sample(</span></span>
+<span id="cb34-219"><a href="#cb34-219" aria-hidden="true" tabindex="-1"></a><span class="in">  data = poisson_simulation_datalist, </span></span>
+<span id="cb34-220"><a href="#cb34-220" aria-hidden="true" tabindex="-1"></a><span class="in">  refresh = 0,</span></span>
+<span id="cb34-221"><a href="#cb34-221" aria-hidden="true" tabindex="-1"></a><span class="in">  # usually not necessary -- this model has no parameters </span></span>
+<span id="cb34-222"><a href="#cb34-222" aria-hidden="true" tabindex="-1"></a><span class="in">  fixed_param = TRUE)</span></span>
+<span id="cb34-223"><a href="#cb34-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-224"><a href="#cb34-224" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-225"><a href="#cb34-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-226"><a href="#cb34-226" aria-hidden="true" tabindex="-1"></a>This generates a large number of simulated datasets -- the default is 4000 datasets! </span>
+<span id="cb34-227"><a href="#cb34-227" aria-hidden="true" tabindex="-1"></a>Each time the model samples, it draws a new value for the unobserved average (<span class="in">`avg_birds_per_person`</span>) and for the number of birds seen by each person. </span>
+<span id="cb34-228"><a href="#cb34-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-229"><a href="#cb34-229" aria-hidden="true" tabindex="-1"></a>Let's pull out just a few of these datasets and visualize them.</span>
+<span id="cb34-230"><a href="#cb34-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-231"><a href="#cb34-231" aria-hidden="true" tabindex="-1"></a>We'll use a wonderful package called <span class="co">[</span><span class="ot">`tidybayes`</span><span class="co">]()</span> to easily extract posterior draws from <span class="in">`cmdstan`</span> objects. </span>
+<span id="cb34-232"><a href="#cb34-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-235"><a href="#cb34-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-236"><a href="#cb34-236" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb34-237"><a href="#cb34-237" aria-hidden="true" tabindex="-1"></a>pois_sim <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(poisson_sim_stan, </span>
+<span id="cb34-238"><a href="#cb34-238" aria-hidden="true" tabindex="-1"></a>                                    avg_birds_per_person,</span>
+<span id="cb34-239"><a href="#cb34-239" aria-hidden="true" tabindex="-1"></a>                                    bird_count[],</span>
+<span id="cb34-240"><a href="#cb34-240" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">ndraws =</span> <span class="dv">20</span>,</span>
+<span id="cb34-241"><a href="#cb34-241" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">seed =</span> <span class="dv">525600</span>)</span>
+<span id="cb34-242"><a href="#cb34-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-243"><a href="#cb34-243" aria-hidden="true" tabindex="-1"></a>pois_sim <span class="sc">|&gt;</span> </span>
+<span id="cb34-244"><a href="#cb34-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bird_count)) <span class="sc">+</span> </span>
+<span id="cb34-245"><a href="#cb34-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
+<span id="cb34-246"><a href="#cb34-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> avg_birds_per_person), <span class="at">col =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span> </span>
+<span id="cb34-247"><a href="#cb34-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>.draw)</span>
+<span id="cb34-248"><a href="#cb34-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-249"><a href="#cb34-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-250"><a href="#cb34-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parameter recovery</span></span>
+<span id="cb34-251"><a href="#cb34-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-252"><a href="#cb34-252" aria-hidden="true" tabindex="-1"></a>Let's go back and look at the fake datasets we created in R </span>
+<span id="cb34-253"><a href="#cb34-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-256"><a href="#cb34-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-257"><a href="#cb34-257" aria-hidden="true" tabindex="-1"></a>avg_birds_per_person</span>
+<span id="cb34-258"><a href="#cb34-258" aria-hidden="true" tabindex="-1"></a>bird_count</span>
+<span id="cb34-259"><a href="#cb34-259" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-260"><a href="#cb34-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-261"><a href="#cb34-261" aria-hidden="true" tabindex="-1"></a>and let's see if we can recapture the only known parameter, <span class="in">`avg_birds_per_person`</span>, which is equal to <span class="in">`r avg_birds_per_person`</span>.</span>
+<span id="cb34-262"><a href="#cb34-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-263"><a href="#cb34-263" aria-hidden="true" tabindex="-1"></a>We'll do it first in R, using the function <span class="in">`fitdistr`</span> from the <span class="in">`MASS`</span> package:</span>
+<span id="cb34-264"><a href="#cb34-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-267"><a href="#cb34-267" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-268"><a href="#cb34-268" aria-hidden="true" tabindex="-1"></a>MASS<span class="sc">::</span><span class="fu">fitdistr</span>(bird_count, dpois, <span class="at">start =</span> <span class="fu">list</span>(<span class="at">lambda=</span><span class="dv">10</span>))</span>
+<span id="cb34-269"><a href="#cb34-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-270"><a href="#cb34-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-271"><a href="#cb34-271" aria-hidden="true" tabindex="-1"></a>This could also be done with <span class="in">`glm`</span></span>
+<span id="cb34-272"><a href="#cb34-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-275"><a href="#cb34-275" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-276"><a href="#cb34-276" aria-hidden="true" tabindex="-1"></a>bird_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(bird_count <span class="sc">~</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">"poisson"</span>)</span>
+<span id="cb34-277"><a href="#cb34-277" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(bird_glm))</span>
+<span id="cb34-278"><a href="#cb34-278" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-279"><a href="#cb34-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-280"><a href="#cb34-280" aria-hidden="true" tabindex="-1"></a>You can see that in all cases we are getting close to the value of <span class="in">`avg_birds_per_person`</span>, which in these simulations is the true value.</span>
+<span id="cb34-281"><a href="#cb34-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-282"><a href="#cb34-282" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling the posterior distribution in Stan</span></span>
+<span id="cb34-283"><a href="#cb34-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-284"><a href="#cb34-284" aria-hidden="true" tabindex="-1"></a>We will be doing a lot of Stan models this week, and we will begin by replicating the above GLM in Stan.</span>
+<span id="cb34-285"><a href="#cb34-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-288"><a href="#cb34-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-289"><a href="#cb34-289" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-290"><a href="#cb34-290" aria-hidden="true" tabindex="-1"></a>poisson_model <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb34-291"><a href="#cb34-291" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/01_simulation/poisson_model.stan"</span>)</span>
+<span id="cb34-292"><a href="#cb34-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-293"><a href="#cb34-293" aria-hidden="true" tabindex="-1"></a>poisson_model</span>
+<span id="cb34-294"><a href="#cb34-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-295"><a href="#cb34-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-296"><a href="#cb34-296" aria-hidden="true" tabindex="-1"></a>This model has all the same code as the previous one, but has two additional parts. </span>
+<span id="cb34-297"><a href="#cb34-297" aria-hidden="true" tabindex="-1"></a>Let's compare them</span>
+<span id="cb34-298"><a href="#cb34-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-299"><a href="#cb34-299" aria-hidden="true" tabindex="-1"></a>:::{.column-screen}</span>
+<span id="cb34-300"><a href="#cb34-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-301"><a href="#cb34-301" aria-hidden="true" tabindex="-1"></a>::::{.columns}</span>
+<span id="cb34-302"><a href="#cb34-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-303"><a href="#cb34-303" aria-hidden="true" tabindex="-1"></a>::: {.column width="50%"}</span>
+<span id="cb34-306"><a href="#cb34-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-307"><a href="#cb34-307" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-308"><a href="#cb34-308" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb34-309"><a href="#cb34-309" aria-hidden="true" tabindex="-1"></a>poisson_simulation</span>
+<span id="cb34-310"><a href="#cb34-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-311"><a href="#cb34-311" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb34-312"><a href="#cb34-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-313"><a href="#cb34-313" aria-hidden="true" tabindex="-1"></a>::: {.column width="50%"}</span>
+<span id="cb34-316"><a href="#cb34-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-317"><a href="#cb34-317" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-318"><a href="#cb34-318" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-overflow: wrap</span></span>
+<span id="cb34-319"><a href="#cb34-319" aria-hidden="true" tabindex="-1"></a>poisson_model</span>
+<span id="cb34-320"><a href="#cb34-320" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-321"><a href="#cb34-321" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb34-322"><a href="#cb34-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-323"><a href="#cb34-323" aria-hidden="true" tabindex="-1"></a>::::</span>
+<span id="cb34-324"><a href="#cb34-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-325"><a href="#cb34-325" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb34-326"><a href="#cb34-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-327"><a href="#cb34-327" aria-hidden="true" tabindex="-1"></a>What's different in this second Stan program? There are two new sections:</span>
+<span id="cb34-328"><a href="#cb34-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-329"><a href="#cb34-329" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>*parameters block*  : Indicated by <span class="in">`parameters {}`</span>, this block includes all the unobserved quantities. In this case there is only one: <span class="in">`avg_birds_per_person`</span>. We have to give this value a name and say what kind of number it is. Here is also the place to declare any constraints. In our example, we state that the parameter is always positive (because it is an average of counts).</span>
+<span id="cb34-330"><a href="#cb34-330" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>*model block*  indicated by <span class="in">`model {}`</span>, this block contains the model. What this means in a Bayesian model is that it lists the probability distribution for all the observations, and for all the unobserved parameters. In other words, it looks just like our mathematical expressions above. The model block can also contain intermediate calculations, for example combining data and parameters with an equation. We'll see examples later. </span>
+<span id="cb34-331"><a href="#cb34-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-332"><a href="#cb34-332" aria-hidden="true" tabindex="-1"></a>This Stan program also contains one line that's been moved. </span>
+<span id="cb34-333"><a href="#cb34-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-334"><a href="#cb34-334" aria-hidden="true" tabindex="-1"></a><span class="in">```Stan</span></span>
+<span id="cb34-335"><a href="#cb34-335" aria-hidden="true" tabindex="-1"></a><span class="in">  avg_birds_per_person ~ uniform(0, 60);</span></span>
+<span id="cb34-336"><a href="#cb34-336" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-337"><a href="#cb34-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-338"><a href="#cb34-338" aria-hidden="true" tabindex="-1"></a>has been moved to the <span class="in">`model`</span> block. This has two consequences. </span>
+<span id="cb34-339"><a href="#cb34-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-340"><a href="#cb34-340" aria-hidden="true" tabindex="-1"></a>First, when the model sees our data, it's going to try to find values of <span class="in">`avg_birds_per_person`</span> which make those data probable -- in other words, it is going to find the posterior distribution of possible values of the average. Together, the prior and the data constrain what those values can be.</span>
+<span id="cb34-341"><a href="#cb34-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-342"><a href="#cb34-342" aria-hidden="true" tabindex="-1"></a>Second, the <span class="in">`generated quantities`</span> block means something different now. Previously, we had no idea what <span class="in">`avg_birds_per_person`</span> should be, so we had the computer choose a random number from a wide range. We called this "the prior" Now, when the computer draws new values of <span class="in">`bird_count`</span>, it is going to use the values from the posterior that it is finding in the <span class="in">`model {}`</span> block . This means that the simulations, rather than being *prior* predictive checks, are now *posterior* predictive checks.</span>
+<span id="cb34-343"><a href="#cb34-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-344"><a href="#cb34-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-345"><a href="#cb34-345" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parameter recovery</span></span>
+<span id="cb34-346"><a href="#cb34-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-347"><a href="#cb34-347" aria-hidden="true" tabindex="-1"></a>Let us see if the model recovers our parameters. Once again, we connect a dataset to our model with a list:</span>
+<span id="cb34-348"><a href="#cb34-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-351"><a href="#cb34-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-352"><a href="#cb34-352" aria-hidden="true" tabindex="-1"></a>poisson_model_samp <span class="ot">&lt;-</span> poisson_model<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data  =</span> <span class="fu">list</span>(<span class="at">bird_count_observed =</span> bird_count,</span>
+<span id="cb34-353"><a href="#cb34-353" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">n_people =</span> <span class="fu">length</span>(bird_count)), <span class="at">refresh =</span> <span class="dv">0</span>)</span>
+<span id="cb34-354"><a href="#cb34-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-355"><a href="#cb34-355" aria-hidden="true" tabindex="-1"></a>poisson_model_samp<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb34-356"><a href="#cb34-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-357"><a href="#cb34-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-358"><a href="#cb34-358" aria-hidden="true" tabindex="-1"></a>The distribution of the parameter here covers the real value of <span class="in">`r avg_birds_per_person`</span> pretty well! </span>
+<span id="cb34-359"><a href="#cb34-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-360"><a href="#cb34-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-361"><a href="#cb34-361" aria-hidden="true" tabindex="-1"></a>TK Conclusion paragraph??</span>
+<span id="cb34-362"><a href="#cb34-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-363"><a href="#cb34-363" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb34-364"><a href="#cb34-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-365"><a href="#cb34-365" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
+<span id="cb34-366"><a href="#cb34-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-367"><a href="#cb34-367" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?</span>
+<span id="cb34-368"><a href="#cb34-368" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>take a closer look at <span class="in">`poisson_model_samp$summary()`</span> all the values of <span class="in">`bird_count`</span> are the same. That's correct, but why?</span>
+<span id="cb34-369"><a href="#cb34-369" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>what would you do next to add complexity this model?</span>
+<span id="cb34-370"><a href="#cb34-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-371"><a href="#cb34-371" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
+<span id="cb34-372"><a href="#cb34-372" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? how to these compare to the real data?</span>
+<span id="cb34-373"><a href="#cb34-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-374"><a href="#cb34-374" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
