@@ -19,6 +19,8 @@ format:
 
 By "complex" we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy. 
 
+. . .
+
 As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.
 
 ![](https://www.i2symbol.com/pictures/emojis/b/e/f/7/bef79dd05db0e97d4124fa885f2c0522_384.png){fig-align="center" width=20%}
@@ -267,6 +269,27 @@ The two models discussed previously have a few interesting properties:
 - Models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy. 
 :::
 
+## A small step back
+
+::: {style="font-size: 0.8em"}
+At this point, the structure of the hierarchy discussed were "simple" in the sense that they either required to estimate
+
+- A single variance parameter 
+
+$$\sigma^2_{f}$$
+
+- Multiple independent variance parameters
+
+$$
+\begin{bmatrix}
+  \sigma^2_f & 0\\
+  0& \sigma^2_{g}\\
+\end{bmatrix}
+$$
+
+From this point on we will look at more complex covariance structures where the hierarchical levels are **not** independent from each other.
+:::
+
 ## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
 ::: {style="font-size: 0.9em"}
@@ -297,8 +320,31 @@ $$\begin{bmatrix}
 
 ## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
-::: {style="font-size: 2.5em; color: red;"}
-ICI
+::: {style="font-size: 0.82em"}
+At this point, the covariance structure 
+$$\begin{bmatrix}
+    b_0\\
+    b_1\\
+\end{bmatrix}
+\sim \mathcal{N}\left(0, 
+                      \begin{bmatrix}
+                        \sigma^2_{b_0} & \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} \\ 
+                        \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} & \sigma^2_{b_1}
+                      \end{bmatrix}
+                \right)$$
+
+needs to be discussed a bit more.
+
+#### Notation
+
+In the covariance matrix,
+
+- $\rho_{b_0,b_1}$ is the correlation between $b_0$ and $b_1$
+- $\rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1}$ is the covariance between $b_0$ and $b_1$
+
+#### Interpretation
+
+A covariance matrix with non-zero covariance describes dependence between the $b$s, which can tell use both the strength of the relation between pairs of parameters and the variance structure.
 :::
 
 

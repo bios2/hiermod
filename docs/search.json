@@ -2111,7 +2111,7 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#complex-hierarchical-model",
     "title": "Complex hierarchical models",
     "section": "“Complex” hierarchical model",
-    "text": "“Complex” hierarchical model\nBy “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.\nAs we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious."
+    "text": "“Complex” hierarchical model\nBy “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.\n\nAs we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious."
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#interacting-hierarchies",
@@ -2335,6 +2335,13 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-1",
     "title": "Complex hierarchical models",
     "section": "Correlated intercept and slope hierarchy",
-    "text": "Correlated intercept and slope hierarchy\n\nICI"
+    "text": "Correlated intercept and slope hierarchy\n\nAt this point, the covariance structure \\[\\begin{bmatrix}\n    b_0\\\\\n    b_1\\\\\n\\end{bmatrix}\n\\sim \\mathcal{N}\\left(0,\n                      \\begin{bmatrix}\n                        \\sigma^2_{b_0} & \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} \\\\\n                        \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} & \\sigma^2_{b_1}\n                      \\end{bmatrix}\n                \\right)\\]\nneeds to be discussed a bit more.\nNotation\nIn the covariance matrix,\n\n\\(\\rho_{b_0,b_1}\\) is the correlation between \\(b_0\\) and \\(b_1\\)\n\\(\\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1}\\) is the covariance between \\(b_0\\) and \\(b_1\\)\n\nInterpretation\nA covariance matrix with non-zero covariance describes dependence between the \\(b\\)s, which can tell use both the strength of the relation between pairs of parameters and the variance structure."
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#a-small-step-back",
+    "href": "slides/08_Complex_hierarchical_model/index.html#a-small-step-back",
+    "title": "Complex hierarchical models",
+    "section": "A small step back",
+    "text": "A small step back\n\nAt this point, the structure of the hierarchy discussed were “simple” in the sense that they either required to estimate\n\nA single variance parameter\n\n\\[\\sigma^2_{f}\\]\n\nMultiple independent variance parameters\n\n\\[\n\\begin{bmatrix}\n  \\sigma^2_f & 0\\\\\n  0& \\sigma^2_{g}\\\\\n\\end{bmatrix}\n\\]\nFrom this point on we will look at more complex covariance structures where the hierarchical levels are not independent from each other."
   }
 ]

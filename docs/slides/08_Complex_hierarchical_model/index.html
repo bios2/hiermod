@@ -403,9 +403,15 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="complex-hierarchical-model" class="slide level2">
 <h2>“Complex” hierarchical model</h2>
 <p>By “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.</p>
+<div class="fragment">
 <p>As we will see, there are a number of ways this can complexify the structure of a model in ways that are not always obvious.</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/b/e/f/7/bef79dd05db0e97d4124fa885f2c0522_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/b/e/f/7/bef79dd05db0e97d4124fa885f2c0522_384.png" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</section>
 <section>
 <section id="complex-hierarchy-on-the-intercept" class="title-slide slide level1 center">
 <h1>“Complex” hierarchy on the intercept</h1>
@@ -481,6 +487,26 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </ul>
 </div>
 </section>
+<section id="a-small-step-back" class="slide level2">
+<h2>A small step back</h2>
+<div style="font-size: 0.8em">
+<p>At this point, the structure of the hierarchy discussed were “simple” in the sense that they either required to estimate</p>
+<ul>
+<li>A single variance parameter</li>
+</ul>
+<p><span class="math display">\[\sigma^2_{f}\]</span></p>
+<ul>
+<li>Multiple independent variance parameters</li>
+</ul>
+<p><span class="math display">\[
+\begin{bmatrix}
+  \sigma^2_f &amp; 0\\
+  0&amp; \sigma^2_{g}\\
+\end{bmatrix}
+\]</span></p>
+<p>From this point on we will look at more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
+</div>
+</section>
 <section id="correlated-intercept-and-slope-hierarchy" class="slide level2" style="font-size: 0.9em">
 <h2>Correlated intercept and slope hierarchy</h2>
 <div style="font-size: 0.9em">
@@ -503,8 +529,26 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="correlated-intercept-and-slope-hierarchy-1" class="slide level2" style="font-size: 0.9em">
 <h2>Correlated intercept and slope hierarchy</h2>
-<div style="font-size: 2.5em; color: red;">
-<p>ICI</p>
+<div style="font-size: 0.82em">
+<p>At this point, the covariance structure <span class="math display">\[\begin{bmatrix}
+    b_0\\
+    b_1\\
+\end{bmatrix}
+\sim \mathcal{N}\left(0,
+                      \begin{bmatrix}
+                        \sigma^2_{b_0} &amp; \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} \\
+                        \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} &amp; \sigma^2_{b_1}
+                      \end{bmatrix}
+                \right)\]</span></p>
+<p>needs to be discussed a bit more.</p>
+<h4 id="notation">Notation</h4>
+<p>In the covariance matrix,</p>
+<ul>
+<li><span class="math inline">\(\rho_{b_0,b_1}\)</span> is the correlation between <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span></li>
+<li><span class="math inline">\(\rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1}\)</span> is the covariance between <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span></li>
+</ul>
+<h4 id="interpretation">Interpretation</h4>
+<p>A covariance matrix with non-zero covariance describes dependence between the <span class="math inline">\(b\)</span>s, which can tell use both the strength of the relation between pairs of parameters and the variance structure.</p>
 </div>
 </section>
 <section id="second" class="slide level2">
