@@ -1769,5 +1769,47 @@
     "title": "Data used for this course",
     "section": "There’s lots more!",
     "text": "There’s lots more!\n\nlibrary(palmerpenguins)\nView(penguins)\nView(penguins_raw)\n\nand also see the official site: https://allisonhorst.github.io/palmerpenguins/\n\n\n\n\n\n\n\nGorman, Kristen B., Tony D. Williams, and William R. Fraser. 2014. “Ecological Sexual Dimorphism and Environmental Variability Within a Community of Antarctic Penguins (Genus Pygoscelis).” PLOS ONE 9 (3): e90081. https://doi.org/10.1371/journal.pone.0090081.\n\n\nHorst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data. https://doi.org/10.5281/zenodo.3960218."
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy",
+    "href": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy",
+    "title": "Complex hierarchical models",
+    "section": "Uncorrelated intercept and slope hierarchy",
+    "text": "Uncorrelated intercept and slope hierarchy\n\nlme4 notation : y ~ x + (x || f) or y ~ 1 + x + (1 | f) + (0 + x | g)\nThis model assumes there is a hierarchy that varies independently among the levels of factor f for the intercept and the slope.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{0f[l_f]}+\\mathbf{Z}\\mathbf{b}_{0f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\] or\n\\[y_i = b_{0f[l_f]}+zb_{1f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] This is because in this model\n\\[\\begin{bmatrix}\n    b_0\\\\\n    b_1\\\\\n\\end{bmatrix} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_{b_0f} & 0\\\\\n                                  0& \\sigma^2_{b_1f}\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy-1",
+    "href": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy-1",
+    "title": "Complex hierarchical models",
+    "section": "Uncorrelated intercept and slope hierarchy",
+    "text": "Uncorrelated intercept and slope hierarchy"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-2",
+    "href": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-2",
+    "title": "Complex hierarchical models",
+    "section": "Correlated intercept and slope hierarchy",
+    "text": "Correlated intercept and slope hierarchy"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#so-far-what-we-have-done",
+    "href": "slides/08_Complex_hierarchical_model/index.html#so-far-what-we-have-done",
+    "title": "Complex hierarchical models",
+    "section": "So far what we have done",
+    "text": "So far what we have done"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#what-we-can-do-now",
+    "href": "slides/08_Complex_hierarchical_model/index.html#what-we-can-do-now",
+    "title": "Complex hierarchical models",
+    "section": "What we can do now !",
+    "text": "What we can do now !"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy",
+    "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy",
+    "title": "Complex hierarchical models",
+    "section": "Combining different types of hierarchy",
+    "text": "Combining different types of hierarchy"
   }
 ]

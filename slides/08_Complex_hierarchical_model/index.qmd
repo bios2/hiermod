@@ -441,7 +441,7 @@ A covariance matrix with non-zero covariance describes dependence between the $b
 :::
 
 
-## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
+## Correlated intercept and slope hierarchy {style="font-size: 0.9em"}
 
 
 ```{r, echo=FALSE, fig.width=15,  fig.height=8, fig.align='center'}
@@ -474,6 +474,7 @@ contour(x, y, z,
         yaxs = "i",
         cex.axis = 2.5)
 
+#par(mar = c(10,5,0,0))
 par(xpd = TRUE)
 mtext("Slope", 1, cex = 3, line = 1.5)
 mtext("Intercept", 2, cex = 3, line = 1.5)
@@ -493,7 +494,6 @@ plot(0,0,
 
 set.seed(41)
 
-interceptSlope <- MASS::mvrnorm(30, mu = mu, Sigma = sigma)
 for(i in 1:30){
   abline(a = rnorm(1, mean = 1, sd = 0.2),
          b = rnorm(1, mean = 1, sd = 0.2),
@@ -525,35 +525,22 @@ lines(marginalRot[,1]+2.0, marginalRot[,2] + 4.5, lwd = 3)
 par(xpd = FALSE)
 ```
 
-## So far
-
-. . .
-
-![](https://i0.wp.com/jalacoste.com/wp-content/uploads/2013/11/lego-1.jpg?w=600&ssl=1){fig-align="center" width=60%}
-
-
-
-## Now let's build houses
+## So far what we have done
 
 . . . 
+
+![](https://images2.minutemediacdn.com/image/upload/c_fill,w_2160,ar_16:9,f_auto,q_auto,g_auto/shape%2Fcover%2Fsport%2Flegos-hero-0eaaf09e995d184255040705b42f46f4.jpg){fig-align="center" width=20%}
+
+## What we can do now !
+
+. . .
 
 ![](https://www.boredpanda.com/blog/wp-content/uploads/2022/10/635f7c2fca5d5_lego-builds.jpg){fig-align="center" width=50%}
 
 ## Combining different types of hierarchy {style="font-size: 0.9em"}
 
-In the next few slides I will present an example of how to write the math to develop models that have multiple hierarchy.
 
-As an example, let's get back to our favourite plant species *Bidonia examplaris*.
 
-### Data
-
-Let's say we sampled humidity at a 100 locations. Within these locations we also sampled the biomass of *B. examplaris* in 30 quadrates as well as soil pH.
-
-### Question
-
-How does biomass of *B. examplaris* changes 
-
-ICI
 
 ## second
 
