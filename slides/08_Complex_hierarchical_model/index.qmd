@@ -269,10 +269,103 @@ The two models discussed previously have a few interesting properties:
 - Models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy. 
 :::
 
+## Uncorrelated intercept and slope hierarchy  {style="font-size: 0.9em"}
+
+::: {style="font-size: 0.65em"}
+`lme4` notation : `y ~ x + (x || f)` or `y ~ 1 + x + (1 | f) + (0 + x | g)`
+
+This model assumes there is a hierarchy that varies independently among the levels of factor `f` for the intercept and the slope.
+
+Mathematically, it can be translated to 
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f[l_f]}+\mathbf{Z}\mathbf{b}_{0f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f$$
+or 
+
+$$y_i = b_{0f[l_f]}+zb_{1f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+This is because in this model
+
+$$\begin{bmatrix}
+    b_0\\
+    b_1\\
+\end{bmatrix} \sim \mathcal{N}\left(0, 
+                                \begin{bmatrix}
+                                  \sigma^2_{b_0f} & 0\\
+                                  0& \sigma^2_{b_1f}\\
+                                \end{bmatrix}
+                                \right)$$
+:::
+
+## Uncorrelated intercept and slope hierarchy  {style="font-size: 0.9em"}
+
+```{r, echo=FALSE, fig.width=10,  fig.height=8, fig.align='center'}
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
+
+val <- seq(-0.5, 2.5, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.3)
+
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+plot(-marginal,val,
+     type = "n",
+     ylim = c(-3,3),
+     axes = FALSE,
+     xlab = "",
+     ylab = "") 
+
+polygon(x = c(-marginal,-marginal[1]),
+        y = c(val, val[1]) - 3,
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(-marginal,val - 3, lwd = 3)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(0,5),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     xaxs = "i",
+     yaxs = "i") 
+
+set.seed(42)
+for(i in 1:30){
+abline(a = rnorm(1, mean = 1, sd = 0.2),
+       b = rnorm(1, mean = 1, sd = 0.2),
+       lwd = 3,
+       col = "blue")
+}
+
+val <- seq(-0.5, 2.5, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.3)
+marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
+
+polygon(x = c(marginalRot[,1] + 0,marginalRot[1,1] + 0),
+        y = c(marginalRot[,2] + 2.5, marginalRot[1,2] + 2.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(marginalRot[,1]+0, marginalRot[,2] + 2.5, lwd = 3)
+
+polygon(x = c(marginalRot[,1] + 1.0,marginalRot[1,1] + 1.0),
+        y = c(marginalRot[,2] + 3.5, marginalRot[1,2] + 3.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(marginalRot[,1]+1.0, marginalRot[,2] + 3.5, lwd = 3)
+par(xpd = TRUE)
+polygon(x = c(marginalRot[,1] + 2.0,marginalRot[1,1] + 2.0),
+        y = c(marginalRot[,2] + 4.5, marginalRot[1,2] + 4.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(marginalRot[,1]+2.0, marginalRot[,2] + 4.5, lwd = 3)
+par(xpd = FALSE)
+```
+
 ## A small step back
 
 ::: {style="font-size: 0.8em"}
-At this point, the structure of the hierarchy discussed were "simple" in the sense that they either required to estimate
+The structure of the hierarchy discussed so far were "simple" in the sense that they either required to estimate
 
 - A single variance parameter 
 
@@ -287,7 +380,7 @@ $$
 \end{bmatrix}
 $$
 
-From this point on we will look at more complex covariance structures where the hierarchical levels are **not** independent from each other.
+From this point on, we will look at more complex covariance structures where the hierarchical levels are **not** independent from each other.
 :::
 
 ## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
@@ -321,7 +414,7 @@ $$\begin{bmatrix}
 ## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
 ::: {style="font-size: 0.82em"}
-At this point, the covariance structure 
+The covariance structure 
 $$\begin{bmatrix}
     b_0\\
     b_1\\
@@ -335,18 +428,132 @@ $$\begin{bmatrix}
 
 needs to be discussed a bit more.
 
-#### Notation
+### Notation
 
 In the covariance matrix,
 
 - $\rho_{b_0,b_1}$ is the correlation between $b_0$ and $b_1$
 - $\rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1}$ is the covariance between $b_0$ and $b_1$
 
-#### Interpretation
+### Interpretation
 
 A covariance matrix with non-zero covariance describes dependence between the $b$s, which can tell use both the strength of the relation between pairs of parameters and the variance structure.
 :::
 
+
+## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
+
+
+```{r, echo=FALSE, fig.width=15,  fig.height=8, fig.align='center'}
+zones=matrix(c(1,2), ncol=2, byrow=TRUE)
+layout(zones, widths=c(4/5,4/5), heights=c(4/5,4/5))
+
+library(mnormt)
+
+#create bivariate normal distribution
+x     <- seq(-3, 3, 0.1) 
+y     <- seq(-3, 3, 0.1)
+mu    <- c(0, 0)
+sigma <- matrix(c(2, 1, 1, 1), nrow=2)
+f     <- function(x, y) dmnorm(cbind(x, y), mu, sigma)
+z     <- outer(x, y, f)
+
+#create contour plot
+contour(x, y, z, 
+        asp =1, 
+        las = 1, 
+        col ="blue",
+        lwd = 3,
+        axes = TRUE,
+        bty="L",
+        xaxt = "n",
+        yaxt = "n",
+        xlab = "",
+        ylab = "",
+        xaxs = "i",
+        yaxs = "i",
+        cex.axis = 2.5)
+
+par(xpd = TRUE)
+mtext("Slope", 1, cex = 3, line = 1.5)
+mtext("Intercept", 2, cex = 3, line = 1.5)
+par(xpd = FALSE)
+
+plot(0,0,
+     type = "n",
+     xlim = c(0,5),
+     ylim = c(0,5),
+     bty="L",
+     xaxt = "n",
+     yaxt = "n",
+     xlab = "",
+     ylab = "",
+     xaxs = "i",
+     yaxs = "i") 
+
+set.seed(41)
+
+interceptSlope <- MASS::mvrnorm(30, mu = mu, Sigma = sigma)
+for(i in 1:30){
+  abline(a = rnorm(1, mean = 1, sd = 0.2),
+         b = rnorm(1, mean = 1, sd = 0.2),
+         lwd = 3,
+         col = "blue")
+}
+
+val <- seq(-0.5, 2.5, length = 200)
+marginal <- dnorm(val, mean = 1, sd = 0.3)
+marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
+
+polygon(x = c(marginalRot[,1] + 0,marginalRot[1,1] + 0),
+        y = c(marginalRot[,2] + 2.5, marginalRot[1,2] + 2.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(marginalRot[,1]+0, marginalRot[,2] + 2.5, lwd = 3)
+
+polygon(x = c(marginalRot[,1] + 1.0,marginalRot[1,1] + 1.0),
+        y = c(marginalRot[,2] + 3.5, marginalRot[1,2] + 3.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(marginalRot[,1]+1.0, marginalRot[,2] + 3.5, lwd = 3)
+par(xpd = TRUE)
+polygon(x = c(marginalRot[,1] + 2.0,marginalRot[1,1] + 2.0),
+        y = c(marginalRot[,2] + 4.5, marginalRot[1,2] + 4.5),
+        col = rgb(0,0,1, 0.5),border = NA)
+
+lines(marginalRot[,1]+2.0, marginalRot[,2] + 4.5, lwd = 3)
+par(xpd = FALSE)
+```
+
+## So far
+
+. . .
+
+![](https://i0.wp.com/jalacoste.com/wp-content/uploads/2013/11/lego-1.jpg?w=600&ssl=1){fig-align="center" width=60%}
+
+
+
+## Now let's build houses
+
+. . . 
+
+![](https://www.boredpanda.com/blog/wp-content/uploads/2022/10/635f7c2fca5d5_lego-builds.jpg){fig-align="center" width=50%}
+
+## Combining different types of hierarchy {style="font-size: 0.9em"}
+
+In the next few slides I will present an example of how to write the math to develop models that have multiple hierarchy.
+
+As an example, let's get back to our favourite plant species *Bidonia examplaris*.
+
+### Data
+
+Let's say we sampled humidity at a 100 locations. Within these locations we also sampled the biomass of *B. examplaris* in 30 quadrates as well as soil pH.
+
+### Question
+
+How does biomass of *B. examplaris* changes 
+
+ICI
 
 ## second
 

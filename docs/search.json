@@ -1292,7 +1292,7 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#a-small-step-back",
     "title": "Complex hierarchical models",
     "section": "A small step back",
-    "text": "A small step back\n\nAt this point, the structure of the hierarchy discussed were “simple” in the sense that they either required to estimate\n\nA single variance parameter\n\n\\[\\sigma^2_{f}\\]\n\nMultiple independent variance parameters\n\n\\[\n\\begin{bmatrix}\n  \\sigma^2_f & 0\\\\\n  0& \\sigma^2_{g}\\\\\n\\end{bmatrix}\n\\]\nFrom this point on we will look at more complex covariance structures where the hierarchical levels are not independent from each other."
+    "text": "A small step back\n\nThe structure of the hierarchy discussed so far were “simple” in the sense that they either required to estimate\n\nA single variance parameter\n\n\\[\\sigma^2_{f}\\]\n\nMultiple independent variance parameters\n\n\\[\n\\begin{bmatrix}\n  \\sigma^2_f & 0\\\\\n  0& \\sigma^2_{g}\\\\\n\\end{bmatrix}\n\\]\nFrom this point on, we will look at more complex covariance structures where the hierarchical levels are not independent from each other."
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy",
@@ -1306,7 +1306,7 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-1",
     "title": "Complex hierarchical models",
     "section": "Correlated intercept and slope hierarchy",
-    "text": "Correlated intercept and slope hierarchy\n\nAt this point, the covariance structure \\[\\begin{bmatrix}\n    b_0\\\\\n    b_1\\\\\n\\end{bmatrix}\n\\sim \\mathcal{N}\\left(0,\n                      \\begin{bmatrix}\n                        \\sigma^2_{b_0} & \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} \\\\\n                        \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} & \\sigma^2_{b_1}\n                      \\end{bmatrix}\n                \\right)\\]\nneeds to be discussed a bit more.\nNotation\nIn the covariance matrix,\n\n\\(\\rho_{b_0,b_1}\\) is the correlation between \\(b_0\\) and \\(b_1\\)\n\\(\\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1}\\) is the covariance between \\(b_0\\) and \\(b_1\\)\n\nInterpretation\nA covariance matrix with non-zero covariance describes dependence between the \\(b\\)s, which can tell use both the strength of the relation between pairs of parameters and the variance structure."
+    "text": "Correlated intercept and slope hierarchy\n\nThe covariance structure \\[\\begin{bmatrix}\n    b_0\\\\\n    b_1\\\\\n\\end{bmatrix}\n\\sim \\mathcal{N}\\left(0,\n                      \\begin{bmatrix}\n                        \\sigma^2_{b_0} & \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} \\\\\n                        \\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1} & \\sigma^2_{b_1}\n                      \\end{bmatrix}\n                \\right)\\]\nneeds to be discussed a bit more.\nNotation\nIn the covariance matrix,\n\n\\(\\rho_{b_0,b_1}\\) is the correlation between \\(b_0\\) and \\(b_1\\)\n\\(\\rho_{b_0,b_1}\\sigma_{b_0}\\sigma_{b_1}\\) is the covariance between \\(b_0\\) and \\(b_1\\)\n\nInterpretation\nA covariance matrix with non-zero covariance describes dependence between the \\(b\\)s, which can tell use both the strength of the relation between pairs of parameters and the variance structure."
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#second",
@@ -1853,5 +1853,54 @@
     "title": "Bayesian modelling",
     "section": "Sampling the parameters",
     "text": "Sampling the parameters\n\n\nIn MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough ?\n\n\n\n\nHere is a rough procedure to follow:\n\nPerform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes\nDecide on a number of steps to run to obtain a result in a reasonable amount of time\nRun the algorithm again !\nStudy the chain visually"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy",
+    "href": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy",
+    "title": "Complex hierarchical models",
+    "section": "Uncorrelated intercept and slope hierarchy",
+    "text": "Uncorrelated intercept and slope hierarchy\n\nlme4 notation : y ~ x + (x || f) or y ~ 1 + x + (1 | f) + (0 + x | g)\nThis model assumes there is a hierarchy that varies independently among the levels of factor f for the intercept and the slope.\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{0f[l_f]}+\\mathbf{Z}\\mathbf{b}_{0f[l_f]},\\sigma^2\\mathbf{I}) \\quad\\forall\\quad l_f = 1\\dots k_f\\] or\n\\[y_i = b_{0f[l_f]}+zb_{1f[l_f]} + \\varepsilon \\quad\\forall\\quad l_f = 1\\dots k_f\\,\\,\\,\\,\\text{and}\\,\\,\\,i = 1\\dots n\\] This is because in this model\n\\[\\begin{bmatrix}\n    b_0\\\\\n    b_1\\\\\n\\end{bmatrix} \\sim \\mathcal{N}\\left(0,\n                                \\begin{bmatrix}\n                                  \\sigma^2_{b_0f} & 0\\\\\n                                  0& \\sigma^2_{b_1f}\\\\\n                                \\end{bmatrix}\n                                \\right)\\]"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy-1",
+    "href": "slides/08_Complex_hierarchical_model/index.html#uncorrelated-intercept-and-slope-hierarchy-1",
+    "title": "Complex hierarchical models",
+    "section": "Uncorrelated intercept and slope hierarchy",
+    "text": "Uncorrelated intercept and slope hierarchy"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-2",
+    "href": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy-2",
+    "title": "Complex hierarchical models",
+    "section": "Correlated intercept and slope hierarchy",
+    "text": "Correlated intercept and slope hierarchy"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy",
+    "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy",
+    "title": "Complex hierarchical models",
+    "section": "Combining different types of hierarchy",
+    "text": "Combining different types of hierarchy\nIn the next few slides I will present an example of how to write the math to develop models that have multiple hierarchy.\nAs an example, let’s get back to our favourite plant species Bidonia examplaris.\nData\nLet’s say we sampled humidity at a 100 locations. Within these locations we also sampled the biomass of B. examplaris in 30 quadrates as well as soil pH.\nQuestion"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-1",
+    "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-1",
+    "title": "Complex hierarchical models",
+    "section": "Combining different types of hierarchy",
+    "text": "Combining different types of hierarchy\nNow let’s build houses"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#so-far",
+    "href": "slides/08_Complex_hierarchical_model/index.html#so-far",
+    "title": "Complex hierarchical models",
+    "section": "So far",
+    "text": "So far"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#now-lets-build-houses",
+    "href": "slides/08_Complex_hierarchical_model/index.html#now-lets-build-houses",
+    "title": "Complex hierarchical models",
+    "section": "Now let’s build houses",
+    "text": "Now let’s build houses"
   }
 ]
