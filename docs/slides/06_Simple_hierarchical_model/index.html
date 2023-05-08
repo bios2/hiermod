@@ -338,41 +338,93 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="simple-hierarchical-model" class="slide level2">
 <h2>“Simple” hierarchical model</h2>
+<div class="fragment">
 <p>Here, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.</p>
+</div>
+<div class="fragment">
 <p>Futhermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.</p>
+</div>
+<div class="fragment">
 <p>When we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model.</p>
+</div>
 </section>
 <section id="the" class="slide level2">
 <h2>The “<code>|</code>”</h2>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p>Most of you have probably already used the packages <code>lme4</code> or <code>brms</code> to build hierarchical models and so you have used the <code>|</code> to include a hierachy in your model.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>But do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?</p>
 </div>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"><div style="font-size: 0.8em">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>Let’s look at different <code>lme4</code> models to learn about some basic (and not so basic!) hierarchical models.</p>
+</div>
 </div>
 </section>
 <section id="a-bit-of-notation" class="slide level2">
 <h2>A bit of notation</h2>
+<div class="fragment">
 <div style="font-size: 0.9em">
 <p>Before we get into writing math, we need to define a bit of notation in addition of the one we have used so far.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
 <p>Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.</p>
-<p>We will use square brackets to define the sample</p>
+<p>We will use square brackets to define the sample.</p>
+</div>
+</div>
+<div class="fragment">
 <h3 id="example">Example</h3>
+<div style="font-size: 0.9em">
 <p><span class="math display">\[\mathbf{Z}_{f[i]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on the <span class="math inline">\(i^{\text{th}}\)</span> factor <span class="math inline">\(f\)</span>.</p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
 <p><strong>Note</strong> The <span class="math inline">\(i^{\text{th}}\)</span> sample of factor <span class="math inline">\(f\)</span> maybe associated to any level of factor <span class="math inline">\(f\)</span>.</p>
+</div>
+</div>
 </div>
 </section>
 <section id="hierarchy-on-the-intercept" class="slide level2">
 <h2>Hierarchy on the intercept</h2>
-<div style="font-size: 0.8em">
+<div class="fragment">
+<div style="font-size: 0.9em">
 <p><code>lme4</code> notation used <code>y ~ (1 | f)</code> or <code>y ~ 1 + (1 | f)</code></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
 <p>This model assumes there is a hierarchy solely on the intercept.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad \forall\quad i = 1\dots n\]</span> or</p>
-<p><span class="math display">\[y_i = b_{{f[i]}} + \varepsilon \quad \forall\quad i = 1\dots n\]</span> where</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f},\sigma^2\mathbf{I})\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
+<p>or</p>
+<p><span class="math display">\[y_i = b_{{f[i]}} + \varepsilon \quad \forall\quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
+<p>where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
+</div>
 </div>
 </section>
 <section id="hierarchy-on-the-intercept-1" class="slide level2">
@@ -381,15 +433,32 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchy-on-the-slopes" class="slide level2">
 <h2>Hierarchy on the slopes</h2>
-<div style="font-size: 0.7em">
+<div style="font-size: 0.8em">
 <p><code>lme4</code> notation : <code>y ~ 1 + (x | f)</code></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>This model assumes there is a hierarchy on the parameters associated to variable <code>x</code>.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad\forall\quad i = 1\dots n\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n\]</span> where</p>
-<p><span class="math inline">\(\mathbf{Z}\)</span> is an explanatory variable,</p>
-<p><span class="math inline">\(z_i\)</span> the <span class="math inline">\(i^{\text{th}}\)</span> values of <span class="math inline">\(\mathbf{Z}\)</span></p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f},\sigma^2\mathbf{I})\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>or</p>
+<p><span class="math display">\[y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>where</p>
+<p><span class="math inline">\(\mathbf{Z}\)</span> is an explanatory variable, <span class="math inline">\(z_i\)</span> the <span class="math inline">\(i^{\text{th}}\)</span> values of <span class="math inline">\(\mathbf{Z}\)</span> and</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
+</div>
 </div>
 </section>
 <section id="hierarchy-on-the-slopes-1" class="slide level2">
@@ -398,35 +467,58 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchy-on-intercept-and-slope" class="slide level2">
 <h2>Hierarchy on intercept and slope</h2>
+<div class="fragment">
 <p>Mathematically speaking, what are the differences between having a hierarchy on the intercept and a hierarchy on the slope ? Any idea ?</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</section>
 <section id="hierarchy-on-intercept-and-slope-1" class="slide level2">
 <h2>Hierarchy on intercept and slope</h2>
-<p>Answer : Very little !</p>
-<div style="font-size: 0.8em">
+<p><strong>Answer : Very little !</strong></p>
+<div class="fragment">
 <p>Actually, if we return to the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
+</div>
+<div class="fragment">
 <p>Well… Actually… When a hierarchy is applied on the intercept it is technically associated to a <strong>constant</strong> explanatory variable.</p>
 </div>
 </section>
 <section id="how-many-levels" class="slide level2">
 <h2>How many levels ?</h2>
+<div class="fragment">
 <p>A common question that often gets asked is :</p>
+</div>
+<div class="fragment">
 <p>“How many level is enough ?”</p>
+</div>
+<div class="fragment">
 <p>This is a simple questions that sadly does not have a simple answer.</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png" style="width:35.0%"></p>
+</figure>
+</div>
+</div>
+</section>
 <section id="how-many-levels-1" class="slide level2">
 <h2>How many levels ?</h2>
 <p>In these types of models we are interested in estimating the variance parameter <span class="math inline">\(\sigma^2_f\)</span> in</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> to get the best estimation of <span class="math inline">\(\mathbf{b}\)</span>.</p>
+<div class="fragment">
 <p>So, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”</p>
+</div>
+<div class="fragment">
 <p>However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.</p>
+</div>
 </section>
 <section id="how-many-levels-2" class="slide level2">
 <h2>How many levels ?</h2>
 <p>What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?</p>
+<div class="fragment">
 <h3 id="is-3-enough">Is 3 enough ?</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -442,6 +534,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </div><div class="column" style="width:50%;">
 <p>True variance : 0.25</p>
 <p>Estimated variance : 0.234</p>
+</div>
 </div>
 </div>
 </section>
@@ -553,33 +646,60 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="how-many-levels-8" class="slide level2">
 <h2>How many levels ?</h2>
 <p>There is a consensus among researchers working intimately with hierarchical models that when the interest is to properly estimate the variance parameter <span class="math inline">\(\sigma^2\)</span>, 5 or 6 levels is the extreme minimum.</p>
+<div class="fragment">
 <div style="font-size: 0.75em">
 <p>In the book <em>Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects</em>, James S. Hodges (2016) makes this very thoughtful statement :</p>
 <div style="color: blue">
 <p>“Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc.”</p>
 </div>
 </div>
+</div>
 </section>
 <section id="how-many-levels-9" class="slide level2">
 <h2>How many levels ?</h2>
 <p>So, what to do if the number of level is not high enough for your comfort ?</p>
+<div class="fragment">
 <p>You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.</p>
+</div>
+<div class="fragment">
 <p>How does this translate mathematically with what we have seen so far ?</p>
-
-<img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:30.0%"></p>
+</figure>
+</div>
+</div>
+</section>
 <section id="hierarchy-on-the-intercepts-mean" class="slide level2">
 <h2>Hierarchy on the intercept’s mean</h2>
-<div style="font-size: 0.7em">
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad i = 1\dots n\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_{f[i]} + \varepsilon \quad \forall\quad i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> This means that all samples <strong>among</strong> the levels of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span>.</p>
+<div style="font-size: 0.85em">
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f},\sigma_\mathbf{y}^2\mathbf{I})\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_{f[i]} + \varepsilon \quad \forall\quad i = 1\dots n\]</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.85em">
+<p>In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.85em">
+<p>This means that all samples <strong>among</strong> the levels of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span>.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.85em">
 <p>By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance.</p>
+</div>
 </div>
 </section>
 <section id="hierarchy-on-the-intercepts-mean-1" class="slide level2">
 <h2>Hierarchy on the intercept’s mean</h2>
-<div style="font-size: 1em">
-<p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f}\)</span>.</p>
+<p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span></p>
+<div class="fragment">
+<p>When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f}\)</span>.</p>
+</div>
+<div class="fragment">
 <p><strong>Note</strong>: This is essentially the same thing as a one-way analysis of variance.</p>
 </div>
 </section>
@@ -589,12 +709,28 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchy-on-the-slopes-mean" class="slide level2">
 <h2>Hierarchy on the slope’s mean</h2>
-<div style="font-size: 0.7em">
+<div class="fragment">
+<div style="font-size: 0.75em">
 <p>Developping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_{f_[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> This means that all the samples <strong>among</strong> the levels of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span>.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f},\sigma_\mathbf{y}^2\mathbf{I})\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_{f[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<p>In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<p>This means that all the samples <strong>among</strong> the levels of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span>.</p>
 <p>By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance.</p>
+</div>
 </div>
 </section>
 <section id="hierarchy-on-the-slopes-mean-1" class="slide level2">
@@ -603,23 +739,43 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="tracking-the-estimated-parameters" class="slide level2">
 <h2>Tracking the estimated parameters</h2>
+<div class="fragment">
 <div style="font-size: 0.8em;">
 <p>As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em;">
 <p>However, we need to be careful because the notation used can play tricks on us. This is especially true when using matrix notation.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em;">
 <p>For example, in</p>
-<p><span class="math display">\[\mathbf{b}_{f}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})\]</span> the number of levels are not explicitly defined and it is not clear if $ $ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not.</p>
+<p><span class="math display">\[\mathbf{b}_{f}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})\]</span> the number of levels are not explicitly defined and it is not clear if <span class="math inline">\(\mathbf{\Sigma}\)</span> includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em;">
 <p>In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using.</p>
+</div>
 </div>
 </section>
 <section id="choosing-the-right-model" class="slide level2">
 <h2>Choosing the right model</h2>
+<div class="fragment">
 <p>Although these different models are mathematically quite similar, they approach very different biological questions.</p>
+</div>
+<div class="fragment">
 <p>A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.</p>
+</div>
+<div class="fragment">
 <p>It is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward.</p>
 
+<p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
+<div class="footer footer-default">
 
-<img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
-
+</div>
 </div>
 </section>
     </div>
