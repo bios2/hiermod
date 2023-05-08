@@ -20,31 +20,31 @@ library(cmdstanr)
 Before starting work on real data, we are going to begin by learning how to make up some of our own.
 There are at least three reasons why this is a good idea:
 
-1.  **Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? or should the standard deviation be bigger? smaller? As we'll see, simulation will demystify the process. 
+1.  **Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? Or should the standard deviation be bigger? Smaller? As we'll see, simulation will demystify the process. 
 1. **Validate your model.** Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.
 1. **Test your understanding.** Perhaps most importantly, simulation helps you to test your own intuition.  If you can simulate data from your model, then you really understand it!
 If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's experience anyway] that a biologist will fail to learn something by simulating a dataset.
 
 ## Simple exercise in simulation
 
-Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abudance of ALL species) each of us is going to see on our hike?
+Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?
 
 ### Some questions to ask about simulated data
 
 1. What kind of observations are you going to make? Do they have a minimum or maximum value?
 Are they integers, or are they decimal numbers, or something else?
-1. Where do the numbers come from? This could be anything, from simple linear approximations (ie the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. 
+1. Where do the numbers come from? This could be anything, from simple linear approximations (i.e. the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. 
 1. How many observations will we be making?
 
 ### The process
 
-let's try to answer these questions for the bird walk we are about to take.
+Let's try to answer these questions for the bird walk we are about to take.
 
 1. We're going to count birds, so we'll have count data: a number that is either 0 or some positive, round number
-2. We'll make a simplifying assumption: everybody has the same chance of seeing a bird (i.e. no differences in skill or equipment), and everyone in the class is an independent observer (i.e. nobody is working in pairs, etc) 
-3. Everyone in the class makes only one count, so we have 23 (?) numbers.
+2. We'll make a simplifying assumption: everybody has the same chance of seeing a bird (i.e. no differences in skill or equipment), and everyone in the class is an independent observer (i.e. nobody is working in pairs, etc.) 
+3. Everyone in the class makes only one count, so we have 22 numbers.
 
-We're bayesians, so we need to write a probability distribution for all the possible values
+We're Bayesian, so we need to write a probability distribution for all the possible values.
 
 $$
 \begin{align}
@@ -65,10 +65,10 @@ We'll be talking about better ways to model count data in a later exercise! For 
 
 ### Simulation in R
 
-One of the most useful traits of bayesian models is that they are _generative_: they can be used to make a simulated dataset. 
+One of the most useful traits of Bayesian models is that they are _generative_: they can be used to make a simulated dataset. 
 We'll do that now for our bird example.
 
-let's simulate from a poisson distribution:
+let's simulate from a Poisson distribution:
 
 ```{r}
 set.seed(525600)
@@ -159,7 +159,7 @@ Stan code is written in a text file, which you then bring into R with the functi
 This does more than read the program, it compiles the code into a computer program. 
 When you sample the model, as we'll do later, Stan samples the posterior distribution using Hamiltonian Monte Carlo.
 
-This Stan program has two parts. Each part is separated with curly braces `{}`. The are they `data` block and the `generated quantities` block:
+This Stan program has two parts. Each part is separated with curly braces, `{}`. The are they `data` block and the `generated quantities` block:
 
 ```stan
 data {
@@ -348,6 +348,6 @@ TK Conclusion paragraph??
 * what would you do next to add complexity this model?
 
 #### Level 2
-* We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? how to these compare to the real data?
+* We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?
 
 #### Level 3
