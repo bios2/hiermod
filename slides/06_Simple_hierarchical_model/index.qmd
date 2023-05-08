@@ -41,16 +41,20 @@ Let's look at different `lme4` models to learn about some basic (and not so basi
 
 ## A bit of notation
 
+::: {style="font-size: 0.9em"}
 Before we get into writing math, we need to define a bit of notation in addition of the one we have used so far.
 
 Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript. 
 
-We will use square brackets to define the level of interest
+We will use square brackets to define the sample
 
 ### Example
 
-$$\mathbf{Z}_{f[l]}$$
-This means that, within $\mathbf{Z}$, we focus on $l^{\text{th}}$ level of factor $f$.
+$$\mathbf{Z}_{f[i]}$$
+This means that, within $\mathbf{Z}$, we focus on the $i^{\text{th}}$ factor $f$. 
+
+**Note** The $i^{\text{th}}$ sample of factor $f$ maybe associated to any level of factor $f$.
+:::
 
 ## Hierarchy on the intercept
 
@@ -61,13 +65,11 @@ This model assumes there is a hierarchy solely on the intercept.
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad \forall\quad i = 1\dots n$$
 or 
 
-$$y_i = b_{{f_i[l]}} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that the model values $b$ will change for a sample $i$ only when the level $l$ of the factor $f$ changes. 
-
-This is because in this model
+$$y_i = b_{{f[i]}} + \varepsilon \quad \forall\quad i = 1\dots n$$
+where
 
 $$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
 :::
@@ -120,13 +122,15 @@ This model assumes there is a hierarchy on the parameters associated to variable
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f$$
+$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad\forall\quad i = 1\dots n$$
 or 
 
-$$y_i = \beta_0 + b_{f[l_f]}z_i + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that the weight on variable $z$ will change for a sample $i$ only when the level $l$ of the factor $f$ changes. 
+$$y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
+where 
 
-This is because in this model
+$\mathbf{Z}$ is an explanatory variable, 
+
+$z_i$ the $i^{\text{th}}$ values of $\mathbf{Z}$ 
 
 $$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
 :::
@@ -177,7 +181,7 @@ par(xpd = FALSE)
 
 ## Hierarchy on intercept and slope
 
-Mathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?
+Mathematically speaking, what are the differences between having a hierarchy on the intercept and a hierarchy on the slope ? Any idea ?
 
 ![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
 
@@ -187,10 +191,10 @@ Answer : Very little !
 
 :::{style="font-size: 0.8em"}
 
-Actually, if we return the way $\mathbf{b}$ is defined we see that in both case it is defined as 
+Actually, if we return to the way $\mathbf{b}$ is defined we see that in both case it is defined as 
 
 $$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
-with the sole difference that $\mathbf{b}$ linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.
+with the sole difference that $\mathbf{b}$ is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.
 
 Well... Actually... When a hierarchy is applied on the intercept it is technically associated to a **constant** explanatory variable.
 :::
@@ -463,7 +467,7 @@ Estimated variance : `r round(var(sampl), 3)`
 
 ## How many levels ?
 
-There is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter $\sigma^2$, 5 or 6 levels is the extreme minimum.
+There is a consensus among researchers working intimately with hierarchical models that when the interest is to properly estimate the variance parameter $\sigma^2$, 5 or 6 levels is the extreme minimum.
 
 ::: {style="font-size: 0.75em"}
 In the book *Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects*, James S. Hodges (2016) makes this very thoughtful statement : 
@@ -479,21 +483,21 @@ So, what to do if the number of level is not high enough for your comfort ?
 
 You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.
 
-How does this translate mathematically, with what we have seen so far ?
+How does this translate mathematically with what we have seen so far ?
 
 ![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
 
 ## Hierarchy on the intercept's mean
 
 ::: {style="font-size: 0.7em"}
-$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad i = 1\dots n$$
 or 
 
-$$y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
+$$y_i = \beta_{f[i]} + \varepsilon \quad \forall\quad i = 1\dots n$$
+In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
 
 $$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
-In words, this means that all the samples **among** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
+This means that all samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[i]}$. 
 
 By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance. 
 :::
@@ -502,11 +506,10 @@ By developping our model this way, we focus on estimating the mean of groups in 
 
 ::: {style="font-size: 1em"}
 Let's take a deeper look at 
-$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
-When we study this way of sampling $\boldsymbol{\beta}_{f[l]}$, although our interest is more on $\mu_{f}$, we also have to estimate the variance term $\sigma^2_{f}$.
+$$\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+When we study this way of sampling $\boldsymbol{\beta}_{f[i]}$, although our interest is more on $\mu_{f}$, we also have to estimate the variance term $\sigma^2_{f}$.
 
 **Note**: This is essentially the same thing as a one-way analysis of variance.
-
 :::
 
 ## Hierarchy on the intercept's mean
@@ -582,14 +585,14 @@ abline(h = c(1, 0, -1),
 ::: {style="font-size: 0.7em"}
 Developping a hierarchy on the slope's mean translate mathematically in a very similar way as it does for the intercept. 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
 or 
 
-$$y_i = \beta_0 + \beta_{f_i[l]}x_i + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In this model, we assume that $\boldsymbol{\beta}_{f[l]}$ is distributed as 
+$$y_i = \beta_0 + \beta_{f_[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n$$
+In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
 
-$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
-In words, this means that all the samples **among** the $l^\text{th}$ level of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[l]}$. 
+$$\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+This means that all the samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[i]}$. 
 
 By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance. 
 :::
@@ -651,12 +654,12 @@ abline(a = 0, b = 1.25,
 ::: {style="font-size: 0.8em;"}
 As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.
 
-However, we need to be careful because the notation used can play trick on us. This is especially true when using matrix notation. 
+However, we need to be careful because the notation used can play tricks on us. This is especially true when using matrix notation. 
 
 For example, in 
 
 $$\mathbf{b}_{f}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})$$
-the number of levels are not explicitly defined and it is not clear if $ \mathbf{\Sigma}$ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or another values. 
+the number of levels are not explicitly defined and it is not clear if $ \mathbf{\Sigma}$ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not. 
 
 In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using. 
 
