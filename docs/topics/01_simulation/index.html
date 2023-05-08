@@ -178,6 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#parameter-recovery-1" id="toc-parameter-recovery-1" class="nav-link" data-scroll-target="#parameter-recovery-1">Parameter recovery</a>
   <ul class="collapse">
   <li><a href="#bayesplot" id="toc-bayesplot" class="nav-link" data-scroll-target="#bayesplot">bayesplot</a></li>
+  <li><a href="#shinystan" id="toc-shinystan" class="nav-link" data-scroll-target="#shinystan">Shinystan</a></li>
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
@@ -876,6 +877,9 @@ Visualize everything!
 <p><img src="index_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="shinystan" class="level3">
+<h3 class="anchored" data-anchor-id="shinystan">Shinystan</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>shinystan<span class="sc">::</span><span class="fu">launch_shinystan</span>(poisson_model_samp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1495,33 +1499,34 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb37-423"><a href="#cb37-423" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> avg_birds_per_person, <span class="at">col =</span> <span class="st">"orange"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
 <span id="cb37-424"><a href="#cb37-424" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb37-425"><a href="#cb37-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-426"><a href="#cb37-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-427"><a href="#cb37-427" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb37-428"><a href="#cb37-428" aria-hidden="true" tabindex="-1"></a>shinystan<span class="sc">::</span><span class="fu">launch_shinystan</span>(poisson_model_samp)</span>
-<span id="cb37-429"><a href="#cb37-429" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-430"><a href="#cb37-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-426"><a href="#cb37-426" aria-hidden="true" tabindex="-1"></a><span class="fu">### Shinystan</span></span>
+<span id="cb37-427"><a href="#cb37-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-428"><a href="#cb37-428" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
+<span id="cb37-429"><a href="#cb37-429" aria-hidden="true" tabindex="-1"></a>shinystan<span class="sc">::</span><span class="fu">launch_shinystan</span>(poisson_model_samp)</span>
+<span id="cb37-430"><a href="#cb37-430" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb37-431"><a href="#cb37-431" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-432"><a href="#cb37-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-433"><a href="#cb37-433" aria-hidden="true" tabindex="-1"></a>The distribution of the parameter here covers the real value of <span class="in">`r round(avg_birds_per_person, 2)`</span> pretty well! </span>
-<span id="cb37-434"><a href="#cb37-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-435"><a href="#cb37-435" aria-hidden="true" tabindex="-1"></a>We can look at this again with bayesplot</span>
-<span id="cb37-436"><a href="#cb37-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-439"><a href="#cb37-439" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-440"><a href="#cb37-440" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-441"><a href="#cb37-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-433"><a href="#cb37-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-434"><a href="#cb37-434" aria-hidden="true" tabindex="-1"></a>The distribution of the parameter here covers the real value of <span class="in">`r round(avg_birds_per_person, 2)`</span> pretty well! </span>
+<span id="cb37-435"><a href="#cb37-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-436"><a href="#cb37-436" aria-hidden="true" tabindex="-1"></a>We can look at this again with bayesplot</span>
+<span id="cb37-437"><a href="#cb37-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-440"><a href="#cb37-440" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb37-441"><a href="#cb37-441" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb37-442"><a href="#cb37-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-443"><a href="#cb37-443" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
-<span id="cb37-444"><a href="#cb37-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-445"><a href="#cb37-445" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
-<span id="cb37-446"><a href="#cb37-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-447"><a href="#cb37-447" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?</span>
-<span id="cb37-448"><a href="#cb37-448" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>what would you do next to add complexity this model?</span>
-<span id="cb37-449"><a href="#cb37-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-450"><a href="#cb37-450" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
-<span id="cb37-451"><a href="#cb37-451" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?</span>
-<span id="cb37-452"><a href="#cb37-452" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>take a closer look at <span class="in">`poisson_model_samp$summary()`</span> all the values of <span class="in">`bird_count`</span> are the same. That's correct, but why?</span>
-<span id="cb37-453"><a href="#cb37-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-454"><a href="#cb37-454" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
+<span id="cb37-443"><a href="#cb37-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-444"><a href="#cb37-444" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb37-445"><a href="#cb37-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-446"><a href="#cb37-446" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
+<span id="cb37-447"><a href="#cb37-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-448"><a href="#cb37-448" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?</span>
+<span id="cb37-449"><a href="#cb37-449" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>what would you do next to add complexity this model?</span>
+<span id="cb37-450"><a href="#cb37-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-451"><a href="#cb37-451" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
+<span id="cb37-452"><a href="#cb37-452" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?</span>
+<span id="cb37-453"><a href="#cb37-453" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>take a closer look at <span class="in">`poisson_model_samp$summary()`</span> all the values of <span class="in">`bird_count`</span> are the same. That's correct, but why?</span>
+<span id="cb37-454"><a href="#cb37-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-455"><a href="#cb37-455" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

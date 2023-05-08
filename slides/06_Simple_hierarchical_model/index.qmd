@@ -65,7 +65,7 @@ This model assumes there is a hierarchy solely on the intercept.
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad \forall\quad i = 1\dots n$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f},\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = b_{{f[i]}} + \varepsilon \quad \forall\quad i = 1\dots n$$
@@ -122,7 +122,7 @@ This model assumes there is a hierarchy on the parameters associated to variable
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad\forall\quad i = 1\dots n$$
+$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f},\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
@@ -490,14 +490,14 @@ How does this translate mathematically with what we have seen so far ?
 ## Hierarchy on the intercept's mean
 
 ::: {style="font-size: 0.7em"}
-$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad i = 1\dots n$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f},\sigma_\mathbf{y}^2\mathbf{I})$$
 or 
 
 $$y_i = \beta_{f[i]} + \varepsilon \quad \forall\quad i = 1\dots n$$
 In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
 
-$$\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
-This means that all samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[i]}$. 
+$$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+This means that all samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f}$. 
 
 By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance. 
 :::
@@ -506,8 +506,8 @@ By developping our model this way, we focus on estimating the mean of groups in 
 
 ::: {style="font-size: 1em"}
 Let's take a deeper look at 
-$$\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
-When we study this way of sampling $\boldsymbol{\beta}_{f[i]}$, although our interest is more on $\mu_{f}$, we also have to estimate the variance term $\sigma^2_{f}$.
+$$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+When we study this way of sampling $\boldsymbol{\beta}_{f}$, although our interest is more on $\mu_{f}$, we also have to estimate the variance term $\sigma^2_{f}$.
 
 **Note**: This is essentially the same thing as a one-way analysis of variance.
 :::
@@ -585,14 +585,14 @@ abline(h = c(1, 0, -1),
 ::: {style="font-size: 0.7em"}
 Developping a hierarchy on the slope's mean translate mathematically in a very similar way as it does for the intercept. 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f},\sigma_\mathbf{y}^2\mathbf{I})$$
 or 
 
-$$y_i = \beta_0 + \beta_{f_[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n$$
+$$y_i = \beta_0 + \beta_{f[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n$$
 In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
 
-$$\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
-This means that all the samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f[i]}$. 
+$$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+This means that all the samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f}$. 
 
 By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance. 
 :::
