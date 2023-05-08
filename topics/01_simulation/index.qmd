@@ -27,7 +27,7 @@ If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's
 
 ## Simple exercise in simulation
 
-Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds each of us is going to see on our hike?
+Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abudance of ALL species) each of us is going to see on our hike?
 
 ### Some questions to ask about simulated data
 
@@ -82,10 +82,10 @@ Some things to note in the code above:
 Every statistical distribution that is in R (which is a lot! almost all! ) has four different functions. 
 If the distribution is called `dist`, then they are:
 
-* `rdist` = the distribution functions 
-* `qdist` = the quantile functions 
-* `pdist` = the probability density function 
-* `ddist` the density function
+* `rdist` = draw random numbers from `dist` 
+* `qdist` = the quantile function -- what value gives a certain proportion of the distribution?
+* `pdist` = the probability density function -- what proportion of the distribution is below a certain value?
+* `ddist` the density function = draws the "shape" of a distribution. How probable are specific values?
 
 The other thing to note is that there are TWO simulation steps here: first, simulating a value of the average ($\lambda$) and second, simulating observations. 
 In our model, the Uniform distribution was referred to as the _prior_, and the Poisson distribution was referred to as a _likelihood_, but here you can see that they are very nearly the same thing: just statements about what distribution of values might be most consistent with the data.
@@ -114,12 +114,15 @@ simulate_some_birds <- function() {
   lambda <- runif(1, min = 0, max = 60)
   data.frame(obs = rpois(23, lambda = lambda))
 }
-  
-purrr::rerun(.n = 12, simulate_some_birds()) |> 
-  dplyr::bind_rows(.id = "sample") |> 
+
+rep_list <- replicate(12, simulate_some_birds())
+
+tibble::tibble(simulation = 1:12,
+               obs = rep_list) |> 
+  unnest(cols = "obs") |> 
   ggplot(aes(x = obs)) + 
-  geom_histogram() + 
-  facet_wrap(~sample) + 
+  geom_histogram(bins = 28) + 
+  facet_wrap(~simulation) + 
   theme_bw() + 
   labs(x = "Number of birds observed per person")
 ```
@@ -162,7 +165,7 @@ This Stan program has two parts. Each part is separated with curly braces `{}`. 
 data {
   int<lower=0> n_people;
 }
-```
+``` 
 
 And the generated quantites block.
 
@@ -179,9 +182,8 @@ generated quantities {
     bird_count[i] = poisson_rng(avg_birds_per_person);
   }
 }
-```
-
-```
+``` 
+ 
 
 Let's look at similarities and differences to the procedure in R:
 
@@ -280,7 +282,7 @@ Let's compare them
 
 ::::{.columns}
 
-::: {.column width="50%"}
+::: {.column width="45%"}
 ```{r}
 #| class-output: stan
 #| code-overflow: wrap
@@ -288,7 +290,10 @@ poisson_simulation
 ```
 :::
 
-::: {.column width="50%"}
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%"}
 ```{r}
 #| class-output: stan
 #| code-overflow: wrap
