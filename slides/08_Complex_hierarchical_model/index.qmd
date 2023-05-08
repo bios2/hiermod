@@ -36,15 +36,15 @@ This model assumes that factors `f` and `g` interact to make a hierarchy.
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g] },\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f\times g },\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{f[l_f]\times g[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, a multi-factor hierarchy can be constructed my multiplying the levels of individual factors to account for a more complexe hierarchy. Another way to think about this structure is to construct a complexe hierarchy using multiple simpler hierarchies. 
+$$y_i = b_{f[i]\times g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 
-This is because in this model
-
+where
 $$\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)$$
+
+Note that a multi-factor hierarchy can be constructed my multiplying the levels of each factor to account for a more complexe hierarchy. 
 :::
 
 ## Interacting hierarchies
@@ -101,13 +101,11 @@ This model assumes there is a hierarchy that varies among two factors that are i
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f} + \mathbf{b}_{g},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, this means that we are dealing with a model that has two intercepts, which are sampled independently so that the $b$s will change for a sample $i$ only when the interaction the level $l_f$ of the factor $f$ and the  level $l_g$ of the factor $g$ changes independently. 
-
-This is because in this model
+$$y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
+where
 
 $$\mathbf{b} \sim \mathcal{N}\left(0, 
                                 \begin{bmatrix}
@@ -115,6 +113,9 @@ $$\mathbf{b} \sim \mathcal{N}\left(0,
                                   0& \sigma^2_g\\
                                 \end{bmatrix}
                                 \right)$$
+
+Here, we are dealing with a model that has two intercepts, which are sampled independently so that the $b$s will change for a sample $i$ only when the the level of factor $f$ and the level of factor $g$ changes independently. 
+
 :::
 
 ## Multiple independent hierarchy
@@ -184,13 +185,11 @@ This model assumes there is a hierarchy that varies among the levels of factor `
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]}+\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f}+\mathbf{b}_{g\in f},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{f[l_f]}+b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
-In words, the model has two independent hierarchy, one changes for a sample $i$ as a single intercept hierarchy and the other will change for a sample $i$ only when the level $l_g$ of factor $g$ is **within** the level $l_f$ of the factor $f$ changes. 
-
-This is because in this model
+$$y_i = b_{f[i]}+b_{g[i]\in f[i]} + \varepsilon \quad i = 1\dots n$$
+where
 
 $$\mathbf{b} \sim \mathcal{N}\left(0, 
                                 \begin{bmatrix}
@@ -198,6 +197,9 @@ $$\mathbf{b} \sim \mathcal{N}\left(0,
                                   0& \sigma^2_{f\in g}\\
                                 \end{bmatrix}
                                 \right)$$
+
+Here, the model has two independent hierarchy, one changes for a sample $i$ as a single intercept hierarchy and the other will change for a sample $i$ only when the level of factor $g$ is **within** the level of factor $f$. 
+
 :::
 
 ## Hierarchies within hierarchies
@@ -263,10 +265,11 @@ legend("topright",
 ::: {style="font-size: 1.1em"}
 The two models discussed previously have a few interesting properties: 
 
-- They are mathematically equivalent. They present a similar mathematical structure but can be used to answer slightly different biological questions.
-- If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter).
+- They are very similar mathematically. 
+- Although they present a similar mathematical structure, they answer different biological questions.
+- If a particular level is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter).
 - They can be generalized to as many factors as we want. 
-- Models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy. 
+- In models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy. 
 :::
 
 ## Uncorrelated intercept and slope hierarchy  {style="font-size: 0.9em"}
@@ -278,10 +281,10 @@ This model assumes there is a hierarchy that varies independently among the leve
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f[l_f]}+\mathbf{Z}\mathbf{b}_{0f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{Z}\mathbf{b}_{0f},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{0f[l_f]}+zb_{1f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+$$y_i = b_{0f[i]}+zb_{1f[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 This is because in this model
 
 $$\begin{bmatrix}
@@ -364,7 +367,7 @@ par(xpd = FALSE)
 
 ## A small step back
 
-::: {style="font-size: 0.8em"}
+::: {style="font-size: 0.7em"}
 The structure of the hierarchy discussed so far were "simple" in the sense that they either required to estimate
 
 - A single variance parameter 
@@ -380,6 +383,8 @@ $$
 \end{bmatrix}
 $$
 
+In Bayesian, having uncorrelated variance allows us to sample variance parameter independently even with mutiple factors, which is computationally more efficient.
+
 From this point on, we will look at more complex covariance structures where the hierarchical levels are **not** independent from each other.
 :::
 
@@ -392,10 +397,10 @@ This model assumes the hierarchy between the intercept and the slope is correlat
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f[l_f]} +\mathbf{Z}\mathbf{b}_{1f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{Z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{0f_i[l_f]} + zb_{1f_i[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n$$
+$$y_i = b_{0f[i]} + zb_{1f[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 In this model
 
 $$\begin{bmatrix}
@@ -437,7 +442,7 @@ In the covariance matrix,
 
 ### Interpretation
 
-A covariance matrix with non-zero covariance describes dependence between the $b$s, which can tell use both the strength of the relation between pairs of parameters and the variance structure.
+A covariance matrix with non-zero covariance describes dependence between the $b$s, which can tell us both the strength of the relation between pairs of parameters and the variance structure.
 :::
 
 
@@ -474,6 +479,15 @@ contour(x, y, z,
         yaxs = "i",
         cex.axis = 2.5)
 
+interceptSlope30 <- MASS::mvrnorm(30,
+                                  mu = mu,
+                                  Sigma = sigma)
+
+points(interceptSlope30,
+       pch = 19,
+       cex = 2,
+       col = "blue")
+
 #par(mar = c(10,5,0,0))
 par(xpd = TRUE)
 mtext("Slope", 1, cex = 3, line = 1.5)
@@ -505,31 +519,31 @@ val <- seq(-0.5, 2.5, length = 200)
 marginal <- dnorm(val, mean = 1, sd = 0.3)
 marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
 
-polygon(x = c(marginalRot[,1] + 0,marginalRot[1,1] + 0),
-        y = c(marginalRot[,2] + 2.5, marginalRot[1,2] + 2.5),
-        col = rgb(0,0,1, 0.5),border = NA)
+#polygon(x = c(marginalRot[,1] + 0,marginalRot[1,1] + 0),
+#        y = c(marginalRot[,2] + 2.5, marginalRot[1,2] + 2.5),
+#        col = rgb(0,0,1, 0.5),border = NA)
 
-lines(marginalRot[,1]+0, marginalRot[,2] + 2.5, lwd = 3)
+#lines(marginalRot[,1]+0, marginalRot[,2] + 2.5, lwd = 3)
 
-polygon(x = c(marginalRot[,1] + 1.0,marginalRot[1,1] + 1.0),
-        y = c(marginalRot[,2] + 3.5, marginalRot[1,2] + 3.5),
-        col = rgb(0,0,1, 0.5),border = NA)
+#polygon(x = c(marginalRot[,1] + 1.0,marginalRot[1,1] + 1.0),
+#        y = c(marginalRot[,2] + 3.5, marginalRot[1,2] + 3.5),
+#        col = rgb(0,0,1, 0.5),border = NA)
 
-lines(marginalRot[,1]+1.0, marginalRot[,2] + 3.5, lwd = 3)
-par(xpd = TRUE)
-polygon(x = c(marginalRot[,1] + 2.0,marginalRot[1,1] + 2.0),
-        y = c(marginalRot[,2] + 4.5, marginalRot[1,2] + 4.5),
-        col = rgb(0,0,1, 0.5),border = NA)
+#lines(marginalRot[,1]+1.0, marginalRot[,2] + 3.5, lwd = 3)
+#par(xpd = TRUE)
+#polygon(x = c(marginalRot[,1] + 2.0,marginalRot[1,1] + 2.0),
+#        y = c(marginalRot[,2] + 4.5, marginalRot[1,2] + 4.5),
+#        col = rgb(0,0,1, 0.5),border = NA)
 
-lines(marginalRot[,1]+2.0, marginalRot[,2] + 4.5, lwd = 3)
-par(xpd = FALSE)
+#lines(marginalRot[,1]+2.0, marginalRot[,2] + 4.5, lwd = 3)
+#par(xpd = FALSE)
 ```
 
 ## So far what we have done
 
 . . . 
 
-![](https://images2.minutemediacdn.com/image/upload/c_fill,w_2160,ar_16:9,f_auto,q_auto,g_auto/shape%2Fcover%2Fsport%2Flegos-hero-0eaaf09e995d184255040705b42f46f4.jpg){fig-align="center" width=20%}
+![](https://images2.minutemediacdn.com/image/upload/c_fill,w_2160,ar_16:9,f_auto,q_auto,g_auto/shape%2Fcover%2Fsport%2Flegos-hero-0eaaf09e995d184255040705b42f46f4.jpg){fig-align="center" width=100%}
 
 ## What we can do now !
 
@@ -539,7 +553,7 @@ par(xpd = FALSE)
 
 ## Combining different types of hierarchy {style="font-size: 0.9em"}
 
-With what we learned so far, it is possible to build more complex model by combining different hierarchy we studied. 
+With what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours. 
 
 To show how we can combine different hierarchy, let's use *Bidonia examplaris* as an example.
 
