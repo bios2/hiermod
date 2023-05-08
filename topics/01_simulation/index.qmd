@@ -16,8 +16,16 @@ library(tidyverse)
 library(cmdstanr)
 ```
 
+:::{.callout-tip}
+## Goals of this lesson
+1. Introduce the idea of a generative model
+1. Using generated data to validate a model
+1. Stan model syntax
+1. Outline of a Bayesian workflow
+:::
 
-Before starting work on real data, we are going to begin by learning how to make up some of our own.
+
+Before starting work on real data, we are going to begin by learning how to generate data by simulation.
 There are at least three reasons why this is a good idea:
 
 1.  **Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? Or should the standard deviation be bigger? Smaller? As we'll see, simulation will demystify the process. 
@@ -161,7 +169,7 @@ When you sample the model, as we'll do later, Stan samples the posterior distrib
 
 This Stan program has two parts. Each part is separated with curly braces, `{}`. The are they `data` block and the `generated quantities` block:
 
-```stan
+```Stan
 data {
   int<lower=0> n_people;
 }
@@ -169,7 +177,7 @@ data {
 
 And the generated quantites block.
 
-```stan
+```Stan
 generated quantities {
   real<lower=0> avg_observed;
   // an array -- like a list in R
@@ -220,7 +228,8 @@ Each time the model samples, it draws a new value for the unobserved average (`a
 
 Let's pull out just a few of these datasets and visualize them.
 
-We'll use a wonderful package called [`tidybayes`]() to easily extract posterior draws from `cmdstan` objects. 
+We'll use a wonderful package called [`tidybayes`](http://mjskay.github.io/tidybayes/) to easily extract posterior draws from `cmdstan` objects. 
+
 
 ```{r}
 library(tidybayes)
@@ -229,12 +238,32 @@ pois_sim <- tidybayes::spread_draws(poisson_sim_stan,
                                     bird_count[],
                                     ndraws = 20,
                                     seed = 525600)
+```
+
+Here we pass `tidybayes::spread_draws()` the model name, as well as the names of the parameters that we want to work with. The parameter `avg_birds_per_person` is a scalar, so we only need to mention it by name. The parameter vector `bird_count` needs square brackets after its name. This syntax is strange but gives us lots of options for more complex models, as we'll see! 
+
+Let's see what we get from tidybayes by looking at the first few rows.
+
+```{r}
+pois_sim |> 
+  as.data.frame() |> 
+  head(25) |> 
+  knitr::kable()
+```
+
+Remember we asked for only 20 of the 4000 posterior samples. Here is one sample, and just a bit of the next. We can see that the value of `avg_birds_per_person` is the same within each iteration. The model uses this average to sample every `bird_count` value, one for each person making observations. Then the program takes a new value of `avg_birds_per_person` and simulates everyone's `bird_count` again!
+
+Let's take a look at some of these simulations:
+
+```{r}
+#| fig-cap: Prior simulations of bird counts. Green bars are the mean for a particular simulation, and orange histograms show the distribution of observations around this mean.
 
 pois_sim |> 
   ggplot(aes(x = bird_count)) + 
-  geom_histogram() + 
-  geom_vline(aes(xintercept = avg_birds_per_person), col = "darkgreen") + 
-  facet_wrap(~.draw)
+  geom_histogram(fill = "orange") + 
+  geom_vline(aes(xintercept = avg_birds_per_person), col = "darkgreen", lwd = 1) + 
+  facet_wrap(~.draw) + 
+  theme_bw()
 ```
 
 ## Parameter recovery
@@ -282,6 +311,9 @@ Let's compare them
 
 ::::{.columns}
 
+::: {.column width="2.5%"}
+:::
+
 ::: {.column width="45%"}
 ```{r}
 #| class-output: stan
@@ -290,7 +322,7 @@ poisson_simulation
 ```
 :::
 
-::: {.column width="10%"}
+::: {.column width="5%"}
 :::
 
 ::: {.column width="45%"}
@@ -299,6 +331,9 @@ poisson_simulation
 #| code-overflow: wrap
 poisson_model
 ```
+:::
+
+::: {.column width="2.5%"}
 :::
 
 ::::
@@ -328,26 +363,60 @@ Second, the `generated quantities` block means something different now. Previous
 Let us see if the model recovers our parameters. Once again, we connect a dataset to our model with a list:
 
 ```{r}
-poisson_model_samp <- poisson_model$sample(data  = list(bird_count_observed = bird_count,
-                                  n_people = length(bird_count)), refresh = 0)
+bird_data_list <- list(bird_count_observed = bird_count,
+                       n_people = length(bird_count))
+
+poisson_model_samp <- poisson_model$sample(data  = bird_data_list,
+                                           refresh = 0)
 
 poisson_model_samp$summary()
 ```
 
-The distribution of the parameter here covers the real value of `r avg_birds_per_person` pretty well! 
+We can look at a table of coefficients but it is much easier to once again look at posterior samples as a figure.
+
+:::{.callout-note}
+# Visualize everything! 
+Bayesian workflows are highly visual. Make as many plots as you can: of your parameters, your predictions, the performance of your chains, etc.
+:::
+
+### bayesplot
+
+Another essential package for working with posterior samples is called [`bayesplot`](http://mc-stan.org/bayesplot/)
+
+```{r}
+## Extract draws from the model object
+poisson_model_draws <- poisson_model_samp$draws()
+
+bayesplot::mcmc_areas(poisson_model_draws, pars = "avg_birds_per_person") + 
+  geom_vline(xintercept = avg_birds_per_person, col = "orange", lwd = 2)
+```
+
+### Shinystan
+
+```{r, eval=FALSE}
+shinystan::launch_shinystan(poisson_model_samp)
+```
 
 
-TK Conclusion paragraph??
+
+The distribution of the parameter here covers the real value of `r round(avg_birds_per_person, 2)` pretty well! 
+
+We can look at this again with bayesplot
+
+```{r}
+
+```
+
 
 ## Exercises
 
 #### Level 1
 
 * Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?
-* take a closer look at `poisson_model_samp$summary()` all the values of `bird_count` are the same. That's correct, but why?
 * what would you do next to add complexity this model?
 
 #### Level 2
 * We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?
+* take a closer look at `poisson_model_samp$summary()` all the values of `bird_count` are the same. That's correct, but why?
 
 #### Level 3
