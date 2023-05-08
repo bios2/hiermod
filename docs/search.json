@@ -1096,7 +1096,7 @@
     "href": "slides/03_Stan/index.html#hmc",
     "title": "Stan",
     "section": "HMC",
-    "text": "HMC\nMetropolis and Gibbs limitations:\n\nA lot of tuning to find the best spot between large and small steps\nInefficient in high-dimensional spaces\nCan’t travel long distances between isolated local minimums\n\nHamiltonian Monte Carlo:\n\nUses a gradient-based MCMC to reduce the random walk (hence autocorrelation)\n\nStatic HMC\nNo-U-Turn Sampler (NUTS)\n\nDon’t get it? Viz it!"
+    "text": "HMC\n\nMetropolis and Gibbs limitations:\n\nA lot of tuning to find the best spot between large and small steps\nInefficient in high-dimensional spaces\nCan’t travel long distances between isolated local minimums\n\nHamiltonian Monte Carlo:\n\nUses a gradient-based MCMC to reduce the random walk (hence autocorrelation)\n\nStatic HMC\nNo-U-Turn Sampler (NUTS)\n\nDon’t get it? Viz it!"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#frequentist",
@@ -1355,7 +1355,7 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy",
     "title": "Complex hierarchical models",
     "section": "Combining different types of hierarchy",
-    "text": "Combining different types of hierarchy\nWith what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours.\nTo show how we can combine different hierarchy, let’s use Bidonia examplaris as an example.\nQuestion\n“Data”"
+    "text": "Combining different types of hierarchy\nWith what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours.\nTo show how we can combine different hierarchy, let’s go back again to our now favorite plant Bidonia examplaris.\nQuestion\nSampling scheme"
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#second",
@@ -1783,5 +1783,12 @@
     "title": "Data simulation",
     "section": "Exercises",
     "text": "Exercises\n\nLevel 1\n\nLet’s go birding! everyone in the class, over lunch, will go and count birds by eye! we’ll collect the vector, run and sample the model. Did our prior turn out to be appropriate?\nwhat would you do next to add complexity this model?\n\n\n\nLevel 2\n\nWe plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?\ntake a closer look at poisson_model_samp$summary() all the values of bird_count are the same. That’s correct, but why?\n\n\n\nLevel 3"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-1",
+    "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-1",
+    "title": "Complex hierarchical models",
+    "section": "Combining different types of hierarchy",
+    "text": "Combining different types of hierarchy\nHow should we build our model to answer our question given our sampling scheme ?"
   }
 ]
