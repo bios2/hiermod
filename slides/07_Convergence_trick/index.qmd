@@ -123,9 +123,14 @@ arrows(x0 = -1 ,
 
 Mathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.
 
+. . .
+
 This means that 
 
 $$\mathcal{N}(\mu, \sigma^2)$$
+
+. . .
+
 is exactly the same as 
 
 $$\mathcal{N}(0, \sigma^2) + \mu$$
@@ -167,9 +172,14 @@ legend("topright",legend=c(expression(sigma==1),
 
 Mathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.
 
+. . .
+
 This means that 
 
 $$\mathcal{N}(\mu, \sigma^2)$$
+
+. . .
+
 is exactly the same as 
 
 $$\mathcal{N}(\mu, 1) \times \sigma^2$$
@@ -191,9 +201,10 @@ The example I gave above is straight forward to visualize but is badly adapted t
 
 :::{style="font-size: 0.95em"}
 The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.
-:::
+
 
 To do this, we need to work with a multivariate Gaussian distribution.
+:::
 
 ## The convergence trick {auto-animate="true"}
 
@@ -303,24 +314,24 @@ However, we need to delve a little deeper into matrix algebra to understand how 
 ## Scaling a covariance matrix {auto-animate="true"}
 
 ::: {style="font-size: 0.8em"}
-First recall that an covariance matrix $\mathbf{\Sigma}$ is a square matrix (i.e. it is an $n\times n$ matrix).
+First recall that a covariance matrix $\mathbf{\Sigma}$ is a square matrix (i.e. it is an $n\times n$ matrix).
 
 To scale $\mathbf{\Sigma}$, we cannot only multiply it by a scalar or even by a single matrix, we need to use the following matrix multiplication
 
-$$\mathbf{A}\mathbf{\Sigma}\mathbf{A}^t$$
-where $\mathbf{A}$ is a $p\times n$ matrix of weight to be used for the scaling (a "scaling" matrix) and $\mathbf{A}^t$ is its tranpose.
+$$\mathbf{L}\mathbf{\Sigma}\mathbf{L}^t$$
+where $\mathbf{L}$ is a $p\times n$ matrix of weight to be used for the scaling (a "scaling" matrix) and $\mathbf{L}^t$ is its tranpose.
 
 The technical reason why we **need** to use the equation above is to ensure that the resulting scaled covariance matrix also has an $n \times n$ dimension. 
 
 If only
-$$\mathbf{A}\mathbf{\Sigma}$$
+$$\mathbf{L}\mathbf{\Sigma}$$
 is used the dimension of the resulting matrix also would be $p \times p$.
 :::
 
 ## Square-root of a matrix
 
 ::: {style="font-size: 0.8em"}
-Because in our problem weighting (or scaling) matrices are usually other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way square-root a matrix.
+Because in our problem weighting (or scaling) matrices is usually done with other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way to square-root a matrix.
 
 This where the genious of André-Louis Cholesky comes to the rescue.
 :::
@@ -336,7 +347,7 @@ André-Louis Cholesky discovered a matrix decomposition approach probably around
 
 The Cholesky decomposition allows to decompose a square matrix in a triangular matrix, which, when multiplied by its transposed will allow us to recover the initial matrix. 
 
-In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice
+In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrices.
 
 In math terms the Cholesky decomposition is defined as 
 $$\mathbf{A} = \mathbf{L}\mathbf{L}^t$$

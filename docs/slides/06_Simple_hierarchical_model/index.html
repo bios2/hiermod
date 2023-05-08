@@ -355,11 +355,14 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="a-bit-of-notation" class="slide level2">
 <h2>A bit of notation</h2>
+<div style="font-size: 0.9em">
 <p>Before we get into writing math, we need to define a bit of notation in addition of the one we have used so far.</p>
 <p>Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.</p>
-<p>We will use square brackets to define the level of interest</p>
+<p>We will use square brackets to define the sample</p>
 <h3 id="example">Example</h3>
-<p><span class="math display">\[\mathbf{Z}_{f[l]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on <span class="math inline">\(l^{\text{th}}\)</span> level of factor <span class="math inline">\(f\)</span>.</p>
+<p><span class="math display">\[\mathbf{Z}_{f[i]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on the <span class="math inline">\(i^{\text{th}}\)</span> factor <span class="math inline">\(f\)</span>.</p>
+<p><strong>Note</strong> The <span class="math inline">\(i^{\text{th}}\)</span> sample of factor <span class="math inline">\(f\)</span> maybe associated to any level of factor <span class="math inline">\(f\)</span>.</p>
+</div>
 </section>
 <section id="hierarchy-on-the-intercept" class="slide level2">
 <h2>Hierarchy on the intercept</h2>
@@ -367,9 +370,8 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><code>lme4</code> notation used <code>y ~ (1 | f)</code> or <code>y ~ 1 + (1 | f)</code></p>
 <p>This model assumes there is a hierarchy solely on the intercept.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l]},\sigma^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
-<p><span class="math display">\[y_i = b_{{f_i[l]}} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the model values <span class="math inline">\(b\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
-<p>This is because in this model</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad \forall\quad i = 1\dots n\]</span> or</p>
+<p><span class="math display">\[y_i = b_{{f[i]}} + \varepsilon \quad \forall\quad i = 1\dots n\]</span> where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
 </div>
 </section>
@@ -383,9 +385,10 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><code>lme4</code> notation : <code>y ~ 1 + (x | f)</code></p>
 <p>This model assumes there is a hierarchy on the parameters associated to variable <code>x</code>.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_0 + b_{f[l_f]}z_i + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that the weight on variable <span class="math inline">\(z\)</span> will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
-<p>This is because in this model</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f[i]},\sigma^2\mathbf{I}) \quad\forall\quad i = 1\dots n\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n\]</span> where</p>
+<p><span class="math inline">\(\mathbf{Z}\)</span> is an explanatory variable,</p>
+<p><span class="math inline">\(z_i\)</span> the <span class="math inline">\(i^{\text{th}}\)</span> values of <span class="math inline">\(\mathbf{Z}\)</span></p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
 </div>
 </section>
@@ -395,15 +398,15 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchy-on-intercept-and-slope" class="slide level2">
 <h2>Hierarchy on intercept and slope</h2>
-<p>Mathematically speaking, what are the differences between having a hierarchy on the intercept and a slope ? Any idea ?</p>
+<p>Mathematically speaking, what are the differences between having a hierarchy on the intercept and a hierarchy on the slope ? Any idea ?</p>
 
 <img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchy-on-intercept-and-slope-1" class="slide level2">
 <h2>Hierarchy on intercept and slope</h2>
 <p>Answer : Very little !</p>
 <div style="font-size: 0.8em">
-<p>Actually, if we return the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
+<p>Actually, if we return to the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
 <p>Well… Actually… When a hierarchy is applied on the intercept it is technically associated to a <strong>constant</strong> explanatory variable.</p>
 </div>
 </section>
@@ -549,7 +552,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="how-many-levels-8" class="slide level2">
 <h2>How many levels ?</h2>
-<p>There is a consensus among researchers working intimately with hierarchical that when the interest is to properly estimate the variance parameter <span class="math inline">\(\sigma^2\)</span>, 5 or 6 levels is the extreme minimum.</p>
+<p>There is a consensus among researchers working intimately with hierarchical models that when the interest is to properly estimate the variance parameter <span class="math inline">\(\sigma^2\)</span>, 5 or 6 levels is the extreme minimum.</p>
 <div style="font-size: 0.75em">
 <p>In the book <em>Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects</em>, James S. Hodges (2016) makes this very thoughtful statement :</p>
 <div style="color: blue">
@@ -561,22 +564,22 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>How many levels ?</h2>
 <p>So, what to do if the number of level is not high enough for your comfort ?</p>
 <p>You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.</p>
-<p>How does this translate mathematically, with what we have seen so far ?</p>
+<p>How does this translate mathematically with what we have seen so far ?</p>
 
 <img data-src="https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
 <section id="hierarchy-on-the-intercepts-mean" class="slide level2">
 <h2>Hierarchy on the intercept’s mean</h2>
 <div style="font-size: 0.7em">
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[l]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_{f_i[l]} + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> In words, this means that all the samples <strong>among</strong> the <span class="math inline">\(l^\text{th}\)</span> level of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad i = 1\dots n\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_{f[i]} + \varepsilon \quad \forall\quad i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> This means that all samples <strong>among</strong> the levels of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span>.</p>
 <p>By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance.</p>
 </div>
 </section>
 <section id="hierarchy-on-the-intercepts-mean-1" class="slide level2">
 <h2>Hierarchy on the intercept’s mean</h2>
 <div style="font-size: 1em">
-<p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f}\)</span>.</p>
+<p>Let’s take a deeper look at <span class="math display">\[\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> When we study this way of sampling <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span>, although our interest is more on <span class="math inline">\(\mu_{f}\)</span>, we also have to estimate the variance term <span class="math inline">\(\sigma^2_{f}\)</span>.</p>
 <p><strong>Note</strong>: This is essentially the same thing as a one-way analysis of variance.</p>
 </div>
 </section>
@@ -588,9 +591,9 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Hierarchy on the slope’s mean</h2>
 <div style="font-size: 0.7em">
 <p>Developping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[l]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_{f_i[l]}x_i + \varepsilon \quad \forall\quad l = 1\dots k\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span> is distributed as</p>
-<p><span class="math display">\[\boldsymbol{\beta}_{f[l]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> In words, this means that all the samples <strong>among</strong> the <span class="math inline">\(l^\text{th}\)</span> level of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[l]}\)</span>.</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f[i]},\sigma_\mathbf{y}^2\mathbf{I}) \quad \forall\quad l = 1\dots k\]</span> or</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_{f_[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n\]</span> In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
+<p><span class="math display">\[\boldsymbol{\beta}_{f[i]} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span> This means that all the samples <strong>among</strong> the levels of factor <span class="math inline">\(f\)</span> are used to estimate <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span>.</p>
 <p>By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance.</p>
 </div>
 </section>
@@ -602,9 +605,9 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Tracking the estimated parameters</h2>
 <div style="font-size: 0.8em;">
 <p>As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.</p>
-<p>However, we need to be careful because the notation used can play trick on us. This is especially true when using matrix notation.</p>
+<p>However, we need to be careful because the notation used can play tricks on us. This is especially true when using matrix notation.</p>
 <p>For example, in</p>
-<p><span class="math display">\[\mathbf{b}_{f}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})\]</span> the number of levels are not explicitly defined and it is not clear if $ $ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or another values.</p>
+<p><span class="math display">\[\mathbf{b}_{f}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})\]</span> the number of levels are not explicitly defined and it is not clear if $ $ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not.</p>
 <p>In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using.</p>
 </div>
 </section>
