@@ -169,10 +169,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#plotting-parameters." id="toc-plotting-parameters." class="nav-link" data-scroll-target="#plotting-parameters.">Plotting parameters.</a></li>
   <li><a href="#posterior-predictions-the-easy-way-to-check-your-model" id="toc-posterior-predictions-the-easy-way-to-check-your-model" class="nav-link" data-scroll-target="#posterior-predictions-the-easy-way-to-check-your-model">Posterior predictions: the easy way to check your model</a>
   <ul class="collapse">
+  <li><a href="#posterior-prediction-in-r" id="toc-posterior-prediction-in-r" class="nav-link" data-scroll-target="#posterior-prediction-in-r">Posterior prediction in R</a></li>
   <li><a href="#posterior-predictions-in-stan" id="toc-posterior-predictions-in-stan" class="nav-link" data-scroll-target="#posterior-predictions-in-stan">Posterior predictions in Stan</a></li>
   </ul></li>
   <li><a href="#different-groups-are-different" id="toc-different-groups-are-different" class="nav-link" data-scroll-target="#different-groups-are-different">Different groups are different</a></li>
-  <li><a href="#stan-code-for-species-differences" id="toc-stan-code-for-species-differences" class="nav-link" data-scroll-target="#stan-code-for-species-differences">Stan code for species differences</a>
+  <li><a href="#stan-code-for-species-differences" id="toc-stan-code-for-species-differences" class="nav-link" data-scroll-target="#stan-code-for-species-differences">Stan code for species differences</a></li>
+  <li><a href="#quick-detour-vector-indexing" id="toc-quick-detour-vector-indexing" class="nav-link" data-scroll-target="#quick-detour-vector-indexing">Quick detour : vector indexing</a></li>
+  <li><a href="#vector-indexing-in-stan" id="toc-vector-indexing-in-stan" class="nav-link" data-scroll-target="#vector-indexing-in-stan">Vector indexing in Stan</a>
   <ul class="collapse">
   <li><a href="#sampling-the-species-model" id="toc-sampling-the-species-model" class="nav-link" data-scroll-target="#sampling-the-species-model">Sampling the species model</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
@@ -245,122 +248,85 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>- CmdStan path: /Users/blag1404/.cmdstan/cmdstan-2.31.0</code></pre>
+<pre><code>- CmdStan path: /Users/amacdonald/.cmdstan/cmdstan-2.31.0</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>- CmdStan version: 2.31.0</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-A newer version of CmdStan is available. See ?install_cmdstan() to install it.
-To disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>normal_dist <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"topics/discrete_predictor/normal_dist.stan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>In file included from /var/folders/0j/98_mjhrx2hv9t4j9hwknnnch0000gp/T/RtmpRR0WKH/model-ccd53924b4c9.hpp:1:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/src/stan/model/model_header.hpp:4:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math.hpp:19:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev.hpp:10:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev/fun.hpp:198:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor.hpp:14:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function&lt;const std::error_category *, unsigned lon</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>g&gt;' is deprecated [-Wdeprecated-declarations]
-        struct hash_base : std::unary_function&lt;T, std::size_t&gt; {};
-                                ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base&lt;const std::error_category *&gt;' requested here
-        : public boost::hash_detail::hash_base&lt;T*&gt;
-                 ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash&lt;const std::error_category *&gt;' requested here
-        boost::hash&lt;T&gt; hasher;
-                       ^</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine&lt;const std::error_category *&gt;' requested here
-        hash_combine(seed, &amp;v.category());
-        ^
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function&lt;const std::error_category *, unsigned long&gt;' has been explicitly marked deprecated here
-struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
-                            ^</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:825:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
-#    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
-                                        ^
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:810:49: note: expanded from macro '_LIBCPP_DEPRECATED'
-#      define _LIBCPP_DEPRECATED __attribute__((deprecated))
-                                                ^</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1 warning generated.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>normal_dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>normal_dist <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"topics/discrete_predictor/normal_dist.stan"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>normal_dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<div class="sourceCode" id="cb16"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] measurements;</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  measurements ~ normal(mu, sigma);</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">17</span>,<span class="dv">2</span>);</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] measurements;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  measurements ~ normal(mu, sigma);</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">17</span>,<span class="dv">2</span>);</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>The model section looks very much like the approach shown above. I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. These are for all the probability distribution of all the quantities in the model, both observed and unobserved. Above, we state which is which. Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian defines the world as umeasured or measured quantities – and above we state which are observed (the data block) and which are unobserved (the parameters block).</p>
+<p>The model section looks very much like the approach shown above. I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. These are for all the probability distribution of all the quantities in the model, both observed and unobserved. Above, we state which is which. Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian separates the world into unmeasured or measured quantities – and above we state which are observed (the data block) and which are unobserved (the parameters block).</p>
 <p>We can fit this model to data and see the result:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first we drop all NA values</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>penguins_nobillNA <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#drop NA values</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(bill_depth_mm))</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">## then we assemble the data as a list.</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="do">## I'm using the base function with()</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  it lets me use the variable name directly </span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">## without writing penguins_nobillNA$bill_depth_mm</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>list_bill_dep <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_nobillNA,</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_depth_mm),</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">measurements =</span> bill_depth_mm))</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>     </span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="do">## sample 4 chains, suppress counting iterations</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>samp_bill_dep <span class="ot">&lt;-</span> normal_dist<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> list_bill_dep, </span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">refresh =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first we drop all NA values</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>penguins_nobillNA <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#drop NA values</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(bill_depth_mm))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">## then we assemble the data as a list.</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## I'm using the base function with()</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  it lets me use the variable name directly </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## without writing penguins_nobillNA$bill_depth_mm</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>list_bill_dep <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_nobillNA,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_depth_mm),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">measurements =</span> bill_depth_mm))</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## sample 4 chains, suppress counting iterations</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>samp_bill_dep <span class="ot">&lt;-</span> normal_dist<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> list_bill_dep, </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">refresh =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Running MCMC with 4 parallel chains...
-
-Chain 1 finished in 0.0 seconds.
+<pre><code>Running MCMC with 4 parallel chains...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/var/folders/x7/l08zn2396g797m5ws54np_6w0000gp/T/RtmpjkCX3Q/model-2b065a711b40.stan', line 10, column 2 to column 35)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain 1 finished in 0.0 seconds.
 Chain 2 finished in 0.0 seconds.
 Chain 3 finished in 0.0 seconds.
-Chain 4 finished in 0.0 seconds.
+Chain 4 finished in 0.1 seconds.
 
 All 4 chains finished successfully.
 Mean chain execution time: 0.0 seconds.
 Total execution time: 0.3 seconds.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## summarize the samples for each parameter into a nice table</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>samp_bill_dep <span class="sc">|&gt;</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">summarise_draws</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">flextable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## summarize the samples for each parameter into a nice table</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>samp_bill_dep <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">summarise_draws</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">flextable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-27683dc0{}.cl-27602608{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-27634b94{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-27634b9e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-27635f30{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-27635f3a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-27635f3b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-27635f3c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-27635f3d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-27635f44{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-27683dc0"><thead><tr style="overflow-wrap:break-word;"><th class="cl-27635f30"><p class="cl-27634b94"><span class="cl-27602608">variable</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">mean</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">median</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">sd</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">mad</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">q5</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">q95</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">rhat</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">ess_bulk</span></p></th><th class="cl-27635f3a"><p class="cl-27634b9e"><span class="cl-27602608">ess_tail</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-27635f3b"><p class="cl-27634b94"><span class="cl-27602608">lp__</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">-405.517903</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">-405.237000</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">0.98288692</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">0.7316631</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">-407.417350</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">-404.564000</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">1.001721</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">2,002.271</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">2,730.987</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-27635f3b"><p class="cl-27634b94"><span class="cl-27602608">mu</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">17.153799</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">17.154350</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">0.10712589</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">0.1073402</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">16.978065</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">17.325635</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">1.002372</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">3,746.551</span></p></td><td class="cl-27635f3c"><p class="cl-27634b9e"><span class="cl-27602608">2,546.023</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-27635f3d"><p class="cl-27634b94"><span class="cl-27602608">sigma</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">1.975684</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">1.973705</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">0.07558657</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">0.0759536</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">1.854629</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">2.101022</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">1.000407</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">3,123.813</span></p></td><td class="cl-27635f44"><p class="cl-27634b9e"><span class="cl-27602608">2,491.416</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-b73f4aca{}.cl-b7345552{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b73847b6{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b73847c0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b7386110{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b738611a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b738611b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b7386124{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b7386125{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b738612e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-b73f4aca"><thead><tr style="overflow-wrap:break-word;"><th class="cl-b7386110"><p class="cl-b73847b6"><span class="cl-b7345552">variable</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">mean</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">median</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">sd</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">mad</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">q5</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">q95</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">rhat</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">ess_bulk</span></p></th><th class="cl-b738611a"><p class="cl-b73847c0"><span class="cl-b7345552">ess_tail</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-b738611b"><p class="cl-b73847b6"><span class="cl-b7345552">lp__</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">-405.519866</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">-405.238000</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">0.98562163</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">0.72943920</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">-407.51800</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">-404.566950</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">1.001127</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">2,055.283</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">2,395.517</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b738611b"><p class="cl-b73847b6"><span class="cl-b7345552">mu</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">17.153263</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">17.153200</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">0.10663323</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">0.10645068</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">16.97629</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">17.327010</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">1.002410</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">3,642.968</span></p></td><td class="cl-b7386124"><p class="cl-b73847c0"><span class="cl-b7345552">2,547.292</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b7386125"><p class="cl-b73847b6"><span class="cl-b7345552">sigma</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">1.974912</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">1.972805</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">0.07609649</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">0.07828869</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">1.85571</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">2.103691</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">1.000581</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">3,407.796</span></p></td><td class="cl-b738612e"><p class="cl-b73847c0"><span class="cl-b7345552">2,417.765</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 </section>
@@ -369,13 +335,13 @@ Total execution time: 0.3 seconds.</code></pre>
 <p>We don’t have one distribution for each of our unknown numbers: we have thousands. We need to get a sense of what these possible values mean scientifically. An excellent way to do this is by making as many pictures as possible. We will start with making plots of specific parameters.</p>
 <p>We can look at the distributions easily using the <code>bayesplot</code> package.</p>
 <div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>))</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">mcmc_hist</span>(draws, <span class="at">pars =</span> <span class="st">"mu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">mcmc_hist</span>(draws, <span class="at">pars =</span> <span class="st">"mu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">mcmc_hist</span>(draws, <span class="at">pars =</span> <span class="st">"sigma"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">mcmc_hist</span>(draws, <span class="at">pars =</span> <span class="st">"sigma"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
@@ -392,13 +358,17 @@ Total execution time: 0.3 seconds.</code></pre>
 </div>
 <div class="page-columns page-full"><p>Notice that the distributions do not have the same shape as the prior– this is particularly true for <span class="math inline">\(\sigma\)</span>. This shows an important point: the prior distribution does not determine what the posterior looks like. </p><div class="no-row-height column-margin column-container"><span class="">should I sample from the prior and show them that?</span></div></div>
 <div class="cell page-columns page-full">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>draws <span class="sc">|&gt;</span>  </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">as_draws_df</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sigma)) <span class="sc">+</span> </span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dotsinterval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>draws <span class="sc">|&gt;</span>  </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">as_draws_df</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sigma)) <span class="sc">+</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dotsinterval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using the `size` aesthetic with geom_segment was deprecated in ggplot2 3.4.0.
+ℹ Please use the `linewidth` aesthetic instead.</code></pre>
+</div>
 
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
 <div id="fig-dotsint" class="quarto-figure quarto-figure-center anchored">
@@ -411,7 +381,9 @@ Total execution time: 0.3 seconds.</code></pre>
 </section>
 <section id="posterior-predictions-the-easy-way-to-check-your-model" class="level2">
 <h2 class="anchored" data-anchor-id="posterior-predictions-the-easy-way-to-check-your-model">Posterior predictions: the easy way to check your model</h2>
-<p>People care so much about model diagnostics. And with good reason: you need to know how much to trust a model before using it to make a scientific claim. One way to find out who’s model is best would be to use them to make a prediction, and see how right you are. Nobody has the time for that. so instead the best choice is to see how well the data fit your sample.</p>
+<p>People care so much about model diagnostics. And with good reason: you need to know how much to trust a model before using it to make a scientific claim. One way to find out which model is best would be to use them to make a prediction, and see how right you are. An alternative is to see how well the data fit your sample.</p>
+<section id="posterior-prediction-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-prediction-in-r">Posterior prediction in R</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># just get some draws</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>))</span>
@@ -440,103 +412,75 @@ Total execution time: 0.3 seconds.</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
 <section id="posterior-predictions-in-stan" class="level3">
 <h3 class="anchored" data-anchor-id="posterior-predictions-in-stan">Posterior predictions in Stan</h3>
 <p>We can simulate our own data in R if we are comfortable translating between R and Stan. However, if you want, you can do the same process in Stan. Just combine the section we just looked at with the previous work on data simulation we started with:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng.stan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>In file included from /var/folders/0j/98_mjhrx2hv9t4j9hwknnnch0000gp/T/RtmpRR0WKH/model-ccd53cedaa90.hpp:1:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/src/stan/model/model_header.hpp:4:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math.hpp:19:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev.hpp:10:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev/fun.hpp:198:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor.hpp:14:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function&lt;const std::error_category *, unsigned lon</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>g&gt;' is deprecated [-Wdeprecated-declarations]
-        struct hash_base : std::unary_function&lt;T, std::size_t&gt; {};
-                                ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base&lt;const std::error_category *&gt;' requested here
-        : public boost::hash_detail::hash_base&lt;T*&gt;
-                 ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash&lt;const std::error_category *&gt;' requested here
-        boost::hash&lt;T&gt; hasher;
-                       ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine&lt;const std::error_category *&gt;' requested here
-        hash_combine(seed, &amp;v.category());
-        ^
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function&lt;const std::error_category *, unsigned long&gt;' has been explicitly marked deprecated here
-struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
-                            ^</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:825:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
-#    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
-                                        ^
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:810:49: note: expanded from macro '_LIBCPP_DEPRECATED'
-#      define _LIBCPP_DEPRECATED __attribute__((deprecated))
-                                                ^</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1 warning generated.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng.stan"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>normal_dist_rng</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<div class="sourceCode" id="cb32"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] measurements;</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  measurements ~ normal(mu, sigma);</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">17</span>,<span class="dv">2</span>);</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span>{</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] yrep;</span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N){</span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    yrep[i] = normal_rng(mu, sigma);</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] measurements;</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  measurements ~ normal(mu, sigma);</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">17</span>,<span class="dv">2</span>);</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span>{</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] yrep;</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N){</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    yrep[i] = normal_rng(mu, sigma);</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>Here we have a handy random number generator <em>inside</em> Stan.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>samp_bill_dep_rng <span class="ot">&lt;-</span> normal_dist_rng<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep,</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>samp_bill_dep_rng <span class="ot">&lt;-</span> normal_dist_rng<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Running MCMC with 4 parallel chains...
-
-Chain 1 finished in 0.2 seconds.
-Chain 2 finished in 0.2 seconds.
-Chain 3 finished in 0.2 seconds.
-Chain 4 finished in 0.2 seconds.
+<pre><code>Running MCMC with 4 parallel chains...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/var/folders/x7/l08zn2396g797m5ws54np_6w0000gp/T/RtmpjkCX3Q/model-2b064a36d475.stan', line 10, column 2 to column 35)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain 1 finished in 0.6 seconds.
+Chain 2 finished in 0.6 seconds.
+Chain 3 finished in 0.6 seconds.
+Chain 4 finished in 0.5 seconds.
 
 All 4 chains finished successfully.
-Mean chain execution time: 0.2 seconds.
-Total execution time: 0.3 seconds.</code></pre>
+Mean chain execution time: 0.6 seconds.
+Total execution time: 0.6 seconds.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep_rng<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(draws_matrix, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep_rng<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(draws_matrix, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -553,10 +497,10 @@ Total execution time: 0.3 seconds.</code></pre>
 <h2 class="anchored" data-anchor-id="different-groups-are-different">Different groups are different</h2>
 <p>let’s add in differences among species</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm, <span class="at">fill =</span> species))<span class="sc">+</span> </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm, <span class="at">fill =</span> species))<span class="sc">+</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 2 rows containing non-finite values (`stat_bin()`).</code></pre>
 </div>
@@ -589,32 +533,32 @@ Warning
 \end{align}
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan"</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan"</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<div class="sourceCode" id="cb39"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] measurements;</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=<span class="dv">3</span>&gt; spp_id;</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[<span class="dv">3</span>] mu;</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N){</span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    measurements[i] ~ normal(mu[spp_id[i]], sigma);</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">17</span>,<span class="dv">2</span>);</span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span>{</span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] yrep;</span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N){</span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    yrep[i] = normal_rng(mu[spp_id[i]], sigma);</span>
-<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] measurements;</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=<span class="dv">3</span>&gt; spp_id;</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[<span class="dv">3</span>] mu;</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N){</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    measurements[i] ~ normal(mu[spp_id[i]], sigma);</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">17</span>,<span class="dv">2</span>);</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  sigma ~ exponential(<span class="dv">1</span>);</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span>{</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] yrep;</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N){</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>    yrep[i] = normal_rng(mu[spp_id[i]], sigma);</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>There’s a few differences to notice here:</p>
@@ -624,56 +568,50 @@ Warning
 <li>notice the for-loop.</li>
 </ul>
 <div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">Do we maybe add an illustration here of how vector indexing works?</span></div></div>
-<p>We can write this model a different way as well:</p>
+</section>
+<section id="quick-detour-vector-indexing" class="level2">
+<h2 class="anchored" data-anchor-id="quick-detour-vector-indexing">Quick detour : vector indexing</h2>
+<p>A <strong>very</strong> useful technique, in both R and Stan, is transforming a vector with <em>indexing</em>. Vector indexing requires two vectors: the first contains values we want to select or replicate, the second contains integers giving the positions of the elements we want. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp.stan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>In file included from /var/folders/0j/98_mjhrx2hv9t4j9hwknnnch0000gp/T/RtmpRR0WKH/model-ccd542fd48cf.hpp:1:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/src/stan/model/model_header.hpp:4:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math.hpp:19:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev.hpp:10:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/rev/fun.hpp:198:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor.hpp:14:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/integrate_ode_rk45.hpp:6:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/stan/math/prim/functor/ode_rk45.hpp:9:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint.hpp:76:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/numeric/odeint/integrate/observer_collection.hpp:23:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function.hpp:30:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/detail/prologue.hpp:17:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/function/function_base.hpp:21:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index.hpp:29:
-In file included from /Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/type_index/stl_type_index.hpp:47:
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:132:33: warning: 'unary_function&lt;const std::error_category *, unsigned lon</code></pre>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>some_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>, <span class="st">"cheeze"</span>, <span class="st">"pizza"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>positions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">5</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>some_values[positions]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "taco"  "taco"  "cat"   "cat"   "goat"  "taco"  "taco"  "pizza"</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>g&gt;' is deprecated [-Wdeprecated-declarations]
-        struct hash_base : std::unary_function&lt;T, std::size_t&gt; {};
-                                ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:692:18: note: in instantiation of template class 'boost::hash_detail::hash_base&lt;const std::error_category *&gt;' requested here
-        : public boost::hash_detail::hash_base&lt;T*&gt;
-                 ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:420:24: note: in instantiation of template class 'boost::hash&lt;const std::error_category *&gt;' requested here
-        boost::hash&lt;T&gt; hasher;
-                       ^
-/Users/blag1404/.cmdstan/cmdstan-2.31.0/stan/lib/stan_math/lib/boost_1.78.0/boost/container_hash/hash.hpp:551:9: note: in instantiation of function template specialization 'boost::hash_combine&lt;const std::error_category *&gt;' requested here
-        hash_combine(seed, &amp;v.category());
-        ^
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:23:29: note: 'unary_function&lt;const std::error_category *, unsigned long&gt;' has been explicitly marked deprecated here
-struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
-                            ^</code></pre>
 </div>
+<p>This works for number values as well, and is very useful when you want to do simulations! let’s simulate three groups with different averages.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>some_means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">17</span>, <span class="dv">19</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>some_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">42</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">the_mean =</span> some_means[index],</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">labels =</span> some_labels[index],</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(the_mean),</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">mean =</span> the_mean,</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sd =</span> <span class="dv">1</span>))</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="sc">|&gt;</span> </span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> obs, <span class="at">fill =</span> labels)) <span class="sc">+</span> </span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:825:41: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
-#    define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
-                                        ^
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__config:810:49: note: expanded from macro '_LIBCPP_DEPRECATED'
-#      define _LIBCPP_DEPRECATED __attribute__((deprecated))
-                                                ^</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1 warning generated.</code></pre>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="vector-indexing-in-stan" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="vector-indexing-in-stan">Vector indexing in Stan</h2>
+<p>We can use this precise technique in Stan:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp.stan"</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <div class="sourceCode" id="cb46"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
@@ -701,7 +639,6 @@ struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
 <section id="sampling-the-species-model" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="sampling-the-species-model">Sampling the species model</h3>
 <p>We have to make a new data list, since we’ve added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species.</p>
-<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">which model to sample? here i’m doing the vectorized one just because</span></div></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>list_bill_dep_spp <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_nobillNA,</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(</span>
@@ -718,21 +655,21 @@ struct _LIBCPP_TEMPLATE_VIS _LIBCPP_DEPRECATED_IN_CXX11 unary_function
 <div class="cell-output cell-output-stdout">
 <pre><code>Running MCMC with 4 parallel chains...
 
-Chain 1 finished in 0.2 seconds.
-Chain 2 finished in 0.2 seconds.
-Chain 3 finished in 0.2 seconds.
-Chain 4 finished in 0.2 seconds.
+Chain 1 finished in 0.4 seconds.
+Chain 2 finished in 0.4 seconds.
+Chain 3 finished in 0.4 seconds.
+Chain 4 finished in 0.4 seconds.
 
 All 4 chains finished successfully.
-Mean chain execution time: 0.2 seconds.
-Total execution time: 0.3 seconds.</code></pre>
+Mean chain execution time: 0.4 seconds.
+Total execution time: 0.6 seconds.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">summarise_draws</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">flextable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-34bfa0ee{}.cl-34b94e56{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-34bc2090{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-34bc209a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-34bc3120{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-34bc312a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-34bc3148{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-34bc3149{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-34bc314a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-34bc3152{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-34bfa0ee"><thead><tr style="overflow-wrap:break-word;"><th class="cl-34bc3120"><p class="cl-34bc2090"><span class="cl-34b94e56">variable</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">mean</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">median</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">sd</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">mad</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">q5</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">q95</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">rhat</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">ess_bulk</span></p></th><th class="cl-34bc312a"><p class="cl-34bc209a"><span class="cl-34b94e56">ess_tail</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-34bc3148"><p class="cl-34bc2090"><span class="cl-34b94e56">mu[1]</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.342279</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.342700</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">0.0925255</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">0.09370032</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.191475</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.496210</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">0.9999724</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">5,216.525</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">3,465.222</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-34bc3148"><p class="cl-34bc2090"><span class="cl-34b94e56">mu[2]</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.413635</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.413550</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">0.1363026</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">0.13721463</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.192790</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">18.635550</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">1.0022979</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">4,489.522</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">3,302.227</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-34bc3148"><p class="cl-34bc2090"><span class="cl-34b94e56">mu[3]</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">14.988620</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">14.988350</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">0.1027920</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">0.10415265</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">14.818680</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">15.158030</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">1.0016231</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">4,638.918</span></p></td><td class="cl-34bc3149"><p class="cl-34bc209a"><span class="cl-34b94e56">3,165.413</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-34bc314a"><p class="cl-34bc2090"><span class="cl-34b94e56">sigma</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">1.123076</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">1.121415</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">0.0433132</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">0.04283231</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">1.054366</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">1.196584</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">1.0005175</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">4,833.206</span></p></td><td class="cl-34bc3152"><p class="cl-34bc209a"><span class="cl-34b94e56">3,186.883</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-bde7066a{}.cl-bdda3ef8{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-bddf7256{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-bddf726a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-bddf8dfe{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-bddf8e08{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-bddf8e26{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-bddf8e4e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-bddf8e58{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-bddf8e62{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-bde7066a"><thead><tr style="overflow-wrap:break-word;"><th class="cl-bddf8dfe"><p class="cl-bddf7256"><span class="cl-bdda3ef8">variable</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">mean</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">median</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">sd</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">mad</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">q5</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">q95</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">rhat</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">ess_bulk</span></p></th><th class="cl-bddf8e08"><p class="cl-bddf726a"><span class="cl-bdda3ef8">ess_tail</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-bddf8e26"><p class="cl-bddf7256"><span class="cl-bdda3ef8">mu[1]</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.344415</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.34430</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.09061830</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.08776992</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.195665</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.494110</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">1.0004890</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">4,260.944</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">2,939.608</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-bddf8e26"><p class="cl-bddf7256"><span class="cl-bdda3ef8">mu[2]</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.415457</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.41570</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.13413702</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.13476834</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.192590</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">18.635200</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.9999069</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">4,350.885</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">2,973.301</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-bddf8e26"><p class="cl-bddf7256"><span class="cl-bdda3ef8">mu[3]</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">14.988184</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">14.98820</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.09959683</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.09770334</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">14.822400</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">15.153215</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">1.0017211</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">4,391.914</span></p></td><td class="cl-bddf8e4e"><p class="cl-bddf726a"><span class="cl-bdda3ef8">3,055.671</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-bddf8e58"><p class="cl-bddf7256"><span class="cl-bdda3ef8">sigma</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">1.123397</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">1.12138</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.04282709</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">0.04263216</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">1.055339</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">1.197273</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">1.0011013</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">4,408.110</span></p></td><td class="cl-bddf8e62"><p class="cl-bddf726a"><span class="cl-bdda3ef8">2,924.840</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <p>and we can repeat the posterior checking from before:</p>
@@ -743,7 +680,7 @@ Total execution time: 0.3 seconds.</code></pre>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(spp_draws_matrix, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The predicted distribution is now much more like the real data</p>
@@ -766,7 +703,7 @@ Total execution time: 0.3 seconds.</code></pre>
 <span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
 <span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -1036,7 +973,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb52-49"><a href="#cb52-49" aria-hidden="true" tabindex="-1"></a>The model section looks very much like the approach shown above. </span>
 <span id="cb52-50"><a href="#cb52-50" aria-hidden="true" tabindex="-1"></a>I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. </span>
 <span id="cb52-51"><a href="#cb52-51" aria-hidden="true" tabindex="-1"></a>These are for all the probability distribution of all the quantities in the model, both observed and unobserved. Above, we state which is which. </span>
-<span id="cb52-52"><a href="#cb52-52" aria-hidden="true" tabindex="-1"></a>Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian defines the world as umeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).</span>
+<span id="cb52-52"><a href="#cb52-52" aria-hidden="true" tabindex="-1"></a>Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian separates the world into unmeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).</span>
 <span id="cb52-53"><a href="#cb52-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-54"><a href="#cb52-54" aria-hidden="true" tabindex="-1"></a>We can fit this model to data and see the result: </span>
 <span id="cb52-55"><a href="#cb52-55" aria-hidden="true" tabindex="-1"></a></span>
@@ -1107,206 +1044,241 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb52-126"><a href="#cb52-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-127"><a href="#cb52-127" aria-hidden="true" tabindex="-1"></a>People care so much about model diagnostics. </span>
 <span id="cb52-128"><a href="#cb52-128" aria-hidden="true" tabindex="-1"></a>And with good reason: you need to know how much to trust a model before using it to make a scientific claim. </span>
-<span id="cb52-129"><a href="#cb52-129" aria-hidden="true" tabindex="-1"></a>One way to find out who's model is best would be to use them to make a prediction, and see how right you are. </span>
-<span id="cb52-130"><a href="#cb52-130" aria-hidden="true" tabindex="-1"></a>Nobody has the time for that. so instead the best choice is to see how well the data fit your sample. </span>
+<span id="cb52-129"><a href="#cb52-129" aria-hidden="true" tabindex="-1"></a>One way to find out which model is best would be to use them to make a prediction, and see how right you are. </span>
+<span id="cb52-130"><a href="#cb52-130" aria-hidden="true" tabindex="-1"></a>An alternative is to see how well the data fit your sample. </span>
 <span id="cb52-131"><a href="#cb52-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-134"><a href="#cb52-134" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-135"><a href="#cb52-135" aria-hidden="true" tabindex="-1"></a><span class="co"># just get some draws</span></span>
-<span id="cb52-136"><a href="#cb52-136" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>))</span>
-<span id="cb52-137"><a href="#cb52-137" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
-<span id="cb52-138"><a href="#cb52-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-139"><a href="#cb52-139" aria-hidden="true" tabindex="-1"></a><span class="do">## set up a matrix. for every posterior sample, </span></span>
-<span id="cb52-140"><a href="#cb52-140" aria-hidden="true" tabindex="-1"></a><span class="do">## (that is, for a value of mu and a value of sigma) </span></span>
-<span id="cb52-141"><a href="#cb52-141" aria-hidden="true" tabindex="-1"></a><span class="do">## draw a whole fake dataset from a normal distribution with that mean and sd. </span></span>
-<span id="cb52-142"><a href="#cb52-142" aria-hidden="true" tabindex="-1"></a>nsamples <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb52-143"><a href="#cb52-143" aria-hidden="true" tabindex="-1"></a>yrep <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">ncol =</span> list_bill_dep<span class="sc">$</span>N, <span class="at">nrow =</span> nsamples)</span>
-<span id="cb52-144"><a href="#cb52-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-145"><a href="#cb52-145" aria-hidden="true" tabindex="-1"></a><span class="co"># pick some random rows</span></span>
-<span id="cb52-146"><a href="#cb52-146" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb52-147"><a href="#cb52-147" aria-hidden="true" tabindex="-1"></a>chosen_samples <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(draws_matrix), <span class="at">replace =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> nsamples)</span>
-<span id="cb52-148"><a href="#cb52-148" aria-hidden="true" tabindex="-1"></a>subset_draws <span class="ot">&lt;-</span> draws_matrix[chosen_samples,]</span>
-<span id="cb52-149"><a href="#cb52-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-150"><a href="#cb52-150" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsamples){</span>
-<span id="cb52-151"><a href="#cb52-151" aria-hidden="true" tabindex="-1"></a> yrep[r,] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> list_bill_dep<span class="sc">$</span>N, </span>
-<span id="cb52-152"><a href="#cb52-152" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> subset_draws[r, <span class="st">"mu"</span>], </span>
-<span id="cb52-153"><a href="#cb52-153" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> subset_draws[r, <span class="st">"sigma"</span>])</span>
-<span id="cb52-154"><a href="#cb52-154" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb52-155"><a href="#cb52-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-156"><a href="#cb52-156" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
-<span id="cb52-157"><a href="#cb52-157" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> yrep)</span>
-<span id="cb52-158"><a href="#cb52-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-159"><a href="#cb52-159" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-132"><a href="#cb52-132" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior prediction in R</span></span>
+<span id="cb52-133"><a href="#cb52-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-136"><a href="#cb52-136" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-137"><a href="#cb52-137" aria-hidden="true" tabindex="-1"></a><span class="co"># just get some draws</span></span>
+<span id="cb52-138"><a href="#cb52-138" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>))</span>
+<span id="cb52-139"><a href="#cb52-139" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
+<span id="cb52-140"><a href="#cb52-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-141"><a href="#cb52-141" aria-hidden="true" tabindex="-1"></a><span class="do">## set up a matrix. for every posterior sample, </span></span>
+<span id="cb52-142"><a href="#cb52-142" aria-hidden="true" tabindex="-1"></a><span class="do">## (that is, for a value of mu and a value of sigma) </span></span>
+<span id="cb52-143"><a href="#cb52-143" aria-hidden="true" tabindex="-1"></a><span class="do">## draw a whole fake dataset from a normal distribution with that mean and sd. </span></span>
+<span id="cb52-144"><a href="#cb52-144" aria-hidden="true" tabindex="-1"></a>nsamples <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb52-145"><a href="#cb52-145" aria-hidden="true" tabindex="-1"></a>yrep <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">ncol =</span> list_bill_dep<span class="sc">$</span>N, <span class="at">nrow =</span> nsamples)</span>
+<span id="cb52-146"><a href="#cb52-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-147"><a href="#cb52-147" aria-hidden="true" tabindex="-1"></a><span class="co"># pick some random rows</span></span>
+<span id="cb52-148"><a href="#cb52-148" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb52-149"><a href="#cb52-149" aria-hidden="true" tabindex="-1"></a>chosen_samples <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(draws_matrix), <span class="at">replace =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> nsamples)</span>
+<span id="cb52-150"><a href="#cb52-150" aria-hidden="true" tabindex="-1"></a>subset_draws <span class="ot">&lt;-</span> draws_matrix[chosen_samples,]</span>
+<span id="cb52-151"><a href="#cb52-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-152"><a href="#cb52-152" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsamples){</span>
+<span id="cb52-153"><a href="#cb52-153" aria-hidden="true" tabindex="-1"></a> yrep[r,] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> list_bill_dep<span class="sc">$</span>N, </span>
+<span id="cb52-154"><a href="#cb52-154" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> subset_draws[r, <span class="st">"mu"</span>], </span>
+<span id="cb52-155"><a href="#cb52-155" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> subset_draws[r, <span class="st">"sigma"</span>])</span>
+<span id="cb52-156"><a href="#cb52-156" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-157"><a href="#cb52-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-158"><a href="#cb52-158" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
+<span id="cb52-159"><a href="#cb52-159" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> yrep)</span>
 <span id="cb52-160"><a href="#cb52-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-161"><a href="#cb52-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-162"><a href="#cb52-162" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictions in Stan</span></span>
+<span id="cb52-161"><a href="#cb52-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-162"><a href="#cb52-162" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-163"><a href="#cb52-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-164"><a href="#cb52-164" aria-hidden="true" tabindex="-1"></a>We can simulate our own data in R if we are comfortable translating between R and Stan. However, if you want, you can do the same process in Stan. Just combine the section we just looked at with the previous work on data simulation we started with: </span>
+<span id="cb52-164"><a href="#cb52-164" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictions in Stan</span></span>
 <span id="cb52-165"><a href="#cb52-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-168"><a href="#cb52-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-169"><a href="#cb52-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb52-170"><a href="#cb52-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-171"><a href="#cb52-171" aria-hidden="true" tabindex="-1"></a>normal_dist_rng <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng.stan"</span>)</span>
+<span id="cb52-166"><a href="#cb52-166" aria-hidden="true" tabindex="-1"></a>We can simulate our own data in R if we are comfortable translating between R and Stan. However, if you want, you can do the same process in Stan. Just combine the section we just looked at with the previous work on data simulation we started with: </span>
+<span id="cb52-167"><a href="#cb52-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-170"><a href="#cb52-170" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-171"><a href="#cb52-171" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
 <span id="cb52-172"><a href="#cb52-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-173"><a href="#cb52-173" aria-hidden="true" tabindex="-1"></a>normal_dist_rng</span>
-<span id="cb52-174"><a href="#cb52-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-175"><a href="#cb52-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-176"><a href="#cb52-176" aria-hidden="true" tabindex="-1"></a>Here we have a handy random number generator _inside_ Stan.</span>
+<span id="cb52-173"><a href="#cb52-173" aria-hidden="true" tabindex="-1"></a>normal_dist_rng <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng.stan"</span>)</span>
+<span id="cb52-174"><a href="#cb52-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-175"><a href="#cb52-175" aria-hidden="true" tabindex="-1"></a>normal_dist_rng</span>
+<span id="cb52-176"><a href="#cb52-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb52-177"><a href="#cb52-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-180"><a href="#cb52-180" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-181"><a href="#cb52-181" aria-hidden="true" tabindex="-1"></a>samp_bill_dep_rng <span class="ot">&lt;-</span> normal_dist_rng<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb52-182"><a href="#cb52-182" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep,</span>
-<span id="cb52-183"><a href="#cb52-183" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb52-184"><a href="#cb52-184" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span>
-<span id="cb52-185"><a href="#cb52-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-186"><a href="#cb52-186" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep_rng<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
-<span id="cb52-187"><a href="#cb52-187" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
-<span id="cb52-188"><a href="#cb52-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-189"><a href="#cb52-189" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
-<span id="cb52-190"><a href="#cb52-190" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(draws_matrix, <span class="dv">50</span>))</span>
-<span id="cb52-191"><a href="#cb52-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-192"><a href="#cb52-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-193"><a href="#cb52-193" aria-hidden="true" tabindex="-1"></a>The code is much shorter, because there is less to do in R. </span>
-<span id="cb52-194"><a href="#cb52-194" aria-hidden="true" tabindex="-1"></a>Both of these gives the same outcome: the posterior predictive distribution. </span>
-<span id="cb52-195"><a href="#cb52-195" aria-hidden="true" tabindex="-1"></a>This gives us a straightfoward way to test our model's performance: </span>
-<span id="cb52-196"><a href="#cb52-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-197"><a href="#cb52-197" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>we use the model to generate fake observations. </span>
-<span id="cb52-198"><a href="#cb52-198" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>plot these on top of the real data</span>
-<span id="cb52-199"><a href="#cb52-199" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>if the data is a really poor match, we know our model has a distorted view of the world.</span>
-<span id="cb52-200"><a href="#cb52-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-201"><a href="#cb52-201" aria-hidden="true" tabindex="-1"></a><span class="fu">## Different groups are different</span></span>
+<span id="cb52-178"><a href="#cb52-178" aria-hidden="true" tabindex="-1"></a>Here we have a handy random number generator _inside_ Stan.</span>
+<span id="cb52-179"><a href="#cb52-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-182"><a href="#cb52-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-183"><a href="#cb52-183" aria-hidden="true" tabindex="-1"></a>samp_bill_dep_rng <span class="ot">&lt;-</span> normal_dist_rng<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb52-184"><a href="#cb52-184" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep,</span>
+<span id="cb52-185"><a href="#cb52-185" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb52-186"><a href="#cb52-186" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span>
+<span id="cb52-187"><a href="#cb52-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-188"><a href="#cb52-188" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep_rng<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
+<span id="cb52-189"><a href="#cb52-189" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
+<span id="cb52-190"><a href="#cb52-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-191"><a href="#cb52-191" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
+<span id="cb52-192"><a href="#cb52-192" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(draws_matrix, <span class="dv">50</span>))</span>
+<span id="cb52-193"><a href="#cb52-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-194"><a href="#cb52-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-195"><a href="#cb52-195" aria-hidden="true" tabindex="-1"></a>The code is much shorter, because there is less to do in R. </span>
+<span id="cb52-196"><a href="#cb52-196" aria-hidden="true" tabindex="-1"></a>Both of these gives the same outcome: the posterior predictive distribution. </span>
+<span id="cb52-197"><a href="#cb52-197" aria-hidden="true" tabindex="-1"></a>This gives us a straightfoward way to test our model's performance: </span>
+<span id="cb52-198"><a href="#cb52-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-199"><a href="#cb52-199" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>we use the model to generate fake observations. </span>
+<span id="cb52-200"><a href="#cb52-200" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>plot these on top of the real data</span>
+<span id="cb52-201"><a href="#cb52-201" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>if the data is a really poor match, we know our model has a distorted view of the world.</span>
 <span id="cb52-202"><a href="#cb52-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-203"><a href="#cb52-203" aria-hidden="true" tabindex="-1"></a>let's add in differences among species</span>
+<span id="cb52-203"><a href="#cb52-203" aria-hidden="true" tabindex="-1"></a><span class="fu">## Different groups are different</span></span>
 <span id="cb52-204"><a href="#cb52-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-207"><a href="#cb52-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-208"><a href="#cb52-208" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
-<span id="cb52-209"><a href="#cb52-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm, <span class="at">fill =</span> species))<span class="sc">+</span> </span>
-<span id="cb52-210"><a href="#cb52-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
-<span id="cb52-211"><a href="#cb52-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
-<span id="cb52-212"><a href="#cb52-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-213"><a href="#cb52-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-214"><a href="#cb52-214" aria-hidden="true" tabindex="-1"></a>Now we can see that the distribution is in fact three different shapes, all placed together. </span>
+<span id="cb52-205"><a href="#cb52-205" aria-hidden="true" tabindex="-1"></a>let's add in differences among species</span>
+<span id="cb52-206"><a href="#cb52-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-209"><a href="#cb52-209" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-210"><a href="#cb52-210" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
+<span id="cb52-211"><a href="#cb52-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm, <span class="at">fill =</span> species))<span class="sc">+</span> </span>
+<span id="cb52-212"><a href="#cb52-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb52-213"><a href="#cb52-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
+<span id="cb52-214"><a href="#cb52-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb52-215"><a href="#cb52-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-216"><a href="#cb52-216" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb52-217"><a href="#cb52-217" aria-hidden="true" tabindex="-1"></a>Sometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are "normally distributed" or not. This is not helpful! Instead, decide on a model first, and ask yourself what kind of data you expect.</span>
-<span id="cb52-218"><a href="#cb52-218" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb52-219"><a href="#cb52-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-220"><a href="#cb52-220" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stan code for species differences</span></span>
+<span id="cb52-216"><a href="#cb52-216" aria-hidden="true" tabindex="-1"></a>Now we can see that the distribution is in fact three different shapes, all placed together. </span>
+<span id="cb52-217"><a href="#cb52-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-218"><a href="#cb52-218" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb52-219"><a href="#cb52-219" aria-hidden="true" tabindex="-1"></a>Sometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are "normally distributed" or not. This is not helpful! Instead, decide on a model first, and ask yourself what kind of data you expect.</span>
+<span id="cb52-220"><a href="#cb52-220" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb52-221"><a href="#cb52-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-222"><a href="#cb52-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-223"><a href="#cb52-223" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb52-224"><a href="#cb52-224" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb52-225"><a href="#cb52-225" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_{\text{sp}[i]} &amp;\sim \text{Normal}(\mu_{\text{sp}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}, \sigma) <span class="sc">\\</span></span>
-<span id="cb52-226"><a href="#cb52-226" aria-hidden="true" tabindex="-1"></a>\mu &amp;\sim \text{Normal}(17, 2) <span class="sc">\\</span></span>
-<span id="cb52-227"><a href="#cb52-227" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(2) <span class="sc">\\</span></span>
-<span id="cb52-228"><a href="#cb52-228" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb52-229"><a href="#cb52-229" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb52-230"><a href="#cb52-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-231"><a href="#cb52-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-234"><a href="#cb52-234" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-235"><a href="#cb52-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb52-236"><a href="#cb52-236" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan"</span>)</span>
-<span id="cb52-237"><a href="#cb52-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-238"><a href="#cb52-238" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop</span>
-<span id="cb52-239"><a href="#cb52-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-240"><a href="#cb52-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-241"><a href="#cb52-241" aria-hidden="true" tabindex="-1"></a>There's a few differences to notice here:</span>
+<span id="cb52-222"><a href="#cb52-222" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stan code for species differences</span></span>
+<span id="cb52-223"><a href="#cb52-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-224"><a href="#cb52-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-225"><a href="#cb52-225" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb52-226"><a href="#cb52-226" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb52-227"><a href="#cb52-227" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_{\text{sp}[i]} &amp;\sim \text{Normal}(\mu_{\text{sp}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}, \sigma) <span class="sc">\\</span></span>
+<span id="cb52-228"><a href="#cb52-228" aria-hidden="true" tabindex="-1"></a>\mu &amp;\sim \text{Normal}(17, 2) <span class="sc">\\</span></span>
+<span id="cb52-229"><a href="#cb52-229" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(2) <span class="sc">\\</span></span>
+<span id="cb52-230"><a href="#cb52-230" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb52-231"><a href="#cb52-231" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb52-232"><a href="#cb52-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-233"><a href="#cb52-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-236"><a href="#cb52-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-237"><a href="#cb52-237" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb52-238"><a href="#cb52-238" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan"</span>)</span>
+<span id="cb52-239"><a href="#cb52-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-240"><a href="#cb52-240" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop</span>
+<span id="cb52-241"><a href="#cb52-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb52-242"><a href="#cb52-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-243"><a href="#cb52-243" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>in the <span class="in">`data`</span> block: We have a new input! A declaration of the array of integers at the top, saying if this is "species 1", "species 2", or "species 3"</span>
-<span id="cb52-244"><a href="#cb52-244" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`mu`</span> is a vector now. why?</span>
-<span id="cb52-245"><a href="#cb52-245" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>notice the for-loop. </span>
-<span id="cb52-246"><a href="#cb52-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-247"><a href="#cb52-247" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Do we maybe add an illustration here of how vector indexing works?</span><span class="co">]</span>{.aside}</span>
+<span id="cb52-243"><a href="#cb52-243" aria-hidden="true" tabindex="-1"></a>There's a few differences to notice here:</span>
+<span id="cb52-244"><a href="#cb52-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-245"><a href="#cb52-245" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>in the <span class="in">`data`</span> block: We have a new input! A declaration of the array of integers at the top, saying if this is "species 1", "species 2", or "species 3"</span>
+<span id="cb52-246"><a href="#cb52-246" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`mu`</span> is a vector now. why?</span>
+<span id="cb52-247"><a href="#cb52-247" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>notice the for-loop. </span>
 <span id="cb52-248"><a href="#cb52-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-249"><a href="#cb52-249" aria-hidden="true" tabindex="-1"></a>We can write this model a different way as well: </span>
+<span id="cb52-249"><a href="#cb52-249" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Do we maybe add an illustration here of how vector indexing works?</span><span class="co">]</span>{.aside}</span>
 <span id="cb52-250"><a href="#cb52-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-253"><a href="#cb52-253" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-254"><a href="#cb52-254" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb52-255"><a href="#cb52-255" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp.stan"</span>)</span>
-<span id="cb52-256"><a href="#cb52-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-257"><a href="#cb52-257" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp</span>
-<span id="cb52-258"><a href="#cb52-258" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-259"><a href="#cb52-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-260"><a href="#cb52-260" aria-hidden="true" tabindex="-1"></a>The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However its not possible in every case. <span class="co">[</span><span class="ot">add a link to the Stan forum</span><span class="co">]</span>{.aside}</span>
+<span id="cb52-251"><a href="#cb52-251" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quick detour : vector indexing</span></span>
+<span id="cb52-252"><a href="#cb52-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-253"><a href="#cb52-253" aria-hidden="true" tabindex="-1"></a>A **very** useful technique, in both R and Stan, is transforming a vector with _indexing_. </span>
+<span id="cb52-254"><a href="#cb52-254" aria-hidden="true" tabindex="-1"></a>Vector indexing requires two vectors: the first contains values we want to select or replicate, the second contains integers giving the positions of the elements we want. For example:</span>
+<span id="cb52-255"><a href="#cb52-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-258"><a href="#cb52-258" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-259"><a href="#cb52-259" aria-hidden="true" tabindex="-1"></a>some_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>, <span class="st">"cheeze"</span>, <span class="st">"pizza"</span>)</span>
+<span id="cb52-260"><a href="#cb52-260" aria-hidden="true" tabindex="-1"></a>positions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">5</span>)</span>
 <span id="cb52-261"><a href="#cb52-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-262"><a href="#cb52-262" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling the species model</span></span>
-<span id="cb52-263"><a href="#cb52-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-264"><a href="#cb52-264" aria-hidden="true" tabindex="-1"></a>We have to make a new data list, since we've added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species.</span>
-<span id="cb52-265"><a href="#cb52-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-266"><a href="#cb52-266" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">which model to sample? here i'm doing the vectorized one just because</span><span class="co">]</span>{.aside}</span>
-<span id="cb52-267"><a href="#cb52-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-270"><a href="#cb52-270" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-271"><a href="#cb52-271" aria-hidden="true" tabindex="-1"></a>list_bill_dep_spp <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_nobillNA,</span>
-<span id="cb52-272"><a href="#cb52-272" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(</span>
-<span id="cb52-273"><a href="#cb52-273" aria-hidden="true" tabindex="-1"></a>       <span class="at">N =</span> <span class="fu">length</span>(bill_depth_mm),</span>
-<span id="cb52-274"><a href="#cb52-274" aria-hidden="true" tabindex="-1"></a>       <span class="at">measurements =</span> bill_depth_mm,</span>
-<span id="cb52-275"><a href="#cb52-275" aria-hidden="true" tabindex="-1"></a>       <span class="at">spp_id =</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(species))</span>
-<span id="cb52-276"><a href="#cb52-276" aria-hidden="true" tabindex="-1"></a>     )</span>
-<span id="cb52-277"><a href="#cb52-277" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb52-278"><a href="#cb52-278" aria-hidden="true" tabindex="-1"></a>     </span>
-<span id="cb52-279"><a href="#cb52-279" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp <span class="ot">&lt;-</span> normal_dist_rng_spp<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb52-280"><a href="#cb52-280" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep_spp, </span>
-<span id="cb52-281"><a href="#cb52-281" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
-<span id="cb52-282"><a href="#cb52-282" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>)</span>
-<span id="cb52-283"><a href="#cb52-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-284"><a href="#cb52-284" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb52-285"><a href="#cb52-285" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">summarise_draws</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb52-286"><a href="#cb52-286" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">flextable</span>()</span>
-<span id="cb52-287"><a href="#cb52-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-288"><a href="#cb52-288" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb52-289"><a href="#cb52-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-290"><a href="#cb52-290" aria-hidden="true" tabindex="-1"></a>and we can repeat the posterior checking from before:</span>
-<span id="cb52-291"><a href="#cb52-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-294"><a href="#cb52-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-295"><a href="#cb52-295" aria-hidden="true" tabindex="-1"></a>spp_yrep_draws <span class="ot">&lt;-</span> samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
-<span id="cb52-296"><a href="#cb52-296" aria-hidden="true" tabindex="-1"></a>spp_draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(spp_yrep_draws)</span>
-<span id="cb52-297"><a href="#cb52-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-298"><a href="#cb52-298" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
-<span id="cb52-299"><a href="#cb52-299" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(spp_draws_matrix, <span class="dv">50</span>))</span>
-<span id="cb52-300"><a href="#cb52-300" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-262"><a href="#cb52-262" aria-hidden="true" tabindex="-1"></a>some_values[positions]</span>
+<span id="cb52-263"><a href="#cb52-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-264"><a href="#cb52-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-265"><a href="#cb52-265" aria-hidden="true" tabindex="-1"></a>This works for number values as well, and is very useful when you want to do simulations! let's simulate three groups with different averages.</span>
+<span id="cb52-266"><a href="#cb52-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-269"><a href="#cb52-269" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-270"><a href="#cb52-270" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
+<span id="cb52-271"><a href="#cb52-271" aria-hidden="true" tabindex="-1"></a>some_means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">17</span>, <span class="dv">19</span>)</span>
+<span id="cb52-272"><a href="#cb52-272" aria-hidden="true" tabindex="-1"></a>some_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>)</span>
+<span id="cb52-273"><a href="#cb52-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-274"><a href="#cb52-274" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">42</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb52-275"><a href="#cb52-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">the_mean =</span> some_means[index],</span>
+<span id="cb52-276"><a href="#cb52-276" aria-hidden="true" tabindex="-1"></a>         <span class="at">labels =</span> some_labels[index],</span>
+<span id="cb52-277"><a href="#cb52-277" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(the_mean),</span>
+<span id="cb52-278"><a href="#cb52-278" aria-hidden="true" tabindex="-1"></a>                     <span class="at">mean =</span> the_mean,</span>
+<span id="cb52-279"><a href="#cb52-279" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sd =</span> <span class="dv">1</span>))</span>
+<span id="cb52-280"><a href="#cb52-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-281"><a href="#cb52-281" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="sc">|&gt;</span> </span>
+<span id="cb52-282"><a href="#cb52-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> obs, <span class="at">fill =</span> labels)) <span class="sc">+</span> </span>
+<span id="cb52-283"><a href="#cb52-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span>
+<span id="cb52-284"><a href="#cb52-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-285"><a href="#cb52-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-286"><a href="#cb52-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-287"><a href="#cb52-287" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vector indexing in Stan</span></span>
+<span id="cb52-288"><a href="#cb52-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-289"><a href="#cb52-289" aria-hidden="true" tabindex="-1"></a>We can use this precise technique in Stan: </span>
+<span id="cb52-290"><a href="#cb52-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-293"><a href="#cb52-293" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-294"><a href="#cb52-294" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb52-295"><a href="#cb52-295" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp.stan"</span>)</span>
+<span id="cb52-296"><a href="#cb52-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-297"><a href="#cb52-297" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp</span>
+<span id="cb52-298"><a href="#cb52-298" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-299"><a href="#cb52-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-300"><a href="#cb52-300" aria-hidden="true" tabindex="-1"></a>The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However it's not possible in every case.</span>
 <span id="cb52-301"><a href="#cb52-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-302"><a href="#cb52-302" aria-hidden="true" tabindex="-1"></a>The predicted distribution is now much more like the real data</span>
+<span id="cb52-302"><a href="#cb52-302" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling the species model</span></span>
 <span id="cb52-303"><a href="#cb52-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-304"><a href="#cb52-304" aria-hidden="true" tabindex="-1"></a>We can also make figures for each individual species. </span>
-<span id="cb52-305"><a href="#cb52-305" aria-hidden="true" tabindex="-1"></a>Here we will move away from using <span class="in">`bayesplot`</span> and try to visualize our posterior using the handy functions in the <span class="in">`tidybayes`</span> package <span class="co">[</span><span class="ot">add a link</span><span class="co">]</span>{.aside}</span>
+<span id="cb52-304"><a href="#cb52-304" aria-hidden="true" tabindex="-1"></a>We have to make a new data list, since we've added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species.</span>
+<span id="cb52-305"><a href="#cb52-305" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-306"><a href="#cb52-306" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-309"><a href="#cb52-309" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb52-310"><a href="#cb52-310" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb52-311"><a href="#cb52-311" aria-hidden="true" tabindex="-1"></a>spp_draws_df <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(spp_yrep_draws)</span>
-<span id="cb52-312"><a href="#cb52-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-313"><a href="#cb52-313" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">gather_draws</span>(samp_normal_dist_rng_spp,</span>
-<span id="cb52-314"><a href="#cb52-314" aria-hidden="true" tabindex="-1"></a>                        yrep[row_id], </span>
-<span id="cb52-315"><a href="#cb52-315" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ndraws =</span> <span class="dv">50</span>)</span>
-<span id="cb52-316"><a href="#cb52-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-317"><a href="#cb52-317" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="sc">|&gt;</span> </span>
-<span id="cb52-318"><a href="#cb52-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> penguins_nobillNA<span class="sc">$</span>species[row_id]) <span class="sc">|&gt;</span> </span>
-<span id="cb52-319"><a href="#cb52-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">colour =</span> species)) <span class="sc">+</span> </span>
-<span id="cb52-320"><a href="#cb52-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">group =</span> .iteration), <span class="at">alpha =</span> .<span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb52-321"><a href="#cb52-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species) <span class="sc">+</span> </span>
-<span id="cb52-322"><a href="#cb52-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm),</span>
-<span id="cb52-323"><a href="#cb52-323" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> penguins_nobillNA,</span>
-<span id="cb52-324"><a href="#cb52-324" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
-<span id="cb52-325"><a href="#cb52-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
+<span id="cb52-310"><a href="#cb52-310" aria-hidden="true" tabindex="-1"></a>list_bill_dep_spp <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_nobillNA,</span>
+<span id="cb52-311"><a href="#cb52-311" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(</span>
+<span id="cb52-312"><a href="#cb52-312" aria-hidden="true" tabindex="-1"></a>       <span class="at">N =</span> <span class="fu">length</span>(bill_depth_mm),</span>
+<span id="cb52-313"><a href="#cb52-313" aria-hidden="true" tabindex="-1"></a>       <span class="at">measurements =</span> bill_depth_mm,</span>
+<span id="cb52-314"><a href="#cb52-314" aria-hidden="true" tabindex="-1"></a>       <span class="at">spp_id =</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(species))</span>
+<span id="cb52-315"><a href="#cb52-315" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb52-316"><a href="#cb52-316" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-317"><a href="#cb52-317" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb52-318"><a href="#cb52-318" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp <span class="ot">&lt;-</span> normal_dist_rng_spp<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb52-319"><a href="#cb52-319" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep_spp, </span>
+<span id="cb52-320"><a href="#cb52-320" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb52-321"><a href="#cb52-321" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>)</span>
+<span id="cb52-322"><a href="#cb52-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-323"><a href="#cb52-323" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb52-324"><a href="#cb52-324" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">summarise_draws</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb52-325"><a href="#cb52-325" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">flextable</span>()</span>
 <span id="cb52-326"><a href="#cb52-326" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-327"><a href="#cb52-327" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb52-328"><a href="#cb52-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-329"><a href="#cb52-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-330"><a href="#cb52-330" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercises</span></span>
-<span id="cb52-331"><a href="#cb52-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-332"><a href="#cb52-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-333"><a href="#cb52-333" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
-<span id="cb52-334"><a href="#cb52-334" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)</span>
-<span id="cb52-335"><a href="#cb52-335" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>use bayesplot to examine the fit of body size to these data. </span>
+<span id="cb52-329"><a href="#cb52-329" aria-hidden="true" tabindex="-1"></a>and we can repeat the posterior checking from before:</span>
+<span id="cb52-330"><a href="#cb52-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-333"><a href="#cb52-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-334"><a href="#cb52-334" aria-hidden="true" tabindex="-1"></a>spp_yrep_draws <span class="ot">&lt;-</span> samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
+<span id="cb52-335"><a href="#cb52-335" aria-hidden="true" tabindex="-1"></a>spp_draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(spp_yrep_draws)</span>
 <span id="cb52-336"><a href="#cb52-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-337"><a href="#cb52-337" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
-<span id="cb52-338"><a href="#cb52-338" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>generate some random groups of your own, with known means. How well does the model fit these data</span>
-<span id="cb52-339"><a href="#cb52-339" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The present model is fixed for exactly 3 groups. how would you change it for any number of groups?</span>
+<span id="cb52-337"><a href="#cb52-337" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
+<span id="cb52-338"><a href="#cb52-338" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(spp_draws_matrix, <span class="dv">50</span>))</span>
+<span id="cb52-339"><a href="#cb52-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb52-340"><a href="#cb52-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-341"><a href="#cb52-341" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
-<span id="cb52-342"><a href="#cb52-342" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the function <span class="in">`tidybayes::compose_data`</span> is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of <span class="in">`tidybayes::compose_data`</span>?</span>
-<span id="cb52-343"><a href="#cb52-343" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>As you can see, the model assumes the same sigma for all species. what if you relax this? </span>
-<span id="cb52-344"><a href="#cb52-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-345"><a href="#cb52-345" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optional! </span></span>
-<span id="cb52-346"><a href="#cb52-346" aria-hidden="true" tabindex="-1"></a>Try this on your own data! </span>
+<span id="cb52-341"><a href="#cb52-341" aria-hidden="true" tabindex="-1"></a>The predicted distribution is now much more like the real data</span>
+<span id="cb52-342"><a href="#cb52-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-343"><a href="#cb52-343" aria-hidden="true" tabindex="-1"></a>We can also make figures for each individual species. </span>
+<span id="cb52-344"><a href="#cb52-344" aria-hidden="true" tabindex="-1"></a>Here we will move away from using <span class="in">`bayesplot`</span> and try to visualize our posterior using the handy functions in the <span class="in">`tidybayes`</span> package <span class="co">[</span><span class="ot">add a link</span><span class="co">]</span>{.aside}</span>
+<span id="cb52-345"><a href="#cb52-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-348"><a href="#cb52-348" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb52-349"><a href="#cb52-349" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb52-350"><a href="#cb52-350" aria-hidden="true" tabindex="-1"></a>spp_draws_df <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(spp_yrep_draws)</span>
+<span id="cb52-351"><a href="#cb52-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-352"><a href="#cb52-352" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">gather_draws</span>(samp_normal_dist_rng_spp,</span>
+<span id="cb52-353"><a href="#cb52-353" aria-hidden="true" tabindex="-1"></a>                        yrep[row_id], </span>
+<span id="cb52-354"><a href="#cb52-354" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ndraws =</span> <span class="dv">50</span>)</span>
+<span id="cb52-355"><a href="#cb52-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-356"><a href="#cb52-356" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="sc">|&gt;</span> </span>
+<span id="cb52-357"><a href="#cb52-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> penguins_nobillNA<span class="sc">$</span>species[row_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb52-358"><a href="#cb52-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">colour =</span> species)) <span class="sc">+</span> </span>
+<span id="cb52-359"><a href="#cb52-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">group =</span> .iteration), <span class="at">alpha =</span> .<span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb52-360"><a href="#cb52-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species) <span class="sc">+</span> </span>
+<span id="cb52-361"><a href="#cb52-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm),</span>
+<span id="cb52-362"><a href="#cb52-362" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> penguins_nobillNA,</span>
+<span id="cb52-363"><a href="#cb52-363" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb52-364"><a href="#cb52-364" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
+<span id="cb52-365"><a href="#cb52-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-366"><a href="#cb52-366" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb52-367"><a href="#cb52-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-368"><a href="#cb52-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-369"><a href="#cb52-369" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercises</span></span>
+<span id="cb52-370"><a href="#cb52-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-371"><a href="#cb52-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-372"><a href="#cb52-372" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
+<span id="cb52-373"><a href="#cb52-373" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)</span>
+<span id="cb52-374"><a href="#cb52-374" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>use bayesplot to examine the fit of body size to these data. </span>
+<span id="cb52-375"><a href="#cb52-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-376"><a href="#cb52-376" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
+<span id="cb52-377"><a href="#cb52-377" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>generate some random groups of your own, with known means. How well does the model fit these data</span>
+<span id="cb52-378"><a href="#cb52-378" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The present model is fixed for exactly 3 groups. how would you change it for any number of groups?</span>
+<span id="cb52-379"><a href="#cb52-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-380"><a href="#cb52-380" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
+<span id="cb52-381"><a href="#cb52-381" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the function <span class="in">`tidybayes::compose_data`</span> is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of <span class="in">`tidybayes::compose_data`</span>?</span>
+<span id="cb52-382"><a href="#cb52-382" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>As you can see, the model assumes the same sigma for all species. what if you relax this? </span>
+<span id="cb52-383"><a href="#cb52-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-384"><a href="#cb52-384" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optional! </span></span>
+<span id="cb52-385"><a href="#cb52-385" aria-hidden="true" tabindex="-1"></a>Try this on your own data! </span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

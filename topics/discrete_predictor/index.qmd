@@ -45,7 +45,7 @@ normal_dist
 The model section looks very much like the approach shown above. 
 I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. 
 These are for all the probability distribution of all the quantities in the model, both observed and unobserved. Above, we state which is which. 
-Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian defines the world as umeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).
+Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian separates the world into unmeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).
 
 We can fit this model to data and see the result: 
 
@@ -116,8 +116,10 @@ draws |>
 
 People care so much about model diagnostics. 
 And with good reason: you need to know how much to trust a model before using it to make a scientific claim. 
-One way to find out who's model is best would be to use them to make a prediction, and see how right you are. 
-Nobody has the time for that. so instead the best choice is to see how well the data fit your sample. 
+One way to find out which model is best would be to use them to make a prediction, and see how right you are. 
+An alternative is to see how well the data fit your sample. 
+
+### Posterior prediction in R
 
 ```{r}
 # just get some draws
@@ -227,7 +229,41 @@ There's a few differences to notice here:
 
 [Do we maybe add an illustration here of how vector indexing works?]{.aside}
 
-We can write this model a different way as well: 
+## Quick detour : vector indexing
+
+A **very** useful technique, in both R and Stan, is transforming a vector with _indexing_. 
+Vector indexing requires two vectors: the first contains values we want to select or replicate, the second contains integers giving the positions of the elements we want. For example:
+
+```{r}
+some_values <- c("taco", "cat", "goat", "cheeze", "pizza")
+positions <- c(1,1,2,2,3,1,1,5)
+
+some_values[positions]
+```
+
+This works for number values as well, and is very useful when you want to do simulations! let's simulate three groups with different averages.
+
+```{r}
+set.seed(525600)
+some_means <- c(12, 17, 19)
+some_labels <- c("taco", "cat", "goat")
+
+df_of_means <- data.frame(index = rep(1:3, each = 42)) |> 
+  mutate(the_mean = some_means[index],
+         labels = some_labels[index],
+         obs = rnorm(n = length(the_mean),
+                     mean = the_mean,
+                     sd = 1))
+
+df_of_means |> 
+  ggplot(aes(x = obs, fill = labels)) + 
+  geom_histogram()
+
+```
+
+## Vector indexing in Stan
+
+We can use this precise technique in Stan: 
 
 ```{r}
 #| class-output: stan
@@ -236,13 +272,12 @@ normal_dist_rng_spp <- cmdstan_model(stan_file = "topics/discrete_predictor/norm
 normal_dist_rng_spp
 ```
 
-The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However its not possible in every case. [add a link to the Stan forum]{.aside}
+The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However it's not possible in every case.
 
 ### Sampling the species model
 
 We have to make a new data list, since we've added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species.
 
-[which model to sample? here i'm doing the vectorized one just because]{.aside}
 
 ```{r}
 
