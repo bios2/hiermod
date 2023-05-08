@@ -7,7 +7,7 @@
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.2.335">
 
   <meta name="author" content="Guillaume Blanchet – Andrew MacDonald – Vincent Tolon">
   <title>Modèles hiérarchiques pour les sciences de la vie - Data used for this course</title>
@@ -480,10 +480,29 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Substrate density and water content</h2>
 
 <img data-src="../img/oribatid_subdens_water.jpg" style="width:105.0%" class="r-stretch quarto-figure-center"></section>
+<section id="getting-the-data" class="slide level2">
+<h2>Getting the data</h2>
+<div style="font-size: 1.5em">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">data</span>(mite)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">data</span>(mite.env)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">View</span>(mite)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">View</span>(mite.env)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
 <section id="palmer-penguins" class="slide level2">
 <h2>Palmer penguins</h2>
 
-<img data-src="../img/penguins.png" style="width:100.0%" class="r-stretch quarto-figure-center"><p class="caption">The Palmer Archipelago penguins. Artwork by @allison_horst</p><p>These data were collected from 2007 - 2009 by Dr.&nbsp;Kristen Gorman with the Palmer Station Long Term Ecological Research Program, part of the US Long Term Ecological Research Network. The data were imported directly from the Environmental Data Initiative (EDI) Data Portal, and are available for use by CC0 license (“No Rights Reserved”) in accordance with the Palmer Station Data Policy. <span class="citation" data-cites="gorman2014 horst2020">(<a href="#/theres-lots-more" role="doc-biblioref" onclick="">Gorman, Williams, and Fraser 2014</a>; <a href="#/theres-lots-more" role="doc-biblioref" onclick="">Horst, Hill, and Gorman 2020</a>)</span></p>
+<img data-src="../img/penguins.png" style="width:200.0%" class="r-stretch quarto-figure-center"><p class="caption">The Palmer Archipelago penguins. Artwork by @allison_horst</p><div style="font-size: 0.8em">
+<p>These data were collected from 2007 to 2009 by Dr.&nbsp;Kristen Gorman with the Palmer Station Long Term Ecological Research Program, part of the US Long Term Ecological Research Network.</p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>The data were imported directly from the Environmental Data Initiative (EDI) Data Portal, and are available for use by CC0 license (“No Rights Reserved”) in accordance with the Palmer Station Data Policy. <span class="citation" data-cites="gorman2014 horst2020">(<a href="#/theres-lots-more" role="doc-biblioref" onclick="">Gorman, Williams, and Fraser 2014</a>; <a href="#/theres-lots-more" role="doc-biblioref" onclick="">Horst, Hill, and Gorman 2020</a>)</span></p>
+</div>
+</div>
 </section>
 <section id="a-handy-dataset-of-three-groups" class="slide level2">
 <h2>A handy dataset of three groups</h2>
@@ -492,19 +511,21 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="behold-simpsons-paradox" class="slide level2">
 <h2>Behold: Simpson’s Paradox!</h2>
 
-<img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
 <section id="behold-simpsons-paradox-1" class="slide level2">
 <h2>Behold: Simpson’s Paradox!</h2>
 
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
 <section id="theres-lots-more" class="slide level2 smaller scrollable">
 <h2>There’s lots more!</h2>
+<div style="font-size: 1.5em">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">View</span>(penguins)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">View</span>(penguins_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">View</span>(penguins)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">View</span>(penguins_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>and also see the official site: https://allisonhorst.github.io/palmerpenguins/</p>
+</div>
+<p>and also see the official site: <a href="https://allisonhorst.github.io/palmerpenguins/">https://allisonhorst.github.io/palmerpenguins/</a></p>
 
 
 <img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
