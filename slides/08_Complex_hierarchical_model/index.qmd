@@ -554,15 +554,36 @@ marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
 
 ## Combining different types of hierarchy {style="font-size: 0.9em"}
 
+::: {style="font-size: 0.8em"}
 With what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours. 
 
-To show how we can combine different hierarchy, let's go back again to our now favorite plant *Bidonia examplaris*.
+The best way to do this is to immerse ourselve into a particular setting.
+
+**Context**
+
+Pumpkinseed (*Lepomis gibbosus*) growth has been studied in the lakes of the Station de biologie des Laurentides during the famous ichthyology course given at Université de Montréal in the past  30 years. 
+
+During these ichthyology courses, fish are sampled, measured and tag in all 15 lakes of the research station and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision. 
+
+Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth, the different lake have different temperature.
+
+After 30 years of data, 123 fish have been sampled during 17 consecutive year. 
+:::
+
+## Pumpkinseed growth example
 
 **Question**
 
+Does the growth of Pumpkinseed is influenced water temperature, which changed across lakes which accounting for lakes area and depth and controling for divergences in sampling measurements of each classes (wink, wink... teachers assistant may have an influence here)?
 
 
-**Sampling scheme**
+**Try to build the model that best answer this question**
+
+## Pumpkinseed growth example
+
+## The model
+
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{Z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
 
 
 ## Combining different types of hierarchy {style="font-size: 0.9em"}

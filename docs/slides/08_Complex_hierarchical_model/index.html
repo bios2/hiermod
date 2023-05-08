@@ -602,10 +602,28 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="combining-different-types-of-hierarchy" class="slide level2" style="font-size: 0.9em">
 <h2>Combining different types of hierarchy</h2>
+<div style="font-size: 0.8em">
 <p>With what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours.</p>
-<p>To show how we can combine different hierarchy, let’s go back again to our now favorite plant <em>Bidonia examplaris</em>.</p>
+<p>The best way to do this is to immerse ourselve into a particular setting.</p>
+<p><strong>Context</strong></p>
+<p>Pumpkinseed (<em>Lepomis gibbosus</em>) growth has been studied in the lakes of the Station de biologie des Laurentides during the famous ichthyology course given at Université de Montréal in the past 30 years.</p>
+<p>During these ichthyology courses, fish are sampled, measured and tag in all 15 lakes of the research station and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision.</p>
+<p>Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth, the different lake have different temperature.</p>
+<p>After 30 years of data, 123 fish have been sampled during 17 consecutive year.</p>
+</div>
+</section>
+<section id="pumpkinseed-growth-example" class="slide level2">
+<h2>Pumpkinseed growth example</h2>
 <p><strong>Question</strong></p>
-<p><strong>Sampling scheme</strong></p>
+<p>Does the growth of Pumpkinseed is influenced water temperature, which changed across lakes which accounting for lakes area and depth and controling for divergences in sampling measurements of each classes (wink, wink… teachers assistant may have an influence here)?</p>
+<p><strong>Try to build the model that best answer this question</strong></p>
+</section>
+<section id="pumpkinseed-growth-example-1" class="slide level2">
+<h2>Pumpkinseed growth example</h2>
+</section>
+<section id="the-model" class="slide level2">
+<h2>The model</h2>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{Z}\mathbf{b}_{1f},\sigma^2\mathbf{I})\]</span></p>
 </section>
 <section id="combining-different-types-of-hierarchy-1" class="slide level2" style="font-size: 0.9em">
 <h2>Combining different types of hierarchy</h2>
@@ -740,7 +758,7 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
 \end{align}
 \]</span></p>
 </section>
-<section id="the-model" class="slide level2" data-auto-animate="TRUE">
+<section id="the-model-1" class="slide level2" data-auto-animate="TRUE">
 <h2 data-id="quarto-animate-title">The model</h2>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource stan number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode stan hljs"><span id="cb9-1" class="hljs-ln-code"><a href="#cb9-1"></a><span class="kw">data</span> {</span>
 <span id="cb9-2" class="hljs-ln-code"><a href="#cb9-2"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
