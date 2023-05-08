@@ -381,9 +381,11 @@ Bayesian workflows are highly visual. Make as many plots as you can: of your par
 
 ### bayesplot
 
-Another essential package for working with posterior samples is called [`bayesplot`](http://mc-stan.org/bayesplot/)
+Another essential package for working with posterior samples is called [`bayesplot`](http://mc-stan.org/bayesplot/). Let's use it to look at the posterior distribution for `avg_birds_per_person`.
 
 ```{r}
+#| fig-cap: posterior distribution for `avg_birds_per_person`. The orange line is the true parameter value, which we simulated in R.
+
 ## Extract draws from the model object
 poisson_model_draws <- poisson_model_samp$draws()
 
@@ -391,32 +393,71 @@ bayesplot::mcmc_areas(poisson_model_draws, pars = "avg_birds_per_person") +
   geom_vline(xintercept = avg_birds_per_person, col = "orange", lwd = 2)
 ```
 
+#### Posterior predictive checks
+
+Bayesian models MAKE data, which suggests a clear way to validate our models: ask the model to make some data, then see how well these data correspond to biology (e.g. to our real data).  Here, we will take 50 fake datasets of bird counts and compare them to the simulation we first did in R.
+
+The process involves a bit of fiddling around in R to get the simulated data, but then `bayesplot` does all the work: 
+
+```{r}
+bird_count_draws <- poisson_model_samp$draws(variables = "bird_count")
+bird_count_draws_matrix <- posterior::as_draws_matrix(bird_count_draws)
+
+bayesplot::ppc_dens_overlay(y = bird_count,
+                            yrep = head(bird_count_draws_matrix, 50))
+```
+
+
+### tidybayes again
+
+As we see above, `bayesplot` offers many out-of-the-box figures. Sometimes however, you'll want to control exactly what your figures look like, and for this `tidybayes` is an excellent tool. 
+
+Let's use the flexibility of `tidybayes` to show how the prior and posterior differ between our two models
+
+```{r}
+#| layout-ncol: 2
+
+tidybayes::gather_rvars(poisson_sim_stan,
+                        avg_birds_per_person) |> 
+  ggplot(aes(y = "avg_birds_per_person", dist = .value)) + 
+  tidybayes::stat_halfeye() + 
+  labs(title = "Prior")
+
+tidybayes::gather_rvars(poisson_model_samp, 
+                        avg_birds_per_person) |> 
+  ggplot(aes(y = "avg_birds_per_person", dist = .value)) + 
+  tidybayes::stat_halfeye() + 
+  labs(title = "Posterior") + 
+  coord_cartesian(xlim = c(0, 60))
+
+```
+
+
 ### Shinystan
 
 ```{r, eval=FALSE}
 shinystan::launch_shinystan(poisson_model_samp)
 ```
 
-
-
-The distribution of the parameter here covers the real value of `r round(avg_birds_per_person, 2)` pretty well! 
-
-We can look at this again with bayesplot
-
-```{r}
-
-```
-
-
 ## Exercises
 
 #### Level 1
 
 * Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?
-* what would you do next to add complexity this model?
+* What would you do next to add complexity this model?
 
 #### Level 2
 * We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?
-* take a closer look at `poisson_model_samp$summary()` all the values of `bird_count` are the same. That's correct, but why?
+* Take a closer look at `poisson_model_samp$summary()` all the values of `bird_count` are the same. That's correct, but why?
 
 #### Level 3
+* You would never actually do the analysis in this exercise! If all you want is the average of a Poisson distribution, you can get that without any sampling at all. Start by writing the model with a different prior:
+
+$$
+\begin{align}
+\text{Number of Birds}_{\text{seen by person i}} &\sim \text{Poisson}(\lambda) \\
+\lambda &\sim \text{Gamma}(9, .5)
+\end{align}
+$$
+
+This lets us calculate the posterior distribution directly. See the equation [on Wikipedia](https://en.wikipedia.org/wiki/Poisson_distribution#Bayesian_inference) and calculate the posterior for our bird data.
