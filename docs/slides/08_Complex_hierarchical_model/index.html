@@ -487,10 +487,33 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </ul>
 </div>
 </section>
+<section id="uncorrelated-intercept-and-slope-hierarchy" class="slide level2" style="font-size: 0.9em">
+<h2>Uncorrelated intercept and slope hierarchy</h2>
+<div style="font-size: 0.65em">
+<p><code>lme4</code> notation : <code>y ~ x + (x || f)</code> or <code>y ~ 1 + x + (1 | f) + (0 + x | g)</code></p>
+<p>This model assumes there is a hierarchy that varies independently among the levels of factor <code>f</code> for the intercept and the slope.</p>
+<p>Mathematically, it can be translated to</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f[l_f]}+\mathbf{Z}\mathbf{b}_{0f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
+<p><span class="math display">\[y_i = b_{0f[l_f]}+zb_{1f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> This is because in this model</p>
+<p><span class="math display">\[\begin{bmatrix}
+    b_0\\
+    b_1\\
+\end{bmatrix} \sim \mathcal{N}\left(0,
+                                \begin{bmatrix}
+                                  \sigma^2_{b_0f} &amp; 0\\
+                                  0&amp; \sigma^2_{b_1f}\\
+                                \end{bmatrix}
+                                \right)\]</span></p>
+</div>
+</section>
+<section id="uncorrelated-intercept-and-slope-hierarchy-1" class="slide level2" style="font-size: 0.9em">
+<h2>Uncorrelated intercept and slope hierarchy</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch quarto-figure-center"></section>
 <section id="a-small-step-back" class="slide level2">
 <h2>A small step back</h2>
 <div style="font-size: 0.8em">
-<p>At this point, the structure of the hierarchy discussed were “simple” in the sense that they either required to estimate</p>
+<p>The structure of the hierarchy discussed so far were “simple” in the sense that they either required to estimate</p>
 <ul>
 <li>A single variance parameter</li>
 </ul>
@@ -504,7 +527,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
   0&amp; \sigma^2_{g}\\
 \end{bmatrix}
 \]</span></p>
-<p>From this point on we will look at more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
+<p>From this point on, we will look at more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
 </div>
 </section>
 <section id="correlated-intercept-and-slope-hierarchy" class="slide level2" style="font-size: 0.9em">
@@ -530,7 +553,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="correlated-intercept-and-slope-hierarchy-1" class="slide level2" style="font-size: 0.9em">
 <h2>Correlated intercept and slope hierarchy</h2>
 <div style="font-size: 0.82em">
-<p>At this point, the covariance structure <span class="math display">\[\begin{bmatrix}
+<p>The covariance structure <span class="math display">\[\begin{bmatrix}
     b_0\\
     b_1\\
 \end{bmatrix}
@@ -541,15 +564,44 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
                       \end{bmatrix}
                 \right)\]</span></p>
 <p>needs to be discussed a bit more.</p>
-<h4 id="notation">Notation</h4>
+<h3 id="notation">Notation</h3>
 <p>In the covariance matrix,</p>
 <ul>
 <li><span class="math inline">\(\rho_{b_0,b_1}\)</span> is the correlation between <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span></li>
 <li><span class="math inline">\(\rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1}\)</span> is the covariance between <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span></li>
 </ul>
-<h4 id="interpretation">Interpretation</h4>
+<h3 id="interpretation">Interpretation</h3>
 <p>A covariance matrix with non-zero covariance describes dependence between the <span class="math inline">\(b\)</span>s, which can tell use both the strength of the relation between pairs of parameters and the variance structure.</p>
 </div>
+</section>
+<section id="correlated-intercept-and-slope-hierarchy-2" class="slide level2" style="font-size: 0.9em">
+<h2>Correlated intercept and slope hierarchy</h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="1440" class="r-stretch quarto-figure-center"></section>
+<section id="so-far-what-we-have-done" class="slide level2">
+<h2>So far what we have done</h2>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://images2.minutemediacdn.com/image/upload/c_fill,w_2160,ar_16:9,f_auto,q_auto,g_auto/shape%2Fcover%2Fsport%2Flegos-hero-0eaaf09e995d184255040705b42f46f4.jpg" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="what-we-can-do-now" class="slide level2">
+<h2>What we can do now !</h2>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.boredpanda.com/blog/wp-content/uploads/2022/10/635f7c2fca5d5_lego-builds.jpg" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="combining-different-types-of-hierarchy" class="slide level2" style="font-size: 0.9em">
+<h2>Combining different types of hierarchy</h2>
+<p>With what we learned so far, it is possible to build more complex model by combining different hierarchy we studied.</p>
+<p>To show how we can combine different hierarchy, let’s use <em>Bidonia examplaris</em> as an example.</p>
 </section>
 <section id="second" class="slide level2">
 <h2>second</h2>
@@ -619,7 +671,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
 <section id="here-it-is-all-on-one-slide" class="slide level2">
 <h2>here it is all on one slide</h2>
 <div class="cell columns column-output-location">
@@ -633,7 +685,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <span id="cb6-7"><a href="#cb6-7"></a><span class="fu">plot</span>(y_obs, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -657,7 +709,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plot</span>(y_obs <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
 </div>
 </div>
 </div>

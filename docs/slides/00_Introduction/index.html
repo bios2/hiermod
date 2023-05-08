@@ -407,12 +407,12 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="internet" class="slide level2">
 <h2>Internet</h2>
-<p><strong>Network : </strong></p>
-<p><strong>Password : </strong></p>
+<p><strong>Network : UdeM-Visiteurs</strong></p>
+<p><strong>Password : No password ! Yé !</strong></p>
 </section>
 <section id="dos-and-donts-at-the-station-biologique-des-laurentides" class="slide level2">
 <h2>Dos and don’ts at the Station biologique des Laurentides</h2>
-<p>Meeting with Gabriel Lanthier, the lord of these premises</p>
+<p>Gabriel Lanthier, the lord of these premises, will tell us all about what you can and cannot do here.</p>
 </section>
 <section id="course-material" class="slide level2">
 <h2>Course material</h2>
@@ -437,7 +437,7 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p>12h00 to 13h00 - Lunch</p>
 </div>
 <p>13h00 to 17h00 - Lecture/Practice</p>
-<p>17h00 to 17h30 - Project presentations</p>
+<p>17h00 to 17h30 - Let us know about your research !</p>
 <div style="color: blue;">
 <p>17h30 to 18h30 - Supper</p>
 </div>
@@ -449,14 +449,14 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="what-are-hierarchical-models" class="slide level2">
 <h2>What are hierarchical models ?</h2>
-<p>For this course, hierarchical models are regression models in which the parameters (the regression coefficients) are themselves given a probability model (Gelman and Hill 2007).</p>
+<p>For this course, hierarchical models are regression models in which the parameters (the regression coefficients) are not defined by a single value but they are themselves given a probability distribution (Gelman and Hill 2007).</p>
 </section>
 <section id="particularities-of-hierarchical-models" class="slide level2">
 <h2>Particularities of hierarchical models</h2>
 <p>Hierarchical models are</p>
 <div class="fragment">
 <ul>
-<li>A challenging bit of technology (probably more than you might think!).</li>
+<li>A challenging bit of technology (probably more than you might think!)</li>
 </ul>
 </div>
 <div class="fragment">
@@ -472,7 +472,9 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="a-bit-of-vocabulary" class="slide level2">
 <h2>A bit of vocabulary</h2>
+<div class="fragment">
 <p>Hierarchical models, as we will see them in this course, are also known under different names</p>
+</div>
 <div class="fragment">
 <ul>
 <li>Random effect models</li>
@@ -512,16 +514,34 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="fragment">
 <div style="font-size: 0.8em">
 <p><a href="https://methods.sagepub.com/book/introducing-multilevel-modeling">(Kreft and De Leeuw 1998)</a> <em>Fixed</em> effects are constant and <em>random</em> effect vary</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p><a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316856">(Searl et al.&nbsp;1992)</a> Effects are <em>fixed</em> if they are interesting in themselves or <em>random</em> if there is interest in the underlying population</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p><a href="https://link.springer.com/article/10.1007/BF02288577">(Green and Tukey 1960)</a> When a sample exhausts the population, the corresponding variable is <em>fixed</em>; when the sample is a small (i.e., negligible) part of the population the corresponding variable is <em>random</em></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p><a href="https://doi.org/10.1002/9781118445112.stat03169">(Roy LaMotte 2014)</a> If an effect is assumed to be a realized value of a random variable, it is called a <em>random</em> effect</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p><a href="https://www.jstor.org/stable/2245695">(Robinson 1991)</a> <em>Fixed</em> effects are estimated using least squares (or, more generally, maximum likelihood) and <em>random</em> effects are estimated with shrinkage.</p>
 </div>
 </div>
 </section>
 <section id="a-bit-of-history" class="slide level2">
 <h2>A bit of history</h2>
+<div class="fragment">
 <p>Because of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably</p>
+</div>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -539,9 +559,11 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="implementation" class="slide level2">
 <h2>Implementation</h2>
+<div class="fragment">
 <ul>
 <li>Hierarchical models have been implemented in many software packages,</li>
 </ul>
+</div>
 <div class="fragment">
 <ul>
 <li>in R
@@ -589,18 +611,32 @@ F. Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="great-technical-references" class="slide level2">
 <h2>Great technical references</h2>
 
-<img data-src="http://www.stat.columbia.edu/~gelman/arm/cover.gif" style="width:30.0%" class="r-stretch quarto-figure-center"><p>Everything is there but it can gets technical !</p>
+<img data-src="https://www.booktopia.com.au/covers/big/9780521867061/5512/data-analysis-using-regression-and-multilevel-hierarchical-models.jpg" style="width:30.0%" class="r-stretch quarto-figure-center"><p>Everything is there but it can gets technical !</p>
 </section>
 <section id="r-and-stan" class="slide level2">
 <h2>R and Stan</h2>
 <p>All of the practical aspect of the course will be done with R and Stan.</p>
+<div class="fragment">
 <h3 id="rstudio">RStudio</h3>
 <p>We strongly (!) encourage you to use RStudio and to start a project for the course.</p>
+</div>
 </section>
 <section id="r-package-to-install" class="slide level2">
 <h2>R package to install</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"vegan"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Package on CRAN</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"vegan"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3"></a>                   <span class="st">"palmerpenguins"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>                   <span class="st">"tidybayes"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>                   <span class="st">"tidyverse"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6"></a>                   <span class="st">"posterior"</span>))</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># cmdstanr - One last important package</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">install.packages</span>(<span class="st">"cmdstanr"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10"></a>                 <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">"https://mc-stan.org/r-packages/"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11"></a>                           <span class="fu">getOption</span>(<span class="st">"repos"</span>)))</span>
+<span id="cb1-12"><a href="#cb1-12"></a>cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>()</span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="fu">install_cmdstan</span>(<span class="at">cores =</span> <span class="dv">2</span>) <span class="co"># If necessary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
