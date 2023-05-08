@@ -450,6 +450,9 @@ A covariance matrix with non-zero covariance describes dependence between the $b
 
 
 ```{r, echo=FALSE, fig.width=15,  fig.height=8, fig.align='center'}
+
+set.seed(41)
+
 zones=matrix(c(1,2), ncol=2, byrow=TRUE)
 layout(zones, widths=c(4/5,4/5), heights=c(4/5,4/5))
 
@@ -506,8 +509,6 @@ plot(0,0,
      xaxs = "i",
      yaxs = "i") 
 
-set.seed(41)
-
 for(i in 1:30){
   abline(a = rnorm(1, mean = 1, sd = 0.2),
          b = rnorm(1, mean = 1, sd = 0.2),
@@ -555,11 +556,13 @@ marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
 
 With what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours. 
 
-To show how we can combine different hierarchy, let's use *Bidonia examplaris* as an example.
+To show how we can combine different hierarchy, let's go back again to our now favorite plant *Bidonia examplaris*.
 
-### Question
+**Question**
 
-### "Data"
+
+
+**Sampling scheme**
 
 
 
