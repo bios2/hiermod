@@ -367,9 +367,14 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>The convergence trick</h2>
 <h3 id="translation-1">Translation</h3>
 <p>Mathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.</p>
+<div class="fragment">
 <p>This means that</p>
-<p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span> is exactly the same as</p>
+<p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span></p>
+</div>
+<div class="fragment">
+<p>is exactly the same as</p>
 <p><span class="math display">\[\mathcal{N}(0, \sigma^2) + \mu\]</span></p>
+</div>
 </section>
 <section id="the-convergence-trick-3" class="slide level2">
 <h2>The convergence trick</h2>
@@ -380,9 +385,14 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>The convergence trick</h2>
 <h3 id="scaling-1">Scaling</h3>
 <p>Mathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.</p>
+<div class="fragment">
 <p>This means that</p>
-<p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span> is exactly the same as</p>
+<p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span></p>
+</div>
+<div class="fragment">
+<p>is exactly the same as</p>
 <p><span class="math display">\[\mathcal{N}(\mu, 1) \times \sigma^2\]</span></p>
+</div>
 </section>
 <section id="the-convergence-trick-5" class="slide level2">
 <h2>The convergence trick</h2>
@@ -399,8 +409,8 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2 data-id="quarto-animate-title">The convergence trick</h2>
 <div style="font-size: 0.95em">
 <p>The example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.</p>
-</div>
 <p>To do this, we need to work with a multivariate Gaussian distribution.</p>
+</div>
 </section>
 <section id="the-convergence-trick-8" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">The convergence trick</h2>
@@ -471,17 +481,17 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="scaling-a-covariance-matrix" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Scaling a covariance matrix</h2>
 <div style="font-size: 0.8em">
-<p>First recall that an covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span> is a square matrix (i.e.&nbsp;it is an <span class="math inline">\(n\times n\)</span> matrix).</p>
+<p>First recall that a covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span> is a square matrix (i.e.&nbsp;it is an <span class="math inline">\(n\times n\)</span> matrix).</p>
 <p>To scale <span class="math inline">\(\mathbf{\Sigma}\)</span>, we cannot only multiply it by a scalar or even by a single matrix, we need to use the following matrix multiplication</p>
-<p><span class="math display">\[\mathbf{A}\mathbf{\Sigma}\mathbf{A}^t\]</span> where <span class="math inline">\(\mathbf{A}\)</span> is a <span class="math inline">\(p\times n\)</span> matrix of weight to be used for the scaling (a “scaling” matrix) and <span class="math inline">\(\mathbf{A}^t\)</span> is its tranpose.</p>
+<p><span class="math display">\[\mathbf{L}\mathbf{\Sigma}\mathbf{L}^t\]</span> where <span class="math inline">\(\mathbf{L}\)</span> is a <span class="math inline">\(p\times n\)</span> matrix of weight to be used for the scaling (a “scaling” matrix) and <span class="math inline">\(\mathbf{L}^t\)</span> is its tranpose.</p>
 <p>The technical reason why we <strong>need</strong> to use the equation above is to ensure that the resulting scaled covariance matrix also has an <span class="math inline">\(n \times n\)</span> dimension.</p>
-<p>If only <span class="math display">\[\mathbf{A}\mathbf{\Sigma}\]</span> is used the dimension of the resulting matrix also would be <span class="math inline">\(p \times p\)</span>.</p>
+<p>If only <span class="math display">\[\mathbf{L}\mathbf{\Sigma}\]</span> is used the dimension of the resulting matrix also would be <span class="math inline">\(p \times p\)</span>.</p>
 </div>
 </section>
 <section id="square-root-of-a-matrix" class="slide level2">
 <h2>Square-root of a matrix</h2>
 <div style="font-size: 0.8em">
-<p>Because in our problem weighting (or scaling) matrices are usually other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way square-root a matrix.</p>
+<p>Because in our problem weighting (or scaling) matrices is usually done with other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way to square-root a matrix.</p>
 <p>This where the genious of André-Louis Cholesky comes to the rescue.</p>
 </div>
 
@@ -492,7 +502,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div style="font-size: 0.8em">
 <p>André-Louis Cholesky discovered a matrix decomposition approach probably around 1902 (so when he was 27 years old!), although it was attributed to him a few years after his death.</p>
 <p>The Cholesky decomposition allows to decompose a square matrix in a triangular matrix, which, when multiplied by its transposed will allow us to recover the initial matrix.</p>
-<p>In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice</p>
+<p>In coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrices.</p>
 <p>In math terms the Cholesky decomposition is defined as <span class="math display">\[\mathbf{A} = \mathbf{L}\mathbf{L}^t\]</span></p>
 </div>
 </section>

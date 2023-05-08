@@ -1537,7 +1537,7 @@
     "href": "slides/07_Convergence_trick/index.html#the-convergence-trick-2",
     "title": "Convergence trick",
     "section": "The convergence trick",
-    "text": "The convergence trick\nTranslation\nMathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.\nThis means that\n\\[\\mathcal{N}(\\mu, \\sigma^2)\\] is exactly the same as\n\\[\\mathcal{N}(0, \\sigma^2) + \\mu\\]"
+    "text": "The convergence trick\nTranslation\nMathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.\n\nThis means that\n\\[\\mathcal{N}(\\mu, \\sigma^2)\\]\n\n\nis exactly the same as\n\\[\\mathcal{N}(0, \\sigma^2) + \\mu\\]"
   },
   {
     "objectID": "slides/07_Convergence_trick/index.html#the-convergence-trick-3",
@@ -1551,7 +1551,7 @@
     "href": "slides/07_Convergence_trick/index.html#the-convergence-trick-4",
     "title": "Convergence trick",
     "section": "The convergence trick",
-    "text": "The convergence trick\nScaling\nMathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.\nThis means that\n\\[\\mathcal{N}(\\mu, \\sigma^2)\\] is exactly the same as\n\\[\\mathcal{N}(\\mu, 1) \\times \\sigma^2\\]"
+    "text": "The convergence trick\nScaling\nMathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.\n\nThis means that\n\\[\\mathcal{N}(\\mu, \\sigma^2)\\]\n\n\nis exactly the same as\n\\[\\mathcal{N}(\\mu, 1) \\times \\sigma^2\\]"
   },
   {
     "objectID": "slides/07_Convergence_trick/index.html#the-convergence-trick-5",
@@ -1572,7 +1572,7 @@
     "href": "slides/07_Convergence_trick/index.html#the-convergence-trick-7",
     "title": "Convergence trick",
     "section": "The convergence trick",
-    "text": "The convergence trick\n\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\n\nTo do this, we need to work with a multivariate Gaussian distribution."
+    "text": "The convergence trick\n\nThe example I gave above is straight forward to visualize but is badly adapted to most problems because most regression models require that many parameters be sampled at once.\nTo do this, we need to work with a multivariate Gaussian distribution."
   },
   {
     "objectID": "slides/07_Convergence_trick/index.html#the-convergence-trick-8",
@@ -1614,21 +1614,21 @@
     "href": "slides/07_Convergence_trick/index.html#scaling-a-covariance-matrix",
     "title": "Convergence trick",
     "section": "Scaling a covariance matrix",
-    "text": "Scaling a covariance matrix\n\nFirst recall that an covariance matrix \\(\\mathbf{\\Sigma}\\) is a square matrix (i.e. it is an \\(n\\times n\\) matrix).\nTo scale \\(\\mathbf{\\Sigma}\\), we cannot only multiply it by a scalar or even by a single matrix, we need to use the following matrix multiplication\n\\[\\mathbf{A}\\mathbf{\\Sigma}\\mathbf{A}^t\\] where \\(\\mathbf{A}\\) is a \\(p\\times n\\) matrix of weight to be used for the scaling (a “scaling” matrix) and \\(\\mathbf{A}^t\\) is its tranpose.\nThe technical reason why we need to use the equation above is to ensure that the resulting scaled covariance matrix also has an \\(n \\times n\\) dimension.\nIf only \\[\\mathbf{A}\\mathbf{\\Sigma}\\] is used the dimension of the resulting matrix also would be \\(p \\times p\\)."
+    "text": "Scaling a covariance matrix\n\nFirst recall that a covariance matrix \\(\\mathbf{\\Sigma}\\) is a square matrix (i.e. it is an \\(n\\times n\\) matrix).\nTo scale \\(\\mathbf{\\Sigma}\\), we cannot only multiply it by a scalar or even by a single matrix, we need to use the following matrix multiplication\n\\[\\mathbf{L}\\mathbf{\\Sigma}\\mathbf{L}^t\\] where \\(\\mathbf{L}\\) is a \\(p\\times n\\) matrix of weight to be used for the scaling (a “scaling” matrix) and \\(\\mathbf{L}^t\\) is its tranpose.\nThe technical reason why we need to use the equation above is to ensure that the resulting scaled covariance matrix also has an \\(n \\times n\\) dimension.\nIf only \\[\\mathbf{L}\\mathbf{\\Sigma}\\] is used the dimension of the resulting matrix also would be \\(p \\times p\\)."
   },
   {
     "objectID": "slides/07_Convergence_trick/index.html#square-root-of-a-matrix",
     "href": "slides/07_Convergence_trick/index.html#square-root-of-a-matrix",
     "title": "Convergence trick",
     "section": "Square-root of a matrix",
-    "text": "Square-root of a matrix\n\nBecause in our problem weighting (or scaling) matrices are usually other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way square-root a matrix.\nThis where the genious of André-Louis Cholesky comes to the rescue."
+    "text": "Square-root of a matrix\n\nBecause in our problem weighting (or scaling) matrices is usually done with other covariance matrices, to apply the matrix scaling operation described previously, we need to find a way to square-root a matrix.\nThis where the genious of André-Louis Cholesky comes to the rescue."
   },
   {
     "objectID": "slides/07_Convergence_trick/index.html#square-root-of-a-matrix-1",
     "href": "slides/07_Convergence_trick/index.html#square-root-of-a-matrix-1",
     "title": "Convergence trick",
     "section": "Square-root of a matrix",
-    "text": "Square-root of a matrix\nCholesky decomposition\n\nAndré-Louis Cholesky discovered a matrix decomposition approach probably around 1902 (so when he was 27 years old!), although it was attributed to him a few years after his death.\nThe Cholesky decomposition allows to decompose a square matrix in a triangular matrix, which, when multiplied by its transposed will allow us to recover the initial matrix.\nIn coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrice\nIn math terms the Cholesky decomposition is defined as \\[\\mathbf{A} = \\mathbf{L}\\mathbf{L}^t\\]"
+    "text": "Square-root of a matrix\nCholesky decomposition\n\nAndré-Louis Cholesky discovered a matrix decomposition approach probably around 1902 (so when he was 27 years old!), although it was attributed to him a few years after his death.\nThe Cholesky decomposition allows to decompose a square matrix in a triangular matrix, which, when multiplied by its transposed will allow us to recover the initial matrix.\nIn coloquial terms, the Cholesky decomposition is the equivalent of a square root for matrices.\nIn math terms the Cholesky decomposition is defined as \\[\\mathbf{A} = \\mathbf{L}\\mathbf{L}^t\\]"
   },
   {
     "objectID": "slides/07_Convergence_trick/index.html#square-root-of-a-matrix-2",
