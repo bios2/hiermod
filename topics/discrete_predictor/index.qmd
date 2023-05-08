@@ -300,6 +300,13 @@ samp_normal_dist_rng_spp$draws(variables = c("mu", "sigma")) |>
 
 ```
 
+Let's take a look at this in Shinystan
+
+```{r, eval=FALSE}
+shinystan::launch_shinystan(samp_normal_dist_rng_spp)
+```
+
+
 and we can repeat the posterior checking from before:
 
 ```{r}
@@ -310,6 +317,7 @@ spp_draws_matrix <- posterior::as_draws_matrix(spp_yrep_draws)
 bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
                             yrep = head(spp_draws_matrix, 50))
 ```
+
 
 The predicted distribution is now much more like the real data
 
