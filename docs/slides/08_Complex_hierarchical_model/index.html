@@ -423,10 +423,10 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><code>lme4</code> notation : <code>y ~ (1 | f:g)</code></p>
 <p>This model assumes that factors <code>f</code> and <code>g</code> interact to make a hierarchy.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]\times g[l_g] },\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f[l_f]\times g[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, a multi-factor hierarchy can be constructed my multiplying the levels of individual factors to account for a more complexe hierarchy. Another way to think about this structure is to construct a complexe hierarchy using multiple simpler hierarchies.</p>
-<p>This is because in this model</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)\]</span></p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f\times g },\sigma^2\mathbf{I})\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f[i]\times g[i]} + \varepsilon \quad\forall\quad i = 1\dots n\]</span></p>
+<p>where <span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)\]</span></p>
+<p>Note that a multi-factor hierarchy can be constructed my multiplying the levels of each factor to account for a more complexe hierarchy.</p>
 </div>
 </section>
 <section id="interacting-hierarchies-1" class="slide level2">
@@ -439,15 +439,15 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><code>lme4</code> notation : <code>y ~ (1 | f) + (1 | g)</code> or <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
 <p>This model assumes there is a hierarchy that varies among two factors that are independent from one another.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]} + \mathbf{b}_{g[l_g]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f_i[l_f]} + b_{g_i[l_g]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, this means that we are dealing with a model that has two intercepts, which are sampled independently so that the <span class="math inline">\(b\)</span>s will change for a sample <span class="math inline">\(i\)</span> only when the interaction the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> and the level <span class="math inline">\(l_g\)</span> of the factor <span class="math inline">\(g\)</span> changes independently.</p>
-<p>This is because in this model</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f} + \mathbf{b}_{g},\sigma^2\mathbf{I})\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n\]</span> where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
                                 \begin{bmatrix}
                                   \sigma^2_f &amp; 0\\
                                   0&amp; \sigma^2_g\\
                                 \end{bmatrix}
                                 \right)\]</span></p>
+<p>Here, we are dealing with a model that has two intercepts, which are sampled independently so that the <span class="math inline">\(b\)</span>s will change for a sample <span class="math inline">\(i\)</span> only when the the level of factor <span class="math inline">\(f\)</span> and the level of factor <span class="math inline">\(g\)</span> changes independently.</p>
 </div>
 </section>
 <section id="multiple-independent-hierarchy-1" class="slide level2">
@@ -460,15 +460,15 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><code>lme4</code> notation : <code>y ~ (1 | f/g)</code> or <code>y ~ (1 | f) + (1 | f:g)</code></p>
 <p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f[l_f]}+\mathbf{b}_{g[l_g]\in f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,l_g = 1\dots k_g\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f[l_f]}+b_{g[l_g]\in f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,,\,\,\,l_g = 1\dots k_g\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In words, the model has two independent hierarchy, one changes for a sample <span class="math inline">\(i\)</span> as a single intercept hierarchy and the other will change for a sample <span class="math inline">\(i\)</span> only when the level <span class="math inline">\(l_g\)</span> of factor <span class="math inline">\(g\)</span> is <strong>within</strong> the level <span class="math inline">\(l_f\)</span> of the factor <span class="math inline">\(f\)</span> changes.</p>
-<p>This is because in this model</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f}+\mathbf{b}_{g\in f},\sigma^2\mathbf{I})\]</span> or</p>
+<p><span class="math display">\[y_i = b_{f[i]}+b_{g[i]\in f[i]} + \varepsilon \quad i = 1\dots n\]</span> where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(0,
                                 \begin{bmatrix}
                                   \sigma^2_f &amp; 0\\
                                   0&amp; \sigma^2_{f\in g}\\
                                 \end{bmatrix}
                                 \right)\]</span></p>
+<p>Here, the model has two independent hierarchy, one changes for a sample <span class="math inline">\(i\)</span> as a single intercept hierarchy and the other will change for a sample <span class="math inline">\(i\)</span> only when the level of factor <span class="math inline">\(g\)</span> is <strong>within</strong> the level of factor <span class="math inline">\(f\)</span>.</p>
 </div>
 </section>
 <section id="hierarchies-within-hierarchies-1" class="slide level2">
@@ -480,10 +480,11 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div style="font-size: 1.1em">
 <p>The two models discussed previously have a few interesting properties:</p>
 <ul>
-<li>They are mathematically equivalent. They present a similar mathematical structure but can be used to answer slightly different biological questions.</li>
-<li>If a particular levels is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter).</li>
+<li>They are very similar mathematically.</li>
+<li>Although they present a similar mathematical structure, they answer different biological questions.</li>
+<li>If a particular level is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter).</li>
 <li>They can be generalized to as many factors as we want.</li>
-<li>Models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy.</li>
+<li>In models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy.</li>
 </ul>
 </div>
 </section>
@@ -493,8 +494,8 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><code>lme4</code> notation : <code>y ~ x + (x || f)</code> or <code>y ~ 1 + x + (1 | f) + (0 + x | g)</code></p>
 <p>This model assumes there is a hierarchy that varies independently among the levels of factor <code>f</code> for the intercept and the slope.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f[l_f]}+\mathbf{Z}\mathbf{b}_{0f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
-<p><span class="math display">\[y_i = b_{0f[l_f]}+zb_{1f[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> This is because in this model</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{Z}\mathbf{b}_{0f},\sigma^2\mathbf{I})\]</span> or</p>
+<p><span class="math display">\[y_i = b_{0f[i]}+zb_{1f[i]} + \varepsilon \quad\forall\quad i = 1\dots n\]</span> This is because in this model</p>
 <p><span class="math display">\[\begin{bmatrix}
     b_0\\
     b_1\\
@@ -512,7 +513,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch quarto-figure-center"></section>
 <section id="a-small-step-back" class="slide level2">
 <h2>A small step back</h2>
-<div style="font-size: 0.8em">
+<div style="font-size: 0.7em">
 <p>The structure of the hierarchy discussed so far were “simple” in the sense that they either required to estimate</p>
 <ul>
 <li>A single variance parameter</li>
@@ -527,6 +528,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
   0&amp; \sigma^2_{g}\\
 \end{bmatrix}
 \]</span></p>
+<p>In Bayesian, having uncorrelated variance allows us to sample variance parameter independently even with mutiple factors, which is computationally more efficient.</p>
 <p>From this point on, we will look at more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
 </div>
 </section>
@@ -536,8 +538,8 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><code>lme4</code> notation : <code>y ~ x + (x | g)</code> or <code>y ~ 1 + x + (1 + x | g)</code></p>
 <p>This model assumes the hierarchy between the intercept and the slope is correlated.</p>
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f[l_f]} +\mathbf{Z}\mathbf{b}_{1f[l_f]},\sigma^2\mathbf{I}) \quad\forall\quad l_f = 1\dots k_f\]</span> or</p>
-<p><span class="math display">\[y_i = b_{0f_i[l_f]} + zb_{1f_i[l_f]} + \varepsilon \quad\forall\quad l_f = 1\dots k_f\,\,\,\,\text{and}\,\,\,i = 1\dots n\]</span> In this model</p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{Z}\mathbf{b}_{1f},\sigma^2\mathbf{I})\]</span> or</p>
+<p><span class="math display">\[y_i = b_{0f[i]} + zb_{1f[i]} + \varepsilon \quad\forall\quad i = 1\dots n\]</span> In this model</p>
 <p><span class="math display">\[\begin{bmatrix}
     b_0\\
     b_1\\
@@ -571,7 +573,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <li><span class="math inline">\(\rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1}\)</span> is the covariance between <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span></li>
 </ul>
 <h3 id="interpretation">Interpretation</h3>
-<p>A covariance matrix with non-zero covariance describes dependence between the <span class="math inline">\(b\)</span>s, which can tell use both the strength of the relation between pairs of parameters and the variance structure.</p>
+<p>A covariance matrix with non-zero covariance describes dependence between the <span class="math inline">\(b\)</span>s, which can tell us both the strength of the relation between pairs of parameters and the variance structure.</p>
 </div>
 </section>
 <section id="correlated-intercept-and-slope-hierarchy-2" class="slide level2" style="font-size: 0.9em">
@@ -583,7 +585,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://images2.minutemediacdn.com/image/upload/c_fill,w_2160,ar_16:9,f_auto,q_auto,g_auto/shape%2Fcover%2Fsport%2Flegos-hero-0eaaf09e995d184255040705b42f46f4.jpg" style="width:20.0%"></p>
+<p><img data-src="https://images2.minutemediacdn.com/image/upload/c_fill,w_2160,ar_16:9,f_auto,q_auto,g_auto/shape%2Fcover%2Fsport%2Flegos-hero-0eaaf09e995d184255040705b42f46f4.jpg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
