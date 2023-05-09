@@ -94,6 +94,9 @@ x <- runif(100, min = -1, max = 1)
 y_mean <- yintercept + slope * x
 y_obs <- rnorm(100, mean = y_mean, sd = obs_error)
 
+b.exemplaris <- y_obs
+humidity <- x
+
 par(mar = c(6,7,0.1,0.1))
 plot(x, y_obs,
      pch = 19,
@@ -115,340 +118,9 @@ abline(a = yintercept,
        col = "orange")
 ```
 
-## Estimating regression parameters
+## Regression parameters
 
-. . . 
-
-Many techniques have been proposed to estimate the parameters of a regression model.
-
-. . . 
-
-The goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.
-
-. . . 
-
-The most common way to build a regression model is 
-
-```{r, echo = FALSE}
-b.exemplaris <- y_obs
-humidity <- x
-```
-
-```{r}
-reg <- lm(b.exemplaris ~ humidity)
-```
-
-. . . 
-
-Say we now want to build a model's confidence interval from a linear regression
-
-. . . 
-
-**How would you do it ?**
-
-. . . 
-
-Let's look at the model's results, maybe it will help us
-
-## Estimating regression parameters
-
-### Model's results
-
-::: {style="font-size: 0.75em"}
-
-```{r}
-(summaryReg <- summary(reg))
-```
-::: 
-
-. . .
-
-::: {style="font-size: 0.75em"}
-Let's say we want to construst the model's confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. **How would you do this?**
-::: 
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-We could sample the model parameters but how can we do this properly?
-
-. . .
-
-**Any suggestions?**
-
-![](https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png){fig-align="center" width=40%}
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-If we look at the estimated regression model coefficient, we can learn a few things
-
-. . .
-
-```{r}
-summaryReg$coefficients
-```
-
-. . .
-
-Notably, there are uncertainty around the parameters.
-
-. . .
-
-Maybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.
-
-. . . 
-
-Let's give it a shot !
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-If we assume that the parameters of our particular model follow a Gaussian distribution, we can state that  
-
-. . .
-
-$$\beta_0 \sim \mathcal{N}(2.574, 0.047^2)$$
-$$\beta_1 \sim \mathcal{N}(1.101, 0.080^2)$$
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-In R, we can do this as follow
-
-```{r}
-# Object that include regression coefficients
-regCoef <- summaryReg$coefficients
-
-# Sample regression parameters
-beta_0 <- rnorm(100, mean = regCoef[1,1], sd = regCoef[1,2])
-beta_1 <- rnorm(100, mean = regCoef[2,1], sd = regCoef[2,2])
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-par(mar = c(6,7,0.1,0.1))
-plot(x, y_obs,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
-
-orange <- col2rgb("orange")
-
-for(i in 1:length(beta_0)){
-abline(a = beta_0[i],
-       b = beta_1[i],
-       lwd = 2,
-       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
-}
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-But is this the right way to do it ?
-
-![](https://www.i2symbol.com/pictures/emojis/e/e/7/b/ee7b4fb9880ef3c8ee19626cdc14bf5c_384.png){fig-align="center" width=20%}
-
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-Actually, even if the model's confidence interval look about right, they are wrong ! 
-
-![](https://www.i2symbol.com/pictures/emojis/8/b/f/8/8bf88079d65d540a26a1f181cf6ba060_384.png){fig-align="center" width=20%}
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-The approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.
-
-. . . 
-
-A situation that happens only in very specific circumstances.
-
-. . .
-
-So... We need to find a way to account for the non-independencies between the parameters. 
-
-. . .
-
-How can we do this ? Any ideas ?
-
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-::: {style="font-size: 0.75em"}
-Assuming the regression parameters are normally distributed is not a bad assumption. 
-:::
-
-. . .
-
-::: {style="font-size: 0.75em"}
-However to consider a dependencies between the parameters we need to sample them from a **multivariate** normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.
-:::
-
-. . .
-
-::: {style="font-size: 0.75em"}
-The good news is that this covariance matrix is given by `summary.lm` function
-:::
-
-. . .
-
-::: {style="font-size: 1.2em"}
-```{r}
-(covReg <- summaryReg$cov.unscaled)
-```
-:::
-## Estimating regression parameters
-
-### Sampling model parameters
-
-For our specific model, mathematically, we assume that  
-
-. . .
-
-$$\begin{bmatrix}
-  \beta_0\\
-  \beta_1\\
-\end{bmatrix} \sim \mathcal{MVN} \left( \begin{bmatrix}
-  2.574\\
-  1.101\\
-\end{bmatrix}, \begin{bmatrix}
-  0.0100 & -0.0005 \\
-  -0.0005 & 0.0286 \\
-\end{bmatrix} \right)$$
-
-. . .
-
-**Note** To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course. 
-
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-In R, we can sample the parameters using a multivariate normal distribution using the following code
-
-```{r}
-# Object that include regression coefficients
-regCoef <- summaryReg$coefficients
-
-# Sample regression parameters
-beta <- MASS::mvrnorm(100, regCoef[,1], Sigma = covReg)
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-par(mar = c(6,7,0.1,0.1))
-plot(x, y_obs,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
-
-orange <- col2rgb("orange")
-
-for(i in 1:length(beta_0)){
-  abline(a = beta[i,1],
-       b = beta[i,2],
-       lwd = 2,
-       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
-}
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters - Comparison
-
-```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
-par(mfrow = c(1,2), mar = c(6,7,3,0.1))
-
-plot(x, y_obs,
-     pch = 19,
-     col="red", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2, 
-     main = "Wrong way",
-     cex.main = 3.5)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
-
-for(i in 1:length(beta_0)){
-abline(a = beta_0[i],
-       b = beta_1[i],
-       lwd = 2,
-       col = rgb(1, 0, 0, alpha = 0.5))
-}
-
-plot(x, y_obs,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2, 
-     main = "Proper way",
-     cex.main = 3.5)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-
-orange <- col2rgb("orange")
-
-for(i in 1:length(beta_0)){
-  abline(a = beta[i,1],
-       b = beta[i,2],
-       lwd = 2,
-       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
-}
-```
-
-
-## Estimating regression parameters
-
-So far, we focused on the most commonly assessed regression parameters of the simple linear model, the **slope** and the **intercept**, but there is another one that is very important to consider, especially for this course.
+Generally, we focused on the most commonly assessed regression parameters of the simple linear model, the **slope** and the **intercept**, but there is another one that is very important to consider, especially for this course.
 
 . . .
 
@@ -456,7 +128,7 @@ So far, we focused on the most commonly assessed regression parameters of the si
 
 ![](https://www.i2symbol.com/pictures/emojis/3/9/7/2/3972d0a5cdf7dffdaf58a912331839c7_384.png){fig-align="center" width=35%}
 
-## Estimating regression parameters
+## Regression parameters
 
 ::: {style="font-size: 0.75em"}
 If we go back to the mathematical description of the model
@@ -501,7 +173,7 @@ But before we do this, we need to understand a bit more about how this parameter
 ::: 
 
 
-## Estimating regression parameters
+## Regression parameters
 
 A first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as 
 $$
@@ -512,7 +184,7 @@ $$
 
 As we will see later in this course, this writting style will become particularly useful as we move forward in this course.
 
-## Estimating regression parameters
+## Regression parameters
 
 ### Variance of the model ($\sigma^2$)
 
@@ -583,7 +255,7 @@ mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
 i.chicktighii <- y_obs_small
 ```
 
-## Estimating regression parameters
+## Regression parameters
 ### Variance of the model ($\sigma^2$)
 
 By regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using `summary.lm`)
@@ -600,7 +272,7 @@ summaryRegBexemplaris <- summary(regBexemplaris)
 summaryRegIchicktighii <- summary(regIchicktighii)
 ```
 
-## Estimating regression parameters
+## Regression parameters
 ### Variance of the model ($\sigma^2$)
 
 :::: {.columns}
@@ -745,37 +417,6 @@ A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
 A
 t(A)
 ```
-## Addition and Substraction
-
-$$\mathbf{C} = \mathbf{A}\pm \mathbf{B}$$
-$$C_{ij} = A_{ij} \pm B_{ij}$$
-
-::: {style="color: blue;"}
-$$\begin{bmatrix}
-				3 & 5\\
-				1 & -2\\
-			\end{bmatrix} + 
-			\begin{bmatrix}
-				2 & 1\\
-				4 & -2\\
-			\end{bmatrix} = 
-			\begin{bmatrix}
-				3+2 & 5+1\\
-				1+4 & -2-2\\
-			\end{bmatrix} = 
-			\begin{bmatrix}
-				5 & 6\\
-				5 & -4\\
-			\end{bmatrix}$$
-:::
-
-In R
-
-```{r}
-A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
-B <- matrix(c(2, 4, 1, -2), nrow = 2, ncol = 2)
-A + B
-```
 
 ## Multiplying a matrix by a scalar
 	
@@ -905,76 +546,6 @@ $$
 $$
 :::
 ::::
-
-## Triangular matrix
-
-:::: {.columns}
-::: {.column width="50%"}
-#### Lower triangular matrix
-$$\begin{bmatrix}
-        -10 & 0 & 0 & 0\\
-        3 & 0 & 0 & 0\\
-        0 & 4 & 3 & 0\\
-        9 & -5 & 4 & 3\\
-\end{bmatrix}$$
-:::
-::: {.column width="50%"}
-#### Upper triangular matrix
-$$\begin{bmatrix}
-        -10 & 0 & -5 & 0\\
-        0 & 0 & 5 & 6\\
-        0 & 0 & 3 & 3\\
-        0 & 0 & 0 & 3\\
-      \end{bmatrix}$$
-:::
-::::
-
-## Symmetric matrix
-
-The values on the  above and below the diagonal are match so that $A = A^t$
-
-::: {style="color: blue;"}
-$$
-\begin{bmatrix}
-				3 & 4 & -10\\
-				4 & 5 & 7\\
-				-10 & 7 & -6\\
-		\end{bmatrix}
-$$
-:::
-
-## Matrix inversion
-
-::: { style="font-size: 0.8em"}
-In matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix $\mathbf{A}$ is defined as $\mathbf{A}^{-1}$
-
-As such,
-$$\mathbf{A}\cdot \mathbf{A}^{-1} = \mathbf{I}$$ 
-:::
-
-. . .
-
-::: { style="font-size: 0.8em"}
-In R
-:::
-
-
-```{r}
-A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
-(Ainv <- solve(A))
-A %*% Ainv
-```
-
-## Matrix inversion
-### Inverting a diagonal matrix
-
-$$D^{-1}=
-      \begin{bmatrix}
-        1/d_1 & 0 & \dots & 0\\
-        0 &  1/d_2 & \dots & 0\\
-        \vdots & \vdots & \ddots & \vdots\\
-        0 & 0 & \dots &  1/d_n\\
-\end{bmatrix}$$
 
 # End of matrix algebra interlude
 

@@ -423,7 +423,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="fragment">
 <div style="font-size: 0.9em">
 <p>where</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
+<p><span class="math display">\[\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)\]</span></p>
 </div>
 </div>
 </section>
@@ -444,7 +444,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="fragment">
 <div style="font-size: 0.8em">
 <p>Mathematically, it can be translated to</p>
-<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f},\sigma^2\mathbf{I})\]</span></p>
+<p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{z}\mathbf{b}_{f},\sigma^2\mathbf{I})\]</span></p>
 </div>
 </div>
 <div class="fragment">
@@ -456,8 +456,8 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <div class="fragment">
 <div style="font-size: 0.8em">
 <p>where</p>
-<p><span class="math inline">\(\mathbf{Z}\)</span> is an explanatory variable, <span class="math inline">\(z_i\)</span> the <span class="math inline">\(i^{\text{th}}\)</span> values of <span class="math inline">\(\mathbf{Z}\)</span> and</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span></p>
+<p><span class="math inline">\(\mathbf{z}\)</span> is an explanatory variable, <span class="math inline">\(z_i\)</span> the <span class="math inline">\(i^{\text{th}}\)</span> values of <span class="math inline">\(\mathbf{z}\)</span> and</p>
+<p><span class="math display">\[\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)\]</span></p>
 </div>
 </div>
 </section>
@@ -481,7 +481,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p><strong>Answer : Very little !</strong></p>
 <div class="fragment">
 <p>Actually, if we return to the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
+<p><span class="math display">\[\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
 </div>
 <div class="fragment">
 <p>Well… Actually… When a hierarchy is applied on the intercept it is technically associated to a <strong>constant</strong> explanatory variable.</p>
@@ -507,7 +507,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="how-many-levels-1" class="slide level2">
 <h2>How many levels ?</h2>
 <p>In these types of models we are interested in estimating the variance parameter <span class="math inline">\(\sigma^2_f\)</span> in</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)\]</span> to get the best estimation of <span class="math inline">\(\mathbf{b}\)</span>.</p>
+<p><span class="math display">\[\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)\]</span> to get the best estimation of <span class="math inline">\(\mathbf{b}\)</span>.</p>
 <div class="fragment">
 <p>So, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”</p>
 </div>
@@ -678,7 +678,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </div>
 <div class="fragment">
 <div style="font-size: 0.85em">
-<p>In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
+<p>In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span> is distributed as</p>
 <p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span></p>
 </div>
 </div>
@@ -722,7 +722,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </div>
 <div class="fragment">
 <div style="font-size: 0.75em">
-<p>In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f[i]}\)</span> is distributed as</p>
+<p>In this model, we assume that <span class="math inline">\(\boldsymbol{\beta}_{f}\)</span> is distributed as</p>
 <p><span class="math display">\[\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})\]</span></p>
 </div>
 </div>

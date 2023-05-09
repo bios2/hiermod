@@ -119,7 +119,7 @@ $$y_i = b_{{f[i]}} + \varepsilon \quad \forall\quad i = 1\dots n$$
 ::: {style="font-size: 0.9em"}
 where
 
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 :::
 
 ## Hierarchy on the intercept
@@ -178,7 +178,7 @@ This model assumes there is a hierarchy on the parameters associated to variable
 ::: {style="font-size: 0.8em"}
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{z}\mathbf{b}_{f},\sigma^2\mathbf{I})$$
 :::
 
 . . .
@@ -194,9 +194,9 @@ $$y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
 ::: {style="font-size: 0.8em"}
 where 
 
-$\mathbf{Z}$ is an explanatory variable, $z_i$ the $i^{\text{th}}$ values of $\mathbf{Z}$ and 
+$\mathbf{z}$ is an explanatory variable, $z_i$ the $i^{\text{th}}$ values of $\mathbf{z}$ and 
 
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 :::
 
 ## Hierarchy on the slopes
@@ -259,7 +259,7 @@ Mathematically speaking, what are the differences between having a hierarchy on 
 
 Actually, if we return to the way $\mathbf{b}$ is defined we see that in both case it is defined as 
 
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 with the sole difference that $\mathbf{b}$ is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.
 
 . . .
@@ -286,7 +286,7 @@ This is a simple questions that sadly does not have a simple answer.
 
 In these types of models we are interested in estimating the variance parameter $\sigma^2_f$ in 
 
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 to get the best estimation of $\mathbf{b}$. 
 
 . . .
@@ -584,7 +584,7 @@ $$y_i = \beta_{f[i]} + \varepsilon \quad \forall\quad i = 1\dots n$$
 . . .
 
 ::: {style="font-size: 0.85em"}
-In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
+In this model, we assume that $\boldsymbol{\beta}_{f}$ is distributed as 
 
 $$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
 :::
@@ -702,7 +702,7 @@ $$y_i = \beta_0 + \beta_{f[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n$
 . . .
 
 ::: {style="font-size: 0.75em"}
-In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
+In this model, we assume that $\boldsymbol{\beta}_{f}$ is distributed as 
 
 $$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
 :::

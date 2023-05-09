@@ -272,6 +272,8 @@ The two models discussed previously have a few interesting properties:
 - In models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy. 
 :::
 
+# Other "complex" hierarchies
+
 ## Uncorrelated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
 ::: {style="font-size: 0.65em"}
@@ -554,13 +556,18 @@ marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
 
 ## Combining different types of hierarchy {style="font-size: 0.9em"}
 
-::: {style="font-size: 0.8em"}
 With what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours. 
 
-The best way to do this is to immerse ourselve into a particular setting.
+The best way to do this is to immerse ourselve into a particular problem.
 
-**Context**
+So, in the next slides we will discuss about the pumpkinseed (*Lepomis gibbosus*)
 
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg/480px-Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg){fig-align="center" width=20%}
+
+## Combining different types of hierarchy {style="font-size: 0.9em"}
+### Fictive context
+
+::: {style="font-size: 0.9em"}
 Pumpkinseed (*Lepomis gibbosus*) growth has been studied in the lakes of the Station de biologie des Laurentides during the famous ichthyology course given at Université de Montréal in the past  30 years. 
 
 During these ichthyology courses, fish are sampled, measured and tag in all 15 lakes of the research station and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision. 
@@ -574,23 +581,25 @@ After 30 years of data, 123 fish have been sampled during 17 consecutive year.
 
 **Question**
 
-Does the growth of Pumpkinseed is influenced water temperature, which changed across lakes which accounting for lakes area and depth and controling for divergences in sampling measurements of each classes (wink, wink... teachers assistant may have an influence here)?
+::: {style="font-size: 0.9em"}
+Does the growth of Pumpkinseed is influenced by water temperature? To have the most precise model, we need to account  for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink... teachers assistant may have an influence here as well).
+:::
 
+![](https://www.i2symbol.com/pictures/emojis/8/f/9/7/8f979936097f887c9b3a9d1b58ddbe0f_384.png){fig-align="center" width=20%}
 
 **Try to build the model that best answer this question**
 
-## Pumpkinseed growth example
+## Multivariate hierarchical model
 
-## The model
+So far, we have used "standard" model to build hierarchical models. 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{Z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
+Let's now develop a hierarchical model that does not follow the predefined structure we have studied so far.
+
+A multivariate hierarchical model is a good example to show how wild we can go with hierarchical models.
+
+## Multivariate hierarchical model
 
 
-## Combining different types of hierarchy {style="font-size: 0.9em"}
-
-How should we build our model to answer our question given our sampling scheme ?
-
-![](https://www.i2symbol.com/pictures/emojis/8/f/9/7/8f979936097f887c9b3a9d1b58ddbe0f_384.png){fig-align="center" width=20%}
 
 ## second
 

@@ -382,7 +382,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the intercept",
-    "text": "Hierarchy on the intercept\n\n\nlme4 notation used y ~ (1 | f) or y ~ 1 + (1 | f)\n\n\n\n\nThis model assumes there is a hierarchy solely on the intercept.\n\n\n\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n\n\n\nor\n\\[y_i = b_{{f[i]}} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\n\nwhere\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
+    "text": "Hierarchy on the intercept\n\n\nlme4 notation used y ~ (1 | f) or y ~ 1 + (1 | f)\n\n\n\n\nThis model assumes there is a hierarchy solely on the intercept.\n\n\n\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n\n\n\nor\n\\[y_i = b_{{f[i]}} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\n\nwhere\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-1",
@@ -396,7 +396,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the slopes",
-    "text": "Hierarchy on the slopes\n\nlme4 notation : y ~ 1 + (x | f)\n\n\n\nThis model assumes there is a hierarchy on the parameters associated to variable x.\n\n\n\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\beta_0 + \\mathbf{Z}\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n\n\n\nor\n\\[y_i = \\beta_0 + b_{f[i]}z_i + \\varepsilon \\quad\\forall\\quad i = 1\\dots n\\]\n\n\n\n\nwhere\n\\(\\mathbf{Z}\\) is an explanatory variable, \\(z_i\\) the \\(i^{\\text{th}}\\) values of \\(\\mathbf{Z}\\) and\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\]"
+    "text": "Hierarchy on the slopes\n\nlme4 notation : y ~ 1 + (x | f)\n\n\n\nThis model assumes there is a hierarchy on the parameters associated to variable x.\n\n\n\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\beta_0 + \\mathbf{z}\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n\n\n\nor\n\\[y_i = \\beta_0 + b_{f[i]}z_i + \\varepsilon \\quad\\forall\\quad i = 1\\dots n\\]\n\n\n\n\nwhere\n\\(\\mathbf{z}\\) is an explanatory variable, \\(z_i\\) the \\(i^{\\text{th}}\\) values of \\(\\mathbf{z}\\) and\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-1",
@@ -417,7 +417,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope-1",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on intercept and slope",
-    "text": "Hierarchy on intercept and slope\nAnswer : Very little !\n\nActually, if we return to the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\] with the sole difference that \\(\\mathbf{b}\\) is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\n\n\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable."
+    "text": "Hierarchy on intercept and slope\nAnswer : Very little !\n\nActually, if we return to the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] with the sole difference that \\(\\mathbf{b}\\) is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\n\n\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels",
@@ -431,7 +431,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-1",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nIn these types of models we are interested in estimating the variance parameter \\(\\sigma^2_f\\) in\n\\[\\mathbf{b} \\sim \\mathcal{N}(0, \\sigma^2_f)\\] to get the best estimation of \\(\\mathbf{b}\\).\n\nSo, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”\n\n\nHowever, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor."
+    "text": "How many levels ?\nIn these types of models we are interested in estimating the variance parameter \\(\\sigma^2_f\\) in\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] to get the best estimation of \\(\\mathbf{b}\\).\n\nSo, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”\n\n\nHowever, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-2",
@@ -494,7 +494,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the intercept’s mean",
-    "text": "Hierarchy on the intercept’s mean\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_{f[i]} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f[i]}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n\n\n\nThis means that all samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\).\n\n\n\n\nBy developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance."
+    "text": "Hierarchy on the intercept’s mean\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_{f[i]} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n\n\n\nThis means that all samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\).\n\n\n\n\nBy developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-1",
@@ -515,7 +515,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the slope’s mean",
-    "text": "Hierarchy on the slope’s mean\n\n\nDevelopping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.\n\n\n\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_0+\\mathbf{X}\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_0 + \\beta_{f[i]}x_i + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f[i]}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n\n\n\nThis means that all the samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\).\nBy developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance."
+    "text": "Hierarchy on the slope’s mean\n\n\nDevelopping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.\n\n\n\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_0+\\mathbf{X}\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_0 + \\beta_{f[i]}x_i + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n\n\n\nThis means that all the samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\).\nBy developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean-1",
@@ -1383,14 +1383,14 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy",
     "title": "Complex hierarchical models",
     "section": "Combining different types of hierarchy",
-    "text": "Combining different types of hierarchy\n\nWith what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours.\nThe best way to do this is to immerse ourselve into a particular setting.\nContext\nPumpkinseed (Lepomis gibbosus) growth has been studied in the lakes of the Station de biologie des Laurentides during the famous ichthyology course given at Université de Montréal in the past 30 years.\nDuring these ichthyology courses, fish are sampled, measured and tag in all 15 lakes of the research station and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision.\nYour superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth, the different lake have different temperature.\nAfter 30 years of data, 123 fish have been sampled during 17 consecutive year."
+    "text": "Combining different types of hierarchy\nWith what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours.\nThe best way to do this is to immerse ourselve into a particular problem.\nSo, in the next slides we will discuss about the pumpkinseed (Lepomis gibbosus)"
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#pumpkinseed-growth-example",
     "href": "slides/08_Complex_hierarchical_model/index.html#pumpkinseed-growth-example",
     "title": "Complex hierarchical models",
     "section": "Pumpkinseed growth example",
-    "text": "Pumpkinseed growth example\nQuestion\nDoes the growth of Pumpkinseed is influenced water temperature, which changed across lakes which accounting for lakes area and depth and controling for divergences in sampling measurements of each classes (wink, wink… teachers assistant may have an influence here)?\nTry to build the model that best answer this question"
+    "text": "Pumpkinseed growth example\nQuestion\n\nDoes the growth of Pumpkinseed is influenced by water temperature? To have the most precise model, we need to account for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink… teachers assistant may have an influence here as well).\n\n\nTry to build the model that best answer this question"
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#pumpkinseed-growth-example-1",
@@ -1404,14 +1404,14 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#the-model",
     "title": "Complex hierarchical models",
     "section": "The model",
-    "text": "The model\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{0f} +\\mathbf{Z}\\mathbf{b}_{1f},\\sigma^2\\mathbf{I})\\]"
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-1",
     "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-1",
     "title": "Complex hierarchical models",
     "section": "Combining different types of hierarchy",
-    "text": "Combining different types of hierarchy\nHow should we build our model to answer our question given our sampling scheme ?"
+    "text": "Combining different types of hierarchy\nFictive context\n\nPumpkinseed (Lepomis gibbosus) growth has been studied in the lakes of the Station de biologie des Laurentides during the famous ichthyology course given at Université de Montréal in the past 30 years.\nDuring these ichthyology courses, fish are sampled, measured and tag in all 15 lakes of the research station and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision.\nYour superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth, the different lake have different temperature.\nAfter 30 years of data, 123 fish have been sampled during 17 consecutive year."
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#second",
@@ -1853,5 +1853,68 @@
     "title": "Data simulation",
     "section": "Exercises",
     "text": "Exercises\n\nLevel 1\n\nLet’s go birding! everyone in the class, over lunch, will go and count birds by eye! we’ll collect the vector, run and sample the model. Did our prior turn out to be appropriate?\nWhat would you do next to add complexity this model?\n\n\n\nLevel 2\n\nWe plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?\nTake a closer look at poisson_model_samp$summary() all the values of bird_count are the same. That’s correct, but why?\n\n\n\nLevel 3\n\nYou would never actually do the analysis in this exercise! If all you want is the average of a Poisson distribution, you can get that without any sampling at all. Start by writing the model with a different prior:\n\n\\[\n\\begin{align}\n\\text{Number of Birds}_{\\text{seen by person i}} &\\sim \\text{Poisson}(\\lambda) \\\\\n\\lambda &\\sim \\text{Gamma}(9, .5)\n\\end{align}\n\\]\nThis lets us calculate the posterior distribution directly. See the equation on Wikipedia and calculate the posterior for our bird data."
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-2",
+    "href": "slides/08_Complex_hierarchical_model/index.html#combining-different-types-of-hierarchy-2",
+    "title": "Complex hierarchical models",
+    "section": "Combining different types of hierarchy",
+    "text": "Combining different types of hierarchy\nHow should we build our model to answer our question given our sampling scheme ?"
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#multivariate-hierarchical-model",
+    "href": "slides/08_Complex_hierarchical_model/index.html#multivariate-hierarchical-model",
+    "title": "Complex hierarchical models",
+    "section": "Multivariate hierarchical model",
+    "text": "Multivariate hierarchical model\nSo far, we have used “standard” model to build hierarchical models.\nLet’s now develop a hierarchical model that does not follow the predefined structure we have studied so far.\nA multivariate hierarchical model is a good example to show how wild we can go with hierarchical models."
+  },
+  {
+    "objectID": "slides/08_Complex_hierarchical_model/index.html#multivariate-hierarchical-model-1",
+    "href": "slides/08_Complex_hierarchical_model/index.html#multivariate-hierarchical-model-1",
+    "title": "Complex hierarchical models",
+    "section": "Multivariate hierarchical model",
+    "text": "Multivariate hierarchical model"
+  },
+  {
+    "objectID": "slides/04_Linear_model/index.html#regression-parameters",
+    "href": "slides/04_Linear_model/index.html#regression-parameters",
+    "title": "Linear models",
+    "section": "Regression parameters",
+    "text": "Regression parameters\nGenerally, we focused on the most commonly assessed regression parameters of the simple linear model, the slope and the intercept, but there is another one that is very important to consider, especially for this course.\n\nAny ideas which one it is ?"
+  },
+  {
+    "objectID": "slides/04_Linear_model/index.html#regression-parameters-1",
+    "href": "slides/04_Linear_model/index.html#regression-parameters-1",
+    "title": "Linear models",
+    "section": "Regression parameters",
+    "text": "Regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n\n\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\n\n\n\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]\n\n\nwhere \\(\\sigma^2\\) is an estimated variance.\n\n\n\n\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\n\n\n\n\nFor most the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\n\n\n\n\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
+  },
+  {
+    "objectID": "slides/04_Linear_model/index.html#regression-parameters-2",
+    "href": "slides/04_Linear_model/index.html#regression-parameters-2",
+    "title": "Linear models",
+    "section": "Regression parameters",
+    "text": "Regression parameters\nA first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as \\[\ny \\sim \\mathcal{N}(\\beta_0 + \\beta_1 x_{i}, \\sigma^2)\n\\]\n\nAs we will see later in this course, this writting style will become particularly useful as we move forward in this course."
+  },
+  {
+    "objectID": "slides/04_Linear_model/index.html#regression-parameters-3",
+    "href": "slides/04_Linear_model/index.html#regression-parameters-3",
+    "title": "Linear models",
+    "section": "Regression parameters",
+    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\n\n\n\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)"
+  },
+  {
+    "objectID": "slides/04_Linear_model/index.html#regression-parameters-4",
+    "href": "slides/04_Linear_model/index.html#regression-parameters-4",
+    "title": "Linear models",
+    "section": "Regression parameters",
+    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n\n\n# Regression model\nregBexemplaris <- lm(b.exemplaris ~ humidity)\nregIchicktighii <- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris <- summary(regBexemplaris)\nsummaryRegIchicktighii <- summary(regIchicktighii)"
+  },
+  {
+    "objectID": "slides/04_Linear_model/index.html#regression-parameters-5",
+    "href": "slides/04_Linear_model/index.html#regression-parameters-5",
+    "title": "Linear models",
+    "section": "Regression parameters",
+    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\n\nFor Bidonia exemplaris\n\n# Estimated coefficients\nsummaryRegBexemplaris$coefficients[,1:2]\n\n            Estimate Std. Error\n(Intercept) 2.573889 0.04720304\nhumidity    1.100865 0.07975800\n\n# Estimated variance\nsummaryRegBexemplaris$sigma\n\n[1] 0.471798\n\n\n\nFor Ilovea chicktighii\n\n# Estimated coefficients\nsummaryRegIchicktighii$coefficients[,1:2]\n\n            Estimate  Std. Error\n(Intercept) 3.991785 0.008928294\nhumidity    1.271250 0.015085956\n\n# Estimated variance\nsummaryRegIchicktighii$sigma\n\n[1] 0.089239"
   }
 ]
