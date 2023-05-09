@@ -19,29 +19,61 @@ format:
 
 ::: {style="font-size: 0.8em"}
 Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 In its simplest form, a regression model is usually presented as 
+:::
+
+. . .
 
 $$
 y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 $$
 
+. . .
+
+::: {style="font-size: 0.8em"}
 It is known as a **simple linear model**, where :
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 $y_i$ is the value of a response variable for observation $i$
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 $x_i$ is the value of an explanatory variable for observation $i$
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 $\beta_0$ is the model intercept
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 $\beta_1$ is the model slope
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 $\varepsilon$ is the error term
 :::
 
 ## Basic regression model
 
 The cool thing about the simple linear model is that it can be studied visually quite easily.
+
+. . .
 
 For example if we are interested in knowing how a newly discovered plant species (*Bidonia exemplaris*) reacts to humidity, we can relate the biomass of *B. exemplaris* sampled at 100 sites with the soil humidity content and readily  visual the data and the trend.
 
@@ -61,6 +93,9 @@ obs_error <- 0.5
 x <- runif(100, min = -1, max = 1)
 y_mean <- yintercept + slope * x
 y_obs <- rnorm(100, mean = y_mean, sd = obs_error)
+
+b.exemplaris <- y_obs
+humidity <- x
 
 par(mar = c(6,7,0.1,0.1))
 plot(x, y_obs,
@@ -83,291 +118,17 @@ abline(a = yintercept,
        col = "orange")
 ```
 
-## Estimating regression parameters
+## Regression parameters
 
-Many techniques have been proposed to estimate the parameters of a regression model.
+Generally, we focused on the most commonly assessed regression parameters of the simple linear model, the **slope** and the **intercept**, but there is another one that is very important to consider, especially for this course.
 
-The goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.
-
-For example, if we want to build a model's confidence interval from a linear regression coded as
-
-```{r, echo = FALSE}
-b.exemplaris <- y_obs
-humidity <- x
-```
-
-```{r}
-reg <- lm(b.exemplaris ~ humidity)
-```
-
-**How would you do it ?**
-
-Let's look at the model's results are worth studying
-
-## Estimating regression parameters
-
-### Model's results
-
-::: {style="font-size: 0.75em"}
-
-```{r}
-(summaryReg <- summary(reg))
-```
-
-Let's say we want to construst the model's confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this ?
-::: 
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-We could sample the model parameters but how can we do this properly ?
-
-**Any suggestions?**
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-If we look at the estimated regression model coefficient, we can learn a few things
-
-```{r}
-summaryReg$coefficients
-```
-
-Notably, there are uncertainty around the parameters.
-
-Maybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.
-
-Let's give it a shot !
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-If we assume that the parameters of our particular model follow a Gaussian distribution, we can state that  
-
-$$\beta_0 \sim \mathcal{N}(2.574, 0.047^2)$$
-$$\beta_1 \sim \mathcal{N}(1.101, 0.080^2)$$
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-In R, we can do this as follow
-
-```{r}
-# Object that include regression coefficients
-regCoef <- summaryReg$coefficients
-
-# Sample regression parameters
-beta_0 <- rnorm(100, mean = regCoef[1,1], sd = regCoef[1,2])
-beta_1 <- rnorm(100, mean = regCoef[2,1], sd = regCoef[2,2])
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-par(mar = c(6,7,0.1,0.1))
-plot(x, y_obs,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
-
-orange <- col2rgb("orange")
-
-for(i in 1:length(beta_0)){
-abline(a = beta_0[i],
-       b = beta_1[i],
-       lwd = 2,
-       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
-}
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-But is this the right way to do it ?
-
-![](https://www.i2symbol.com/pictures/emojis/e/e/7/b/ee7b4fb9880ef3c8ee19626cdc14bf5c_384.png){fig-align="center" width=20%}
-
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-Actually, even if the model's confidence interval look about right, they are wrong ! 
-
-![](https://www.i2symbol.com/pictures/emojis/8/b/f/8/8bf88079d65d540a26a1f181cf6ba060_384.png){fig-align="center" width=20%}
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-The approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.
-
-A situation that happens only in very specific circumstances.
-
-So... We need to find a way to account for the non-independencies between the parameters. 
-
-How can we do this ? Any ideas ?
-
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-::: {style="font-size: 0.75em"}
-Assuming that the regression parameters are normally distributed is not a bad assumption. 
-
-However to consider a dependencies between the parameters we need to sample them from a **multivariate** normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.
-
-The good news is that this covariance matrix is given by `summary.lm` function
-:::
-
-```{r}
-(covReg <- summaryReg$cov.unscaled)
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-For our specific model, mathematically, we assume that  
-
-$$\begin{bmatrix}
-  \beta_0\\
-  \beta_1\\
-\end{bmatrix} \sim \mathcal{MVN} \left( \begin{bmatrix}
-  2.574\\
-  1.101\\
-\end{bmatrix}, \begin{bmatrix}
-  0.0100 & -0.0005 \\
-  -0.0005 & 0.0286 \\
-\end{bmatrix} \right)$$
-
-**Note** To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course. 
-
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-In R, we can sample the parameters using a multivariate normal distribution using the following code
-
-```{r}
-# Object that include regression coefficients
-regCoef <- summaryReg$coefficients
-
-# Sample regression parameters
-beta <- MASS::mvrnorm(100, regCoef[,1], Sigma = covReg)
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters
-
-```{r, echo = FALSE, fig.width=8,  fig.height=8, fig.align='center'}
-par(mar = c(6,7,0.1,0.1))
-plot(x, y_obs,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
-
-orange <- col2rgb("orange")
-
-for(i in 1:length(beta_0)){
-  abline(a = beta[i,1],
-       b = beta[i,2],
-       lwd = 2,
-       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
-}
-```
-
-## Estimating regression parameters
-
-### Sampling model parameters - Comparison
-
-```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
-par(mfrow = c(1,2), mar = c(6,7,3,0.1))
-
-plot(x, y_obs,
-     pch = 19,
-     col="red", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2, 
-     main = "Wrong way",
-     cex.main = 3.5)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
-
-for(i in 1:length(beta_0)){
-abline(a = beta_0[i],
-       b = beta_1[i],
-       lwd = 2,
-       col = rgb(1, 0, 0, alpha = 0.5))
-}
-
-plot(x, y_obs,
-     pch = 19,
-     col="blue", 
-     las=1,
-     cex.axis=2.3,
-     bty="L",
-     xaxs="i",
-     xlab = "",
-     ylab = "",
-     cex = 2, 
-     main = "Proper way",
-     cex.main = 3.5)
-
-mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
-
-orange <- col2rgb("orange")
-
-for(i in 1:length(beta_0)){
-  abline(a = beta[i,1],
-       b = beta[i,2],
-       lwd = 2,
-       col = rgb(orange[1,1]/256, orange[2,1]/256, orange[3,1]/256, alpha = 0.5))
-}
-```
-
-
-## Estimating regression parameters
-
-So far, we focused on the most commonly assessed regression parameters of the simple linear model, the **slope** and the **intercept**, but there is another one that is very important to consider, especially for this course.
+. . .
 
 **Any ideas which one it is ?**
 
-## Estimating regression parameters
+![](https://www.i2symbol.com/pictures/emojis/3/9/7/2/3972d0a5cdf7dffdaf58a912331839c7_384.png){fig-align="center" width=35%}
+
+## Regression parameters
 
 ::: {style="font-size: 0.75em"}
 If we go back to the mathematical description of the model
@@ -375,39 +136,71 @@ If we go back to the mathematical description of the model
 $$
 y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 $$
+:::
 
+. . .
+
+::: {style="font-size: 0.75em"}
 we can see that in the simple linear regression the error term ($\varepsilon$) has actually a very precise definition:
+:::
 
+. . .
+
+::: {style="font-size: 0.75em"}
 $$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$
+:::
+
+::: {style="font-size: 0.75em"}
 where $\sigma^2$ is an estimated variance.
+:::
 
+. . .
+
+::: {style="font-size: 0.75em"}
 In words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.
+:::
 
+. . .
+
+::: {style="font-size: 0.75em"}
 For most the course, we will play with the variance parameter $\sigma^2$ in a bunch of different ways. 
+:::
 
+. . .
+
+::: {style="font-size: 0.75em"}
 But before we do this, we need to understand a bit more about how this parameter influence the model.
 ::: 
 
 
-## Estimating regression parameters
+## Regression parameters
 
 A first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as 
 $$
 y \sim \mathcal{N}(\beta_0 + \beta_1 x_{i}, \sigma^2)
 $$
+
+. . .
+
 As we will see later in this course, this writting style will become particularly useful as we move forward in this course.
 
-## Estimating regression parameters
+## Regression parameters
 
 ### Variance of the model ($\sigma^2$)
 
 ::: {style="font-size: 0.75em"}
 In essence, $\sigma^2$ tells us about what the model could not account for.
+:::
 
+. . .
+
+::: {style="font-size: 0.75em"}
 For example, let's compare the biomass of *Bidonia exemplaris* with that of *Ilovea chicktighii*, another species (a carnivorous plant) 
 :::
 
-```{r, echo = FALSE, fig.width=16,  fig.height=8, fig.align='center'}
+. . .
+
+```{r, echo = FALSE, fig.width=16,  fig.height=6.5, fig.align='center'}
 # Simulate some data
 set.seed(42) # The answer !
 
@@ -462,10 +255,12 @@ mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
 i.chicktighii <- y_obs_small
 ```
 
-## Estimating regression parameters
+## Regression parameters
 ### Variance of the model ($\sigma^2$)
 
 By regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using `summary.lm`)
+
+. . .
 
 ```{r}
 # Regression model
@@ -477,7 +272,7 @@ summaryRegBexemplaris <- summary(regBexemplaris)
 summaryRegIchicktighii <- summary(regIchicktighii)
 ```
 
-## Estimating regression parameters
+## Regression parameters
 ### Variance of the model ($\sigma^2$)
 
 :::: {.columns}
@@ -509,23 +304,39 @@ summaryRegIchicktighii$sigma
 
 There are two major pitfalls of the simple linear model for problems in the life sciences
 
+. . .
+
 1.  One explanatory is almost never enough to approach biological questions nowadays.
+
+. . .
 
 2.  The simple linear model assumes that the error follows a Gaussian distribution.
 
 ## Multiple linear regression
 
-::: {style="font-size: 0.75em"}
+::: {style="font-size: 0.85em"}
 Simple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a **multiple linear regression**.
+:::
 
+. . .
+
+::: {style="font-size: 0.85em"}
 Mathematically, a multiple linear regression can be defined as 
 
 $$
 y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \varepsilon
 $$
+:::
 
+. . . 
+
+::: {style="font-size: 0.85em"}
 Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in genral.
+:::
 
+. . .
+
+::: {style="font-size: 0.85em"}
 In this respect, let's take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra.
 :::
 
@@ -548,7 +359,7 @@ $$A = \left[a_{ij}\right]=\left[a_{ij}\right]_{m\times n}$$
 
 ## The transpose of a matrix
 
-::::: { style="font-size: 0.65em"}
+::::: { style="font-size: 0.85em"}
 :::: {.columns}
 ::: {.column width="50%"}
 
@@ -595,6 +406,9 @@ $$C^t =\begin{bmatrix}
 $$
 :::
 ::::
+:::::
+
+## The transpose of a matrix
 
 In R
 
@@ -602,38 +416,6 @@ In R
 A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
 A
 t(A)
-```
-:::::
-## Addition and Substraction
-
-$$\mathbf{C} = \mathbf{A}\pm \mathbf{B}$$
-$$C_{ij} = A_{ij} \pm B_{ij}$$
-
-::: {style="color: blue;"}
-$$\begin{bmatrix}
-				3 & 5\\
-				1 & -2\\
-			\end{bmatrix} + 
-			\begin{bmatrix}
-				2 & 1\\
-				4 & -2\\
-			\end{bmatrix} = 
-			\begin{bmatrix}
-				3+2 & 5+1\\
-				1+4 & -2-2\\
-			\end{bmatrix} = 
-			\begin{bmatrix}
-				5 & 6\\
-				5 & -4\\
-			\end{bmatrix}$$
-:::
-
-In R
-
-```{r}
-A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
-B <- matrix(c(2, 4, 1, -2), nrow = 2, ncol = 2)
-A + B
 ```
 
 ## Multiplying a matrix by a scalar
@@ -714,13 +496,11 @@ A %*% x
 
 # Some important matrices
 
-
 ## Identity matrix
 
 The identity matrix is a square matrix where all values of its diagonal are 0 except  the diagonal values which are all 1s.
 
-:::: { style="font-size: 0.8em"}
-::: {style="color: blue;"}
+::: { style="font-size: 0.9em"}
 $$
 \mathbf{I}=\begin{bmatrix}
 				1 & 0 & 0\\
@@ -730,14 +510,16 @@ $$
 $$
 :::
 
+. . .
+
+::: { style="font-size: 0.9em"}
 The identity matrix is important because 
 
 $$\mathbf{A} \cdot \mathbf{I}_n = \mathbf{A}$$
 or 
 
 $$\mathbf{I}_m \cdot \mathbf{A} = \mathbf{A}$$
-::::
-
+:::
 
 ## Diagonal matrix
 
@@ -765,81 +547,23 @@ $$
 :::
 ::::
 
-## Triangular matrix
-
-:::: {.columns}
-::: {.column width="50%"}
-#### Lower triangular matrix
-$$\begin{bmatrix}
-        -10 & 0 & 0 & 0\\
-        3 & 0 & 0 & 0\\
-        0 & 4 & 3 & 0\\
-        9 & -5 & 4 & 3\\
-\end{bmatrix}$$
-:::
-::: {.column width="50%"}
-#### Upper triangular matrix
-$$\begin{bmatrix}
-        -10 & 0 & -5 & 0\\
-        0 & 0 & 5 & 6\\
-        0 & 0 & 3 & 3\\
-        0 & 0 & 0 & 3\\
-      \end{bmatrix}$$
-:::
-::::
-
-## Symmetric matrix
-
-The values on the  above and below the diagonal are match so that $A = A^t$
-
-::: {style="color: blue;"}
-$$
-\begin{bmatrix}
-				3 & 4 & -10\\
-				4 & 5 & 7\\
-				-10 & 7 & -6\\
-		\end{bmatrix}
-$$
-:::
-
-## Matrix inversion
-
-::: { style="font-size: 0.8em"}
-In matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix $\mathbf{A}$ is defined as $\mathbf{A}^{-1}$
-
-As such,
-$$\mathbf{A}\cdot \mathbf{A}^{-1} = \mathbf{I}$$ 
-In R
-
-```{r}
-A <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)
-(Ainv <- solve(A))
-A %*% Ainv
-```
-:::
-
-## Matrix inversion
-### Inverting a diagonal matrix
-
-$$D^{-1}=
-      \begin{bmatrix}
-        1/d_1 & 0 & \dots & 0\\
-        0 &  1/d_2 & \dots & 0\\
-        \vdots & \vdots & \ddots & \vdots\\
-        0 & 0 & \dots &  1/d_n\\
-\end{bmatrix}$$
-
 # End of matrix algebra interlude
 
 ## Multiple linear regression
 
+. . .
+
 In this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the $\beta$s) can depend on other other data and parameters. 
+
+. . .
 
 As we saw earlier, a classic way to write multiple linear regression is 
 
 $$
 y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \varepsilon
 $$
+
+. . .
 
 However, we can rewrite this using matrix notation has
 
@@ -856,10 +580,30 @@ $$
 
 Using the matrix notation, we assume that 
 
+. . .
+
+
+::: { style="font-size: 0.9em"}
 - $\mathbf{y}$ is a vector of length $n$ (samples)
+:::
+
+. . .
+
+::: { style="font-size: 0.9em"}
 - $\mathbf{X}$ is a matrix with $n$ samples (rows) and representing $p$ explanatory variables (columns)
+:::
+
+. . .
+
+::: { style="font-size: 0.9em"}
 - $\boldsymbol{\beta}$ is a vector of $p$ regression coefficients
+:::
+
+. . .
+
+::: { style="font-size: 0.9em"}
 - $\boldsymbol{\varepsilon}$ is a vector of residuals of length $n$
+:::
 
 ## Error in linear models
 
@@ -867,20 +611,31 @@ As previously mentioned, in (simple and multiple!) linear regression the error t
 
 $$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance
 
+. . .
+
 which means that the error linear regression follows a Gaussian distribution with an estimateed variance.
+
+. . .
 
 **Note** The model can be written using matrix notation as  
 $$\mathbf{y} \sim \mathcal{N}(\boldsymbol{\beta}\mathbf{X}, \sigma^2)$$ where $\sigma^2$
 
 ## Generalized linear models
 
+. . .
+
 To go around this problem, *generalized* linear models (GLMs) have been proposed. In essence, GLMs use *link functions* to adapt models for them to be used on non-Gaussian data.
+
+. . .
 
 Mathematically, the generic way to write generalized linear model is
 
 $$
 \widehat{y}_i = g^{-1}(\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip})
 $$
+
+. . .
+
 or in matrix notation
 
 $$
@@ -894,16 +649,29 @@ where $g$ is the link function and $g^{-1}$ the inverse link function.
 
 ::: {style="font-size: 0.75em"}
 There are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.
+:::
 
-Arguably the most common link function in ecology are 
+. . .
 
-##### logit link function
+::: {style="font-size: 0.75em"}
+Arguably the most common link function in ecology is 
+:::
 
+. . .
+
+**logit link function**
+
+::: {style="font-size: 0.75em"}
 It is commonly used for modelling binary (0-1) data.
 
 $$
 \mathbf{X}\boldsymbol{\beta} = \ln\left(\frac{\widehat{\mathbf{y}}}{1 - \widehat{\mathbf{y}}}\right)
 $$
+:::
+
+. . .
+
+::: {style="font-size: 0.75em"}
 The inverse logit link function is 
 
 $$
@@ -914,19 +682,22 @@ $$
 ## Generalized linear models
 ### Link functions
 
-::: {style="font-size: 0.75em"}
 Another commonly used link function is
 
-##### log link function
+. . .
+
+**log link function**
 
 It is commonly used for modelling count data.
 
 $$
 \mathbf{X}\boldsymbol{\beta} = \ln\left(\widehat{\mathbf{y}}\right)
 $$
+
+. . .
+
 The inverse logit link function is 
 
 $$
 \widehat{\mathbf{y}} = \exp(\mathbf{X}\boldsymbol{\beta})
 $$
-:::

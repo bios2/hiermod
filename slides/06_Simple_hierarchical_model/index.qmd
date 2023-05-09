@@ -17,9 +17,15 @@ format:
 
 ## "Simple" hierarchical model
 
+. . . 
+
 Here, we use the term "simple" in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others. 
 
+. . . 
+
 Futhermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory. 
+
+. . . 
 
 When we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model.
 
@@ -27,13 +33,21 @@ When we will have done this, it will be reasonably straight forward to move to n
 
 ## The "`|`"
 
+. . . 
+
 ::: {style="font-size: 0.8em"}
 Most of you have probably already used the packages `lme4` or `brms` to build hierarchical models and so you have used the `|` to include a hierachy in your model.
+:::
 
+. . . 
+
+::: {style="font-size: 0.8em"}
 But do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?
 :::
 
 ![](https://www.i2symbol.com/pictures/emojis/2/1/4/4/21445641aeaca6c4436579b3fa30772b_384.png){fig-align="center" width=20%}
+
+. . .
 
 ::: {style="font-size: 0.8em"}
 Let's look at different `lme4` models to learn about some basic (and not so basic!) hierarchical models.
@@ -41,37 +55,71 @@ Let's look at different `lme4` models to learn about some basic (and not so basi
 
 ## A bit of notation
 
+. . .
+
 ::: {style="font-size: 0.9em"}
 Before we get into writing math, we need to define a bit of notation in addition of the one we have used so far.
+:::
 
+. . .
+
+::: {style="font-size: 0.9em"}
 Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript. 
 
-We will use square brackets to define the sample
+We will use square brackets to define the sample.
+:::
+
+. . .
 
 ### Example
 
+::: {style="font-size: 0.9em"}
 $$\mathbf{Z}_{f[i]}$$
 This means that, within $\mathbf{Z}$, we focus on the $i^{\text{th}}$ factor $f$. 
+:::
 
+. . .
+
+::: {style="font-size: 0.9em"}
 **Note** The $i^{\text{th}}$ sample of factor $f$ maybe associated to any level of factor $f$.
 :::
 
 ## Hierarchy on the intercept
 
-::: {style="font-size: 0.8em"}
+. . .
+
+::: {style="font-size: 0.9em"}
 `lme4` notation used `y ~ (1 | f)` or `y ~ 1 + (1 | f)`
+:::
 
+. . .
+
+::: {style="font-size: 0.9em"}
 This model assumes there is a hierarchy solely on the intercept.
+:::
 
+. . .
+
+::: {style="font-size: 0.9em"}
 Mathematically, it can be translated to 
 
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f},\sigma^2\mathbf{I})$$
+:::
+
+. . .
+
+::: {style="font-size: 0.9em"}
 or 
 
 $$y_i = b_{{f[i]}} + \varepsilon \quad \forall\quad i = 1\dots n$$
+:::
+
+. . .
+
+::: {style="font-size: 0.9em"}
 where
 
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 :::
 
 ## Hierarchy on the intercept
@@ -115,24 +163,40 @@ abline(h = rnorm(30, mean = 1, sd = 0.5),
 
 ## Hierarchy on the slopes
 
-::: {style="font-size: 0.7em"}
+::: {style="font-size: 0.8em"}
 `lme4` notation : `y ~ 1 + (x | f)`
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 This model assumes there is a hierarchy on the parameters associated to variable `x`.
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{Z}\mathbf{b}_{f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\beta_0 + \mathbf{z}\mathbf{b}_{f},\sigma^2\mathbf{I})$$
+:::
+
+. . .
+
+::: {style="font-size: 0.8em"}
 or 
 
 $$y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
+:::
+
+. . .
+
+::: {style="font-size: 0.8em"}
 where 
 
-$\mathbf{Z}$ is an explanatory variable, 
+$\mathbf{z}$ is an explanatory variable, $z_i$ the $i^{\text{th}}$ values of $\mathbf{z}$ and 
 
-$z_i$ the $i^{\text{th}}$ values of $\mathbf{Z}$ 
-
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 :::
 
 ## Hierarchy on the slopes
@@ -181,48 +245,63 @@ par(xpd = FALSE)
 
 ## Hierarchy on intercept and slope
 
+. . .
+
 Mathematically speaking, what are the differences between having a hierarchy on the intercept and a hierarchy on the slope ? Any idea ?
 
-![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
+![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=50%}
 
 ## Hierarchy on intercept and slope
 
-Answer : Very little !
+**Answer : Very little !**
 
-:::{style="font-size: 0.8em"}
+. . .
 
 Actually, if we return to the way $\mathbf{b}$ is defined we see that in both case it is defined as 
 
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 with the sole difference that $\mathbf{b}$ is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.
 
+. . .
+
 Well... Actually... When a hierarchy is applied on the intercept it is technically associated to a **constant** explanatory variable.
-:::
 
 ## How many levels ?
 
+. . .
+
 A common question that often gets asked is : 
+
+. . .
 
 "How many level is enough ?"
 
+. . .
+
 This is a simple questions that sadly does not have a simple answer.
 
-![](https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png){fig-align="center" width=20%}
+![](https://www.i2symbol.com/pictures/emojis/7/e/1/8/7e1820e72993db112424b5a92e1d40d7_384.png){fig-align="center" width=35%}
 
 ## How many levels ?
 
 In these types of models we are interested in estimating the variance parameter $\sigma^2_f$ in 
 
-$$\mathbf{b} \sim \mathcal{N}(0, \sigma^2_f)$$
+$$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 to get the best estimation of $\mathbf{b}$. 
 
+. . .
+
 So, another way to ask this question is "What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?" 
+
+. . .
 
 However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.
 
 ## How many levels ?
 
 What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?
+
+. . .
 
 ### Is 3 enough ?
 :::: {.columns}
@@ -469,6 +548,8 @@ Estimated variance : `r round(var(sampl), 3)`
 
 There is a consensus among researchers working intimately with hierarchical models that when the interest is to properly estimate the variance parameter $\sigma^2$, 5 or 6 levels is the extreme minimum.
 
+. . .
+
 ::: {style="font-size: 0.75em"}
 In the book *Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects*, James S. Hodges (2016) makes this very thoughtful statement : 
 
@@ -481,36 +562,57 @@ In the book *Richly Parameterized Linear Models: Additive, Time Series, and Spat
 
 So, what to do if the number of level is not high enough for your comfort ?
 
+. . .
+
 You can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.
+
+. . .
 
 How does this translate mathematically with what we have seen so far ?
 
-![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=20%}
+![](https://www.i2symbol.com/pictures/emojis/4/c/e/b/4ceb092d154efb14f6913cb5e332f6da_384.png){fig-align="center" width=30%}
 
 ## Hierarchy on the intercept's mean
 
-::: {style="font-size: 0.7em"}
+::: {style="font-size: 0.85em"}
 $$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_{f},\sigma_\mathbf{y}^2\mathbf{I})$$
 or 
 
 $$y_i = \beta_{f[i]} + \varepsilon \quad \forall\quad i = 1\dots n$$
-In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
+:::
+
+. . .
+
+::: {style="font-size: 0.85em"}
+In this model, we assume that $\boldsymbol{\beta}_{f}$ is distributed as 
 
 $$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
-This means that all samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f}$. 
+:::
 
+. . .
+
+::: {style="font-size: 0.85em"}
+This means that all samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f}$. 
+:::
+
+. . .
+
+::: {style="font-size: 0.85em"}
 By developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance. 
 :::
 
 ## Hierarchy on the intercept's mean
 
-::: {style="font-size: 1em"}
 Let's take a deeper look at 
 $$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+
+. . .
+
 When we study this way of sampling $\boldsymbol{\beta}_{f}$, although our interest is more on $\mu_{f}$, we also have to estimate the variance term $\sigma^2_{f}$.
 
+. . .
+
 **Note**: This is essentially the same thing as a one-way analysis of variance.
-:::
 
 ## Hierarchy on the intercept's mean
 
@@ -582,21 +684,36 @@ abline(h = c(1, 0, -1),
 
 ## Hierarchy on the slope's mean
 
-::: {style="font-size: 0.7em"}
-Developping a hierarchy on the slope's mean translate mathematically in a very similar way as it does for the intercept. 
+. . .
 
+::: {style="font-size: 0.75em"}
+Developping a hierarchy on the slope's mean translate mathematically in a very similar way as it does for the intercept. 
+:::
+
+. . .
+
+::: {style="font-size: 0.75em"}
 $$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol{\beta}_0+\mathbf{X}\boldsymbol{\beta}_{f},\sigma_\mathbf{y}^2\mathbf{I})$$
 or 
 
 $$y_i = \beta_0 + \beta_{f[i]}x_i + \varepsilon \quad \forall\quad i = 1\dots n$$
-In this model, we assume that $\boldsymbol{\beta}_{f[i]}$ is distributed as 
+:::
+
+. . .
+
+::: {style="font-size: 0.75em"}
+In this model, we assume that $\boldsymbol{\beta}_{f}$ is distributed as 
 
 $$\boldsymbol{\beta}_{f} \sim \mathcal{N}(\mu_{f}, \sigma^2_{f})$$
+:::
+
+. . .
+
+::: {style="font-size: 0.75em"}
 This means that all the samples **among** the levels of factor $f$ are used to estimate $\boldsymbol{\beta}_{f}$. 
 
 By developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance. 
 :::
-
 
 ## Hierarchy on the slope's mean
 
@@ -651,25 +768,44 @@ abline(a = 0, b = 1.25,
 
 ## Tracking the estimated parameters
 
+. . .
+
 ::: {style="font-size: 0.8em;"}
 As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.
+:::
 
+. . .
+
+::: {style="font-size: 0.8em;"}
 However, we need to be careful because the notation used can play tricks on us. This is especially true when using matrix notation. 
+:::
 
+. . .
+
+::: {style="font-size: 0.8em;"}
 For example, in 
 
 $$\mathbf{b}_{f}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})$$
-the number of levels are not explicitly defined and it is not clear if $ \mathbf{\Sigma}$ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not. 
+the number of levels are not explicitly defined and it is not clear if $\mathbf{\Sigma}$ includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not. 
+:::
 
+. . .
+
+::: {style="font-size: 0.8em;"}
 In any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using. 
-
 :::
 
 ## Choosing the right model
 
+. . . 
+
 Although these different models are mathematically quite similar, they approach very different biological questions. 
 
+. . . 
+
 A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.
+
+. . . 
 
 It is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward.
 
