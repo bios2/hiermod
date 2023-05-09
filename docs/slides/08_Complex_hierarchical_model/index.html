@@ -357,12 +357,28 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Interacting hierarchies</h2>
 <div style="font-size: 0.7em">
 <p><code>lme4</code> notation : <code>y ~ (1 | f:g)</code></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p>This model assumes that factors <code>f</code> and <code>g</code> interact to make a hierarchy.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p>Mathematically, it can be translated to</p>
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f\times g },\sigma^2\mathbf{I})\]</span> or</p>
 <p><span class="math display">\[y_i = b_{f[i]\times g[i]} + \varepsilon \quad\forall\quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p>where <span class="math display">\[\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\times g}\right)\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p>Note that a multi-factor hierarchy can be constructed my multiplying the levels of each factor to account for a more complexe hierarchy.</p>
+</div>
 </div>
 </section>
 <section id="interacting-hierarchies-1" class="slide level2">
@@ -373,10 +389,22 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Multiple independent hierarchy</h2>
 <div style="font-size: 0.65em">
 <p><code>lme4</code> notation : <code>y ~ (1 | f) + (1 | g)</code> or <code>y ~ 1 + (1 | f) + (1 | g)</code></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>This model assumes there is a hierarchy that varies among two factors that are independent from one another.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>Mathematically, it can be translated to</p>
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f} + \mathbf{b}_{g},\sigma^2\mathbf{I})\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n\]</span> where</p>
+<p><span class="math display">\[y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
+<p>where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
                                     \mu_f\\
                                     \mu_g\\
@@ -387,7 +415,12 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
                                   0&amp; \sigma^2_g\\
                                 \end{bmatrix}
                                 \right)\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>Here, we are dealing with a model that has two intercepts, which are sampled independently so that the <span class="math inline">\(b\)</span>s will change for a sample <span class="math inline">\(i\)</span> only when the the level of factor <span class="math inline">\(f\)</span> and the level of factor <span class="math inline">\(g\)</span> changes independently.</p>
+</div>
 </div>
 </section>
 <section id="multiple-independent-hierarchy-1" class="slide level2">
@@ -398,10 +431,22 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Nested hierarchies ?</h2>
 <div style="font-size: 0.65em">
 <p><code>lme4</code> notation : <code>y ~ (1 | f/g)</code> or <code>y ~ (1 | f) + (1 | f:g)</code></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>This model assumes there is a hierarchy that varies among the levels of factor <code>f</code> and among the levels of factor <code>g</code> but only within the levels of factor <code>f</code>.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>Mathematically, it can be translated to</p>
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f}+\mathbf{b}_{f\times g},\sigma^2\mathbf{I})\]</span> or</p>
-<p><span class="math display">\[y_i = b_{f[i]}+b_{f[i]\times g[i]} + \varepsilon \quad i = 1\dots n\]</span> where</p>
+<p><span class="math display">\[y_i = b_{f[i]}+b_{f[i]\times g[i]} + \varepsilon \quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
+<p>where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
                                     \mu_f\\
                                     \mu_{f\times g}\\
@@ -411,7 +456,12 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
                                   0&amp; \sigma^2_{f\times g}\\
                                 \end{bmatrix}
                                 \right)\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>Here, the model has two independent hierarchy, one changes for a sample <span class="math inline">\(i\)</span> as a single intercept hierarchy and the other will change for a sample <span class="math inline">\(i\)</span> only when the level of factor <span class="math inline">\(g\)</span> is <strong>within</strong> the level of factor <span class="math inline">\(f\)</span>.</p>
+</div>
 </div>
 </section>
 <section id="nested-hierarchies-1" class="slide level2">
@@ -427,10 +477,22 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <h2>Uncorrelated intercept and slope hierarchy</h2>
 <div style="font-size: 0.65em">
 <p><code>lme4</code> notation : <code>y ~ x + (x || f)</code> or <code>y ~ 1 + x + (1 | f) + (0 + x | g)</code></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>This model assumes there is a hierarchy that varies independently among the levels of factor <code>f</code> for the intercept and the slope.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
 <p>Mathematically, it can be translated to</p>
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{z}\mathbf{b}_{0f},\sigma^2\mathbf{I})\]</span> or</p>
-<p><span class="math display">\[y_i = b_{0f[i]}+b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n\]</span> This is because in this model</p>
+<p><span class="math display">\[y_i = b_{0f[i]}+b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
+<p>This is because in this model</p>
 <p><span class="math display">\[\begin{bmatrix}
     b_0\\
     b_1\\
@@ -444,6 +506,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
                                 \end{bmatrix}
                                 \right)\]</span></p>
 </div>
+</div>
 </section>
 <section id="uncorrelated-intercept-and-slope-hierarchy-1" class="slide level2" style="font-size: 0.9em">
 <h2>Uncorrelated intercept and slope hierarchy</h2>
@@ -451,14 +514,23 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch quarto-figure-center"></section>
 <section id="a-small-step-back" class="slide level2">
 <h2>A small step back</h2>
+<div class="fragment">
 <div style="font-size: 0.7em">
-<p>The structure of the hierarchy discussed so far were “simple” in the sense that they either required to estimate</p>
+<p>The structure of the hierarchy discussed so far were “less complex” in the sense that</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <ul>
-<li>A single variance parameter</li>
+<li>A single variance parameter is estimated</li>
 </ul>
 <p><span class="math display">\[\sigma^2_{f}\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <ul>
-<li>Multiple independent variance parameters</li>
+<li>Multiple independent variance parameters are estiamted</li>
 </ul>
 <p><span class="math display">\[
 \begin{bmatrix}
@@ -466,18 +538,41 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
   0&amp; \sigma^2_{g}\\
 \end{bmatrix}
 \]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p>In Bayesian, having uncorrelated variance allows us to sample variance parameter independently even with mutiple factors, which is computationally more efficient.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p>From this point on, we will look at more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
+</div>
 </div>
 </section>
 <section id="correlated-intercept-and-slope-hierarchy" class="slide level2" style="font-size: 0.9em">
 <h2>Correlated intercept and slope hierarchy</h2>
+<div class="fragment">
 <div style="font-size: 0.9em">
 <p><code>lme4</code> notation : <code>y ~ x + (x | g)</code> or <code>y ~ 1 + x + (1 + x | g)</code></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
 <p>This model assumes the hierarchy between the intercept and the slope is correlated.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
 <p>Mathematically, it can be translated to</p>
 <p><span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{z}\mathbf{b}_{1f},\sigma^2\mathbf{I})\]</span> or</p>
-<p><span class="math display">\[y_i = b_{0f[i]} + b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n\]</span> In this model</p>
+<p><span class="math display">\[y_i = b_{0f[i]} + b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.9em">
+<p>In this model</p>
 <p><span class="math display">\[\begin{bmatrix}
     b_0\\
     b_1\\
@@ -492,10 +587,12 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
                       \end{bmatrix}
                 \right)\]</span></p>
 </div>
+</div>
 </section>
 <section id="correlated-intercept-and-slope-hierarchy-1" class="slide level2" style="font-size: 0.9em">
 <h2>Correlated intercept and slope hierarchy</h2>
-<div style="font-size: 0.82em">
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>The covariance structure <span class="math display">\[\begin{bmatrix}
     b_0\\
     b_1\\
@@ -510,14 +607,41 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
                       \end{bmatrix}
                 \right)\]</span></p>
 <p>needs to be discussed a bit more.</p>
-<h3 id="notation">Notation</h3>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p><strong>Notation</strong></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>In the covariance matrix,</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <ul>
 <li><span class="math inline">\(\rho_{b_0,b_1}\)</span> is the correlation between <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<ul>
 <li><span class="math inline">\(\rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1}\)</span> is the covariance between <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span></li>
 </ul>
-<h3 id="interpretation">Interpretation</h3>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p><strong>Interpretation</strong></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
 <p>A covariance matrix with non-zero covariance describes dependence between the <span class="math inline">\(b\)</span>s, which can tell us both the strength of the relation between pairs of parameters and the variance structure.</p>
+</div>
 </div>
 </section>
 <section id="correlated-intercept-and-slope-hierarchy-2" class="slide level2" style="font-size: 0.9em">
@@ -544,39 +668,56 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </div>
 </div>
 </section>
-<section id="combining-different-types-of-hierarchy" class="slide level2" style="font-size: 0.9em">
+<section id="combining-different-types-of-hierarchy" class="slide level2" style="font-size: 0.92em">
 <h2>Combining different types of hierarchy</h2>
 <p>With what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours.</p>
+<div class="fragment">
 <p>The best way to do this is to immerse ourselve into a particular problem.</p>
+</div>
+<div class="fragment">
 <p>So, in the next slides we will discuss about the pumpkinseed (<em>Lepomis gibbosus</em>)</p>
-
-<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg/480px-Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
-<section id="combining-different-types-of-hierarchy-1" class="slide level2" style="font-size: 0.9em">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg/480px-Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg" style="width:30.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="combining-different-types-of-hierarchy-1" class="slide level2" style="font-size: 0.8em">
 <h2>Combining different types of hierarchy</h2>
 <h3 id="fictive-context">Fictive context</h3>
-<div style="font-size: 0.9em">
 <p>Pumpkinseed (<em>Lepomis gibbosus</em>) growth has been studied in the lakes of the Station de biologie des Laurentides during the famous ichthyology course given at Université de Montréal in the past 30 years.</p>
+<div class="fragment">
 <p>During these ichthyology courses, fish are sampled, measured and tag in all 15 lakes of the research station and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision.</p>
-<p>Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth, the different lake have different temperature.</p>
+</div>
+<div class="fragment">
+<p>Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth (which are also known for these lakes), the different lakes have different average temperature.</p>
+</div>
+<div class="fragment">
 <p>After 30 years of data, 123 fish have been sampled during 17 consecutive year.</p>
 </div>
 </section>
-<section id="pumpkinseed-growth-example" class="slide level2">
+<section id="pumpkinseed-growth-example" class="slide level2" style="font-size: 0.9em">
 <h2>Pumpkinseed growth example</h2>
 <p><strong>Question</strong></p>
-<div style="font-size: 0.9em">
-<p>Does the growth of Pumpkinseed is influenced by water temperature? To have the most precise model, we need to account for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink… teachers assistant may have an influence here as well).</p>
-</div>
+<div class="fragment">
+<p>Does the growth of Pumpkinseed is influenced by water temperature?</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="https://www.i2symbol.com/pictures/emojis/8/f/9/7/8f979936097f887c9b3a9d1b58ddbe0f_384.png" style="width:20.0%"></p>
 </figure>
 </div>
+</div>
+<div class="fragment">
 <p><strong>Try to build the model that best answer this question</strong></p>
+</div>
+<div class="fragment">
+<p>To have the most precise model, we need to account for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink… teachers assistant may have an influence here as well).</p>
 
 <p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
 <div class="footer footer-default">
 
+</div>
 </div>
 </section></section>
     </div>

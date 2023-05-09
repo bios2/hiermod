@@ -31,19 +31,37 @@ As we will see, there are a number of ways this can complexify the structure of 
 
 ::: {style="font-size: 0.7em"}
 `lme4` notation : `y ~ (1 | f:g)`
+:::
 
+. . .
+
+::: {style="font-size: 0.7em"}
 This model assumes that factors `f` and `g` interact to make a hierarchy.
+:::
 
+. . .
+
+
+::: {style="font-size: 0.7em"}
 Mathematically, it can be translated to 
 
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f\times g },\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = b_{f[i]\times g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
+:::
 
+. . .
+
+
+::: {style="font-size: 0.7em"}
 where
 $$\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\times g}\right)$$
+:::
 
+. . .
+
+::: {style="font-size: 0.7em"}
 Note that a multi-factor hierarchy can be constructed my multiplying the levels of each factor to account for a more complexe hierarchy. 
 :::
 
@@ -96,15 +114,28 @@ legend("topright",
 
 ::: {style="font-size: 0.65em"}
 `lme4` notation : `y ~ (1 | f) + (1 | g)` or `y ~ 1 + (1 | f) + (1 | g)`
+:::
 
+. . . 
+
+::: {style="font-size: 0.65em"}
 This model assumes there is a hierarchy that varies among two factors that are independent from one another.
+:::
 
+. . . 
+
+::: {style="font-size: 0.65em"}
 Mathematically, it can be translated to 
 
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f} + \mathbf{b}_{g},\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
+:::
+
+. . . 
+
+::: {style="font-size: 0.65em"}
 where
 
 $$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
@@ -117,9 +148,12 @@ $$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
                                   0& \sigma^2_g\\
                                 \end{bmatrix}
                                 \right)$$
+:::
 
+. . . 
+
+::: {style="font-size: 0.65em"}
 Here, we are dealing with a model that has two intercepts, which are sampled independently so that the $b$s will change for a sample $i$ only when the the level of factor $f$ and the level of factor $g$ changes independently. 
-
 :::
 
 ## Multiple independent hierarchy
@@ -184,15 +218,28 @@ legend("topright",
 
 ::: {style="font-size: 0.65em"}
 `lme4` notation : `y ~ (1 | f/g)` or `y ~ (1 | f) + (1 | f:g)`
+:::
 
+. . . 
+
+::: {style="font-size: 0.65em"}
 This model assumes there is a hierarchy that varies among the levels of factor `f` and among the levels of factor `g` but only within the levels of factor `f`.
+:::
 
+. . . 
+
+::: {style="font-size: 0.65em"}
 Mathematically, it can be translated to 
 
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f}+\mathbf{b}_{f\times g},\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = b_{f[i]}+b_{f[i]\times g[i]} + \varepsilon \quad i = 1\dots n$$
+:::
+
+. . . 
+
+::: {style="font-size: 0.65em"}
 where
 
 $$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
@@ -204,9 +251,12 @@ $$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
                                   0& \sigma^2_{f\times g}\\
                                 \end{bmatrix}
                                 \right)$$
+:::
 
+. . . 
+
+::: {style="font-size: 0.65em"}
 Here, the model has two independent hierarchy, one changes for a sample $i$ as a single intercept hierarchy and the other will change for a sample $i$ only when the level of factor $g$ is **within** the level of factor $f$. 
-
 :::
 
 ## Nested hierarchies ?
@@ -276,15 +326,28 @@ legend("topright",
 
 ::: {style="font-size: 0.65em"}
 `lme4` notation : `y ~ x + (x || f)` or `y ~ 1 + x + (1 | f) + (0 + x | g)`
+:::
 
+. . .
+
+::: {style="font-size: 0.65em"}
 This model assumes there is a hierarchy that varies independently among the levels of factor `f` for the intercept and the slope.
+:::
 
+. . .
+
+::: {style="font-size: 0.65em"}
 Mathematically, it can be translated to 
 
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{z}\mathbf{b}_{0f},\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = b_{0f[i]}+b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
+:::
+
+. . .
+
+::: {style="font-size: 0.65em"}
 This is because in this model
 
 $$\begin{bmatrix}
@@ -370,14 +433,24 @@ par(xpd = FALSE)
 
 ## A small step back
 
-::: {style="font-size: 0.7em"}
-The structure of the hierarchy discussed so far were "simple" in the sense that they either required to estimate
+. . .
 
-- A single variance parameter 
+::: {style="font-size: 0.7em"}
+The structure of the hierarchy discussed so far were "less complex" in the sense that
+:::
+
+. . .
+
+::: {style="font-size: 0.7em"}
+- A single variance parameter is estimated
 
 $$\sigma^2_{f}$$
+:::
 
-- Multiple independent variance parameters
+. . .
+
+::: {style="font-size: 0.7em"}
+- Multiple independent variance parameters are estiamted
 
 $$
 \begin{bmatrix}
@@ -385,25 +458,48 @@ $$
   0& \sigma^2_{g}\\
 \end{bmatrix}
 $$
+:::
 
+. . .
+
+::: {style="font-size: 0.7em"}
 In Bayesian, having uncorrelated variance allows us to sample variance parameter independently even with mutiple factors, which is computationally more efficient.
+:::
 
+. . .
+
+::: {style="font-size: 0.7em"}
 From this point on, we will look at more complex covariance structures where the hierarchical levels are **not** independent from each other.
 :::
 
 ## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
+. . .
+
 ::: {style="font-size: 0.9em"}
 `lme4` notation : `y ~ x + (x | g)` or `y ~ 1 + x + (1 + x | g)`
+:::
 
+. . .
+
+::: {style="font-size: 0.9em"}
 This model assumes the hierarchy between the intercept and the slope is correlated.
+:::
 
+. . .
+
+::: {style="font-size: 0.9em"}
 Mathematically, it can be translated to 
 
 $$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = b_{0f[i]} + b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
+:::
+
+. . .
+
+::: {style="font-size: 0.9em"}
 In this model
 
 $$\begin{bmatrix}
@@ -424,7 +520,9 @@ $$\begin{bmatrix}
 
 ## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
-::: {style="font-size: 0.82em"}
+. . .
+
+::: {style="font-size: 0.8em"}
 The covariance structure 
 $$\begin{bmatrix}
     b_0\\
@@ -441,16 +539,41 @@ $$\begin{bmatrix}
                 \right)$$
 
 needs to be discussed a bit more.
+:::
 
-### Notation
+. . .
 
+::: {style="font-size: 0.8em"}
+**Notation**
+:::
+
+. . .
+
+::: {style="font-size: 0.8em"}
 In the covariance matrix,
+:::
 
+. . .
+
+::: {style="font-size: 0.8em"}
 - $\rho_{b_0,b_1}$ is the correlation between $b_0$ and $b_1$
+:::
+
+. . .
+
+::: {style="font-size: 0.8em"}
 - $\rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1}$ is the covariance between $b_0$ and $b_1$
+:::
 
-### Interpretation
+. . .
 
+::: {style="font-size: 0.8em"}
+**Interpretation**
+:::
+
+. . .
+
+::: {style="font-size: 0.8em"}
 A covariance matrix with non-zero covariance describes dependence between the $b$s, which can tell us both the strength of the relation between pairs of parameters and the variance structure.
 :::
 
@@ -561,37 +684,52 @@ marginalRot <- spdep::Rotation(cbind(-marginal,val), angle = 3.9)
 
 ![](https://www.boredpanda.com/blog/wp-content/uploads/2022/10/635f7c2fca5d5_lego-builds.jpg){fig-align="center" width=50%}
 
-## Combining different types of hierarchy {style="font-size: 0.9em"}
+## Combining different types of hierarchy {style="font-size: 0.92em"}
 
 With what we learned so far, it is possible to build more complex model by combining the building blocks we went over in the last few hours. 
 
+. . .
+
 The best way to do this is to immerse ourselve into a particular problem.
+
+. . .
 
 So, in the next slides we will discuss about the pumpkinseed (*Lepomis gibbosus*)
 
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg/480px-Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg){fig-align="center" width=20%}
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg/480px-Pumpkinseed_%28Lepomis_gibbosus%29_%2813533753654%29.jpg){fig-align="center" width=30%}
 
-## Combining different types of hierarchy {style="font-size: 0.9em"}
+## Combining different types of hierarchy {style="font-size: 0.8em"}
 ### Fictive context
 
-::: {style="font-size: 0.9em"}
 Pumpkinseed (*Lepomis gibbosus*) growth has been studied in the lakes of the Station de biologie des Laurentides during the famous ichthyology course given at Université de Montréal in the past  30 years. 
+
+. . .
 
 During these ichthyology courses, fish are sampled, measured and tag in all 15 lakes of the research station and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision. 
 
-Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth, the different lake have different temperature.
+. . .
+
+Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth (which are also known for these lakes), the different lakes have different average temperature.
+
+. . .
 
 After 30 years of data, 123 fish have been sampled during 17 consecutive year. 
-:::
 
-## Pumpkinseed growth example
+## Pumpkinseed growth example {style="font-size: 0.9em"}
 
 **Question**
 
-::: {style="font-size: 0.9em"}
-Does the growth of Pumpkinseed is influenced by water temperature? To have the most precise model, we need to account  for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink... teachers assistant may have an influence here as well).
-:::
+. . .
+
+Does the growth of Pumpkinseed is influenced by water temperature? 
 
 ![](https://www.i2symbol.com/pictures/emojis/8/f/9/7/8f979936097f887c9b3a9d1b58ddbe0f_384.png){fig-align="center" width=20%}
 
+. . .
+
+
 **Try to build the model that best answer this question**
+
+. . .
+
+To have the most precise model, we need to account  for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink... teachers assistant may have an influence here as well).
