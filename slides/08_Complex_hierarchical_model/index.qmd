@@ -42,7 +42,7 @@ or
 $$y_i = b_{f[i]\times g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 
 where
-$$\mathbf{b} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)$$
+$$\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\times g}\right)$$
 
 Note that a multi-factor hierarchy can be constructed my multiplying the levels of each factor to account for a more complexe hierarchy. 
 :::
@@ -107,7 +107,11 @@ or
 $$y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 where
 
-$$\mathbf{b} \sim \mathcal{N}\left(0, 
+$$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
+                                    \mu_f\\
+                                    \mu_g\\
+                                  \end{bmatrix}
+                                , 
                                 \begin{bmatrix}
                                   \sigma^2_f & 0\\
                                   0& \sigma^2_g\\
@@ -176,7 +180,7 @@ legend("topright",
        cex = 2.5)
 ```
 
-## Hierarchies within hierarchies
+## Nested hierarchies ?
 
 ::: {style="font-size: 0.65em"}
 `lme4` notation : `y ~ (1 | f/g)` or `y ~ (1 | f) + (1 | f:g)`
@@ -185,16 +189,19 @@ This model assumes there is a hierarchy that varies among the levels of factor `
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f}+\mathbf{b}_{g\in f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{f}+\mathbf{b}_{f\times g},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{f[i]}+b_{g[i]\in f[i]} + \varepsilon \quad i = 1\dots n$$
+$$y_i = b_{f[i]}+b_{f[i]\times g[i]} + \varepsilon \quad i = 1\dots n$$
 where
 
-$$\mathbf{b} \sim \mathcal{N}\left(0, 
+$$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
+                                    \mu_f\\
+                                    \mu_{f\times g}\\
+                                  \end{bmatrix}, 
                                 \begin{bmatrix}
                                   \sigma^2_f & 0\\
-                                  0& \sigma^2_{f\in g}\\
+                                  0& \sigma^2_{f\times g}\\
                                 \end{bmatrix}
                                 \right)$$
 
@@ -202,20 +209,17 @@ Here, the model has two independent hierarchy, one changes for a sample $i$ as a
 
 :::
 
-## Hierarchies within hierarchies
+## Nested hierarchies ?
 
 ```{r, echo=FALSE, fig.width=8,  fig.height=8, fig.align='center'}
 zones=matrix(c(1,2), ncol=2, byrow=TRUE)
 layout(zones, widths=c(1/5,4/5), heights=c(1/5,4/5))
 
-val <- seq(-1, 3, length = 200)
-marginal <- dnorm(val, mean = 1, sd = 0.5)
-
-valIn <- seq(0, 1.8, length = 200)
-marginalIn <- dnorm(val, mean = 0.8, sd = 0.4)
+val <- seq(-2, 2, length = 200)
+marginal <- dnorm(val, mean = 0, sd = 0.5)
 
 par(mar = c(0.1, 0.1, 0.1, 0.1))
-plot(-marginalIn,valIn,
+plot(-marginal,val,
      type = "n",
      ylim = c(-3,3),
      axes = FALSE,
@@ -227,13 +231,7 @@ polygon(x = c(-marginal,-marginal[1]),
         col = rgb(0, 0, 1, 0.5),
         border = NA)
 
-polygon(x = c(-marginalIn,-marginalIn[1]),
-        y = c(valIn, valIn[1]),
-        col = rgb(255/255, 165/255, 0, 0.5),
-        border = NA)
-
 lines(-marginal,val, lwd = 3)
-lines(-marginalIn,valIn, lwd = 3)
 
 plot(0,0,
      type = "n",
@@ -245,32 +243,32 @@ plot(0,0,
      xlab = "",
      ylab = "",) 
 
-set.seed(41)
-abline(h = rnorm(15, mean = 1, sd = 0.5),
+set.seed(44)
+
+smpl <- rnorm(6, mean = 0, sd = 0.5)
+abline(h = smpl,
        lwd = 3,
        col = "blue")
 
-abline(h = rnorm(15, mean = 0.8, sd = 0.3),
-       lwd = 3,
-       col = rgb(170/255, 103/255, 57/255))
+posWeight <- seq(0.5,3, by = 0.5)
+
+for(i in 1:length(smpl)){
+  valIn <- seq(smpl[i]-0.4, smpl[i]+0.4, length = 200)
+  marginalIn <- dnorm(valIn, mean = smpl[i], sd = 0.1) * 0.1
+  
+  polygon(x = c(-marginalIn,-marginalIn[1]) + posWeight[i],
+          y = c(valIn, valIn[1]),
+          col = rgb(255/255, 165/255, 0, 0.5),
+          border = NA)
+  
+  lines(-marginalIn + posWeight[i] ,valIn, lwd = 3)
+}
 
 legend("topright",
        legend = c("f", "g"),
        fill = c("blue", "orange"),
        cex = 2.5)
 ```
-
-## Variations on multiple independent hierarchy {style="font-size: 0.8em"}
-
-::: {style="font-size: 1.1em"}
-The two models discussed previously have a few interesting properties: 
-
-- They are very similar mathematically. 
-- Although they present a similar mathematical structure, they answer different biological questions.
-- If a particular level is associated to the same samples for the two factors, usually this create technical problems and the model cannot be estimated properly (this is true regardless of how you estimate these parameter).
-- They can be generalized to as many factors as we want. 
-- In models with a hierarchy within a hierarchy, the second level needs to be inbeded within the first hierarchy. 
-:::
 
 # Other "complex" hierarchies
 
@@ -283,16 +281,19 @@ This model assumes there is a hierarchy that varies independently among the leve
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{Z}\mathbf{b}_{0f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{z}\mathbf{b}_{0f},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{0f[i]}+zb_{1f[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
+$$y_i = b_{0f[i]}+b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
 This is because in this model
 
 $$\begin{bmatrix}
     b_0\\
     b_1\\
-\end{bmatrix} \sim \mathcal{N}\left(0, 
+\end{bmatrix} \sim \mathcal{N}\left(\begin{bmatrix}
+                                    \mu_{b_0f}\\
+                                    \mu_{b_1f}\\
+                                  \end{bmatrix}, 
                                 \begin{bmatrix}
                                   \sigma^2_{b_0f} & 0\\
                                   0& \sigma^2_{b_1f}\\
@@ -399,20 +400,23 @@ This model assumes the hierarchy between the intercept and the slope is correlat
 
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{Z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{0f[i]} + zb_{1f[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
+$$y_i = b_{0f[i]} + b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
 In this model
 
 $$\begin{bmatrix}
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(0, 
+\sim \mathcal{N}\left(\begin{bmatrix}
+                                    \mu_{b_0f}\\
+                                    \mu_{b_1f}\\
+                                  \end{bmatrix}, 
                       \begin{bmatrix}
-                        \sigma^2_{b_0} & \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} \\ 
-                        \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} & \sigma^2_{b_1}
+                        \sigma^2_{b_0f} & \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\ 
+                        \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} & \sigma^2_{b_1f}
                       \end{bmatrix}
                 \right)$$
 :::
@@ -426,10 +430,13 @@ $$\begin{bmatrix}
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(0, 
+\sim \mathcal{N}\left(\begin{bmatrix}
+                                    \mu_{b_0f}\\
+                                    \mu_{b_1f}\\
+                                  \end{bmatrix}, 
                       \begin{bmatrix}
-                        \sigma^2_{b_0} & \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} \\ 
-                        \rho_{b_0,b_1}\sigma_{b_0}\sigma_{b_1} & \sigma^2_{b_1}
+                        \sigma^2_{b_0f} & \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\ 
+                        \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} & \sigma^2_{b_1f}
                       \end{bmatrix}
                 \right)$$
 
@@ -588,215 +595,3 @@ Does the growth of Pumpkinseed is influenced by water temperature? To have the m
 ![](https://www.i2symbol.com/pictures/emojis/8/f/9/7/8f979936097f887c9b3a9d1b58ddbe0f_384.png){fig-align="center" width=20%}
 
 **Try to build the model that best answer this question**
-
-## Multivariate hierarchical model
-
-So far, we have used "standard" model to build hierarchical models. 
-
-Let's now develop a hierarchical model that does not follow the predefined structure we have studied so far.
-
-A multivariate hierarchical model is a good example to show how wild we can go with hierarchical models.
-
-## Multivariate hierarchical model
-
-
-
-## second
-
-::: r-fit-text
-Test your model
-:::
-
-## 
-
-img:
-
-![](img/bg.jpg)
-
-it is a landscape
-
-##  {auto-animate="true"}
-
-
-$$\mathbf{b} \sim \mathcal{N}\left(0, 
-                                \begin{bmatrix}
-                                  \sigma^2_f & \sigma_f\sigma_g\\
-                                  \sigma_f\sigma_g& \sigma^2_g\\
-                                \end{bmatrix}
-                                \right)$$
-
-
-::: {style="margin-top: 100px;"}
-check with simulations
-:::
-
-##  {auto-animate="true"}
-
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-check with simulations
-:::
-
-## choose parameters {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-```
-
-## make up an X variable {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-```
-
-## calculate the average {auto-animate="TRUE"}
-
-``` r
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-```
-
-## simulate some observations {auto-animate="TRUE"}
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-## finally, visualize
-
-```{r}
-plot(y_obs ~ x)
-```
-
-## here it is all on one slide
-
-```{r}
-#| output-location: column
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-plot(y_obs, x)
-```
-
-## Or we can present the code and results separately
-
-::: panel-tabset
-### The code
-
-```{r}
-yintercept <- 4
-slope <- 1.3
-obs_error <- .5
-x <- runif(200, min = -1, max = 1)
-y_mean <- yintercept + slope * x
-y_obs <- rnorm(200, mean = y_mean, sd = obs_error)
-```
-
-### The figure
-
-```{r}
-plot(y_obs ~ x)
-```
-:::
-
-## another equation
-
-$$
-2 + 4 = 6
-$$
-
-## The equation
-
-$$
-\begin{align}
-y  &\sim \text{N}(\mu, \sigma_{obs}) \\
-\mu &= a + bx \\
-\end{align}
-$$
-
-## The model {auto-animate="TRUE"}
-
-``` stan
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
-
-## Declare the data {auto-animate="TRUE"}
-
-``` {.stan code-line-numbers="1-4"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
-
-## State parameters {auto-animate="TRUE"}
-
-``` {.stan code-line-numbers="5-8"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
-
-## Write the likelihood and priors {auto-animate="TRUE"}
-
-``` {.stan code-line-numbers="9-13"}
-data {
-  int<lower=0> N;
-  vector[N] y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  y ~ normal(mu, sigma);
-  mu ~ normal(0, 1);
-  sigma ~ exponential(1);
-}
-```
