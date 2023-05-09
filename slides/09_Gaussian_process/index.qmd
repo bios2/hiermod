@@ -1,0 +1,219 @@
+---
+title: "Gaussian process"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Guillaume Blanchet -- Andrew MacDonald -- Vincent Tolon"
+date: "2023-05-11"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## Hierarchical models so far {style="font-size: 0.9em;"}
+
+. . .
+
+### An already (very !) general formulation
+
+::: {style="font-size: 0.75em"}
+So far, we have built hierarchical models that can be integrated into the following framework.
+:::
+
+. . .
+
+::: {style="font-size: 0.8em"}
+$$(\mathbf{y}|\mathbf{X},\mathbf{Z}, \boldsymbol{\beta}, \mathbf{b}, \sigma_\mathbf{y}^2)\sim \mathcal{MVN}(\mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b}, \sigma_\mathbf{y}^2\mathbf{I})$$
+:::
+
+. . .
+
+::: {style="font-size: 0.68em"}
+
+where
+
+$$\mathbf{b}\sim \mathcal{MVN}(\mu, \mathbf{\Sigma})$$
+:::
+
+. . .
+
+::: {style="font-size: 0.65em"}
+
+- $\mathbf{y}$ is a vector quantifying a response variable of length $n$
+- $\mathbf{X}$ is a matrix of explanatory variables with $n$ rows (samples) and $p$ columns (explanatory variables) 
+- $\boldsymbol{\beta}$ is a vector $p$ pararameters weighting the importance of each explanatory variables in $\mathbf{X}$
+- $\sigma_\mathbf{y}^2$ is a measure of variance of the error in the regression model
+- $\mathbf{I}$ is an $n \times n$ identity matrix 
+
+:::: {style="color: blue"}
+- $\mathbf{Z}$ is designed matrix of "explanatory" variables with $n$ rows (samples) and $q$ columns 
+- $\mu$ is a vector defining the average importance of hierarchical parameters
+- $\mathbf{\Sigma}$ is a matrix defining the covariance structure of hierarchical parameters
+::::
+:::
+
+## Hierarchical models so far {style="font-size: 0.9em;"}
+
+### An already (very !) general formulation
+
+Another way to write this generalized formulation is
+
+$$\mathbf{y}_i = \mathbf{X}_{ij} \boldsymbol{\beta}_j + \mathbf{Z}_{ik}\mathbf{b}_{k} + \boldsymbol{\varepsilon}_{ij}$$
+where
+
+$$\mathbf{b}\sim \mathcal{MVN}(\mu, \mathbf{\Sigma})$$
+and 
+
+$$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$
+
+## Even more complex hierarchical models!? {style="font-size: 0.9em;"}
+
+So far we have seen many (!) versions of hierarchical models, which got increasingly more complex in their structure.
+
+. . .
+
+Let's continue on that slippery slope... 
+
+. . . 
+
+Would you know how to constraint (spatially, temporally, phylogenetically, etc.) such a model ?
+
+![](https://www.i2symbol.com/pictures/emojis/f/c/3/2/fc326fef420c2381348864310ea8efa1_384.png){fig-align="center" width=30%}
+
+## Even more complex hierarchical models! {style="font-size: 0.8em;"}
+
+If we get back to a model that has a single hierarchy on the intercept such that
+
+$$\mathbf{y} \sim \mathcal{N}(\mathbf{b},\sigma^2)$$
+
+. . .
+
+where
+
+$$\mathbf{b} \sim \mathcal{N}(\mu, \sigma^2)$$
+
+. . . 
+
+If we want to account for a constraint on the previously presented model we can rewrite the equation fo $\mathbf{b}$ as 
+
+$$\mathbf{b} \sim \mathcal{N}\left(\mu, f(d)\right)$$
+
+. . .
+
+where
+
+- $f(d)$ is a function of a distance matrix
+
+## Even more complex hierarchical models! {style="font-size: 0.9em;"}
+
+$$\mathbf{b} \sim \mathcal{N}\left(\mu, f(d)\right)$$
+
+. . .
+
+What this equation means conceptually is that the variance associated to $\mathbf{b}$ is not a constant, it changes based on distance (across space, time, phylogeny, etc.). This is known as a **Gaussian process**.
+
+![](https://t4.ftcdn.net/jpg/05/69/50/21/240_F_569502134_d2TO2BeHCbvOn4imEyFJJ5n6HdiyJg9X.jpg){fig-align="center" width=30%}
+
+## A bit of history
+
+. . .
+
+In statistics, Gaussian processes have a unique history. The development of this type of model is closely linked to the estimation of mineral deposits. 
+
+. . .
+
+Spatial Gaussian processes are also called **geostatistical** models, where the prefix *geo* refers to geology, not geography, as one may be led to believe.
+
+. . .
+
+As mining engineers are at the root of the development of Gaussian processes, the language associated with this type of model is influenced by this field. 
+
+## A bit of history
+
+Gaussian processes have been developed in the 1950s by 
+
+::::{.columns}
+::: {.column width="50%"}
+![](https://www.nae.edu/File.aspx?id=191706){fig-align="center" width=60%}
+
+:::::{style="font-size: 0.9em;"}
+Daniel G. Krige (1919–2013)
+:::::
+:::
+::: {.column width="50%"}
+![](https://upload.wikimedia.org/wikipedia/commons/5/5c/Georges_Matheron.jpg){fig-align="center" width=75%}
+
+:::::{style="font-size: 0.9em;"}
+Georges Mathéron (1930–2000)
+:::::
+
+:::
+::::
+
+## Assumption with Gaussian processes
+
+. . .
+
+In general, when defining a Gaussian process, we make the following assumptions:
+
+. . .
+
+- The closer two sites are, the more similar they are.
+
+. . .
+
+- After a certain distance, it is no longer necessary to consider that a site influences another site.
+
+. . .
+  
+- This distance can be different depending on what is being studied, where it is being studied and when it is being studied
+
+
+## $f(d)$
+
+. . .
+
+So, what does $f(d)$ looks like exactly ?
+
+. . .
+
+In theory, $f(d)$ can be anything... 
+
+. . .
+
+However, in practice, there are particularities on the functions that are defined by 
+
+There are a few constraints about this 
+
+Let's think about the assumptions 
+
+## second
+
+::: r-fit-text
+Test your model
+:::
+
+## 
+
+img:
+
+![](img/bg.jpg)
+
+it is a landscape
+
+##  {auto-animate="true"}
+
+::: {style="margin-top: 100px;"}
+check with simulations
+:::
+
+##  {auto-animate="true"}
+
+::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
+check with simulations
+:::
