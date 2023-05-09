@@ -518,6 +518,19 @@ The goal of this course is not to study these techniques but we will learn how t
 The most common way to build a regression model is 
 
 ```{r, echo = FALSE}
+set.seed(42) # The answer !
+
+covParam <- matrix(c(0.6, 0.3,0.3,0.8), 2, 2)
+meanParam <- c(1.5, 0.2)
+param <- MASS::mvrnorm(1, mu = meanParam, Sigma = covParam)
+yintercept <- param[1]
+slope <- param[2]
+obs_error <- 0.5
+
+x <- runif(100, min = -1, max = 1)
+y_mean <- yintercept + slope * x
+y_obs <- rnorm(100, mean = y_mean, sd = obs_error)
+
 b.exemplaris <- y_obs
 humidity <- x
 ```

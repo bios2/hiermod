@@ -361,7 +361,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
     "title": "‘Simple’ hierarchical models",
     "section": "“Simple” hierarchical model",
-    "text": "“Simple” hierarchical model\n\nHere, we use the term “simple” in a rather loose way to discuss hierarchical models without any constrains, whether they are spatial, temporal, phylogenetic or others.\n\n\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\n\n\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
+    "text": "“Simple” hierarchical model\n\nHere, we use the term “simple” in a rather loose way to discuss hierarchical models on one parameter without any constrains, whether they are spatial, temporal, phylogenetic or others.\n\n\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\n\n\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#the",
@@ -1622,5 +1622,355 @@
     "title": "Univariate regression",
     "section": "Exercise!",
     "text": "Exercise!\nshow how the \\(\\sigma\\) is different between these two models"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models",
+    "href": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models",
+    "title": "Gaussian process",
+    "section": "Even more complex hierarchical models!?",
+    "text": "Even more complex hierarchical models!?\nSo far we have seen many (!) versions of hierarchical models, which got increasingly more complex in their structure.\n\nLet’s continue on that slippery slope…\n\n\nWould you know how to constraint (spatially, temporally, phylogenetically, etc.) such a model ?"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#second",
+    "href": "slides/09_Gaussian_process/index.html#second",
+    "title": "Gaussian process",
+    "section": "second",
+    "text": "second\n\nTest your model"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#section",
+    "href": "slides/09_Gaussian_process/index.html#section",
+    "title": "Gaussian process",
+    "section": "",
+    "text": "img:\n\nit is a landscape"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#section-1",
+    "href": "slides/09_Gaussian_process/index.html#section-1",
+    "title": "Gaussian process",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#section-2",
+    "href": "slides/09_Gaussian_process/index.html#section-2",
+    "title": "Gaussian process",
+    "section": "",
+    "text": "check with simulations"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#choose-parameters",
+    "href": "slides/09_Gaussian_process/index.html#choose-parameters",
+    "title": "Gaussian process",
+    "section": "choose parameters",
+    "text": "choose parameters\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#make-up-an-x-variable",
+    "href": "slides/09_Gaussian_process/index.html#make-up-an-x-variable",
+    "title": "Gaussian process",
+    "section": "make up an X variable",
+    "text": "make up an X variable\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#calculate-the-average",
+    "href": "slides/09_Gaussian_process/index.html#calculate-the-average",
+    "title": "Gaussian process",
+    "section": "calculate the average",
+    "text": "calculate the average\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#simulate-some-observations",
+    "href": "slides/09_Gaussian_process/index.html#simulate-some-observations",
+    "title": "Gaussian process",
+    "section": "simulate some observations",
+    "text": "simulate some observations\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#finally-visualize",
+    "href": "slides/09_Gaussian_process/index.html#finally-visualize",
+    "title": "Gaussian process",
+    "section": "finally, visualize",
+    "text": "finally, visualize\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#here-it-is-all-on-one-slide",
+    "href": "slides/09_Gaussian_process/index.html#here-it-is-all-on-one-slide",
+    "title": "Gaussian process",
+    "section": "here it is all on one slide",
+    "text": "here it is all on one slide\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\nplot(y_obs, x)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#or-we-can-present-the-code-and-results-separately",
+    "href": "slides/09_Gaussian_process/index.html#or-we-can-present-the-code-and-results-separately",
+    "title": "Gaussian process",
+    "section": "Or we can present the code and results separately",
+    "text": "Or we can present the code and results separately\n\nThe codeThe figure\n\n\n\nyintercept <- 4\nslope <- 1.3\nobs_error <- .5\nx <- runif(200, min = -1, max = 1)\ny_mean <- yintercept + slope * x\ny_obs <- rnorm(200, mean = y_mean, sd = obs_error)\n\n\n\n\nplot(y_obs ~ x)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#another-equation",
+    "href": "slides/09_Gaussian_process/index.html#another-equation",
+    "title": "Gaussian process",
+    "section": "another equation",
+    "text": "another equation\n\\[\n2 + 4 = 6\n\\]"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#the-equation",
+    "href": "slides/09_Gaussian_process/index.html#the-equation",
+    "title": "Gaussian process",
+    "section": "The equation",
+    "text": "The equation\n\\[\n\\begin{align}\ny  &\\sim \\text{N}(\\mu, \\sigma_{obs}) \\\\\n\\mu &= a + bx \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#the-model",
+    "href": "slides/09_Gaussian_process/index.html#the-model",
+    "title": "Gaussian process",
+    "section": "The model",
+    "text": "The model\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#declare-the-data",
+    "href": "slides/09_Gaussian_process/index.html#declare-the-data",
+    "title": "Gaussian process",
+    "section": "Declare the data",
+    "text": "Declare the data\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#state-parameters",
+    "href": "slides/09_Gaussian_process/index.html#state-parameters",
+    "title": "Gaussian process",
+    "section": "State parameters",
+    "text": "State parameters\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#write-the-likelihood-and-priors",
+    "href": "slides/09_Gaussian_process/index.html#write-the-likelihood-and-priors",
+    "title": "Gaussian process",
+    "section": "Write the likelihood and priors",
+    "text": "Write the likelihood and priors\ndata {\n  int<lower=0> N;\n  vector[N] y;\n}\nparameters {\n  real mu;\n  real<lower=0> sigma;\n}\nmodel {\n  y ~ normal(mu, sigma);\n  mu ~ normal(0, 1);\n  sigma ~ exponential(1);\n}"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc",
+    "href": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc",
+    "title": "Extra stuff",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nFor simplicity, let’s assume that we are monitoring the behaviour of the mallard every minutes and that we are recording whether it is\nOn land\n\n\n\n\n\nIn the water"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc-1",
+    "href": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc-1",
+    "title": "Extra stuff",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nUsing this information, we can draw diagram defining how the behaviour of the mallard changes at every time steps"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc-2",
+    "href": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc-2",
+    "title": "Extra stuff",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nIn a markov chain, we assume that we know how probable it is to go from one behaviour (land) to another (water)"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc-3",
+    "href": "slides/nn_extra_slides/index.html#markov-chain-monte-carlo-mcmc-3",
+    "title": "Extra stuff",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nIn an MCMC, we assume that the likeliness of passing from one behaviour (land) to another (water) depends on a statistical distribution."
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#addition-and-substraction",
+    "href": "slides/nn_extra_slides/index.html#addition-and-substraction",
+    "title": "Extra stuff",
+    "section": "Addition and Substraction",
+    "text": "Addition and Substraction\n\\[\\mathbf{C} = \\mathbf{A}\\pm \\mathbf{B}\\] \\[C_{ij} = A_{ij} \\pm B_{ij}\\]\n\n\\[\\begin{bmatrix}\n                3 & 5\\\\\n                1 & -2\\\\\n            \\end{bmatrix} +\n            \\begin{bmatrix}\n                2 & 1\\\\\n                4 & -2\\\\\n            \\end{bmatrix} =\n            \\begin{bmatrix}\n                3+2 & 5+1\\\\\n                1+4 & -2-2\\\\\n            \\end{bmatrix} =\n            \\begin{bmatrix}\n                5 & 6\\\\\n                5 & -4\\\\\n            \\end{bmatrix}\\]\n\nIn R\n\nA <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)\nB <- matrix(c(2, 4, 1, -2), nrow = 2, ncol = 2)\nA + B\n\n     [,1] [,2]\n[1,]    5    6\n[2,]    5   -4"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#triangular-matrix",
+    "href": "slides/nn_extra_slides/index.html#triangular-matrix",
+    "title": "Extra stuff",
+    "section": "Triangular matrix",
+    "text": "Triangular matrix\n\n\nLower triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & 0 & 0\\\\\n        3 & 0 & 0 & 0\\\\\n        0 & 4 & 3 & 0\\\\\n        9 & -5 & 4 & 3\\\\\n\\end{bmatrix}\\]\n\nUpper triangular matrix\n\\[\\begin{bmatrix}\n        -10 & 0 & -5 & 0\\\\\n        0 & 0 & 5 & 6\\\\\n        0 & 0 & 3 & 3\\\\\n        0 & 0 & 0 & 3\\\\\n      \\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#symmetric-matrix",
+    "href": "slides/nn_extra_slides/index.html#symmetric-matrix",
+    "title": "Extra stuff",
+    "section": "Symmetric matrix",
+    "text": "Symmetric matrix\nThe values on the above and below the diagonal are match so that \\(A = A^t\\)\n\n\\[\n\\begin{bmatrix}\n                3 & 4 & -10\\\\\n                4 & 5 & 7\\\\\n                -10 & 7 & -6\\\\\n        \\end{bmatrix}\n\\]"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#matrix-inversion",
+    "href": "slides/nn_extra_slides/index.html#matrix-inversion",
+    "title": "Extra stuff",
+    "section": "Matrix inversion",
+    "text": "Matrix inversion\n\nIn matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix \\(\\mathbf{A}\\) is defined as \\(\\mathbf{A}^{-1}\\)\nAs such, \\[\\mathbf{A}\\cdot \\mathbf{A}^{-1} = \\mathbf{I}\\]\n\n\n\nIn R\n\n\nA <- matrix(c(3, 1, 5, -2), nrow = 2, ncol = 2)\n(Ainv <- solve(A))\n\n           [,1]       [,2]\n[1,] 0.18181818  0.4545455\n[2,] 0.09090909 -0.2727273\n\nA %*% Ainv\n\n              [,1] [,2]\n[1,]  1.000000e+00    0\n[2,] -2.775558e-17    1"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#matrix-inversion-1",
+    "href": "slides/nn_extra_slides/index.html#matrix-inversion-1",
+    "title": "Extra stuff",
+    "section": "Matrix inversion",
+    "text": "Matrix inversion\nInverting a diagonal matrix\n\\[D^{-1}=\n      \\begin{bmatrix}\n        1/d_1 & 0 & \\dots & 0\\\\\n        0 &  1/d_2 & \\dots & 0\\\\\n        \\vdots & \\vdots & \\ddots & \\vdots\\\\\n        0 & 0 & \\dots &  1/d_n\\\\\n\\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\n\nMany techniques have been proposed to estimate the parameters of a regression model.\n\n\nThe goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.\n\n\nThe most common way to build a regression model is\n\n\n\n\nreg <- lm(b.exemplaris ~ humidity)\n\n\n\nSay we now want to build a model’s confidence interval from a linear regression\n\n\nHow would you do it ?\n\n\nLet’s look at the model’s results, maybe it will help us"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-1",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-1",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nModel’s results\n\n\n(summaryReg <- summary(reg))\n\n\nCall:\nlm(formula = b.exemplaris ~ humidity)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1.47988 -0.26475  0.00611  0.32590  1.36077 \n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  2.57389    0.04720   54.53   <2e-16 ***\nhumidity     1.10086    0.07976   13.80   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.4718 on 98 degrees of freedom\nMultiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 \nF-statistic: 190.5 on 1 and 98 DF,  p-value: < 2.2e-16\n\n\n\n\n\nLet’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. How would you do this?"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-2",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-2",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nWe could sample the model parameters but how can we do this properly?\n\nAny suggestions?"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-3",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-3",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIf we look at the estimated regression model coefficient, we can learn a few things\n\n\nsummaryReg$coefficients\n\n            Estimate Std. Error  t value     Pr(>|t|)\n(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75\nhumidity    1.100865 0.07975800 13.80256 1.035796e-24\n\n\n\n\nNotably, there are uncertainty around the parameters.\n\n\nMaybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.\n\n\nLet’s give it a shot !"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-4",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-4",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIf we assume that the parameters of our particular model follow a Gaussian distribution, we can state that\n\n\\[\\beta_0 \\sim \\mathcal{N}(2.574, 0.047^2)\\] \\[\\beta_1 \\sim \\mathcal{N}(1.101, 0.080^2)\\]"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-5",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-5",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIn R, we can do this as follow\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta_0 <- rnorm(100, mean = regCoef[1,1], sd = regCoef[1,2])\nbeta_1 <- rnorm(100, mean = regCoef[2,1], sd = regCoef[2,2])"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-6",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-6",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-7",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-7",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nBut is this the right way to do it ?"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-8",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-8",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nActually, even if the model’s confidence interval look about right, they are wrong !"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-9",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-9",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nThe approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.\n\nA situation that happens only in very specific circumstances.\n\n\nSo… We need to find a way to account for the non-independencies between the parameters.\n\n\nHow can we do this ? Any ideas ?"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-10",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-10",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\n\nAssuming the regression parameters are normally distributed is not a bad assumption.\n\n\n\nHowever to consider a dependencies between the parameters we need to sample them from a multivariate normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.\n\n\n\n\nThe good news is that this covariance matrix is given by summary.lm function\n\n\n\n\n\n(covReg <- summaryReg$cov.unscaled)\n\n              (Intercept)      humidity\n(Intercept)  0.0100098513 -0.0005305969\nhumidity    -0.0005305969  0.0285782940"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-11",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-11",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nFor our specific model, mathematically, we assume that\n\n\\[\\begin{bmatrix}\n  \\beta_0\\\\\n  \\beta_1\\\\\n\\end{bmatrix} \\sim \\mathcal{MVN} \\left( \\begin{bmatrix}\n  2.574\\\\\n  1.101\\\\\n\\end{bmatrix}, \\begin{bmatrix}\n  0.0100 & -0.0005 \\\\\n  -0.0005 & 0.0286 \\\\\n\\end{bmatrix} \\right)\\]\n\n\nNote To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course."
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-12",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-12",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters\nIn R, we can sample the parameters using a multivariate normal distribution using the following code\n\n# Object that include regression coefficients\nregCoef <- summaryReg$coefficients\n\n# Sample regression parameters\nbeta <- MASS::mvrnorm(100, regCoef[,1], Sigma = covReg)"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-13",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-13",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters"
+  },
+  {
+    "objectID": "slides/nn_extra_slides/index.html#estimating-regression-parameters-14",
+    "href": "slides/nn_extra_slides/index.html#estimating-regression-parameters-14",
+    "title": "Extra stuff",
+    "section": "Estimating regression parameters",
+    "text": "Estimating regression parameters\nSampling model parameters - Comparison"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-1",
+    "href": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-1",
+    "title": "Gaussian process",
+    "section": "Even more complex hierarchical models!",
+    "text": "Even more complex hierarchical models!\nIf we get back to a model that has a single hierarchy on the intercept such that\n\\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{b},\\sigma^2)\\]\n\nwhere\n\\[\\mathbf{b} \\sim \\mathcal{N}(\\mu, \\sigma^2)\\]\n\n\nIf we want to account for a constraint on the previously presented model we can rewrite the equation fo \\(\\mathbf{b}\\) as\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n\n\nwhere\n\n\\(f(d)\\) is a function of a distance matrix"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far",
+    "href": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far",
+    "title": "Gaussian process",
+    "section": "Hierarchical models so far",
+    "text": "Hierarchical models so far\n\nAn already (very !) general formulation\n\nSo far, we have built hierarchical models that can be integrated into the following framework.\n\n\n\n\\[(\\mathbf{y}|\\mathbf{X},\\mathbf{Z}, \\boldsymbol{\\beta}, \\mathbf{b}, \\sigma_\\mathbf{y}^2)\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma_\\mathbf{y}^2\\mathbf{I})\\]\n\n\n\n\nwhere\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\]\n\n\n\n\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma_\\mathbf{y}^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is designed matrix of “explanatory” variables with \\(n\\) rows (samples) and \\(q\\) columns\n\\(\\mu\\) is a vector defining the average importance of hierarchical parameters\n\\(\\mathbf{\\Sigma}\\) is a matrix defining the covariance structure of hierarchical parameters"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far-1",
+    "href": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far-1",
+    "title": "Gaussian process",
+    "section": "Hierarchical models so far",
+    "text": "Hierarchical models so far\nAn already (very !) general formulation\nAnother way to write this generalized formulation is\n\\[\\mathbf{y}_i = \\mathbf{X}_{ij} \\boldsymbol{\\beta}_j + \\mathbf{Z}_{ik}\\mathbf{b}_{k} + \\boldsymbol{\\varepsilon}_{ij}\\] where\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\] and\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-2",
+    "href": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-2",
+    "title": "Gaussian process",
+    "section": "Even more complex hierarchical models!",
+    "text": "Even more complex hierarchical models!\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n\nWhat this equation means conceptually is that the variance associated to \\(\\mathbf{b}\\) is not a constant, it changes based on distance (across space, time, phylogeny, etc.). This is known as a Gaussian process."
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#a-bit-of-history",
+    "href": "slides/09_Gaussian_process/index.html#a-bit-of-history",
+    "title": "Gaussian process",
+    "section": "A bit of history",
+    "text": "A bit of history\n\nIn statistics, Gaussian processes have a unique history. The development of this type of model is closely linked to the estimation of mineral deposits.\n\n\nSpatial Gaussian processes are also called geostatistical models, where the prefix geo refers to geology, not geography, as one may be led to believe.\n\n\nAs mining engineers are at the root of the development of Gaussian processes, the language associated with this type of model is influenced by this field."
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#a-bit-of-history-1",
+    "href": "slides/09_Gaussian_process/index.html#a-bit-of-history-1",
+    "title": "Gaussian process",
+    "section": "A bit of history",
+    "text": "A bit of history\nGaussian processes have been developed in the 1950s by\n\n\n\n\n\n\n\n\nDaniel G. Krige (1919–2013)\n\n\n\n\n\n\n\n\nGeorges Mathéron (1930–2000)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#assumption-with-gaussian-processes",
+    "href": "slides/09_Gaussian_process/index.html#assumption-with-gaussian-processes",
+    "title": "Gaussian process",
+    "section": "Assumption with Gaussian processes",
+    "text": "Assumption with Gaussian processes\n\nIn general, when defining a Gaussian process, we make the following assumptions:\n\n\n\nThe closer two sites are, the more similar they are.\n\n\n\n\nAfter a certain distance, it is no longer necessary to consider that a site influences another site.\n\n\n\n\nThis distance can be different depending on what is being studied, where it is being studied and when it is being studied"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#fd",
+    "href": "slides/09_Gaussian_process/index.html#fd",
+    "title": "Gaussian process",
+    "section": "\\(f(d)\\)",
+    "text": "\\(f(d)\\)"
   }
 ]

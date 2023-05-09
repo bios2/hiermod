@@ -684,9 +684,399 @@ Andrew MacDonald – Guillaume Blanchet – Vincent Tolon
 <p><span class="math display">\[\mathbf{b}\sim \mathcal{MVN}(\mathbf{0}, \mathbf{\Sigma})\]</span> where <span class="math inline">\(\mathbf{\Sigma}\)</span> is a covariance matrix.</p>
 <p>Based on this general formulation, we can now define all unconstrained hierarchical models.</p>
 </div>
+</section>
+<section id="markov-chain-monte-carlo-mcmc" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<div style="font-size: 0.75em;">
+<p>For simplicity, let’s assume that we are monitoring the behaviour of the mallard every minutes and that we are recording whether it is</p>
+<h4 id="on-land">On land</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ichef.bbci.co.uk/news/976/cpsprodpb/33B5/production/_127273231_comedy5.jpg" style="width:30.0%"></p>
+</figure>
+</div>
+<h4 id="in-the-water">In the water</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://img.bbg.org/large/41847802500.jpg" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-1" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<p>Using this information, we can draw diagram defining how the behaviour of the mallard changes at every time steps</p>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/DAG.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-2" class="slide level2">
+<h2><em>Markov Chain</em> Monte Carlo (MCMC)</h2>
+<div style="font-size: 0.75em;">
+<p>In a markov chain, we assume that we know how probable it is to go from one behaviour (land) to another (water)</p>
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/DAG_Markov_chain.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-3" class="slide level2">
+<h2>Markov Chain <em>Monte Carlo</em> (MCMC)</h2>
+<div style="font-size: 0.75em;">
+<p>In an MCMC, we assume that the likeliness of passing from one behaviour (land) to another (water) depends on a statistical distribution.</p>
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/DAG_Markov_chain_monte_Carlo.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="addition-and-substraction" class="slide level2">
+<h2>Addition and Substraction</h2>
+<p><span class="math display">\[\mathbf{C} = \mathbf{A}\pm \mathbf{B}\]</span> <span class="math display">\[C_{ij} = A_{ij} \pm B_{ij}\]</span></p>
+<div style="color: blue;">
+<p><span class="math display">\[\begin{bmatrix}
+                3 &amp; 5\\
+                1 &amp; -2\\
+            \end{bmatrix} +
+            \begin{bmatrix}
+                2 &amp; 1\\
+                4 &amp; -2\\
+            \end{bmatrix} =
+            \begin{bmatrix}
+                3+2 &amp; 5+1\\
+                1+4 &amp; -2-2\\
+            \end{bmatrix} =
+            \begin{bmatrix}
+                5 &amp; 6\\
+                5 &amp; -4\\
+            \end{bmatrix}\]</span></p>
+</div>
+<p>In R</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>A <span class="sc">+</span> B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    5    6
+[2,]    5   -4</code></pre>
+</div>
+</div>
+</section>
+<section id="triangular-matrix" class="slide level2">
+<h2>Triangular matrix</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h4 id="lower-triangular-matrix">Lower triangular matrix</h4>
+<p><span class="math display">\[\begin{bmatrix}
+        -10 &amp; 0 &amp; 0 &amp; 0\\
+        3 &amp; 0 &amp; 0 &amp; 0\\
+        0 &amp; 4 &amp; 3 &amp; 0\\
+        9 &amp; -5 &amp; 4 &amp; 3\\
+\end{bmatrix}\]</span></p>
+</div><div class="column" style="width:50%;">
+<h4 id="upper-triangular-matrix">Upper triangular matrix</h4>
+<p><span class="math display">\[\begin{bmatrix}
+        -10 &amp; 0 &amp; -5 &amp; 0\\
+        0 &amp; 0 &amp; 5 &amp; 6\\
+        0 &amp; 0 &amp; 3 &amp; 3\\
+        0 &amp; 0 &amp; 0 &amp; 3\\
+      \end{bmatrix}\]</span></p>
+</div>
+</div>
+</section>
+<section id="symmetric-matrix" class="slide level2">
+<h2>Symmetric matrix</h2>
+<p>The values on the above and below the diagonal are match so that <span class="math inline">\(A = A^t\)</span></p>
+<div style="color: blue;">
+<p><span class="math display">\[
+\begin{bmatrix}
+                3 &amp; 4 &amp; -10\\
+                4 &amp; 5 &amp; 7\\
+                -10 &amp; 7 &amp; -6\\
+        \end{bmatrix}
+\]</span></p>
+</div>
+</section>
+<section id="matrix-inversion" class="slide level2">
+<h2>Matrix inversion</h2>
+<div style="font-size: 0.8em">
+<p>In matrix algebra, we cannot divide a matrix by another matrix, but we can multiple it by its inverse, which gets us to the same place. Classically, the inverse of matrix <span class="math inline">\(\mathbf{A}\)</span> is defined as <span class="math inline">\(\mathbf{A}^{-1}\)</span></p>
+<p>As such, <span class="math display">\[\mathbf{A}\cdot \mathbf{A}^{-1} = \mathbf{I}\]</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>In R</p>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>(Ainv <span class="ot">&lt;-</span> <span class="fu">solve</span>(A))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]       [,2]
+[1,] 0.18181818  0.4545455
+[2,] 0.09090909 -0.2727273</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>A <span class="sc">%*%</span> Ainv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              [,1] [,2]
+[1,]  1.000000e+00    0
+[2,] -2.775558e-17    1</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="matrix-inversion-1" class="slide level2">
+<h2>Matrix inversion</h2>
+<h3 id="inverting-a-diagonal-matrix">Inverting a diagonal matrix</h3>
+<p><span class="math display">\[D^{-1}=
+      \begin{bmatrix}
+        1/d_1 &amp; 0 &amp; \dots &amp; 0\\
+        0 &amp;  1/d_2 &amp; \dots &amp; 0\\
+        \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+        0 &amp; 0 &amp; \dots &amp;  1/d_n\\
+\end{bmatrix}\]</span></p>
+</section>
+<section id="estimating-regression-parameters" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<div class="fragment">
+<p>Many techniques have been proposed to estimate the parameters of a regression model.</p>
+</div>
+<div class="fragment">
+<p>The goal of this course is not to study these techniques but we will learn how to play with the estimated parameters because it will be very useful as we move along.</p>
+</div>
+<div class="fragment">
+<p>The most common way to build a regression model is</p>
+<div class="cell">
 
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(b.exemplaris <span class="sc">~</span> humidity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Say we now want to build a model’s confidence interval from a linear regression</p>
+</div>
+<div class="fragment">
+<p><strong>How would you do it ?</strong></p>
+</div>
+<div class="fragment">
+<p>Let’s look at the model’s results, maybe it will help us</p>
+</div>
+</section>
+<section id="estimating-regression-parameters-1" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="models-results">Model’s results</h3>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>(summaryReg <span class="ot">&lt;-</span> <span class="fu">summary</span>(reg))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = b.exemplaris ~ humidity)
 
-<img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.47988 -0.26475  0.00611  0.32590  1.36077 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.57389    0.04720   54.53   &lt;2e-16 ***
+humidity     1.10086    0.07976   13.80   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4718 on 98 degrees of freedom
+Multiple R-squared:  0.6603,    Adjusted R-squared:  0.6569 
+F-statistic: 190.5 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<p>Let’s say we want to construst the model’s confidence intervals by sampling multiple times (say 100 times!) the regression parameters, which we will assume follow Gaussian distribution. <strong>How would you do this?</strong></p>
+</div>
+</div>
+</section>
+<section id="estimating-regression-parameters-2" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters">Sampling model parameters</h3>
+<p>We could sample the model parameters but how can we do this properly?</p>
+<div class="fragment">
+<p><strong>Any suggestions?</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="estimating-regression-parameters-3" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-1">Sampling model parameters</h3>
+<p>If we look at the estimated regression model coefficient, we can learn a few things</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>summaryReg<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error  t value     Pr(&gt;|t|)
+(Intercept) 2.573889 0.04720304 54.52804 4.011925e-75
+humidity    1.100865 0.07975800 13.80256 1.035796e-24</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Notably, there are uncertainty around the parameters.</p>
+</div>
+<div class="fragment">
+<p>Maybe we can use this information to sample model parameters and reconstruct models across different iterations of parameters.</p>
+</div>
+<div class="fragment">
+<p>Let’s give it a shot !</p>
+</div>
+</section>
+<section id="estimating-regression-parameters-4" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-2">Sampling model parameters</h3>
+<p>If we assume that the parameters of our particular model follow a Gaussian distribution, we can state that</p>
+<div class="fragment">
+<p><span class="math display">\[\beta_0 \sim \mathcal{N}(2.574, 0.047^2)\]</span> <span class="math display">\[\beta_1 \sim \mathcal{N}(1.101, 0.080^2)\]</span></p>
+</div>
+</section>
+<section id="estimating-regression-parameters-5" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-3">Sampling model parameters</h3>
+<p>In R, we can do this as follow</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Object that include regression coefficients</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>regCoef <span class="ot">&lt;-</span> summaryReg<span class="sc">$</span>coefficients</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="co"># Sample regression parameters</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>beta_0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> regCoef[<span class="dv">1</span>,<span class="dv">1</span>], <span class="at">sd =</span> regCoef[<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb16-6"><a href="#cb16-6"></a>beta_1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> regCoef[<span class="dv">2</span>,<span class="dv">1</span>], <span class="at">sd =</span> regCoef[<span class="dv">2</span>,<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="estimating-regression-parameters-6" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-4">Sampling model parameters</h3>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-7" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-5">Sampling model parameters</h3>
+<p>But is this the right way to do it ?</p>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/e/e/7/b/ee7b4fb9880ef3c8ee19626cdc14bf5c_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-8" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-6">Sampling model parameters</h3>
+<p>Actually, even if the model’s confidence interval look about right, they are wrong !</p>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/8/b/f/8/8bf88079d65d540a26a1f181cf6ba060_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-9" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-7">Sampling model parameters</h3>
+<p>The approach presented in the previous slide works only if we assume that the parameters are completely independent from one another.</p>
+<div class="fragment">
+<p>A situation that happens only in very specific circumstances.</p>
+</div>
+<div class="fragment">
+<p>So… We need to find a way to account for the non-independencies between the parameters.</p>
+</div>
+<div class="fragment">
+<p>How can we do this ? Any ideas ?</p>
+</div>
+</section>
+<section id="estimating-regression-parameters-10" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-8">Sampling model parameters</h3>
+<div style="font-size: 0.75em">
+<p>Assuming the regression parameters are normally distributed is not a bad assumption.</p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<p>However to consider a dependencies between the parameters we need to sample them from a <strong>multivariate</strong> normal distribution where the variance of each parameter and their dependency is defined by a covariance matrix estimated specifically for the data we model.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<p>The good news is that this covariance matrix is given by <code>summary.lm</code> function</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 1.2em">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>(covReg <span class="ot">&lt;-</span> summaryReg<span class="sc">$</span>cov.unscaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              (Intercept)      humidity
+(Intercept)  0.0100098513 -0.0005305969
+humidity    -0.0005305969  0.0285782940</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estimating-regression-parameters-11" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-9">Sampling model parameters</h3>
+<p>For our specific model, mathematically, we assume that</p>
+<div class="fragment">
+<p><span class="math display">\[\begin{bmatrix}
+  \beta_0\\
+  \beta_1\\
+\end{bmatrix} \sim \mathcal{MVN} \left( \begin{bmatrix}
+  2.574\\
+  1.101\\
+\end{bmatrix}, \begin{bmatrix}
+  0.0100 &amp; -0.0005 \\
+  -0.0005 &amp; 0.0286 \\
+\end{bmatrix} \right)\]</span></p>
+</div>
+<div class="fragment">
+<p><strong>Note</strong> To present the multivariate normal distribution, we rely on matrix notation. This is our first introduction into matrix algebra. We will talk about this more into this course.</p>
+</div>
+</section>
+<section id="estimating-regression-parameters-12" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-10">Sampling model parameters</h3>
+<p>In R, we can sample the parameters using a multivariate normal distribution using the following code</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Object that include regression coefficients</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>regCoef <span class="ot">&lt;-</span> summaryReg<span class="sc">$</span>coefficients</span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># Sample regression parameters</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>beta <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="dv">100</span>, regCoef[,<span class="dv">1</span>], <span class="at">Sigma =</span> covReg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="estimating-regression-parameters-13" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters-11">Sampling model parameters</h3>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-13-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-regression-parameters-14" class="slide level2">
+<h2>Estimating regression parameters</h2>
+<h3 id="sampling-model-parameters---comparison">Sampling model parameters - Comparison</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" width="1536"></p>
+</figure>
+</div>
+</div>
+</div>
+
+<p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
+<div class="footer footer-default">
 
 </div>
 </section>
