@@ -1,0 +1,360 @@
+---
+title: "Models with one level of hierarchy"
+description: |
+  Some of these things are somewhat like the others.
+execute:
+  freeze: true
+comments:
+  hypothesis: true
+format:
+  html:
+    code-tools: true
+---
+
+
+:::{.callout-tip}
+## Bayesian workflow
+
+1. Visualize your data
+2. Decide on your model structure
+3. Simulate from the model to understand it
+4. Fit the model to the data
+5. Plot model predictions to evaluate the fit / draw conclusions
+:::
+
+Today's goal is to look at a couple of different model structures that we saw yesterday. 
+
+```{r}
+library(tidyverse)
+library(cmdstanr)
+library(tidybayes)
+library(palmerpenguins)
+```
+
+
+## Gaussian random intercepts: Penguin body mass
+
+The Palmer penguins are found on three different islands. Let's look at the distribution of body mass of each species on each island.
+
+### Plot the data
+
+```{r gauss-inter-setup}
+penguin_mass_island <- penguins |> 
+  select(species, island, body_mass_g) |> 
+  drop_na(body_mass_g) |> 
+  unite(sp_island, species, island) |> 
+  ## center mass and change the units
+  mutate(mass_kg = (body_mass_g)/1000)
+```
+
+
+```{r gauss-inter-plot}
+penguin_mass_island |> 
+  ggplot(aes(y = sp_island,
+             x = mass_kg,
+             colour = sp_island)) + 
+  geom_jitter(alpha = 0.8, height = 0.1, width = 0) + 
+  scale_color_brewer(palette = "Dark2")
+```
+
+Are the sample sizes equal among the species-island combinations?
+
+```{r}
+penguin_mass_island |> 
+  count(sp_island) |> 
+  knitr::kable()
+```
+
+### Decide on a model structure
+
+We'll begin by fitting a model that assumes that body size for each of these five groups is completely independent:
+
+$$
+\begin{align}
+\text{Body mass}_i &\sim \text{Normal}(\mu_i, \sigma_{\text{obs}}) \\
+\mu_i &= \bar\beta + \beta_{\text{species}[i]} \\
+\bar\beta &\sim \text{Normal}(5, 2) \\
+\beta_{\text{species}} &\sim \text{Normal}(0, 1) \\
+\sigma &\sim \text{Exponential}(.5)
+\end{align}
+$$
+
+### Simulate to understand this model
+
+Here's a little trick to get group indexes (numbers) from a character vector:
+
+```{r}
+group_names <- unique(penguin_mass_island$sp_island)
+group_numbers <- seq_along(group_names)
+names(group_numbers) <- group_names
+
+group_numbers
+```
+
+```{r}
+penguin_groupid <- penguin_mass_island |> 
+  mutate(group_id = group_numbers[sp_island])
+
+penguin_groupid
+```
+
+As you can see, we're set up now with the names and the indexes we need. 
+
+Now we can simulate data and plot it:
+
+```{r}
+ngroup <- length(group_numbers)
+overall_mean <- rnorm(1, mean = 5, sd = 2)
+group_diffs <- rnorm(n = ngroup, mean = 0, sd = 1)
+sigma_obs <- rexp(1, .5)
+
+penguin_pred_obs <- penguin_groupid |> 
+  mutate(fake_mass_avg = overall_mean + group_diffs[group_id],
+         fake_mass_obs = rnorm(length(fake_mass_avg), 
+                               mean = fake_mass_avg, 
+                               sd = sigma_obs))
+
+penguin_pred_obs |> 
+  ggplot(aes(y = sp_island,
+             x = fake_mass_obs,
+             colour = sp_island)) + 
+  geom_jitter(alpha = 0.8, height = 0.1, width = 0) + 
+  scale_color_brewer(palette = "Dark2")
+
+```
+
+:::{.callout-tip}
+run the above code a few times! if you want, try different prior values.
+:::
+
+### Write it in Stan
+
+```{r}
+#| class-output: stan
+fixed_groups <- cmdstan_model(stan_file = "topics/03_one_random_effect/fixed_groups.stan")
+
+fixed_groups
+```
+
+### Fit the model
+
+```{r}
+peng_group_list <- with(penguin_groupid, 
+         list(
+           N = length(mass_kg),
+           y = mass_kg,
+           Ngroup = max(group_id),
+           group_id = group_id
+         ))
+
+fixed_groups_samples <- fixed_groups$sample(
+  data = peng_group_list,
+  refresh = 0,
+  parallel_chains = 4
+)
+```
+
+### Plot predictions to evaluate results
+
+
+```{r}
+## bayesplot
+```
+
+
+```{r}
+fixed_groups_samples |> 
+  tidybayes::gather_rvars(one_obs_per_group[group_id]) |> 
+  mutate(sp_island = group_names[group_id]) |> 
+  ggplot(aes(y = sp_island,
+             dist = .value,
+             colour = sp_island)) + 
+  stat_pointinterval() + 
+  geom_point(aes(y = sp_island,
+             x = mass_kg,
+             colour = sp_island), 
+             inherit.aes = FALSE,
+             alpha = .2, data = penguin_groupid)
+
+```
+
+### Make it hierarchical
+
+TK make them side by side
+
+$$
+\begin{align}
+\text{Body mass}_i &\sim \text{Normal}(\mu_i, \sigma_{\text{obs}}) \\
+\mu_i &= \bar\beta + \beta_{\text{species}[i]} \\
+\bar\beta &\sim \text{Normal}(5, 2) \\
+\beta_{\text{species}} &\sim \text{Normal}(0, \sigma_{\text{sp}}) \\
+\sigma_{\text{obs}} &\sim \text{Exponential}(.5) \\
+\sigma_{\text{sp}} &\sim \text{Exponential}(1)
+\end{align}
+$$
+
+
+```{r}
+#| class-output: stan
+hierarchical_groups <- cmdstan_model(stan_file = "topics/03_one_random_effect/hierarchical_groups.stan")
+
+hierarchical_groups
+```
+
+```{r}
+hierarchical_groups_samples <- hierarchical_groups$sample(
+  data = peng_group_list, refresh = 0, parallel_chains = 4)
+```
+
+```{r}
+hierarchical_groups_samples
+```
+
+```{r}
+hierarchical_groups_samples |> 
+  tidybayes::gather_rvars(b_group[group_id],
+                          new_b_group) |> 
+  mutate(sp_island = group_names[group_id],
+         sp_island = if_else(is.na(sp_island),
+                             true = "New Group",
+                             false = sp_island)) |> 
+  ggplot(aes(y = sp_island,
+             dist = .value,
+             colour = sp_island)) + 
+  stat_pointinterval()
+```
+
+
+```{r}
+hierarchical_groups_samples |> 
+  tidybayes::gather_rvars(one_obs_per_group[group_id],
+                          one_obs_new_group) |> 
+  mutate(sp_island = group_names[group_id],
+         sp_island = if_else(is.na(sp_island),
+                             true = "New Group",
+                             false = sp_island)) |> 
+  ggplot(aes(y = sp_island,
+             dist = .value,
+             colour = sp_island)) + 
+  stat_pointinterval() + 
+  geom_point(aes(y = sp_island,
+             x = mass_kg,
+             colour = sp_island), 
+             inherit.aes = FALSE,
+             alpha = .2, data = penguin_groupid)
+```
+
+
+## Exercises
+
+1. Try leaving out a group and refitting the hierarchical model. Are the predictions for the missing group accurate?
+1. There are other categorical predictors in the dataset. Try including `year` as a part of the group-creating factor (i.e. in the call to `unite()` above). What changes?
+1. The posterior for both models includes a predicted `fake_obs` for EVERY observation. This opens the possibility of using `bayesplot` to make predictions. Look back at the code from Day 1 and create a posterior predictive check for both models. (e.g. using `ppc_dens_overlay`)
+1. We could perhaps have used `sex` as a grouping factor, but `sex` has missing values in it! Why is this a problem for this kind of model? What would it take to address that? (Discussion only; missing values are unfortunately outside the class scope!)
+
+## Poisson random intercepts: Mite abundance
+
+```{r}
+data(mite, package = "vegan")
+data("mite.env", package = "vegan")
+
+# combine data and environment
+
+mite_data_long <- mite |> 
+  tibble::rownames_to_column(var = "site_id") |> 
+  bind_cols(mite.env) |> 
+  pivot_longer(Brachy:Trimalc2,
+               names_to = "spp", values_to = "abd")
+```
+
+```{r}
+#| fig-cap: Abundance of each species at every site in the mite dataset. Points are species abundances, grouped on the row for that site.
+mite_data_long |> 
+  mutate(site_id = forcats::fct_reorder(site_id, abd)) |> 
+  ggplot(aes(y = site_id, x = abd)) +
+  geom_point() + 
+  coord_cartesian(xlim = c(0,100)) + 
+  stat_summary(fun = median, col = "red", geom = "point")
+```
+
+
+### Exercise: write the model in the same notation as the original
+
+Let's model the counts of species abundances, using a random effect for each site. Write the model that corresponds to this!
+
+### Trying it with a Normal distribution:
+
+It's actually possible to run the previous model on this one.
+let's set up the data and try:
+```{r}
+species_numbers <- with(mite_data_long,
+     setNames(seq_along(unique(spp)), unique(spp)))
+
+mite_data_groupID <- mutate(mite_data_long,
+                            group_id = species_numbers[spp])
+
+mite_list <- with(mite_data_groupID,
+                  list(
+                    N = length(abd),
+                    y = abd,
+                    Ngroup = dplyr::n_distinct(spp),
+                    group_id = group_id
+                  ))
+
+normal_samples <- hierarchical_groups$sample(data = mite_list, refresh = 0, parallel_chains = 4)
+```
+
+This is interesting, but it would probably be better to fit this model with something meant for counts! With this comes the need to include a log link function. Fortunately, Stan makes all this possible with just a few small changes:
+
+### Exercise: translate it into Stan
+
+Modify the program `hierarchical_groups.stan` to work for poisson data. Some things to keep in mind: 
+
+* `data {}` block: remember that the Poisson distribution needs integers and set up the data inputs accordinly.
+* `parameters {}` block: think about which parameters the poisson does NOT need. 
+* `model {}` block: remember to remove any unneeded parameters from the likelihood (the model of the data), and their priors too.
+* replace `normal` with `poisson_log`. Note that this evaluates its argument on the log scale. That is, it works like a typical GLM done in R. We can keep priors the same as in the last model, though we may decide to change their values.
+* `generated quantities {}` block: replace `normal_rng()` with `poisson_log_rng()` -- _where necessary_ -- and delete unused parameters.
+* again, remember that the Poisson needs to be making integers. For example, replace `vector[Ngroup]` with `array[Ngroup] int `
+
+```{r}
+phg <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_hier_groups.stan")
+
+phg_samples <- phg$sample(data = mite_list, refresh = 20, parallel_chains = 2, chains = 2)
+
+phg_samples |> 
+  gather_rvars(one_obs_per_group[i]) |> 
+  mutate(spp = names(species_numbers)[i],
+         spp = forcats::fct_reorder(spp, .value, median)) |> 
+  ggplot(aes(y = spp, dist = .value)) + 
+  stat_pointinterval() + 
+  geom_point(aes(y = spp, x = m),
+             data = mite_data_groupID |> 
+               group_by(spp) |> 
+               summarize(m = mean(abd)),
+             inherit.aes = FALSE, col = "red")
+```
+
+### Exercises
+
+* Try modifying the program again, this time adding a predictor: water content. What happens to `sigma_grp` in this example?
+
+## Observation-level random effects: Mite species richness
+
+```{r}
+mite_species_richness <- mite_data_long |> 
+  group_by(site_id, WatrCont) |> 
+  summarize(S = sum(abd > 0)) |>
+  ungroup() |> 
+  mutate(water_c = (WatrCont - mean(WatrCont))/100)
+
+mite_species_richness |> 
+  ggplot(aes(x = water_c, y = S)) + 
+  geom_point()
+
+mite_species_richness |> 
+  ggplot(aes(x = S)) + 
+  geom_histogram()
+```
+
+## Bernoulli presence-absence data: Mite occurrance.
