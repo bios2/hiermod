@@ -196,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Hierarchial models represent a way to <em>model</em> this variation, in ways that range from simple to complex.</p>
 <p>Before we dive in with hierarchical structure, let’s build a bridge between these two approaches.</p>
 <p>This is useful to help us understand what a hierarchical model does.</p>
-<p>However it is also useful from a strict model-building perspective – so useful that Andrew Gelman calls it a “Secret Weapon”</p>
+<p>However it is also useful from a strict model-building perspective – so useful that <a href="https://statmodeling.stat.columbia.edu/2005/03/07/the_secret_weap/">Andrew Gelman calls it a “Secret Weapon”</a></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mite, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite.env"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
@@ -228,7 +228,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="secret_weapon_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>some things to notice about this figure:</p>
@@ -271,7 +271,7 @@ Split-Apply-Combine
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span> </span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="secret_weapon_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>As you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.</p>
@@ -281,7 +281,7 @@ Split-Apply-Combine
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="secret_weapon_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Once again, the two parameters of this model represent:</p>
@@ -331,14 +331,14 @@ To disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=T
 <div class="cell-output cell-output-stdout">
 <pre><code>Running MCMC with 4 parallel chains...
 
-Chain 4 finished in 5.9 seconds.
-Chain 1 finished in 6.2 seconds.
-Chain 2 finished in 6.4 seconds.
-Chain 3 finished in 6.6 seconds.
+Chain 1 finished in 5.9 seconds.
+Chain 2 finished in 7.4 seconds.
+Chain 3 finished in 7.4 seconds.
+Chain 4 finished in 7.6 seconds.
 
 All 4 chains finished successfully.
-Mean chain execution time: 6.3 seconds.
-Total execution time: 6.7 seconds.</code></pre>
+Mean chain execution time: 7.1 seconds.
+Total execution time: 7.7 seconds.</code></pre>
 </div>
 </div>
 <p>now let’s try to plot this:</p>
@@ -358,7 +358,7 @@ Total execution time: 6.7 seconds.</code></pre>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>post_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="secret_weapon_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -369,7 +369,7 @@ Total execution time: 6.7 seconds.</code></pre>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">pch =</span> <span class="dv">21</span>, </span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"orange"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="secret_weapon_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Plot and compare to frequentist point estimates</p>
@@ -426,14 +426,14 @@ Total execution time: 6.7 seconds.</code></pre>
 <div class="cell-output cell-output-stdout">
 <div class="sourceCode" id="cb20"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Running MCMC with <span class="dv">4</span> parallel chains...</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">1</span> finished <span class="cf">in</span> <span class="fl">10.8</span> seconds.</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">4</span> finished <span class="cf">in</span> <span class="fl">11.1</span> seconds.</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">2</span> finished <span class="cf">in</span> <span class="fl">11.7</span> seconds.</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">3</span> finished <span class="cf">in</span> <span class="fl">11.8</span> seconds.</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">4</span> finished <span class="cf">in</span> <span class="fl">11.5</span> seconds.</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">1</span> finished <span class="cf">in</span> <span class="fl">11.9</span> seconds.</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">2</span> finished <span class="cf">in</span> <span class="fl">13.2</span> seconds.</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>Chain <span class="dv">3</span> finished <span class="cf">in</span> <span class="fl">13.9</span> seconds.</span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>All <span class="dv">4</span> chains finished successfully.</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>Mean chain execution time: <span class="fl">11.3</span> seconds.</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>Total execution time: <span class="fl">11.9</span> seconds.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>Mean chain execution time: <span class="fl">12.6</span> seconds.</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>Total execution time: <span class="fl">14.1</span> seconds.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>plot these, reproducing the figure from earlier:</p>
@@ -492,7 +492,7 @@ Total execution time: 6.7 seconds.</code></pre>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="secret_weapon_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <!-- Roadmap: -->
