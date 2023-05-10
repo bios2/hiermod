@@ -1181,25 +1181,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb46-307"><a href="#cb46-307" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-308"><a href="#cb46-308" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-309"><a href="#cb46-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-310"><a href="#cb46-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-313"><a href="#cb46-313" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-314"><a href="#cb46-314" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb46-315"><a href="#cb46-315" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
-<span id="cb46-316"><a href="#cb46-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-317"><a href="#cb46-317" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb46-318"><a href="#cb46-318" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span>
-<span id="cb46-319"><a href="#cb46-319" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span>
-<span id="cb46-320"><a href="#cb46-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-321"><a href="#cb46-321" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
-<span id="cb46-322"><a href="#cb46-322" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span>
-<span id="cb46-323"><a href="#cb46-323" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span>
-<span id="cb46-324"><a href="#cb46-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-325"><a href="#cb46-325" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-310"><a href="#cb46-310" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlating numbers with a cholesky decomposition of a correlation matrix.</span></span>
+<span id="cb46-311"><a href="#cb46-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-314"><a href="#cb46-314" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-315"><a href="#cb46-315" aria-hidden="true" tabindex="-1"></a><span class="ot">&lt;-</span> <span class="er">&lt;</span><span class="sc">-</span> </span>
+<span id="cb46-316"><a href="#cb46-316" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb46-317"><a href="#cb46-317" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
+<span id="cb46-318"><a href="#cb46-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-319"><a href="#cb46-319" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb46-320"><a href="#cb46-320" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span>
+<span id="cb46-321"><a href="#cb46-321" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span>
+<span id="cb46-322"><a href="#cb46-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-323"><a href="#cb46-323" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
+<span id="cb46-324"><a href="#cb46-324" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span>
+<span id="cb46-325"><a href="#cb46-325" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span>
 <span id="cb46-326"><a href="#cb46-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-329"><a href="#cb46-329" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-330"><a href="#cb46-330" aria-hidden="true" tabindex="-1"></a>rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">5</span>, .<span class="dv">3</span>)</span>
-<span id="cb46-331"><a href="#cb46-331" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-332"><a href="#cb46-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-327"><a href="#cb46-327" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-328"><a href="#cb46-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-331"><a href="#cb46-331" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-332"><a href="#cb46-332" aria-hidden="true" tabindex="-1"></a>rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">5</span>, .<span class="dv">3</span>)</span>
+<span id="cb46-333"><a href="#cb46-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-334"><a href="#cb46-334" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
