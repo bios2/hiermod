@@ -1,40 +1,18 @@
 
-## main questions
 
-* Understanding a hierarchical model as a model for parameters
-* Introduce 
-* One Weird Trick (you Supervisor will be Amazed)--- mean centering and group mean centering
+```{r}
+data(mite, package = "vegan")
+data("mite.env", package = "vegan")
+library(tidyverse)
+library(cmdstanr)
 
-a model for parameters
+# combine data and environment
+mite_data_long <- bind_cols(mite.env, mite) |> 
+  pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
+```
 
-start withglobal aerages of seach tgroup., 
-our question,is, what create this variation in averages? 
 
-show distribution of sample averages
-Do this for the average of the distributions, showing their interactions with each other, their distribution oacross all values. 
 
-Starting with just the distribution of abundances across the species and plots. 
-
-Then move to an intercept-only poisson model : distribution across plots
-
-really take time: build up a model of multiple averages per species and multiple per plot
-
-or would the penguins be better for this? Consider the different islands and the different species
-
-honestly could do it with both. 
-
-Then try the following
-
-modelling an average
-modelling group means
-modelling more than one group mean 
-
-a process:
-* Look at your data
-* think about "0" -- where should it be? what does it mean?
-* think about units -- how much of a difference in your "X" matters to your "y"?
-
-* model the average and standard deviation of bill size (or of species abudance)
 
 $$
 \begin{align}
@@ -43,9 +21,6 @@ Y_s &\sim \text{Poisson}(\lambda_s) \\
 \end{align}
 $$
 
-* a quick note -- centering the response, i.e. taking the average out of the prior on the averages
-* look at the averages
-* how could we describe these averages? a simple model: mean and standard deviation
 
 ```{r}
 data("mite", package = "vegan")
@@ -55,7 +30,8 @@ spp_names <- setNames(1:ncol(mite), colnames(mite))
 
 
 mite_long <- mite |> 
-  tidyr::pivot_longer(dplyr::everything(), names_to = "spp", values_to = "abd") |> 
+  tidyr::pivot_longer(dplyr::everything(),
+                      names_to = "spp", values_to = "abd") |> 
   dplyr::mutate(group_id = spp_names[spp])
 
 library(cmdstanr)
@@ -343,12 +319,3 @@ animation showing averages -- group averages -- species averages
 really want to show my own style here! I think I can see how this would build together. 
 
 I wonder, if there is a way to simulate predator-prey dynamics in space, in a model where the predator needs to have both prey and environment conditions, but they prey need only the environment. what would happen if we use causal models (or the wrong causal model) on those data, measuring predators affecting prey when there is nothing 
-
-
-
-
-group-mean-centering as a main topic
-Not as a new topic but as an interesting way to describe multilevel, slope models. 
-
-animation of points moving together, after group-mean-centering
-

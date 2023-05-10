@@ -120,15 +120,17 @@ Let's fit this model by passing in the data:
 mite_bin <- mite
 mite_bin[mite_bin>0] <- 1
 
-all_species_unpooled_posterior <- 
-  all_species_unpooled$sample(
-    data = list(
-      n = nrow(mite_bin),
+mite_pa_list <- list(
+      Nsites = nrow(mite_bin),
       S = ncol(mite_bin),
       x = with(mite.env, (WatrCont - mean(WatrCont))/100),
       y = as.matrix(mite_bin)
-    ), 
-    refresh = 0, parallel_chains = 4
+    )
+
+all_species_unpooled_posterior <- 
+  all_species_unpooled$sample(
+    data = mite_pa_list, 
+    refresh = 1000, parallel_chains = 4
     )
 ```
 
@@ -216,6 +218,14 @@ all_species_unpooled_diag <- cmdstan_model(
 all_species_unpooled_diag
 ```
 
+```{r}
+all_species_unpooled_diag_sample <- all_species_unpooled_diag$sample(
+  data = mite_pa_list, 
+  refresh = 1000, parallel_chains = 4
+)
+```
+
+
 ## Making it hierarchical
 
 ```{r}
@@ -261,7 +271,7 @@ plot these, reproducing the figure from earlier:
 unpooled_slopes <- all_species_unpooled_posterior |> 
   tidybayes::gather_rvars(slope[spp])
 
-tidybayes::get_variables(all_species_partpooled_diag_posterior)
+# tidybayes::get_variables(all_species_partpooled_diag_posterior)
 
 partpooled_slopes <- all_species_partpooled_diag_posterior |> 
   tidybayes::gather_rvars(beta[param, spp]) |> 
@@ -277,7 +287,6 @@ left_join(unpooled_slopes, partpooled_slopes, by = "spp") |>
 ## Correlating numbers with a cholesky decomposition of a correlation matrix.
 
 ```{r}
-<- <- 
 eg <- rethinking::rlkjcorr(1, 2, 1)
 cc <- chol(eg)
 
@@ -291,8 +300,10 @@ cor(t(rr))[1,2]
 
 ```
 
+The LKJ prior distribution is a prior over correlation matrices
+
 ```{r}
-rethinking::rlkjcorr(1, 5, .3)
+# rethinking::rlkjcorr(1, 5, .3)
 ```
 
 
