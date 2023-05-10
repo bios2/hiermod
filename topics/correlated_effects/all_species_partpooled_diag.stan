@@ -1,17 +1,16 @@
 data {
   int<lower=0> Nsites;         // num of sites in the dataset
-  int<lower=1> K;              // num of site predictors
   int<lower=1> S;              // num of species
-  matrix[Nsites, K] x;         // site-level predictors
+  matrix[Nsites, 2] x;         // site-level predictors
   array[Nsites, S] int<lower=0, upper=1> y;  // species presence or absence
 }
 parameters {
-  matrix[K, S] z;               // species departures from the average
-  vector[K] gamma;              // AVERAGE of slopes and intercepts
-  vector<lower=0>[K] sd_params;          // standard deviations of species departures
+  matrix[2, S] z;               // species departures from the average
+  vector[2] gamma;              // AVERAGE of slopes and intercepts
+  vector<lower=0>[2] sd_params;          // standard deviations of species departures
 }
 transformed parameters {
-  matrix[K, S] beta = rep_matrix(gamma, S) + diag_pre_multiply(sd_params, z);
+  matrix[2, S] beta = rep_matrix(gamma, S) + diag_pre_multiply(sd_params, z);
 }
 model {
   matrix[Nsites, S] mu;

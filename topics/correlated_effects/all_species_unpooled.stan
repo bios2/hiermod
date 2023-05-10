@@ -6,7 +6,7 @@ data {
   // one environmental variable to use in prediction
   vector[n] x;
   // response site (rows) by species (columns) 2D array
-  array[n,S] int<lower=0,upper=1> y;
+  array[n,S] int <lower=0,upper=1> y;
 }
 parameters {
   // parameters are now VECTORS
@@ -19,7 +19,7 @@ model {
   }
   // priors don't change because Stan is vectorized:
   // every element of the vector gets the same prior
-  intercept ~ std_normal();
-  slope ~ std_normal();
+  intercept ~ normal(0, .5);
+  slope ~ normal(0, .5);
 }
 

@@ -9,9 +9,8 @@ data {
   array[n,S] int<lower=0,upper=1> y;
 }
 parameters {
-  // parameters are now VECTORS
-  vector[S] intercept;
-  vector[S] slope;
+  // parameters in an array
+  array[S] vector[2] coefs;
 }
 model {
   for (s in 1:S){
