@@ -12,6 +12,8 @@ parameters {
 model {
   y ~ normal(b_avg + b_group[group_id], sigma);
   b_group ~ std_normal();
+  b_avg ~ normal(5, 2);
+  sigma ~ exponential(.5);
 }
 generated quantities {
   vector[N] fake_obs;
