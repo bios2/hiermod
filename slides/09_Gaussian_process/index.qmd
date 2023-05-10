@@ -317,9 +317,112 @@ arrows(x0 = 60,
        col = "orange")
 ```
 
-## $f(d)$ - types of functions
+## $f(d)$ - types of functions {style="font-size: 0.85em;"}
 
-Many types of functions have been proposed that has these general shape
+. . .
+
+Many types of functions have been proposed that has this general shape
+
+. . . 
+
+In this lecture, we will use the exponential function
+
+$$C_0 + C_1 \left(1-e^{-d/a}\right)$$
+
+. . .
+
+where
+
+- $C_0$ is the nugget effect
+
+. . .
+
+- $C_1$ is the sill
+
+. . .
+
+- $d$ is the distance
+
+. . .
+
+- $a$ is the range
+
+## Exponential function
+
+Nugget : 2 -- Sill : 5 -- Range : 10
+
+```{r, echo = FALSE}
+expVario <- function(d, nugget = 2, sill = 5, range = 10){
+  nugget + sill * (1 - exp(-d / range))
+}
+
+par(mar = c(5.1, 5.1, 0.1, 0.1))
+curve(expVario, 0, 100, 
+      lwd = 5,
+      bty = "L",
+      ylim = c(0, 7),
+      las = 1,
+      xlab = "Distance",
+      ylab = "Variance",
+      cex.lab = 2.5,
+      cex.axis = 2,
+      col = "blue")
+```
+
+## An illustrative example {style="font-size: 0.9em;"}
+
+. . . 
+
+To present how Gaussian processes can be used, let's study the distribution of *Sylvilagus oviparus* in Montréal.
+
+. . .
+
+### A few characteristics of *Sylvilagus oviparus* 
+
+- They are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.
+
+. . .
+
+- They lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox. 
+
+. . .
+
+- They move well in an urban  setting and are not affected by the level of urbanisation
+
+. . .
+
+- They disperse at most 15 km per year
+
+## A typical member of the species
+
+![](https://t3.ftcdn.net/jpg/05/78/06/66/240_F_578066681_18vcVGHuSLDc4dQE6HTXG8qsn2tjSHMy.jpg){fig-align="center" width=75%}
+
+## Distribution of *S. oviparus* in Montréal {style="font-size: 0.9em;"}
+
+. . .
+
+In 2015, a survey was carried out to find *Sylvilagus oviparus* in Montréal's park. Here are the data
+. . .
+
+::::{.columns}
+:::{.column width="60%"}
+![](../img/Lapin_paques_Mtl_2015.png){fig-align="center" width=75%}
+:::
+:::{.column width="40%"}
+
+:::::{style="font-size: 0.8em;"}
+Within the censused park
+
+- <span style="color:blue;">Blue parks</span> : observed
+
+- <span style="color:#FF33FF;">Pink parks</span> : not observed
+:::::
+:::
+::::
+
+## Model
+
+Since 
 
 
 ## second

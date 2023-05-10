@@ -553,6 +553,94 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </div>
 </div>
 </section>
+<section id="fd---types-of-functions" class="slide level2" style="font-size: 0.85em;">
+<h2><span class="math inline">\(f(d)\)</span> - types of functions</h2>
+<div class="fragment">
+<p>Many types of functions have been proposed that has this general shape</p>
+</div>
+<div class="fragment">
+<p>In this lecture, we will use the exponential function</p>
+<p><span class="math display">\[C_0 + C_1 \left(1-e^{-d/a}\right)\]</span></p>
+</div>
+<div class="fragment">
+<p>where</p>
+<ul>
+<li><span class="math inline">\(C_0\)</span> is the nugget effect</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(C_1\)</span> is the sill</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(d\)</span> is the distance</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(a\)</span> is the range</li>
+</ul>
+</div>
+</section>
+<section id="exponential-function" class="slide level2">
+<h2>Exponential function</h2>
+<p>Nugget : 2 – Sill : 5 – Range : 10</p>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section id="an-illustrative-example" class="slide level2" style="font-size: 0.9em;">
+<h2>An illustrative example</h2>
+<div class="fragment">
+<p>To present how Gaussian processes can be used, let’s study the distribution of <em>Sylvilagus oviparus</em> in Montréal.</p>
+</div>
+<div class="fragment">
+<h3 id="a-few-characteristics-of-sylvilagus-oviparus">A few characteristics of <em>Sylvilagus oviparus</em></h3>
+<ul>
+<li>They are found mainly in urban parks of Montréal and is very efficient at hiding in hollow trees and burrows.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>They lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>They move well in an urban setting and are not affected by the level of urbanisation</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>They disperse at most 15 km per year</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="a-typical-member-of-the-species" class="slide level2">
+<h2>A typical member of the species</h2>
+
+<img data-src="https://t3.ftcdn.net/jpg/05/78/06/66/240_F_578066681_18vcVGHuSLDc4dQE6HTXG8qsn2tjSHMy.jpg" style="width:75.0%" class="r-stretch quarto-figure-center"></section>
+<section id="distribution-of-s.-oviparus-in-montréal" class="slide level2" style="font-size: 0.9em;">
+<h2>Distribution of <em>S. oviparus</em> in Montréal</h2>
+<p>In 2015, a survey was carried out to find <em>Sylvilagus oviparus</em> in Montréal’s park. Here are the results</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/Lapin_paques_Mtl_2015.png" style="width:75.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<div style="font-size: 0.8em;">
+<p>Within the censused park</p>
+<ul>
+<li><p><span style="color:blue;">Blue parks</span> : observed</p></li>
+<li><p><span style="color:#FF33FF;">Pink parks</span> : not observed</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
 <section id="second" class="slide level2">
 <h2>second</h2>
 <div class="r-fit-text">
