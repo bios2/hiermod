@@ -170,9 +170,9 @@ In general, when defining a Gaussian process, we make the following assumptions:
 - After a certain distance, it is no longer necessary to consider that a site influences another site.
 
 . . .
-  
-- This distance can be different depending on what is being studied, where it is being studied and when it is being studied
 
+
+**Note** The distance of influence of a site on another can be different depending on what is being studied, where it is being studied and when it is being studied
 
 ## $f(d)$
 
@@ -186,11 +186,141 @@ In theory, $f(d)$ can be anything...
 
 . . .
 
-However, in practice, there are particularities on the functions that are defined by 
+However, in practice, there are particularities of the functions that are defined by the assumptions we impose on our model.
 
-There are a few constraints about this 
+. . . 
 
-Let's think about the assumptions 
+As such, here is a classic structure these variance function take
+
+```{r, echo=FALSE, fig.align='center', fig.height= 3.5}
+expVario <- function(d, nugget = 2, sill = 5, range = 10){
+  nugget + sill * (1 - exp(-d / range))
+}
+
+par(mar = c(5.1, 5.1, 0.1, 0.1))
+curve(expVario, 0, 100, 
+      lwd = 5,
+      bty = "L",
+      ylim = c(0, 7),
+      las = 1,
+      xlab = "Distance",
+      ylab = "Variance",
+      cex.lab = 2.5,
+      cex.axis = 2,
+      col = "blue")
+```
+
+## $f(d)$ - A bit of vocabulary
+
+. . .
+
+### Nugget effect
+
+```{r, echo=FALSE, fig.align='center', fig.height= 3.5}
+expVario <- function(d, nugget = 2, sill = 5, range = 10){
+  nugget + sill * (1 - exp(-d / range))
+}
+
+par(mar = c(5.1, 5.1, 0.1, 0.1))
+curve(expVario, 0, 100, 
+      lwd = 5,
+      bty = "L",
+      ylim = c(0, 7),
+      las = 1,
+      xlab = "Distance",
+      ylab = "Variance",
+      cex.lab = 2.5,
+      cex.axis = 2,
+      col = "blue")
+
+arrows(x0 = 1,
+       y0 = 0,
+       x1 = 1,
+       y1 = 2,
+       length = 0.2,
+       angle = 15,
+       ljoin = "bevel",
+       code = 3,
+       lwd = 7,
+       col = "orange")
+```
+
+## $f(d)$ - A bit of vocabulary
+
+. . .
+
+### Range
+
+
+```{r, echo=FALSE, fig.align='center', fig.height= 3.5}
+expVario <- function(d, nugget = 2, sill = 5, range = 10){
+  nugget + sill * (1 - exp(-d / range))
+}
+
+par(mar = c(5.1, 5.1, 0.1, 0.1))
+curve(expVario, 0, 100, 
+      lwd = 5,
+      bty = "L",
+      ylim = c(0, 7),
+      las = 1,
+      xlab = "Distance",
+      ylab = "Variance",
+      cex.lab = 2.5,
+      cex.axis = 2,
+      col = "blue")
+
+arrows(x0 = 0,
+       y0 = 1,
+       x1 = 30,
+       y1 = 1,
+       length = 0.2,
+       angle = 15,
+       ljoin = "bevel",
+       code = 3,
+       lwd = 7,
+       col = "orange")
+```
+
+
+## $f(d)$ - A bit of vocabulary
+
+. . .
+
+### Sill
+
+```{r, echo=FALSE, fig.align='center', fig.height= 3.5}
+expVario <- function(d, nugget = 2, sill = 5, range = 10){
+  nugget + sill * (1 - exp(-d / range))
+}
+
+par(mar = c(5.1, 5.1, 0.1, 0.1))
+curve(expVario, 0, 100, 
+      lwd = 5,
+      bty = "L",
+      ylim = c(0, 7),
+      las = 1,
+      xlab = "Distance",
+      ylab = "Variance",
+      cex.lab = 2.5,
+      cex.axis = 2,
+      col = "blue")
+
+arrows(x0 = 60,
+       y0 = 2,
+       x1 = 60,
+       y1 = 7,
+       length = 0.2,
+       angle = 15,
+       ljoin = "bevel",
+       code = 3,
+       lwd = 7,
+       col = "orange")
+```
+
+## $f(d)$ - types of functions
+
+Many types of functions have been proposed that has these general shape
+
 
 ## second
 

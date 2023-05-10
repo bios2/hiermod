@@ -481,9 +481,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </ul>
 </div>
 <div class="fragment">
-<ul>
-<li>This distance can be different depending on what is being studied, where it is being studied and when it is being studied</li>
-</ul>
+<p><strong>Note</strong> The distance of influence of a site on another can be different depending on what is being studied, where it is being studied and when it is being studied</p>
 </div>
 </section>
 <section id="fd" class="slide level2">
@@ -495,9 +493,64 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <p>In theory, <span class="math inline">\(f(d)\)</span> can be anything…</p>
 </div>
 <div class="fragment">
-<p>However, in practice, there are particularities on the functions that are defined by</p>
-<p>There are a few constraints about this</p>
-<p>Let’s think about the assumptions</p>
+<p>However, in practice, there are particularities of the functions that are defined by the assumptions we impose on our model.</p>
+</div>
+<div class="fragment">
+<p>As such, here is a classic structure these variance function take</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fd---a-bit-of-vocabulary" class="slide level2">
+<h2><span class="math inline">\(f(d)\)</span> - A bit of vocabulary</h2>
+<div class="fragment">
+<h3 id="nugget-effect">Nugget effect</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fd---a-bit-of-vocabulary-1" class="slide level2">
+<h2><span class="math inline">\(f(d)\)</span> - A bit of vocabulary</h2>
+<div class="fragment">
+<h3 id="range">Range</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fd---a-bit-of-vocabulary-2" class="slide level2">
+<h2><span class="math inline">\(f(d)\)</span> - A bit of vocabulary</h2>
+<div class="fragment">
+<h3 id="sill">Sill</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="second" class="slide level2">
@@ -740,6 +793,44 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
