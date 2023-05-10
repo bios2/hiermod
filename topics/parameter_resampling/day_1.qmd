@@ -1,0 +1,258 @@
+---
+title: Day 1
+description: |
+  General Introduction, introduction to simulation, model checking, and Stan workflows.
+image: assets/plot_resampModel-1.png
+execute:
+  freeze: auto
+format:
+  html:
+    code-tools: true
+---
+
+## Slides from the day
+
+### Introduction
+
+
+<div>
+
+```{=html}
+<iframe width=100% height=500pxaside class="slide-deck" src="slides/Introduction/"></iframe>
+```
+
+</div>
+
+
+### Template
+
+
+<div>
+
+```{=html}
+<iframe width=100% height=500pxaside class="slide-deck" src="slides/template/"></iframe>
+```
+
+</div>
+
+## Content
+
+[The Secret Weapon](topics/secret_weapon.qmd)
+
+[regression with discrete predictors](topics/discrete_predictor/index.qmd)
+
+
+
+
+
+
+
+
+
+
+
+### Afternoon practical exercises
+
+## Course setup information
+
+* site information
+* plagiarism
+
+## Simulation
+
+## Quantifying uncertainty
+
+# Worked examples and activities
+
+```{r}
+data(mite,package = "vegan")
+data(mite.env, package = "vegan")
+library(tidyverse)
+
+mite_water <- bind_cols(water = mite.env$WatrCont, mite) |> 
+  arrange(water) |> 
+  pivot_longer(-water, names_to = "sp", values_to = "abd") |> 
+  mutate(pa = as.numeric(abd>.5))
+
+mite_water |> 
+  ggplot(aes(x = water, y = pa)) + 
+  geom_point() + 
+  facet_wrap(~sp) + 
+  stat_smooth(method = "glm",
+              method.args = list(family = "binomial"))
+
+```
+
+## Resampling
+
+In frequentist models, we can use the variance covariance matrix of parameters to resample new parameters values. This lets us propagate uncertainty from the estimated parameters to the predicted relationship.
+
+Let's demonstrate this with one specific mite:
+
+```{r}
+lrug_water <- mite_water |> 
+  filter(sp == "LRUG")
+
+lrug_glm <- glm(pa ~ water, data = lrug_water, family = "binomial")
+```
+
+Now, with our model object, we can create the resampling distribution of the model predicitons:
+
+```{r resample_model}
+# Set seed
+set.seed(42) # The answer !
+
+# a sequence along the range of water values in the data
+predVal <- seq(from = min(lrug_water$water),
+               to = max(lrug_water$water),
+               length.out = 30)
+
+n_resamp <- 500
+
+# Result object
+resampModel <- array(NA_real_,
+                   dim = c(length(predVal), n_resamp))
+
+# Resample model parameters and calculate model predictions
+paramMean <- summary(lrug_glm)$coefficients[,1]
+paramCov <- summary(lrug_glm)$cov.unscaled
+
+# Resample model parameters
+paramSmpl <- MASS::mvrnorm(n_resamp, paramMean, paramCov)
+
+# Calculate model predictions using the resampled model parameters
+for(j in 1:n_resamp){
+  resampModel[,j] <- binomial(link = "logit")$linkinv(
+    paramSmpl[j,1] + paramSmpl[j,2] * predVal)
+}
+
+# make a plot of these predictions
+matplot(predVal, resampModel, type = "l", col = "grey", lty = 1)
+```
+
+If we want to find some kind of confidence interval for this line, we can take the quantiles of this resampling:
+
+```{r plot_resampModel, fig.path = "assets/"}
+low <- apply(resampModel, 1, quantile, probs = .015)
+high <- apply(resampModel, 1, quantile, probs = .985)
+
+# plot
+with(lrug_water, plot(pa ~ water, pch = 21, bg = "lightblue"))
+polygon(c(predVal,rev(predVal)),
+        c(low,rev(high)), col="thistle", border=NA)
+lines(predVal, 
+      predict(lrug_glm, newdata = list(water = predVal), type = "response")
+      )
+```
+
+We can also do this in a tidyverse style, if you are more comfortable with that:
+
+```{r tidyverse_style}
+tibble(predVal) |> 
+  rowwise() |> 
+  mutate(intercept = list(paramSmpl[,1]),
+         slope = list(paramSmpl[,2]),
+         prediction = list(intercept + slope*predVal),
+         prediction_probability = list(plogis(prediction)),
+         low  = quantile(prediction_probability, .015),
+         high = quantile(prediction_probability, .985)) |> 
+  ggplot(aes(x = predVal, ymin = low, ymax = high)) + 
+  geom_ribbon(fill = "thistle") + 
+  theme_bw() + 
+  ylim(c(0,1))
+```
+
+## Bayesian approach
+
+here is a simple bayesian model to generate the same inference:
+
+$$
+\begin{align}
+y &\sim \text{Bernoulli}(p)\\
+\text{logit}(p) &= \alpha + X\beta\\
+\alpha &\sim \text{Normal}(-2.5, .5)\\
+\beta &\sim \text{Normal}(0, .5)\\
+\end{align}
+$$
+
+[normally we would go through a careful process of checking our priors here. At this time we won't because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.]{.aside}
+
+First we compile the model, then we'll look at the Stan code:
+
+```{r stan_workflow}
+#| class.output: stan
+library(cmdstanr)
+logistic_glm_stan <- cmdstan_model(
+  stan_file = "topics/parameter_resampling/logistic_bern_logit.stan", 
+  pedantic = TRUE)
+
+logistic_glm_stan
+```
+
+Here we see the same three parts of a Stan model that we have reviewed already:
+
+-   data
+-   parameters
+-   probability statements
+
+As you can see, we are using a handy Stan function called `bernoulli_logit`. This function expects our prediction for the average to be on the logit scale, then applies the logit link function for us.
+
+::: column-margin
+As a quick review, the logit equation, or inverse-log-odds, is written as $$
+\frac{e^\mu}{1 + e^\mu}
+$$ Which is also written as
+
+$$
+\frac{1}{1 + e^{-\mu}}
+$$
+:::
+
+Stan expects our data as a list.
+
+```{r sample_and_plot}
+logistic_glm_stan_samples <- logistic_glm_stan$sample(
+  data = list(n = nrow(lrug_water),
+              y = lrug_water$pa,
+              x = lrug_water$water),
+  refresh = 0)
+
+coef(lrug_glm)
+
+library(tidybayes)
+
+spread_rvars(logistic_glm_stan_samples, intercept, slope[]) |> 
+  bind_cols(predVal = predVal) |> 
+  mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |> 
+  ggplot(aes(x = predVal, ydist = pred)) + 
+  stat_dist_lineribbon() + 
+  guides(fill = "none") + 
+  ylim(c(0,1))
+
+```
+
+### Alternative parameterization
+
+Stan contains many functions intended to facilitate writing statistical models.
+Above, we used the function `bernoulli_logit` so that we could provide the expression for the average on the logit scale. [This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints -- only some values are "allowed". For example, the only parameter of a Bernoulli distribution is $p$, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for $p$.]{.aside} Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:
+
+:::{.callout-warning}
+PLEASE NOTE below you will see the relative path to the stan file (`stan/logistic.stan`).
+Immediately below you will see the Stan file content. 
+You can copy and paste this to your own computer!
+:::
+
+
+```{r}
+#| class.output: stan
+suppressPackageStartupMessages(library(cmdstanr))
+
+logistic_bern_glm <- cmdstan_model(stan_file = "topics/parameter_resampling/logistic.stan", 
+                               pedantic = TRUE)
+
+logistic_bern_glm
+```
+
+
+
+
+
