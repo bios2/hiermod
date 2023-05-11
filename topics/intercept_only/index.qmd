@@ -3,15 +3,141 @@
 ```{r}
 data(mite, package = "vegan")
 data("mite.env", package = "vegan")
+data("mite.xy", package = "vegan")
 library(tidyverse)
 library(cmdstanr)
 
 # combine data and environment
 mite_data_long <- bind_cols(mite.env, mite) |> 
+  mutate(plot_id = 1:length(WatrCont)) |> 
   pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
 ```
 
 
+```{r}
+mite_data_long_transformed <- mite_data_long |> 
+  mutate(presabs = as.numeric(abd>0),
+         # center predictors
+         water = (WatrCont - mean(WatrCont)) / 100
+         )
+
+# find equiprobable species
+
+mite_data_long_transformed |>
+  group_by(spp) |>
+  summarize(freq = mean(presabs)) |>
+  filter(freq > .4 & freq < .6)
+
+## PWIL it is! 
+```
+
+```{r}
+pwil_data <- mite_data_long_transformed |> 
+  filter(spp == "PWIL")
+
+pwil_data |> 
+  ggplot(aes(x = water, y = presabs)) + geom_point() + 
+  stat_smooth(method = glm, method.args = list(family = "binomial"))
+```
+
+```{r}
+# add the spatial coordinates:
+
+pwil_spatial <- bind_cols(pwil_data, mite.xy)
+
+pwil_spatial |> 
+  ggplot(aes(x = x, y = y, col = presabs)) + 
+  geom_point()
+```
+
+```{r}
+pwil_spatial
+```
+
+```{r}
+grid_points <- modelr::data_grid(mite.xy, 
+                                 x = modelr::seq_range(x, by = .5),
+                                 y = modelr::seq_range(y, by = .5)) 
+
+grid_points |> 
+  ggplot(aes(x = x, y = y)) + 
+  geom_point() + 
+  coord_fixed()
+```
+
+not getting that to work yet! Might try a poisson
+
+in the meantime: 
+
+```{r}
+gp_example <- cmdstan_model(
+  stan_file = "topics/04_gp/gp_example.stan")
+
+gp_example_samp <- gp_example$sample(
+  data = list(N = length(pwil_spatial$presabs),
+              x = pwil_spatial$water,
+              z = pwil_spatial$presabs),
+  chains = 2, parallel_chains = 2, refresh = 1000)
+
+
+```
+
+
+```{r}
+library(tidybayes)
+
+gp_prob <- gather_draws(gp_example_samp,
+                        logit_mu[i], ndraws = 55) |> 
+  mutate(prob = plogis(.value))
+
+gp_prob
+
+
+gp_prob |> 
+  ggplot(aes(x = i, y = prob)) + 
+  # geom_line(alpha = 0.2) + 
+  stat_lineribbon()
+```
+
+```{r}
+gp_prob |> 
+  ggplot()
+```
+
+
+```{r}
+# count these points, put together with model
+
+Np <- nrow(mite.xy)
+N_grid <- nrow(grid_points)
+
+distgrid <- bind_rows(mite.xy, grid_points) |> 
+  dist(method = "euclidean") |> 
+  as.matrix()
+
+gp_data_list <- list(N = Np,
+                     presabs = pwil_spatial$presabs,
+                     Np = Np,
+                     plot_id = pwil_spatial$plot_id,
+                     N_grid = N_grid,
+                     dist = distgrid)
+```
+
+
+```{r}
+gp_2d <- cmdstan_model(stan_file = "topics/04_gp/gp_2d.stan")
+```
+
+
+```{r}
+gp_2d_sample <- gp_2d$sample(data = gp_data_list,
+                             chains = 2,
+                             parallel_chains = 2)
+```
+
+```{r}
+gp_2d_sample
+```
 
 
 $$
