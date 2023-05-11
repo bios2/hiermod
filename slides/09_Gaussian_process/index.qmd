@@ -321,7 +321,7 @@ arrows(x0 = 60,
 
 . . .
 
-Many types of functions have been proposed that has this general shape
+Many functions have been proposed have this general shape
 
 . . . 
 
@@ -389,9 +389,6 @@ To present how Gaussian processes can be used, let's study the distribution of *
 
 - They move well in an urban  setting and are not affected by the level of urbanisation
 
-. . .
-
-- They disperse at most 15 km per year
 
 ## A typical member of the species
 
@@ -406,7 +403,21 @@ In 2015, a survey was carried out to find *Sylvilagus oviparus* in Montréal's p
 
 ::::{.columns}
 :::{.column width="60%"}
-![](../img/Lapin_paques_Mtl_2015.png){fig-align="center" width=75%}
+```{r, echo = FALSE}
+library(mapview)
+explan<-readRDS("./slides/data/explanaNest.RDS")
+lapin <- readRDS("./slides/data/lapin.RDS")
+
+# Carte de présence absence en 2015
+present <- explan[lapin$PA == 1,]
+absent <- explan[lapin$PA == 0,]
+
+# Map species
+mapview(list(present, absent),
+        col.regions = list("lightblue", "hotpink"),
+        color = list("blue", "hotpink"),
+        legend = list(TRUE, TRUE))
+```
 :::
 :::{.column width="40%"}
 
@@ -422,31 +433,90 @@ Within the censused park
 
 ## Model
 
-Since 
+. . .
+
+Since we have presence-absence data
+
+$$P(y = 1) = \frac{\exp(b)}{1 - \exp(b)}$$
+
+. . .
+
+where 
+$$b \sim{\cal N}\left(0, C_0 +C_1\left(1 - e^{\frac{-d}{a}}\right)\right)$$
+
+## Fitting the model
+
+If we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like
 
 
-## second
+```{r, echo = FALSE, fig.align="center"}
+expVario <- function(d, nugget = 0.2, sill = 4, range = 150){
+  nugget + sill * (1 - exp(-d / range))
+}
 
-::: r-fit-text
-Test your model
+# The parameters were slightly 
+
+par(mar = c(5.1, 5.1, 0.1, 0.1))
+curve(expVario, 0, 400, 
+      lwd = 5,
+      bty = "L",
+      ylim = c(0, 4.1),
+      las = 1,
+      xlab = "Distance",
+      ylab = "Variance",
+      cex.lab = 2.5,
+      cex.axis = 2,
+      col = "blue")
+
+
+```
+
+. . .
+
+What can we learn from this model ?
+
+## Kringing
+
+If we want to interpolate across the region of interest, this is known as **kriging**.
+
+. . .
+
+### Simple kriging
+
+So far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function. 
+
+. . .
+
+In a linear regression perspective, this means that
+
+$$\mathbf{y}\sim\mathcal{N}(0, f(d))$$
+
+## Kringing {style="font-size: 0.9em;"}
+
+::: {style="font-size: 1.1em;"}
+**Ordinary kriging** 
 :::
 
-## 
+If we want to account for an intercept in the model such that 
 
-img:
+$$\mathbf{y}\sim\mathcal{N}(\beta_0, f(d))$$
 
-![](img/bg.jpg)
+This is known as **ordinary kriging**.
 
-it is a landscape
+. . .
 
-##  {auto-animate="true"}
-
-::: {style="margin-top: 100px;"}
-check with simulations
+::: {style="font-size: 1.1em;"}
+**Universal kriging** 
 :::
 
-##  {auto-animate="true"}
+If we want to account for one or more explanatory variables in the model such that 
 
-::: {style="margin-top: 200px; font-size: 2.5em; color: red;"}
-check with simulations
-:::
+$$\mathbf{y}\sim\mathcal{N}(\beta_0 + \mathbf{X}\beta, f(d))$$
+This is known as **Universal kriging**.
+
+## Prediction map
+
+```{r, echo =FALSE}
+lapinMtlraster <- readRDS("./slides/data/lapinMtl.RDS")
+mapview::mapview(lapinMtlraster)
+```
