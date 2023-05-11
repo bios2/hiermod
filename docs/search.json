@@ -599,7 +599,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-1",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nIn these types of models we are interested in estimating the variance parameter \\(\\sigma^2_f\\) in\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] to get the best estimation of \\(\\mathbf{b}\\).\n\nSo, another way to ask this question is “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”\n\n\nHowever, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor."
+    "text": "How many levels ?\nIn these types of models we are interested in estimating the variance parameter \\(\\sigma^2_f\\) in\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] to get the best estimation of \\(\\mathbf{b}\\).\n\nSo, another way to ask this question is: “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”\n\n\nHowever, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-2",
@@ -669,7 +669,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-1",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the intercept’s mean",
-    "text": "Hierarchy on the intercept’s mean\nLet’s take a deeper look at \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\nWhen we study this way of sampling \\(\\boldsymbol{\\beta}_{f}\\), although our interest is more on \\(\\mu_{f}\\), we also have to estimate the variance term \\(\\sigma^2_{f}\\).\n\n\nNote: This is essentially the same thing as a one-way analysis of variance."
+    "text": "Hierarchy on the intercept’s mean\nLet’s take a deeper look at \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\nWhen we study this way of sampling \\(\\boldsymbol{\\beta}_{f}\\), although our interest is more on \\(\\mu_{f}\\), we also have to acount for the variance term \\(\\sigma^2_{f}\\).\n\n\nNote: This is essentially the same thing as a one-way analysis of variance."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-2",
@@ -795,7 +795,7 @@
     "href": "slides/09_Gaussian_process/index.html#fd---types-of-functions",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - types of functions",
-    "text": "\\(f(d)\\) - types of functions\n\nMany types of functions have been proposed that has this general shape\n\n\nIn this lecture, we will use the exponential function\n\\[C_0 + C_1 \\left(1-e^{-d/a}\\right)\\]\n\n\nwhere\n\n\\(C_0\\) is the nugget effect\n\n\n\n\n\\(C_1\\) is the sill\n\n\n\n\n\\(d\\) is the distance\n\n\n\n\n\\(a\\) is the range"
+    "text": "\\(f(d)\\) - types of functions\n\nMany functions have been proposed have this general shape\n\n\nIn this lecture, we will use the exponential function\n\\[C_0 + C_1 \\left(1-e^{-d/a}\\right)\\]\n\n\nwhere\n\n\\(C_0\\) is the nugget effect\n\n\n\n\n\\(C_1\\) is the sill\n\n\n\n\n\\(d\\) is the distance\n\n\n\n\n\\(a\\) is the range"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#exponential-function",
@@ -809,7 +809,7 @@
     "href": "slides/09_Gaussian_process/index.html#an-illustrative-example",
     "title": "Gaussian process",
     "section": "An illustrative example",
-    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation\n\n\n\n\nThey disperse at most 15 km per year"
+    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-typical-member-of-the-species",
@@ -823,14 +823,14 @@
     "href": "slides/09_Gaussian_process/index.html#distribution-of-s.-oviparus-in-montréal",
     "title": "Gaussian process",
     "section": "Distribution of S. oviparus in Montréal",
-    "text": "Distribution of S. oviparus in Montréal\n\nIn 2015, a survey was carried out to find Sylvilagus oviparus in Montréal’s park. Here are the data . . .\n\n\n\n\n\n\n\n\n\nWithin the censused park\n\nBlue parks : observed\nPink parks : not observed"
+    "text": "Distribution of S. oviparus in Montréal\n\nIn 2015, a survey was carried out to find Sylvilagus oviparus in Montréal’s park. Here are the data . . .\n\n\n\n\n\n\n\n\n\n\n\nWithin the censused park\n\nBlue parks : observed\nPink parks : not observed"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#model",
     "href": "slides/09_Gaussian_process/index.html#model",
     "title": "Gaussian process",
     "section": "Model",
-    "text": "Model\nSince we have presence-absence data\n\\[y = \\frac{\\exp(\\beta_0 + \\varepsilon)}{1 - \\exp(\\beta_0 + \\varepsilon)}\\] where \\[\\varepsilon \\sim{\\cal N}\\left(0, C_0 +C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\]"
+    "text": "Model\n\nSince we have presence-absence data\n\\[P(y = 1) = \\frac{\\exp(b)}{1 - \\exp(b)}\\]\n\n\nwhere \\[b \\sim{\\cal N}\\left(0, C_0 +C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\]"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#second",
@@ -2098,5 +2098,54 @@
     "title": "Models with one level of hierarchy",
     "section": "Bernoulli presence-absence data: Mite occurrance.",
     "text": "Bernoulli presence-absence data: Mite occurrance."
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#distribution-of-s.-oviparus-in-montréal-1",
+    "href": "slides/09_Gaussian_process/index.html#distribution-of-s.-oviparus-in-montréal-1",
+    "title": "Gaussian process",
+    "section": "Distribution of S. oviparus in Montréal",
+    "text": "Distribution of S. oviparus in Montréal\n\nIn 2015, a survey was carried out to find Sylvilagus oviparus in Montréal’s park. Here are the data . . .\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWithin the censused park\n\nBlue parks : observed\nPink parks : not observed"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#fitting-the-model",
+    "href": "slides/09_Gaussian_process/index.html#fitting-the-model",
+    "title": "Gaussian process",
+    "section": "Fitting the model",
+    "text": "Fitting the model\nIf we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like\n\n\nWhat can we learn from this model ?"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#kringing",
+    "href": "slides/09_Gaussian_process/index.html#kringing",
+    "title": "Gaussian process",
+    "section": "Kringing",
+    "text": "Kringing\nIf we want to interpolate across the region of interest, this is known as kriging.\n\nSimple kriging\nSo far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function.\n\nIn a linear regression perspective, this means that\n\\[\\mathbf{y}\\sim\\mathcal{N}(0, f(d))\\]"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#kringing-1",
+    "href": "slides/09_Gaussian_process/index.html#kringing-1",
+    "title": "Gaussian process",
+    "section": "Kringing",
+    "text": "Kringing\n\nOrdinary kriging\n\nIf we want to account for an intercept in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0, f(d))\\]\nThis is known as ordinary kriging.\n\n\nUniversal kriging\n\nIf we want to account for one or more explanatory variables in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0 + \\mathbf{X}\\beta, f(d))\\] This is known as Universal kriging."
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#prediction-map",
+    "href": "slides/09_Gaussian_process/index.html#prediction-map",
+    "title": "Gaussian process",
+    "section": "Prediction map",
+    "text": "Prediction map"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#kringing-style-font-size-0.6em",
+    "href": "slides/09_Gaussian_process/index.html#kringing-style-font-size-0.6em",
+    "title": "Gaussian process",
+    "section": "Kringing {style = font-size: 0.6em;}",
+    "text": "Kringing {style = font-size: 0.6em;}\n::: {style = font-size: 1.2em;} Ordinary kriging :::\nIf we want to account for an intercept in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0, f(d))\\]\nThis is known as ordinary kriging.\n\n::: {style = font-size: 1.2em;} Universal kriging :::\nIf we want to account for one or more explanatory variables in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0 + \\mathbf{X}\\beta, f(d))\\] This is known as Universal kriging."
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#kringing-style-font-size-0.7em",
+    "href": "slides/09_Gaussian_process/index.html#kringing-style-font-size-0.7em",
+    "title": "Gaussian process",
+    "section": "Kringing {style = “font-size: 0.7em;”}",
+    "text": "Kringing {style = “font-size: 0.7em;”}\n::: {style = “font-size: 1.2em;”} Ordinary kriging :::\nIf we want to account for an intercept in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0, f(d))\\]\nThis is known as ordinary kriging.\n\n::: {style = “font-size: 1.2em;”} Universal kriging :::\nIf we want to account for one or more explanatory variables in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0 + \\mathbf{X}\\beta, f(d))\\] This is known as Universal kriging."
   }
 ]
