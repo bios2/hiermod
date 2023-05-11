@@ -1,0 +1,294 @@
+---
+title: "Gaussian Processes in Stan"
+description: |
+  Smooth lines in fancy colours.
+execute:
+  freeze: true
+comments:
+  hypothesis: true
+format:
+  html:
+    code-tools: true
+---
+
+
+:::{.callout-tip}
+## Goals of this lesson
+1. Let's appreciate together the power of online community resources
+1. Gaussian Processes are families of smooth functions we learn from data
+1. When used for prediction, a GP is both a "prior" and a "likelihood"
+:::
+
+## Background reading
+
+Gaussian processes are very common, and there are lots of resources on the topic:
+
+1. The Stan manual [has a chapter on it](https://mc-stan.org/docs/stan-users-guide/gaussian-processes.html)
+1. The Stan team gives lots of [example models on Github](https://github.com/stan-dev/example-models/blob/master/misc/gaussian-process/gp-fit-logit.stan) which I adapted for this example.
+1. Michael Betancourt has an extremely detailed, very rigous [tutorial on GPs](https://betanalpha.github.io/assets/case_studies/gaussian_processes.html#3_Inferring_A_Gaussian_Process)
+1. Here's a complete, worked [analysis of human birthdays](https://avehtari.github.io/casestudies/Birthdays/birthdays.html#Model_4:_long_term_smooth_+_seasonal_+_weekday_with_increasing_magnitude) by world-class statisticians (Gelman, Vehtari, Simpson, et al)
+1. GPs are related to GAMs and can be represented by a collection of basis functions. This is approximate but much much faster. See this [excellent tutorial](https://avehtari.github.io/casestudies/Motorcycle/motorcycle_gpcourse.html#45_GP_with_basis_functions_for_f_and_g) by Aki Vehtari, and the corresponding paper (citation in the blog post).
+1. this [blog](https://rpubs.com/NickClark47/stan_geostatistical) applies GPs to spatial count data
+1. Here is a very long and wonderfully detailed post describing a GP approach to [occupany modelling](https://peter-stewart.github.io/blog/gaussian-process-occupancy-tutorial/)
+1. Another [blog on Gaussian Processes](https://brendanhasz.github.io/2018/10/10/hmm-vs-gp.html#generating-data-from-a-gaussian-process), Hidden Markov Models and more, very clear explanation.
+
+<!-- add equation -->
+
+<!-- add simulation -->
+
+### Reorganizing the mite data
+
+Let's begin by (once again!) loading and reorganizing the mite data. This time we'll also use `mite.xy`, which gives the coordinates of each one of the 70 samples.
+
+```{r}
+# today we need to do the 
+data(mite, package = "vegan")
+data("mite.env", package = "vegan")
+data("mite.xy", package = "vegan")
+library(tidyverse)
+library(cmdstanr)
+```
+
+
+```{r reorganize-mites-again}
+# combine data and environment
+mite_data_long <- bind_cols(mite.env, mite) |> 
+  mutate(plot_id = 1:length(WatrCont)) |> 
+  pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
+
+
+mite_data_long_transformed <- mite_data_long |> 
+  mutate(presabs = as.numeric(abd>0),
+         # center predictors
+         water = (WatrCont - mean(WatrCont)) / 100
+         )
+
+# pick a species that has about 50/50 chance 
+
+mite_data_long_transformed |>
+  group_by(spp) |>
+  summarize(freq = mean(presabs)) |>
+  filter(freq > .4 & freq < .6)
+
+## how about: PWIL 
+```
+
+Let's choose just one species as an example. 
+I've chosen one where the relationship with water is rather strong, and for which presence and absence are roughly balanced. 
+This is just to make the example clear.
+
+```{r}
+#| fig-cap: Probability of occurrance of one mite species, as a fuction of water content of the soil
+
+pwil_data <- mite_data_long_transformed |> 
+  filter(spp == "PWIL")
+
+pwil_data |> 
+  ggplot(aes(x = water, y = presabs)) + geom_point() + 
+  stat_smooth(method = glm, method.args = list(family = "binomial")) + 
+  theme_minimal()
+```
+
+```{r}
+#| fig-cap: Presence-absence data for mite species "PWIL", at the spatial location of each point.
+# add the spatial coordinates:
+
+pwil_spatial <- bind_cols(pwil_data, mite.xy)
+
+pwil_spatial |> 
+  ggplot(aes(x = x, y = y, fill = as.factor(presabs))) + 
+  geom_point(size = 3, pch = 21, stroke = 1) + 
+  scale_fill_brewer(type = "qual", palette = "Dark2") + 
+  theme_minimal() + 
+  coord_fixed() + 
+  labs(fill = "Pres/Abs")
+```
+
+
+We'll look at two possibilities in turn:  
+
+1. A nonlinear function of one variable
+1. A smooth function of distance
+
+# Smooth function of one variable
+
+## Write the model
+
+## Simulate to understand it
+
+## Express that model in code
+
+```{r}
+#| class-output: stan
+gp_example_pred <- cmdstan_model(
+  stan_file = "topics/04_gp/gp_example_pred.stan")
+
+gp_example_pred
+```
+
+We need to generate data for making predictions! I'll create a new vector of observations called `new_x` that cover the range of the `water` variable in our dataset.
+
+```{r eval=FALSE}
+# sample N values on the range of x
+new_x <- seq(from = -3, to = 5, length.out = 15)
+
+# put them on the dataframe
+gp_example_samp <- gp_example_pred$sample(
+  data = list(N = length(pwil_spatial$presabs) + length(new_x),
+              Nobs = length(pwil_spatial$presabs),
+              x = c(pwil_spatial$water, new_x),
+              z = pwil_spatial$presabs),
+  chains = 2, parallel_chains = 2, refresh = 1000)
+
+gp_example_samp$save_object("topics/04_gp/gp_example_samp_pwil.rds")
+```
+
+:::{.callout-tip}
+Note that `cmdstanr` models have a method called `$save_object()`, which lets you save the model outputs into an `.rds` object.
+:::
+
+```{r eval=TRUE}
+
+# sample N values on the range of x
+new_x <- seq(from = -3, to = 5, length.out = 15)
+
+gp_example_samp_pwil <- read_rds(
+  "topics/04_gp/gp_example_samp_pwil.rds")
+
+water_prediction_points <- gp_example_samp_pwil |> 
+  tidybayes::gather_rvars(f[rownum]) |> 
+  slice(-(1:length(pwil_spatial$presabs)))
+
+water_prediction_points |> 
+  mutate(water = new_x,
+         presabs = posterior::rfun(plogis)(.value)) |> 
+  ggplot(aes(x = water, dist = presabs)) + 
+  tidybayes::stat_lineribbon() + 
+  # scale_fill_viridis_d(option = "rocket") + 
+  scale_fill_brewer(palette = "Reds", direction  = -1) + 
+  geom_jitter(aes(x = water, y = presabs), 
+              inherit.aes = FALSE, 
+              height = .01, width = 0,
+              data = pwil_spatial)
+
+ggsave("topics/04_gp/pwil_water.png")
+```
+
+<!-- ![](topics/04_gp/pwil_water.png) -->
+
+We can also pull out some specific functions. What I want you to see here is that there are MANY curvy lines that are consistent with this model.
+
+```{r}
+some_predicted_lines <-  gp_example_samp_pwil |> 
+  # take just some draws
+  tidybayes::spread_draws(a, f[rownum], ndraws = 63) |> 
+  # remove the rows that match observed data,
+  # and look only at the points for predictions.
+  filter(rownum > length(pwil_spatial$presabs)) |> 
+  # convert to probability
+  mutate(prob = plogis(f + a),
+         rownum = rownum - 70) |> 
+  ## need a dataframe that says which "rownum" from 
+  ## above goes with which value of water from the
+  ## new_x vector I made:
+  left_join(tibble::enframe(new_x,
+                            name = "rownum", 
+                            value = "water"))
+
+
+some_predicted_lines |> 
+  ggplot(aes(x = water, y = prob, group = .draw)) + 
+  geom_line(alpha = 0.7) + 
+  theme_minimal() + 
+  coord_cartesian(ylim = c(0, 1))
+```
+
+
+# Spatial predictions
+
+To make a prediction of a function on one X variable, we needed a sequence of points to predict along. 
+
+To make spatial predictions, we need a _grid_ of points to predict along.
+
+```{r}
+grid_points <- modelr::data_grid(mite.xy, 
+                                 x = modelr::seq_range(x, by = .5),
+                                 y = modelr::seq_range(y, by = .5)) 
+
+grid_points |> 
+  ggplot(aes(x = x, y = y)) + 
+  geom_point() + 
+  coord_fixed()
+```
+
+Other than a change in the `data {}` block, the Stan code is unchanged! 
+
+:::{.callout-warning}
+## CAUTION: Slow
+The model below, over 70 points, is the slowest model we've seen so far and takes about 7 minutes on my (Andrew's) laptop.
+:::
+
+```{r}
+#| class-output: stan
+gp_example_pred_2D <- cmdstan_model(
+  stan_file = "topics/04_gp/gp_example_pred_2D.stan")
+
+gp_example_pred_2D
+```
+
+plot the effect in space:
+
+```{r, eval=FALSE}
+
+## sample the model
+gp_example_2D_samp <- gp_example_pred_2D$sample(
+  data = list(N = length(pwil_spatial$presabs) + nrow(grid_points),
+              Nobs = length(pwil_spatial$presabs),
+              x = bind_rows(pwil_spatial[c("x", "y")], grid_points),
+              z = pwil_spatial$presabs),
+  chains = 2, parallel_chains = 2, refresh = 1000)
+
+
+gp_example_2D_samp$save_object("topics/04_gp/gp_example_2D_samp_pwil.rds")
+```
+
+```{r}
+
+gp_example_2D_samp_pwil <- read_rds("topics/04_gp/gp_example_2D_samp_pwil.rds")
+
+## extract the predictors
+gp_example_2D_samp_pwil |> 
+  tidybayes::spread_rvars(f[rownum], a) |> 
+  slice(-(1:length(pwil_spatial$presabs))) |> 
+  bind_cols(grid_points) |> 
+  mutate(presabs = posterior::rfun(plogis)(f + a),
+         pa_median = median(presabs)) |> 
+  ggplot(aes(x = x, y = y, fill = pa_median)) + 
+  geom_tile()+
+  geom_point(aes(x = x,
+                 y = y,
+                 fill = presabs),
+             inherit.aes = FALSE,
+             data = pwil_spatial,
+             pch = 21 ,
+             size = 2.5,
+             stroke = .3,
+             colour = "lightblue"
+             ) + 
+  scale_fill_viridis_c(option = "rocket") + 
+  coord_fixed()+
+  theme_minimal() + 
+  labs(fill = "Pr(y=1)") + 
+  NULL 
+
+# ggsave("topics/04_gp/pwil_spatial.png")
+```
+
+<!-- ![](topics/04_gp/pwil_spatial.png) -->
+
+## Extensions:
+
+Add water to the model. Does the spatial effect disappear, increase, or stay kind of the same?
+
+Next step: try to model water curve for more than one species. Would it be possible to make the species rho parameters hierarchical?
+

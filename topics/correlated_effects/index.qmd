@@ -252,12 +252,12 @@ all_species_partpooled_diag_corr
 ```{r}
 mite_data_list <- list(
   Nsites = nrow(mite_bin),
-  K = 2,
   S = ncol(mite_bin),
   x = cbind(1, with(mite.env, (WatrCont - mean(WatrCont))/100)),
   y = as.matrix(mite_bin))
 
-all_species_partpooled_diag_posterior <- all_species_partpooled_diag$sample(
+all_species_partpooled_diag_corr_posterior <- 
+  all_species_partpooled_diag_corr$sample(
   data = mite_data_list,
   refresh = 0, parallel_chains = 4)
 ```
@@ -269,20 +269,45 @@ plot these, reproducing the figure from earlier:
 
 # get the unpooled numbers
 unpooled_slopes <- all_species_unpooled_posterior |> 
-  tidybayes::gather_rvars(slope[spp])
+  tidybayes::spread_rvars(slope[spp])
 
 # tidybayes::get_variables(all_species_partpooled_diag_posterior)
 
-partpooled_slopes <- all_species_partpooled_diag_posterior |> 
-  tidybayes::gather_rvars(beta[param, spp]) |> 
+partpooled_slopes <- all_species_partpooled_diag_corr_posterior |> 
+  tidybayes::spread_rvars(beta[param, spp]) |> 
   filter(param == 2)
 
-left_join(unpooled_slopes, partpooled_slopes, by = "spp") |> 
-  ggplot(aes(x = mean(.value.x), y = mean(.value.y))) + 
+left_join(unpooled_slopes,
+          partpooled_slopes,
+          by = "spp") |> 
+  ggplot(aes(x = median(slope), y = median(beta))) + 
   geom_point() + 
   geom_abline(intercept = 0, slope = 1)
 
 ```
+
+## 
+
+```{r}
+unpooled_params <- all_species_unpooled_posterior |> 
+  tidybayes::spread_rvars(slope[spp], intercept[spp]) |> 
+  mutate(slope = median(slope), 
+         intercept = median(intercept))
+
+
+
+all_species_partpooled_diag_corr_posterior |> 
+  tidybayes::spread_rvars(beta[param, spp]) |> 
+  mutate(beta = median(beta),
+         param = c("intercept", "slope")[param]) |> 
+  pivot_wider(names_from = "param", values_from = beta) |> 
+  ggplot(aes(x = intercept, y = slope)) + 
+  geom_point() + 
+  geom_point(data = unpooled_params, col = "red")
+
+```
+
+
 
 ## Correlating numbers with a cholesky decomposition of a correlation matrix.
 

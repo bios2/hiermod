@@ -1185,12 +1185,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb56-286"><a href="#cb56-286" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb56-287"><a href="#cb56-287" aria-hidden="true" tabindex="-1"></a>mite_data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb56-288"><a href="#cb56-288" aria-hidden="true" tabindex="-1"></a>  <span class="at">Nsites =</span> <span class="fu">nrow</span>(mite_bin),</span>
-<span id="cb56-289"><a href="#cb56-289" aria-hidden="true" tabindex="-1"></a>  <span class="at">K =</span> <span class="dv">2</span>,</span>
-<span id="cb56-290"><a href="#cb56-290" aria-hidden="true" tabindex="-1"></a>  <span class="at">S =</span> <span class="fu">ncol</span>(mite_bin),</span>
-<span id="cb56-291"><a href="#cb56-291" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">cbind</span>(<span class="dv">1</span>, <span class="fu">with</span>(mite.env, (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont))<span class="sc">/</span><span class="dv">100</span>)),</span>
-<span id="cb56-292"><a href="#cb56-292" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">as.matrix</span>(mite_bin))</span>
-<span id="cb56-293"><a href="#cb56-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-294"><a href="#cb56-294" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_posterior <span class="ot">&lt;-</span> all_species_partpooled_diag<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb56-289"><a href="#cb56-289" aria-hidden="true" tabindex="-1"></a>  <span class="at">S =</span> <span class="fu">ncol</span>(mite_bin),</span>
+<span id="cb56-290"><a href="#cb56-290" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">cbind</span>(<span class="dv">1</span>, <span class="fu">with</span>(mite.env, (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont))<span class="sc">/</span><span class="dv">100</span>)),</span>
+<span id="cb56-291"><a href="#cb56-291" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">as.matrix</span>(mite_bin))</span>
+<span id="cb56-292"><a href="#cb56-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-293"><a href="#cb56-293" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="ot">&lt;-</span> </span>
+<span id="cb56-294"><a href="#cb56-294" aria-hidden="true" tabindex="-1"></a>  all_species_partpooled_diag_corr<span class="sc">$</span><span class="fu">sample</span>(</span>
 <span id="cb56-295"><a href="#cb56-295" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> mite_data_list,</span>
 <span id="cb56-296"><a href="#cb56-296" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span>
 <span id="cb56-297"><a href="#cb56-297" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
@@ -1201,43 +1201,68 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb56-304"><a href="#cb56-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb56-305"><a href="#cb56-305" aria-hidden="true" tabindex="-1"></a><span class="co"># get the unpooled numbers</span></span>
 <span id="cb56-306"><a href="#cb56-306" aria-hidden="true" tabindex="-1"></a>unpooled_slopes <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb56-307"><a href="#cb56-307" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">gather_rvars</span>(slope[spp])</span>
+<span id="cb56-307"><a href="#cb56-307" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp])</span>
 <span id="cb56-308"><a href="#cb56-308" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-309"><a href="#cb56-309" aria-hidden="true" tabindex="-1"></a><span class="co"># tidybayes::get_variables(all_species_partpooled_diag_posterior)</span></span>
 <span id="cb56-310"><a href="#cb56-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-311"><a href="#cb56-311" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="ot">&lt;-</span> all_species_partpooled_diag_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb56-312"><a href="#cb56-312" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">gather_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb56-311"><a href="#cb56-311" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="ot">&lt;-</span> all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb56-312"><a href="#cb56-312" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
 <span id="cb56-313"><a href="#cb56-313" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(param <span class="sc">==</span> <span class="dv">2</span>)</span>
 <span id="cb56-314"><a href="#cb56-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-315"><a href="#cb56-315" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(unpooled_slopes, partpooled_slopes, <span class="at">by =</span> <span class="st">"spp"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb56-316"><a href="#cb56-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">mean</span>(.value.x), <span class="at">y =</span> <span class="fu">mean</span>(.value.y))) <span class="sc">+</span> </span>
-<span id="cb56-317"><a href="#cb56-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb56-318"><a href="#cb56-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span>
-<span id="cb56-319"><a href="#cb56-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-320"><a href="#cb56-320" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-315"><a href="#cb56-315" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(unpooled_slopes,</span>
+<span id="cb56-316"><a href="#cb56-316" aria-hidden="true" tabindex="-1"></a>          partpooled_slopes,</span>
+<span id="cb56-317"><a href="#cb56-317" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="st">"spp"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb56-318"><a href="#cb56-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">median</span>(slope), <span class="at">y =</span> <span class="fu">median</span>(beta))) <span class="sc">+</span> </span>
+<span id="cb56-319"><a href="#cb56-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb56-320"><a href="#cb56-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span>
 <span id="cb56-321"><a href="#cb56-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-322"><a href="#cb56-322" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlating numbers with a cholesky decomposition of a correlation matrix.</span></span>
+<span id="cb56-322"><a href="#cb56-322" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb56-323"><a href="#cb56-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-326"><a href="#cb56-326" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb56-327"><a href="#cb56-327" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb56-328"><a href="#cb56-328" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
-<span id="cb56-329"><a href="#cb56-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-330"><a href="#cb56-330" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb56-331"><a href="#cb56-331" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span>
-<span id="cb56-332"><a href="#cb56-332" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span>
+<span id="cb56-324"><a href="#cb56-324" aria-hidden="true" tabindex="-1"></a><span class="fu">## </span></span>
+<span id="cb56-325"><a href="#cb56-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-328"><a href="#cb56-328" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb56-329"><a href="#cb56-329" aria-hidden="true" tabindex="-1"></a>unpooled_params <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb56-330"><a href="#cb56-330" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp], intercept[spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb56-331"><a href="#cb56-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> <span class="fu">median</span>(slope), </span>
+<span id="cb56-332"><a href="#cb56-332" aria-hidden="true" tabindex="-1"></a>         <span class="at">intercept =</span> <span class="fu">median</span>(intercept))</span>
 <span id="cb56-333"><a href="#cb56-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-334"><a href="#cb56-334" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
-<span id="cb56-335"><a href="#cb56-335" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span>
-<span id="cb56-336"><a href="#cb56-336" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span>
-<span id="cb56-337"><a href="#cb56-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-338"><a href="#cb56-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb56-339"><a href="#cb56-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-340"><a href="#cb56-340" aria-hidden="true" tabindex="-1"></a>The LKJ prior distribution is a prior over correlation matrices</span>
-<span id="cb56-341"><a href="#cb56-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-344"><a href="#cb56-344" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb56-345"><a href="#cb56-345" aria-hidden="true" tabindex="-1"></a><span class="co"># rethinking::rlkjcorr(1, 5, .3)</span></span>
-<span id="cb56-346"><a href="#cb56-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-334"><a href="#cb56-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-335"><a href="#cb56-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-336"><a href="#cb56-336" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb56-337"><a href="#cb56-337" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb56-338"><a href="#cb56-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="fu">median</span>(beta),</span>
+<span id="cb56-339"><a href="#cb56-339" aria-hidden="true" tabindex="-1"></a>         <span class="at">param =</span> <span class="fu">c</span>(<span class="st">"intercept"</span>, <span class="st">"slope"</span>)[param]) <span class="sc">|&gt;</span> </span>
+<span id="cb56-340"><a href="#cb56-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"param"</span>, <span class="at">values_from =</span> beta) <span class="sc">|&gt;</span> </span>
+<span id="cb56-341"><a href="#cb56-341" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> intercept, <span class="at">y =</span> slope)) <span class="sc">+</span> </span>
+<span id="cb56-342"><a href="#cb56-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb56-343"><a href="#cb56-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> unpooled_params, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb56-344"><a href="#cb56-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-345"><a href="#cb56-345" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-346"><a href="#cb56-346" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-347"><a href="#cb56-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-348"><a href="#cb56-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-349"><a href="#cb56-349" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlating numbers with a cholesky decomposition of a correlation matrix.</span></span>
+<span id="cb56-350"><a href="#cb56-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-353"><a href="#cb56-353" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb56-354"><a href="#cb56-354" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb56-355"><a href="#cb56-355" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
+<span id="cb56-356"><a href="#cb56-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-357"><a href="#cb56-357" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb56-358"><a href="#cb56-358" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span>
+<span id="cb56-359"><a href="#cb56-359" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span>
+<span id="cb56-360"><a href="#cb56-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-361"><a href="#cb56-361" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
+<span id="cb56-362"><a href="#cb56-362" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span>
+<span id="cb56-363"><a href="#cb56-363" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb56-364"><a href="#cb56-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-365"><a href="#cb56-365" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-366"><a href="#cb56-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-367"><a href="#cb56-367" aria-hidden="true" tabindex="-1"></a>The LKJ prior distribution is a prior over correlation matrices</span>
+<span id="cb56-368"><a href="#cb56-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-371"><a href="#cb56-371" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb56-372"><a href="#cb56-372" aria-hidden="true" tabindex="-1"></a><span class="co"># rethinking::rlkjcorr(1, 5, .3)</span></span>
+<span id="cb56-373"><a href="#cb56-373" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb56-374"><a href="#cb56-374" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

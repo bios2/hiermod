@@ -29,7 +29,7 @@ model {
   // priors
   to_vector(z) ~ std_normal();
   sd_params ~ exponential(2);
-  gamma ~ normal(0, 2);
+  gamma ~ normal(0, .5);
   slope_inter_corr ~ lkj_corr_cholesky(2);
 }
 
