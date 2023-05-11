@@ -17,14 +17,15 @@ Before we dive in with hierarchical structure, let's build a bridge between thes
 
 This is useful to help us understand what a hierarchical model does.
 
-However it is also useful from a strict model-building perspective -- so useful that Andrew Gelman calls it a "Secret Weapon"
+However it is also useful from a strict model-building perspective -- so useful that [Andrew Gelman calls it a "Secret Weapon"](https://statmodeling.stat.columbia.edu/2005/03/07/the_secret_weap/)
 
 ```{r}
 data(mite, package = "vegan")
 data("mite.env", package = "vegan")
+library(tidyverse)
+library(cmdstanr)
 
 # combine data and environment
-library(tidyverse)
 mite_data_long <- bind_cols(mite.env, mite) |> 
   pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
 ```
@@ -105,25 +106,31 @@ Once again, the two parameters of this model represent:
 The above tidyverse approach is very appealing and intuitive, but we can also do the same procedure in Stan.
 
 ```{r}
-
-library(cmdstanr)
-
+#| class-output: stan
 all_species_unpooled <- cmdstan_model(
   stan_file = "topics/correlated_effects/all_species_unpooled.stan", 
   pedantic = TRUE)
 
+all_species_unpooled
+```
+
+Let's fit this model by passing in the data:
+
+```{r}
 mite_bin <- mite
 mite_bin[mite_bin>0] <- 1
 
-all_species_unpooled_posterior <- 
-  all_species_unpooled$sample(
-    data = list(
-      n = nrow(mite_bin),
+mite_pa_list <- list(
+      Nsites = nrow(mite_bin),
       S = ncol(mite_bin),
       x = with(mite.env, (WatrCont - mean(WatrCont))/100),
       y = as.matrix(mite_bin)
-    ), 
-    refresh = 0, parallel_chains = 4
+    )
+
+all_species_unpooled_posterior <- 
+  all_species_unpooled$sample(
+    data = mite_pa_list, 
+    refresh = 1000, parallel_chains = 4
     )
 ```
 
@@ -147,6 +154,8 @@ post_pred <- tidybayes::spread_rvars(all_species_unpooled_posterior,
 post_pred
 ```
 
+We can imitate the original figure by adding the observed data in orange:
+
 ```{r}
 #| warning: false
 post_pred + 
@@ -156,7 +165,6 @@ post_pred +
              pch = 21, 
              fill = "orange")
 ```
-
 
 Plot and compare to frequentist point estimates
 
@@ -171,22 +179,77 @@ mite_many_glm_coefs |>
 
 ```
 
+## Saying it another way: with matrix algebra
 
-## Modelling variation in slopes
-
-Clearly there is variation among species in the values of these parameters. Like all variation, we can develop a scientific model to describe it. The simplest model we'll consider is a simple univariate distribution.
+First let's look at how to scale a univariate distribution:
 
 ```{r}
-#| class.output: stan
-suppressPackageStartupMessages(library(cmdstanr))
+#| layout-ncol: 2
+z <- rnorm(300, mean = 0, sd = 1)
+hist(z)
+sd(z)
 
+hist(z*2.7)
+sd(z*2.7)
+```
+
+you can also scale two things at once with a diagonal matrix:
+
+```{r}
+two_sds <- diag(c(.4, 7))
+
+zz <- matrix(rnorm(200), ncol = 2)
+
+rescaled_zz <- zz %*% two_sds
+
+plot(rescaled_zz)
+
+apply(rescaled_zz, 2, sd)
+```
+
+We can apply this approach in Stan to create the SAME model as above:
+
+```{r}
+#| class-output: stan
+all_species_unpooled_diag <- cmdstan_model(
+  stan_file = "topics/correlated_effects/all_species_unpooled_diag.stan", 
+  pedantic = TRUE)
+
+all_species_unpooled_diag
+```
+
+```{r}
+all_species_unpooled_diag_sample <- all_species_unpooled_diag$sample(
+  data = mite_pa_list, 
+  refresh = 1000, parallel_chains = 4
+)
+```
+
+
+## Making it hierarchical
+
+```{r}
+#| class-output: stan
 all_species_partpooled_diag <- cmdstan_model(
   stan_file = "topics/correlated_effects/all_species_partpooled_diag.stan", 
   pedantic = TRUE)
 
-mite_bin <- mite
-mite_bin[mite_bin>0] <- 1
+all_species_partpooled_diag
+```
 
+## Modelling COvariation
+
+```{r}
+#| class.output: stan
+
+all_species_partpooled_diag_corr <- cmdstan_model(
+  stan_file = "topics/correlated_effects/all_species_partpooled_diag_corr.stan", 
+  pedantic = TRUE)
+
+all_species_partpooled_diag
+```
+
+```{r}
 mite_data_list <- list(
   Nsites = nrow(mite_bin),
   K = 2,
@@ -208,7 +271,7 @@ plot these, reproducing the figure from earlier:
 unpooled_slopes <- all_species_unpooled_posterior |> 
   tidybayes::gather_rvars(slope[spp])
 
-tidybayes::get_variables(all_species_partpooled_diag_posterior)
+# tidybayes::get_variables(all_species_partpooled_diag_posterior)
 
 partpooled_slopes <- all_species_partpooled_diag_posterior |> 
   tidybayes::gather_rvars(beta[param, spp]) |> 
@@ -221,79 +284,26 @@ left_join(unpooled_slopes, partpooled_slopes, by = "spp") |>
 
 ```
 
+## Correlating numbers with a cholesky decomposition of a correlation matrix.
 
+```{r}
+eg <- rethinking::rlkjcorr(1, 2, 1)
+cc <- chol(eg)
 
-<!-- Roadmap: -->
+zz <- matrix(data = rnorm(2000), ncol = 2)
+plot(zz)
+cor(zz)
 
-<!-- ### Simple model -->
+rr <- t(cc) %*% t(zz)
+plot(t(rr))
+cor(t(rr))[1,2]
 
-<!-- * formula -->
-<!-- * validation with bayesplot -->
-<!-- * extraction and visualization with tidybayes -->
+```
 
-<!-- ### The secret weapon -->
+The LKJ prior distribution is a prior over correlation matrices
 
-<!-- * fit one model to each group -->
-<!-- * plot their estimates -->
-<!-- * extend the simple one-species model to use a vector of coefficients -->
-<!-- * BONUS: tidy, nest by way -->
+```{r}
+# rethinking::rlkjcorr(1, 5, .3)
+```
 
-<!-- ### single species, no pooling regressions -->
-
-<!-- * formula -->
-<!-- * posterior predicitons with bayesplot -->
-<!-- * extraction and visualization -->
-
-<!-- ## single species, partial pooling but no correlation -->
-
-<!-- * formula -->
-<!-- * posterior predictions -->
-<!-- * extract and visualize -->
-<!-- * compare -->
-
-
-<!-- * validation with bayesplot -->
-
-
-<!-- * model comparison with LOO-ic, adding LogLik to the generated quantities -->
-
-
-
-
-<!-- let's take a look at these values: -->
-
-<!-- ```{r} -->
-<!-- data("mite.xy", package = "vegan") -->
-<!-- mite.xy -->
-<!-- nrow(mite) -->
-<!-- ``` -->
-
-<!-- ## Ongoing discussions to have: -->
-
-<!-- * how much "tooling" would we like to try and do?  for me, there is a difference between a "minimal" approach that is base R + cmdstanr, vs a bigger approach such as: -->
-
-<!-- tidyverse -->
-<!-- tidybayes (compose_data) -->
-<!-- the posterior package (possibly interacting with tidybayes) -->
-<!-- bayesplot -->
-
-<!-- Then the bigger, more "meta" packages: -->
-<!-- brms -->
-<!-- rstanarm -->
-
-<!-- correlated: -->
-
-
-<!-- ```{r} -->
-<!-- #| class.output: stan -->
-
-<!-- # logistic_bern_glm_corr <- cmdstan_model( -->
-<!-- #   stan_file = "topics/secret_weapon_correlated.stan",  -->
-<!-- #   pedantic = TRUE) -->
-<!-- #  -->
-<!-- #  -->
-<!-- # partpooling_samples <- logistic_bern_glm_corr$sample(data = mite_data_list) -->
-
-
-<!-- ``` -->
 
