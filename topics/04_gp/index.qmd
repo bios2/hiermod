@@ -114,7 +114,77 @@ We'll look at two possibilities in turn:
 
 ## Write the model
 
+
+$$
+\begin{align}
+\mathsf{Pr}(y_i = 1) &\sim \mathsf{Bernoulli}(p_i)\\
+\mathsf{logit}(p_i) &= a + f_i\\ 
+f_i &\sim \mathsf{multivariate\ normal}(0, K(x | \theta)) \\
+  K(x | \alpha, \rho, \sigma)_{i, j}
+&= \alpha^2
+\exp \left(
+- \dfrac{1}{2 \rho^2} \sum_{d=1}^D (x_{i,d} - x_{j,d})^2
+\right)
++ \delta_{i, j} \sigma^2,
+\end{align}
+$$
+
+That's the general notation for D dimensions. In our case we're looking at something much simpler.
+
+$$
+\begin{align}
+\mathsf{Pr}(y_i = 1) &\sim \mathsf{Bernoulli}(p_i)\\
+\mathsf{logit}(p_i) &= a + f_i\\ 
+f_i &\sim \mathsf{Multivariate\ Normal}(0, K(x | \theta)) \\
+  K(x | \alpha, \rho, \sigma)_{i, j}
+&= \alpha^2
+\exp \left(
+- \frac{(\text{water}_i - \text{water}_j)^2}{2 \rho^2} 
+\right)
++ \delta_{i, j} \sigma^2 \\
+\rho &\sim \mathsf{Inverse\ Gamma}(5, 14) \\
+\alpha &\sim \mathsf{Normal}(0, .8) \\
+a &\sim \mathsf{Normal}(0, .2) \\
+\end{align}
+$$
+
 ## Simulate to understand it
+
+```{r}
+#| class-output: stan
+gp_example_sim <- cmdstan_model(stan_file = "topics/04_gp/gp_example_sim.stan")
+
+gp_example_sim
+```
+
+
+```{r, eval=FALSE}
+gp_example_sim_samples <- gp_example_sim$sample(data = list(
+  N = 20,
+  x = seq(from = -3, to = 5, length.out = 20)),
+  refresh = 200, chains = 1, iter_sampling = 200
+)
+
+gp_example_sim_samples$save_object(
+  file = "topics/04_gp/gp_example_sim_samples")
+```
+
+```{r}
+
+gp_example_sim_samples <- read_rds("topics/04_gp/gp_example_sim_samples")
+
+x_value_df <- enframe(x = seq(from = -3, to = 5, length.out = 20),
+                      name = "i", value = "water")
+
+gp_example_sim_samples |> 
+  tidybayes::spread_draws(f[i], a, ndraws = 45) |> 
+  left_join(x_value_df) |> 
+  ggplot(aes(x = water, y = plogis(f + a), group = .draw)) + 
+  geom_line() + 
+  coord_cartesian(ylim = c(0, 1))
+  
+```
+
 
 ## Express that model in code
 

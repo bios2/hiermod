@@ -25,7 +25,7 @@
     "href": "index.html#day-4-constrained-models-gaussian-processes",
     "title": "Course contents",
     "section": "Day 4: Constrained models: Gaussian processes",
-    "text": "Day 4: Constrained models: Gaussian processes"
+    "text": "Day 4: Constrained models: Gaussian processes\nSlides\nA Practical demonstration in Stan"
   },
   {
     "objectID": "index.html#day-5-student-projects",
@@ -718,7 +718,7 @@
     "href": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far-1",
     "title": "Gaussian process",
     "section": "Hierarchical models so far",
-    "text": "Hierarchical models so far\nAn already (very !) general formulation\nAnother way to write this generalized formulation is\n\\[\\mathbf{y}_i = \\mathbf{X}_{ij} \\boldsymbol{\\beta}_j + \\mathbf{Z}_{ik}\\mathbf{b}_{k} + \\boldsymbol{\\varepsilon}_{ij}\\] where\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\] and\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]"
+    "text": "Hierarchical models so far\n\nAn already (very !) general formulation\nAnother way to write this generalized formulation is\n\\[\\mathbf{y}_i = \\mathbf{X}_{ij} \\boldsymbol{\\beta}_j + \\mathbf{Z}_{ik}\\mathbf{b}_{k} + \\boldsymbol{\\varepsilon}_{ij}\\] where\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\] and\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models",
@@ -774,21 +774,21 @@
     "href": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - A bit of vocabulary",
-    "text": "\\(f(d)\\) - A bit of vocabulary\n\nNugget effect"
+    "text": "\\(f(d)\\) - A bit of vocabulary\n\n\nNugget effect"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary-1",
     "href": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary-1",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - A bit of vocabulary",
-    "text": "\\(f(d)\\) - A bit of vocabulary\nRange"
+    "text": "\\(f(d)\\) - A bit of vocabulary\n\nRange"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary-2",
     "href": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary-2",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - A bit of vocabulary",
-    "text": "\\(f(d)\\) - A bit of vocabulary\nSill"
+    "text": "\\(f(d)\\) - A bit of vocabulary\n\nSill"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd---types-of-functions",
@@ -809,7 +809,7 @@
     "href": "slides/09_Gaussian_process/index.html#an-illustrative-example",
     "title": "Gaussian process",
     "section": "An illustrative example",
-    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation"
+    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-typical-member-of-the-species",
@@ -837,14 +837,14 @@
     "href": "slides/09_Gaussian_process/index.html#fitting-the-model",
     "title": "Gaussian process",
     "section": "Fitting the model",
-    "text": "Fitting the model\nIf we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like\n\n\nWhat can we learn from this model ?"
+    "text": "Fitting the model\nIf we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like\n\n\n\n\n\n\n\n\n\n\nWhat can we learn from this model ?"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#kringing",
     "href": "slides/09_Gaussian_process/index.html#kringing",
     "title": "Gaussian process",
     "section": "Kringing",
-    "text": "Kringing\nIf we want to interpolate across the region of interest, this is known as kriging.\n\nSimple kriging\nSo far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function.\n\nIn a linear regression perspective, this means that\n\\[\\mathbf{y}\\sim\\mathcal{N}(0, f(d))\\]"
+    "text": "Kringing\nIf we want to interpolate across the region of interest, this is known as kriging.\n\n\nSimple kriging\nSo far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function.\n\nIn a linear regression perspective, this means that\n\\[\\mathbf{y}\\sim\\mathcal{N}(0, f(d))\\]"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#kringing-1",
@@ -2083,14 +2083,14 @@
     "href": "topics/04_gp/index.html#write-the-model",
     "title": "Gaussian Processes in Stan",
     "section": "Write the model",
-    "text": "Write the model"
+    "text": "Write the model\n\\[\n\\begin{align}\n\\mathsf{Pr}(y_i = 1) &\\sim \\mathsf{Bernoulli}(p_i)\\\\\n\\mathsf{logit}(p_i) &= a + f_i\\\\\nf_i &\\sim \\mathsf{multivariate\\ normal}(0, K(x | \\theta)) \\\\\n  K(x | \\alpha, \\rho, \\sigma)_{i, j}\n&= \\alpha^2\n\\exp \\left(\n- \\dfrac{1}{2 \\rho^2} \\sum_{d=1}^D (x_{i,d} - x_{j,d})^2\n\\right)\n+ \\delta_{i, j} \\sigma^2,\n\\end{align}\n\\]\nThat’s the general notation for D dimensions. In our case we’re looking at something much simpler.\n\\[\n\\begin{align}\n\\mathsf{Pr}(y_i = 1) &\\sim \\mathsf{Bernoulli}(p_i)\\\\\n\\mathsf{logit}(p_i) &= a + f_i\\\\\nf_i &\\sim \\mathsf{Multivariate\\ Normal}(0, K(x | \\theta)) \\\\\n  K(x | \\alpha, \\rho, \\sigma)_{i, j}\n&= \\alpha^2\n\\exp \\left(\n- \\frac{(\\text{water}_i - \\text{water}_j)^2}{2 \\rho^2}\n\\right)\n+ \\delta_{i, j} \\sigma^2 \\\\\n\\rho &\\sim \\mathsf{Inverse\\ Gamma}(5, 14) \\\\\n\\alpha &\\sim \\mathsf{Normal}(0, .8) \\\\\na &\\sim \\mathsf{Normal}(0, .2) \\\\\n\\end{align}\n\\]"
   },
   {
     "objectID": "topics/04_gp/index.html#simulate-to-understand-it",
     "href": "topics/04_gp/index.html#simulate-to-understand-it",
     "title": "Gaussian Processes in Stan",
     "section": "Simulate to understand it",
-    "text": "Simulate to understand it"
+    "text": "Simulate to understand it\n\ngp_example_sim <- cmdstan_model(stan_file = \"topics/04_gp/gp_example_sim.stan\")\n\ngp_example_sim\n\n// Fit the hyperparameters of a latent-variable Gaussian process with an\n// exponentiated quadratic kernel and a Bernoulli likelihood\n// This code is from https://github.com/stan-dev/example-models/blob/master/misc/gaussian-process/gp-fit-logit.stan\ndata {\n  int<lower=1> N;\n  array[N] real x;\n}\ntransformed data {\n  real delta = 1e-9;\n}\nparameters {\n  real<lower=0> rho;\n  real<lower=0> alpha;\n  real a;\n  vector[N] eta;\n  vector[N] y;\n}\ntransformed parameters {\n  vector[N] f;\n  {\n    matrix[N, N] L_K;\n    matrix[N, N] K = gp_exp_quad_cov(x, alpha, rho);\n    \n    // diagonal elements\n    for (n in 1 : N) {\n      K[n, n] = K[n, n] + delta;\n    }\n    \n    L_K = cholesky_decompose(K);\n    f = L_K * eta;\n  }\n}\nmodel {\n  rho ~ inv_gamma(5, 14);\n  alpha ~ normal(0, .8);\n  a ~ normal(0, .2);\n  eta ~ std_normal();\n}\n\n\n\ngp_example_sim_samples <- gp_example_sim$sample(data = list(\n  N = 20,\n  x = seq(from = -3, to = 5, length.out = 20)),\n  refresh = 200, chains = 1, iter_sampling = 200\n)\n\ngp_example_sim_samples$save_object(\n  file = \"topics/04_gp/gp_example_sim_samples\")\n\n\ngp_example_sim_samples <- read_rds(\"topics/04_gp/gp_example_sim_samples\")\n\nx_value_df <- enframe(x = seq(from = -3, to = 5, length.out = 20),\n                      name = \"i\", value = \"water\")\n\ngp_example_sim_samples |> \n  tidybayes::spread_draws(f[i], a, ndraws = 45) |> \n  left_join(x_value_df) |> \n  ggplot(aes(x = water, y = plogis(f + a), group = .draw)) + \n  geom_line() + \n  coord_cartesian(ylim = c(0, 1))\n\nJoining with `by = join_by(i)`"
   },
   {
     "objectID": "topics/04_gp/index.html#express-that-model-in-code",
@@ -2105,5 +2105,12 @@
     "title": "Gaussian Processes in Stan",
     "section": "Extensions:",
     "text": "Extensions:\nAdd water to the model. Does the spatial effect disappear, increase, or stay kind of the same?\nNext step: try to model water curve for more than one species. Would it be possible to make the species rho parameters hierarchical?"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html",
+    "href": "slides/09_Gaussian_process/index.html",
+    "title": "Gaussian process",
+    "section": "",
+    "text": "So far, we have built hierarchical models that can be integrated into the following framework.\n\n\n\n\\[(\\mathbf{y}|\\mathbf{X},\\mathbf{Z}, \\boldsymbol{\\beta}, \\mathbf{b}, \\sigma_\\mathbf{y}^2)\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma_\\mathbf{y}^2\\mathbf{I})\\]\n\n\n\n\nwhere\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\]\n\n\n\n\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma_\\mathbf{y}^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is designed matrix of “explanatory” variables with \\(n\\) rows (samples) and \\(q\\) columns\n\\(\\mu\\) is a vector defining the average importance of hierarchical parameters\n\\(\\mathbf{\\Sigma}\\) is a matrix defining the covariance structure of hierarchical parameters"
   }
 ]
