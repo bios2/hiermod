@@ -1,15 +1,36 @@
+---
+title:  Fitting an intercept-only model
+description: |
+  Where is the variation
+execute:
+  freeze: true
+format:
+  html:
+    code-tools: true
+---
 
 
 
 $$
 \begin{align}
-Y_s &\sim \text{Poisson}(\lambda_s) \\
-\log{\lambda_s} &\sim \text{Normal}(300, 100)  \\
+\text{Abundance}_i &\sim \text{Poisson}(\lambda_i) \\
+\log{\lambda_i} &\sim \mu + \beta_{\text{sample}[i]} + \beta_{\text{species[i]}} + \beta_i\\
+\mu &\sim \text{Normal}(3, 1)\\
+\beta_{\text{sample}} &\sim \text{Normal}(0,  \sigma_{\text{samp}})\\
+\beta_{\text{species}} &\sim \text{Normal}(0, \sigma_{\text{species}})\\
+\beta_i &\sim \text{Normal}(0,                \sigma_{\text{obs}}) \\
+\sigma_{\text{samp}}    &\sim \text{Exponential}(3)\\
+\sigma_{\text{species}} &\sim \text{Exponential}(3)\\
+\sigma_{\text{obs}}     &\sim \text{Exponential}(3)
 \end{align}
 $$
 
 
 ```{r}
+library(tidyverse)
+library(cmdstanr)
+library(tidybayes)
+
 data("mite", package = "vegan")
 
 spp_names <- colnames(mite)
@@ -17,292 +38,129 @@ spp_names <- setNames(1:ncol(mite), colnames(mite))
 
 
 mite_long <- mite |> 
-  tidyr::pivot_longer(dplyr::everything(),
-                      names_to = "spp", values_to = "abd") |> 
-  dplyr::mutate(group_id = spp_names[spp])
+  mutate(site_id = seq_len(nrow(mite))) |> 
+  tidyr::pivot_longer(-site_id,
+                      names_to = "spp",
+                      values_to = "abd") |> 
+  dplyr::mutate(spp_id = spp_names[spp])
+```
 
+```{r}
+#| class-output: stan
 library(cmdstanr)
 
-group_avg_nopool <- cmdstan_model("topics/intercept_only/group_avg_nopool.stan", 
+spp_site_obs_intercepts <- cmdstan_model("topics/intercept_only/spp_site_obs_intercepts.stan", 
                                   pedantic = TRUE)
-
-samp_group_avg_nopool <- group_avg_nopool$sample(data = list(
-  N = nrow(mite_long),
-  N_groups = ncol(mite),
-  group_id = mite_long$group_id,
-  abd = mite_long$abd
-))
-
+spp_site_obs_intercepts
 ```
 
+Now we can sample this model. 
 
-```{r}
-library(tidyverse)
-library(tidybayes)
-rvars_group_means_unpooled <- samp_group_avg_nopool |> 
-  tidybayes::gather_rvars(group_mean[group_id]) |> 
-  dplyr::mutate(spp = names(spp_names)[group_id],
-                spp = fct_reorder(spp, .value, .fun = median))
+:::{.callout-warning}
+## Warning: irresponsible statistics
+I'm sampling only 2 chains below, for illustration purposes only! use more chains in your research.
+:::
 
-rvars_group_means_unpooled |> 
-  ggplot2::ggplot(aes(y = spp, dist = .value)) + 
-  tidybayes::stat_halfeye()
+```{r eval=FALSE}
+spp_site_obs_intercepts_samp <- spp_site_obs_intercepts$sample(
+  data = list(
+    N = nrow(mite_long),
+    N_spp = max(mite_long$spp_id),
+    spp_id = mite_long$spp_id,
+    N_sites = max(mite_long$site_id),
+    site_id = mite_long$site_id,
+    abd = mite_long$abd
+  ),chains = 2, parallel_chains = 2)
 
-rvars_group_means_unpooled |> 
-  ggplot2::ggplot(aes(y = spp, dist = exp(.value))) + 
-  tidybayes::stat_halfeye()
-
-colMeans(mite)
-```
-
-I could easily add these colmeans to the second plot above
-
-```{r}
-rvars_group_means_unpooled |> 
-  ggplot2::ggplot(aes(y = spp, dist = exp(.value))) + 
-  tidybayes::stat_halfeye() +
-  geom_point(aes(y = spp, x = value), 
-             inherit.aes = FALSE,
-             data = enframe(colMeans(mite), name = "spp"),
-             col = "red")
-```
-
-Before we jump to considering this as a hierarchical model, let's look at another way of writing this Stan code
-
-First of all, I could have written this as a for-loop. I chose to vectorize it, and you can read more about it in the Stan user manual here.
-
-```{r}
-# for-loop version
-```
-
-You migth prefer seeing it this way because this lets you keep the data in the format you found it. you might also find it more readable. For models of this size, there will be no difference in speed between the two. But in bigger models, the first way I showed will be faster. this is because of the way that th Stan algorithm works when evaluatint the likelihood section. You can read more about it here [TK]
-
-Whether you choose a vectorized or for-loop approach to writing the likelihood, there is another, much more important alternative to writing a likelihood. 
-
-## rewriting the Normal distribution
-
-$$
-\text{Normal}(\mu, \sigma) = \mu + z \times \sigma
-$$
-
-if 
-
-$$
-z \sim \text{Normal}(0, 1)
-$$
-
-you can choose to write a normal distribution two ways. In the first, you consider the mean and standard devation as parameters "inside" the distribution, in the other, you start with a standard normal distribution and first _scale_ it (multiply by the standard deviation) and then _shift_ it (add in the average)
-
-The result is a distribution that slides around the number line, like this: 
-
-```{r}
-## tk animation
-```
-
-We can rewrite the first model in exactly this syntax
-
-```{r}
-
-group_avg_nopool_nc <- cmdstan_model("topics/intercept_only/group_avg_nopool_nc.stan", 
-                                  pedantic = TRUE)
-
-samp_group_avg_nopool_nc <- group_avg_nopool_nc$sample(data = list(
-  N = nrow(mite_long),
-  N_groups = ncol(mite),
-  group_id = mite_long$group_id,
-  abd = mite_long$abd)
-)
-```
-
-This is an interesting fact that we will use later, but which I wanted to show now, separately from studying hierarchical modesls
-
-### A model for parameters
-
-let's go back to the original differences between groups.. this time using species data
-
-Can also run the above model with row numbers
-
-```{r}
-mite_long_group <- mite |> 
-  tibble::rowid_to_column() |> 
-  pivot_longer(-rowid, names_to = "spp", values_to = "abd") |> 
-  rename(group_id = rowid)
-
-samp_group_avg_nopool_nc <- group_avg_nopool_nc$sample(data = list(
-  N = nrow(mite_long_group),
-  N_groups = max(mite_long_group$group_id),
-  group_id = mite_long_group$group_id,
-  abd = mite_long_group$abd))
-
-
-rvars_group_means_unpooled <- samp_group_avg_nopool_nc |> 
-  tidybayes::gather_rvars(group_mean[group_id]) |> 
-  dplyr::mutate(spp = names(spp_names)[group_id],
-                spp = fct_reorder(spp, .value, .fun = median))
-
-rvars_group_means_unpooled |> 
-  ggplot2::ggplot(aes(y = group_id, dist = .value)) + 
-  tidybayes::stat_halfeye()
-```
-
-
-
-now, let's stop for a second and look at the point estimates for each plot in the dataset:
-
-```{r}
-rvars_group_means_unpooled |> 
-  mutate(site_average = median(.value)) |> 
-  ggplot(aes(x = site_average)) + 
-  geom_histogram()
-
-```
-
-<aside>Are you using the *median* to calculate something you're calling an *average* ? what is going on?!
-A: I did this on purpose to show this distinction. the PARAMETER we're talking about is the average abundance in each site. We don't have a single value for this average, instead we have 2000 possible values, according to our model. We could choose to summarize those numbers any way we want -- often, the median is a good choice. 
-</aside>
-
-Where do these differences in group mean come from? The simplest possible model might be that there is some average mite abundance, and some plots have more or less than this average. In other words, a normal distribution.
-
-Let's add this model into our code
-
-```{r}
-group_avg_partpool <- cmdstan_model("topics/intercept_only/group_avg_partpool.stan",
-                                    pedantic = TRUE)
-
-samp_group_avg_partpool <- group_avg_partpool$sample(data = list(
-  N = nrow(mite_long_group),
-  N_groups = max(mite_long_group$group_id),
-  group_id = mite_long_group$group_id,
-  abd = mite_long_group$abd))
-
-samp_group_avg_partpool |> 
-  gather_rvars(group_mean[spp]) |> 
-  arrange(median(.value))
+spp_site_obs_intercepts_samp$save_object("topics/intercept_only/spp_site_obs_intercepts.rds")
 ```
 
 ```{r}
-samp_group_avg_partpool |> 
-  gather_rvars(mu, sigma)
+spp_site_obs_intercepts_samp <- read_rds("topics/intercept_only/spp_site_obs_intercepts.rds")
 ```
 
-## Regularization: a simple simulation
-
-one of the best and most useful aspects of hierarchical models is one which is not easy to see in our chosen datasets! 
-Instead, I'm going to simulate some data to demonstrate it.
+## Exploring the model output
 
 ```{r}
-set.seed(1234)
-fake_clutch_size_data <- tibble::tibble(
-  site_id = 1:42,
-  n_nests_per_site = sample(size = max(site_id),
-                            x = c(33, 13, 3),
-                            prob = c(.1, .2, .7),
-                            replace = TRUE),
-  site_mean = rnorm(n = max(site_id),
-                    mean = log(10), 
-                    sd = .7)) |> 
-  rowwise() |> 
-  mutate(clutch_size = list(rpois(n = n_nests_per_site, 
-                                  lambda = exp(site_mean))))
-
-
-fake_clutch_size_data |> 
-  # unnest(clutch_size) |> 
-  mutate(mean_cs = mean(clutch_size)) |> 
-  ggplot(aes(x = exp(site_mean), y = mean_cs,
-             fill = as.factor(n_nests_per_site))) + 
-  geom_point(pch = 21, size = 5) + 
-  scale_fill_brewer(palette = "Dark2") + 
-  geom_abline(slope = 1, intercept = 0)
+spp_site_obs_intercepts_samp
 ```
 
-can also look at it going through 0
+The sampler was just fine! Note that we have just estimated many more parameters than observations.
+
+## Plot the standard deviations
 
 ```{r}
-nopool_fig <- fake_clutch_size_data |> 
-  # unnest(clutch_size) |> 
-  mutate(mean_cs = mean(clutch_size)) |> 
-  ggplot(aes(x = exp(site_mean), y = mean_cs - exp(site_mean),
-             fill = as.factor(n_nests_per_site))) + 
-  geom_point(pch = 21, size = 5) + 
-  scale_fill_brewer(palette = "Dark2") + 
-  geom_abline(slope = 0, intercept = 0)
+sigma_post <- spp_site_obs_intercepts_samp$draws(
+  variables = c("sigma_spp", "sigma_sites", "sigma_obs"))
+
+sigma_post
 ```
 
-in both cases you can see that the green values are off of the true value -- just by chance they ended up above or below the real value
 
-let's fit our model from above to this! 
+The default output is a draws array
 
 ```{r}
+sigma_post_df <- spp_site_obs_intercepts_samp$draws(
+  variables = c("sigma_spp", "sigma_sites", "sigma_obs"),
+  format = "data.frame")
 
-unnest_fake_cs <- unnest(fake_clutch_size_data, cols = "clutch_size")
+sigma_post_df
+```
 
-group_avg_partpool_nests_samp <- group_avg_partpool$sample(
-  data = with(unnest_fake_cs, 
-              list(N = length(clutch_size),
-                   N_groups = max(site_id),
-                   group_id = site_id,
-                   abd = clutch_size
-              ))
-)
+We can also get a huge data frame. 
+If you are comfortable manipulating data frames, you can use all your regular techniques here. Here I use tidyverse tools to reshape and plot the posterior distribution of the three $\sigma$ variables:
 
+```{r}
+sigma_post_df |> 
+  pivot_longer(starts_with("sigma"), 
+               names_to = "sigma", 
+               values_to = "value") |> 
+  ggplot(aes(x = value)) + 
+  geom_histogram() + 
+  facet_wrap(~sigma)
+```
+
+:::{.callout-warning}
+## Caution
+Parameters from a posterior are NOT independent. If you want to combine parameters in any way (to calculate an average for example) you have to do it WITHIN each posterior sample. Work on ROWS of the draws data frame above
+:::
+
+### Calculate the posterior distribution of average abundance for each species
+
+To do this we need to extract the average $mu$ and add it to the species effects, $\beta_{\text{species}}$
+
+```{r}
+spp_avg_effects_df <- spp_site_obs_intercepts_samp$draws(
+  variables = c("mu", "spp_effects"),
+  format = "data.frame")
+
+
+spp_avg_effects_df |> 
+  select(mu, starts_with("spp_effects")) |> 
+  mutate(row_id = seq_along(mu)) |> 
+  pivot_longer(-c("mu", "row_id"), 
+               names_to = "parname", 
+               values_to = "spp_effect") |> 
+  mutate(spp_avg = mu + spp_effect) |> 
+  ggplot(aes(x = spp_avg, group = parname)) + 
+  geom_density()
+```
+
+## with rvars
+
+We can do the same operation even more quickly by using some of the tools from tidybayes
+
+```{r}
+spp_mu_rvars <- spp_site_obs_intercepts_samp |> 
+  tidybayes::spread_rvars(mu, spp_effects[spp_id])
 ```
 
 ```{r}
-truth_posterior_combined <- group_avg_partpool_nests_samp |> 
-  gather_rvars(group_mean[site_id]) |> 
-  mutate(mean_cs = median(.value)) |> 
-  select(-.value) |> 
-  left_join(fake_clutch_size_data |> select(site_id, n_nests_per_site, site_mean))
-
-truth_posterior_combined |> 
-  ggplot(
-    aes(
-      x = site_mean,
-      y = mean_cs - site_mean,
-      fill = as.factor(n_nests_per_site))) + 
-  geom_point(pch = 21, size = 5) + 
-  scale_fill_brewer(palette = "Dark2") + 
-  geom_abline(slope = 0, intercept = 0)
-
-
-
-nopool_fig + 
-  geom_point(
-    aes(
-      x = site_mean,
-      y = mean_cs - site_mean),
-    data = truth_posterior_combined) + 
-  facet_wrap(~n_nests_per_site)
-  
-  
-truth_posterior_combined |> 
-  filter(exp(site_mean)>50)
-
-fake_clutch_size_data |> 
-  filter(site_id == 41) |> 
-  pull(clutch_size)
-  
+spp_mu_rvars |> 
+  mutate(spp_avg = mu + spp_effects) |> 
+  ggplot(aes(dist = spp_avg, group = spp_id)) + 
+  tidybayes::stat_slab(col = "black") + 
+  coord_flip() + 
+  theme_minimal()
 ```
 
-
-
-Small exercise for you: demonstrate that all 3 models described here produce answers that are exactly the same.
-
-```{r}
-
-```
-
-
-
-In the ohter, you have standard normal variation 
-
-Animation showing overa ll mean and error, then group means and error
-
-progrssion later to negative binomial perhaps??
-
-animation showing averages -- group averages -- species averages
-
-really want to show my own style here! I think I can see how this would build together. 
-
-I wonder, if there is a way to simulate predator-prey dynamics in space, in a model where the predator needs to have both prey and environment conditions, but they prey need only the environment. what would happen if we use causal models (or the wrong causal model) on those data, measuring predators affecting prey when there is nothing 

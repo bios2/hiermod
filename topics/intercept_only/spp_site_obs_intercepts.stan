@@ -20,8 +20,8 @@ model {
   spp_effects ~ normal(0, sigma_spp);
   site_effects ~ normal(0, sigma_sites);
   obs_effects ~ normal(0, sigma_obs);
-  mu ~ normal(6, .5);
+  mu ~ normal(3, 1);
   sigma_spp ~ exponential(3);
-  sigma_sit ~ exponential(3);
+  sigma_sites ~ exponential(3);
   sigma_obs ~ exponential(3);
 }
