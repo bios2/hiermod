@@ -6,52 +6,91 @@ title: "Course contents"
 
 [Course Syllabus](PlanDeCoursBIO709.pdf)
 
-### Slides
+:::: {.columns}
 
-[Introduction to the course and location](slides/00_Introduction)
-[Data we'll be using](slides/01_Data)
-[Bayesian and MCMC](slides/02_Bayesian)
+::: {.column width="50%"}
+
+### Slides
+* [Introduction to the course and location](slides/00_Introduction)
+* [Data we'll be using](slides/01_Data)
+* [Bayesian and MCMC](slides/02_Bayesian)
+
+:::
+
+::: {.column width="50%"}
 
 ### Exercises -- data simulation & discrete models
+* [Data simulation in Ecology](topics/00_distributions)
+* lunch activity: Catch a wild Distribution! 
 
-[Stan and HMC](slides/03_Stan)
-[Data simulation in Ecology](topics/01_simulation)
+:::
 
-lunch activity: COUNT BIRDS!
+::::
 
-[Discrete predictors](topics/discrete_predictor)
+:::{.callout-warning}
+### Monday night Stan installation session! 
+You're free to proceed in this course using any modelling software you like. 
+We will be using Stan, so if you want to follow along you'll need to have it installed also! To do so, follow the steps [in this vignette](https://mc-stan.org/cmdstanr/articles/cmdstanr.html#compiling-a-model). Make sure you can run the example (up to "Running MCMC") 
 
-## DAY 2: Regression
+Please note that if you want help installing it, Andrew and Guillaume will be available on **Monday evening**. From Tuesday onwards we won't have time to pause to fix installation issues!
+:::
 
+## DAY 2: Intro to Stan and Regression
+
+:::: {.columns}
+
+::: {.column width="50%"}
 ### Slides
+* [Linear models](slides/04_Linear_model)
+* [Simple hierarchical models](slides/06_Simple_hierarchical_model)
 
-[Linear models](slides/04_Linear_model)
-[Simple hierarchical models](slides/06_Simple_hierarchical_model)
+:::
 
+::: {.column width="50%"}
 ### Exercises
+* [Stan and HMC](slides/03_Stan)
+* [Simulation and model fitting in Stan](topics/01_simulation)
+* [Discrete predictors](topics/discrete_predictor)
+* [Linear regression](topics/02_regression)
 
-[Linear regression](topics/02_regression)
+:::
+
+::::
 
 ## Day 3: Hierarchical models
 
-Morning exercises:
+:::: {.columns}
 
-[One random effect models](topics/03_one_random_effect)
+::: {.column width="50%"}
+### Morning exercises:
+* [One random effect models](topics/03_one_random_effect)
+* [Complex hierarchical models](slides/08_Complex_hierarchical_model)
+* [Intercept-Only Model (and tidybayes discussion)](topics/intercept_only)
 
-[Complex hierarchical models](slides/08_Complex_hierarchical_model)
+::: 
 
-[Intercept-Only Model (and tidybayes discussion)](topics/intercept_only)
-
+::: {.column width="50%"}
 Afternoon exercise:
 
 [Bigger models and Correlated Effects](topics/correlated_effects)
+:::
+
+::::
 
 ## Day 4: Constrained models: Gaussian processes
 
+:::: {.columns}
+
+::: {.column width="50%"}
+
 [Slides](slides/09_Gaussian_process)
+
+:::
+
+::: {.column width="50%"}
 
 [A Practical demonstration in Stan](topics/04_gp)
 
+:::
 
-## Day 5: Student projects 
-
+::::

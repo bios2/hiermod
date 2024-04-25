@@ -1,0 +1,97 @@
+---
+title: "Catch a wild distribution"
+description: |
+  A practice of the most basic bit of applied statistics you can do, and a foundation for what comes next.
+execute:
+  freeze: true
+comments:
+  hypothesis: false
+format:
+  html:
+    code-tools: true
+---
+
+# Our steps today
+
+To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit! 
+
+#### Exercise: Catch a wild distribution
+<aside>Please take some time with your group to talk about what we mean by the word "same" in this sentence! What makes things the "same" from the point of view of this exercise.</aside>
+
+1. Separate yourselves into groups. The groups should be at least 2 people. _Suggestion_ pair with people you've only just met.
+1. Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the **SAME** thing.   Here are some ideas to get you started:
+    * How long can someone hop on one foot 
+    * amount of change in everyone's pockets
+    * how many birds can you hear in 2 minutes
+1. *Hypothesize* What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.
+2 *Simulate*. create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with `d` and `r` respectively, e.g. `dnorm()` and `rnorm`. Simulate about as many number as you hope to collect. There's a quick example below.
+3. *Collect* after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.
+1. *Visualize and fit* Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn't match, why might that be? For this step you have a couple of choices: 
+    * compare histoger
+    * `hist()` or `geom_hist`
+    * `fitdistr`
+    * `optim`
+    * `Stan` (we'll do this one tomorrow!)
+1. *Discuss* We'll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!
+
+Before starting work on real data, we are going to begin by learning how to generate data by simulation.
+There are at least three reasons why this is a good idea:
+
+1.  **Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? Or should the standard deviation be bigger? Smaller? As we'll see, simulation will demystify the process. 
+1. **Validate your model.** Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.
+1. **Test your understanding.** Perhaps most importantly, simulation helps you to test your own intuition.  If you can simulate data from your model, then you really understand it!
+If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's experience anyway] that a biologist will fail to learn something by simulating a dataset.
+
+## Simple exercise in simulation
+
+Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?
+
+### Some questions to ask about simulated data
+
+1. What kind of observations are you going to make? Do they have a minimum or maximum value?
+Are they integers, or are they decimal numbers, or something else?
+1. Where do the numbers come from? This could be anything, from simple linear approximations (i.e. the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. 
+1. How many observations will we be making?
+
+
+# Our steps today
+
+To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit! 
+
+#### Exercise: Catch a wild distribution
+<aside>Please take some time with your group to talk about what we mean by the word "same" in this sentence! What makes things the "same" from the point of view of this exercise.</aside>
+
+1. Separate yourselves into groups. The groups should be at least 2 people. _Suggestion_ pair with people you've only just met.
+1. Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the **SAME** thing.   Here are some ideas to get you started:
+    * How long can someone hop on one foot 
+    * amount of change in everyone's pockets
+    * how many birds can you hear in 2 minutes
+1. *Hypothesize* What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.
+2 *Simulate*. create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with `d` and `r` respectively, e.g. `dnorm()` and `rnorm`. Simulate about as many number as you hope to collect. There's a quick example below.
+3. *Collect* after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.
+1. *Visualize and fit* Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn't match, why might that be? For this step you have a couple of choices: 
+    * compare histoger
+    * `hist()` or `geom_hist`
+    * `fitdistr`
+    * `optim`
+    * `Stan` (we'll do this one tomorrow!)
+1. *Discuss* We'll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!
+
+Before starting work on real data, we are going to begin by learning how to generate data by simulation.
+There are at least three reasons why this is a good idea:
+
+1.  **Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? Or should the standard deviation be bigger? Smaller? As we'll see, simulation will demystify the process. 
+1. **Validate your model.** Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.
+1. **Test your understanding.** Perhaps most importantly, simulation helps you to test your own intuition.  If you can simulate data from your model, then you really understand it!
+If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's experience anyway] that a biologist will fail to learn something by simulating a dataset.
+
+## Simple exercise in simulation
+
+Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?
+
+### Some questions to ask about simulated data
+
+1. What kind of observations are you going to make? Do they have a minimum or maximum value?
+Are they integers, or are they decimal numbers, or something else?
+1. Where do the numbers come from? This could be anything, from simple linear approximations (i.e. the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. 
+1. How many observations will we be making?

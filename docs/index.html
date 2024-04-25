@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -55,7 +55,8 @@ ul.task-list li input[type="checkbox"] {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -74,17 +75,19 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">
+    <a class="nav-link" href="./about.html" rel="" target="">
  <span class="menu-text">Advanced Statistics and hierarchical models</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -98,19 +101,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#day-1-introduction-data-simulation-discrete-models" id="toc-day-1-introduction-data-simulation-discrete-models" class="nav-link active" data-scroll-target="#day-1-introduction-data-simulation-discrete-models">Day 1: Introduction, data simulation, discrete models</a>
-  <ul class="collapse">
-  <li><a href="#slides" id="toc-slides" class="nav-link" data-scroll-target="#slides">Slides</a></li>
-  <li><a href="#exercises-data-simulation-discrete-models" id="toc-exercises-data-simulation-discrete-models" class="nav-link" data-scroll-target="#exercises-data-simulation-discrete-models">Exercises – data simulation &amp; discrete models</a></li>
-  </ul></li>
-  <li><a href="#day-2-regression" id="toc-day-2-regression" class="nav-link" data-scroll-target="#day-2-regression">DAY 2: Regression</a>
-  <ul class="collapse">
-  <li><a href="#slides-1" id="toc-slides-1" class="nav-link" data-scroll-target="#slides-1">Slides</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
-  </ul></li>
+  <li><a href="#day-1-introduction-data-simulation-discrete-models" id="toc-day-1-introduction-data-simulation-discrete-models" class="nav-link active" data-scroll-target="#day-1-introduction-data-simulation-discrete-models">Day 1: Introduction, data simulation, discrete models</a></li>
+  <li><a href="#day-2-intro-to-stan-and-regression" id="toc-day-2-intro-to-stan-and-regression" class="nav-link" data-scroll-target="#day-2-intro-to-stan-and-regression">DAY 2: Intro to Stan and Regression</a></li>
   <li><a href="#day-3-hierarchical-models" id="toc-day-3-hierarchical-models" class="nav-link" data-scroll-target="#day-3-hierarchical-models">Day 3: Hierarchical models</a></li>
   <li><a href="#day-4-constrained-models-gaussian-processes" id="toc-day-4-constrained-models-gaussian-processes" class="nav-link" data-scroll-target="#day-4-constrained-models-gaussian-processes">Day 4: Constrained models: Gaussian processes</a></li>
-  <li><a href="#day-5-student-projects" id="toc-day-5-student-projects" class="nav-link" data-scroll-target="#day-5-student-projects">Day 5: Student projects</a></li>
   </ul>
 </nav>
     </div>
@@ -137,44 +131,92 @@ ul.task-list li input[type="checkbox"] {
 <section id="day-1-introduction-data-simulation-discrete-models" class="level2">
 <h2 class="anchored" data-anchor-id="day-1-introduction-data-simulation-discrete-models">Day 1: Introduction, data simulation, discrete models</h2>
 <p><a href="PlanDeCoursBIO709.pdf">Course Syllabus</a></p>
+<div class="columns">
+<div class="column" style="width:50%;">
 <section id="slides" class="level3">
 <h3 class="anchored" data-anchor-id="slides">Slides</h3>
-<p><a href="slides/00_Introduction">Introduction to the course and location</a> <a href="slides/01_Data">Data we’ll be using</a> <a href="slides/02_Bayesian">Bayesian and MCMC</a></p>
+<ul>
+<li><a href="slides/00_Introduction">Introduction to the course and location</a></li>
+<li><a href="slides/01_Data">Data we’ll be using</a></li>
+<li><a href="slides/02_Bayesian">Bayesian and MCMC</a></li>
+</ul>
 </section>
+</div><div class="column" style="width:50%;">
 <section id="exercises-data-simulation-discrete-models" class="level3">
 <h3 class="anchored" data-anchor-id="exercises-data-simulation-discrete-models">Exercises – data simulation &amp; discrete models</h3>
-<p><a href="slides/03_Stan">Stan and HMC</a> <a href="topics/01_simulation">Data simulation in Ecology</a></p>
-<p>lunch activity: COUNT BIRDS!</p>
-<p><a href="topics/discrete_predictor">Discrete predictors</a></p>
+<ul>
+<li><a href="topics/00_distributions">Data simulation in Ecology</a></li>
+<li>lunch activity: Catch a wild Distribution!</li>
+</ul>
 </section>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Monday night Stan installation session!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You’re free to proceed in this course using any modelling software you like. We will be using Stan, so if you want to follow along you’ll need to have it installed also! To do so, follow the steps <a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html#compiling-a-model">in this vignette</a>. Make sure you can run the example (up to “Running MCMC”)</p>
+<p>Please note that if you want help installing it, Andrew and Guillaume will be available on <strong>Monday evening</strong>. From Tuesday onwards we won’t have time to pause to fix installation issues!</p>
+</div>
+</div>
 </section>
-<section id="day-2-regression" class="level2">
-<h2 class="anchored" data-anchor-id="day-2-regression">DAY 2: Regression</h2>
+<section id="day-2-intro-to-stan-and-regression" class="level2">
+<h2 class="anchored" data-anchor-id="day-2-intro-to-stan-and-regression">DAY 2: Intro to Stan and Regression</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <section id="slides-1" class="level3">
 <h3 class="anchored" data-anchor-id="slides-1">Slides</h3>
-<p><a href="slides/04_Linear_model">Linear models</a> <a href="slides/06_Simple_hierarchical_model">Simple hierarchical models</a></p>
+<ul>
+<li><a href="slides/04_Linear_model">Linear models</a></li>
+<li><a href="slides/06_Simple_hierarchical_model">Simple hierarchical models</a></li>
+</ul>
 </section>
+</div><div class="column" style="width:50%;">
 <section id="exercises" class="level3">
 <h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
-<p><a href="topics/02_regression">Linear regression</a></p>
+<ul>
+<li><a href="slides/03_Stan">Stan and HMC</a></li>
+<li><a href="topics/01_simulation">Simulation and model fitting in Stan</a></li>
+<li><a href="topics/discrete_predictor">Discrete predictors</a></li>
+<li><a href="topics/02_regression">Linear regression</a></li>
+</ul>
 </section>
+</div>
+</div>
 </section>
 <section id="day-3-hierarchical-models" class="level2">
 <h2 class="anchored" data-anchor-id="day-3-hierarchical-models">Day 3: Hierarchical models</h2>
-<p>Morning exercises:</p>
-<p><a href="topics/03_one_random_effect">One random effect models</a></p>
-<p><a href="slides/08_Complex_hierarchical_model">Complex hierarchical models</a></p>
-<p><a href="topics/intercept_only">Intercept-Only Model (and tidybayes discussion)</a></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="morning-exercises" class="level3">
+<h3 class="anchored" data-anchor-id="morning-exercises">Morning exercises:</h3>
+<ul>
+<li><a href="topics/03_one_random_effect">One random effect models</a></li>
+<li><a href="slides/08_Complex_hierarchical_model">Complex hierarchical models</a></li>
+<li><a href="topics/intercept_only">Intercept-Only Model (and tidybayes discussion)</a></li>
+</ul>
+</section>
+</div><div class="column" style="width:50%;">
 <p>Afternoon exercise:</p>
 <p><a href="topics/correlated_effects">Bigger models and Correlated Effects</a></p>
+</div>
+</div>
 </section>
 <section id="day-4-constrained-models-gaussian-processes" class="level2">
 <h2 class="anchored" data-anchor-id="day-4-constrained-models-gaussian-processes">Day 4: Constrained models: Gaussian processes</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p><a href="slides/09_Gaussian_process">Slides</a></p>
+</div><div class="column" style="width:50%;">
 <p><a href="topics/04_gp">A Practical demonstration in Stan</a></p>
-</section>
-<section id="day-5-student-projects" class="level2">
-<h2 class="anchored" data-anchor-id="day-5-student-projects">Day 5: Student projects</h2>
+</div>
+</div>
 
 
 </section>
@@ -207,9 +249,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -274,6 +330,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
