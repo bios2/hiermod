@@ -25,6 +25,9 @@ library(cmdstanr)
 :::
 
 
+
+
+
 ### The process
 
 Let's try to answer these questions for the bird walk we are about to take.
@@ -53,6 +56,25 @@ We'll be talking about better ways to model count data in a later exercise! For 
 :::
 
 ### Simulation in R
+
+Before starting work on real data, we are going to begin by learning how to generate data by simulation.
+There are at least three reasons why this is a good idea:
+
+1.  **Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? Or should the standard deviation be bigger? Smaller? As we'll see, simulation will demystify the process. 
+1. **Validate your model.** Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.
+1. **Test your understanding.** Perhaps most importantly, simulation helps you to test your own intuition.  If you can simulate data from your model, then you really understand it!
+If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's experience anyway] that a biologist will fail to learn something by simulating a dataset.
+
+## Simple exercise in simulation
+
+Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?
+
+### Some questions to ask about simulated data
+
+1. What kind of observations are you going to make? Do they have a minimum or maximum value?
+Are they integers, or are they decimal numbers, or something else?
+1. Where do the numbers come from? This could be anything, from simple linear approximations (i.e. the models we're looking at in this course) to ODEs, mathematical models, GAMs, etc. 
+1. How many observations will we be making?
 
 One of the most useful traits of Bayesian models is that they are _generative_: they can be used to make a simulated dataset. 
 We'll do that now for our bird example.
