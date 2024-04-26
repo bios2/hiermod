@@ -4,14 +4,14 @@
     "href": "index.html",
     "title": "Course contents",
     "section": "",
-    "text": "Course Syllabus\n\n\n\n\n\nIntroduction to the course and location\nData we’ll be using\nBayesian and MCMC\n\n\n\n\n\n\nData simulation in Ecology\nlunch activity: Catch a wild Distribution!\n\n\n\n\n\n\n\n\n\n\nMonday night Stan installation session!\n\n\n\nYou’re free to proceed in this course using any modelling software you like. We will be using Stan, so if you want to follow along you’ll need to have it installed also! To do so, follow the steps in this vignette. Make sure you can run the example (up to “Running MCMC”)\nPlease note that if you want help installing it, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
+    "text": "Course Syllabus\n\n\n\n\n\nIntroduction to the course and location\nData we’ll be using\nBayesian and MCMC\n\n\n\n\n\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nMonday night Stan installation session!\n\n\n\nYou’re free to proceed in this course using any modelling software you like. We will be using Stan, so if you want to follow along you’ll need to have it installed also! To do so, follow the steps in this vignette. Make sure you can run the example (up to “Running MCMC”)\nPlease note that if you want help installing it, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
   },
   {
     "objectID": "index.html#day-1-introduction-data-simulation-discrete-models",
     "href": "index.html#day-1-introduction-data-simulation-discrete-models",
     "title": "Course contents",
     "section": "",
-    "text": "Course Syllabus\n\n\n\n\n\nIntroduction to the course and location\nData we’ll be using\nBayesian and MCMC\n\n\n\n\n\n\nData simulation in Ecology\nlunch activity: Catch a wild Distribution!\n\n\n\n\n\n\n\n\n\n\nMonday night Stan installation session!\n\n\n\nYou’re free to proceed in this course using any modelling software you like. We will be using Stan, so if you want to follow along you’ll need to have it installed also! To do so, follow the steps in this vignette. Make sure you can run the example (up to “Running MCMC”)\nPlease note that if you want help installing it, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
+    "text": "Course Syllabus\n\n\n\n\n\nIntroduction to the course and location\nData we’ll be using\nBayesian and MCMC\n\n\n\n\n\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nMonday night Stan installation session!\n\n\n\nYou’re free to proceed in this course using any modelling software you like. We will be using Stan, so if you want to follow along you’ll need to have it installed also! To do so, follow the steps in this vignette. Make sure you can run the example (up to “Running MCMC”)\nPlease note that if you want help installing it, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
   },
   {
     "objectID": "index.html#day-2-intro-to-stan-and-regression",
@@ -25,7 +25,7 @@
     "href": "index.html#day-3-hierarchical-models",
     "title": "Course contents",
     "section": "Day 3: Hierarchical models",
-    "text": "Day 3: Hierarchical models\n\n\n\nMorning exercises:\n\nOne random effect models\nComplex hierarchical models\nIntercept-Only Model (and tidybayes discussion)\n\n\n\nAfternoon exercise:\nBigger models and Correlated Effects"
+    "text": "Day 3: Hierarchical models\n\n\n\nSlides\n\nComplex hierarchical models\n\n\n\n\nExercises\n\nIntercept-Only Model (and tidybayes discussion)\nOne random effect models\nBigger models and Correlated Effects"
   },
   {
     "objectID": "index.html#day-4-constrained-models-gaussian-processes",
@@ -1099,11 +1099,18 @@
     "text": "To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit!"
   },
   {
-    "objectID": "topics/00_distributions/index.html#exercise-catch-a-wild-distribution",
-    "href": "topics/00_distributions/index.html#exercise-catch-a-wild-distribution",
+    "objectID": "topics/00_distributions/index.html#group-exercise",
+    "href": "topics/00_distributions/index.html#group-exercise",
     "title": "Catch a wild distribution",
-    "section": "Exercise: Catch a wild distribution",
-    "text": "Exercise: Catch a wild distribution\n\nPlease take some time with your group to talk about what we mean by the word “same” in this sentence! What makes things the “same” from the point of view of this exercise.\n\n\nSeparate yourselves into groups. The groups should be at least 2 people. Suggestion pair with people you’ve only just met.\nEach group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the SAME thing. Here are some ideas to get you started:\n\nHow long can someone hop on one foot\namount of change in everyone’s pockets\nhow many birds can you hear in 2 minutes\n\nHypothesize What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you’re going to measure. 2 Simulate. create a simulation of the data you’re about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with d and r respectively, e.g. dnorm() and rnorm. Simulate about as many number as you hope to collect. There’s a quick example below.\nCollect after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.\nVisualize and fit Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn’t match, why might that be? For this step you have a couple of choices:\n\ncompare histoger\nhist() or geom_hist\nfitdistr\noptim\nStan (we’ll do this one tomorrow!)\n\nDiscuss We’ll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!"
+    "section": "Group Exercise",
+    "text": "Group Exercise\n\nPlease take some time with your group to talk about what we mean by the word “same” in this sentence! What makes things the “same” from the point of view of this exercise.\n\n\nSeparate yourselves into groups. The groups should be at least 2 people. Suggestion pair with people you’ve only just met.\nEach group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the SAME thing. Here are some ideas to get you started:\n\nHow long can someone hop on one foot\namount of change in everyone’s pockets\nhow many birds can you hear in 2 minutes\n\nHypothesize What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you’re going to measure. 2 Simulate. create a simulation of the data you’re about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with d and r respectively, e.g. dnorm() and rnorm. Simulate about as many number as you hope to collect. There’s a quick example below.\nCollect after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.\nVisualize and fit Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn’t match, why might that be? For this step you have a couple of choices:\n\ncompare histoger\nhist() or geom_hist\nfitdistr\noptim\nStan (we’ll do this one tomorrow!)\n\nDiscuss We’ll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!"
+  },
+  {
+    "objectID": "topics/00_distributions/index.html#evening-exercises",
+    "href": "topics/00_distributions/index.html#evening-exercises",
+    "title": "Catch a wild distribution",
+    "section": "Evening exercises",
+    "text": "Evening exercises\nMake sure you have a working computer set-up to fit the kinds of models that we are working on in this class. If you want to follow along, we’ll be using Stan, and specfically the cmdstanr interface. You can follow this vignette to install cmdstan; to confirm that everything works, run the examples in the section running MCMC"
   },
   {
     "objectID": "topics/03_one_random_effect/index.html",
