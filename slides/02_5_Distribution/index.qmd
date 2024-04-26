@@ -1,0 +1,276 @@
+---
+title: "Probability Distribution"
+title-slide-attributes: 
+  data-background-image: ../img/bg.jpg
+  data-background-size: full
+author: "Guillaume Blanchet -- Andrew MacDonald"
+date: "2023-04-29"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [default]
+    logo: ../img/UdeS_logo_h_rgbHR.png
+    transition: slide
+    background-transition: fade
+---
+
+## Probabilities
+
+To understand **distributions**, we first need to have a basic understanding of *probabilities*.
+
+
+## A bit of history
+
+::: {style="font-size: 0.8em"}
+Unlike many other fields of science, the first contributors in the study of probability were not scholars, they were gamblers !
+:::
+. . .
+
+::: {style="font-size: 0.8em"}
+
+For example, the emperor Claudius (10 BC -- 54 AD), who was an avid gambler (he had a carriage built to allow him and his party to gamble while travelling) wrote a treatise on randomness and probability.
+:::
+
+```{r echo=FALSE, out.width="20%", fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/7/71/Claudius_crop.jpg")
+```
+
+::: {style="font-size: 0.5em"}
+[Lanciani (1892) Gambling and Cheating in Ancient Rome. *The North American Review* 155:97-105]( https://www.jstor.org/stable/25102412)
+:::
+
+## A bit of history
+
+::: {style="font-size: 0.85em"}
+If you want a fun book to read about probabilities, its history and the difficulty of working with probabilities, I strongly recommend
+:::
+
+```{r echo=FALSE, out.width="30%", fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/en/3/35/The_Drunkard%27s_Walk.jpg")
+```
+
+## The basics of probabilities
+
+A probability [**ALWAYS**]{style="color: red;"} ranges between 0 and 1
+
+. . . 
+
+A probability of [0]{style="font-size: 1.5em"} means that an event is impossible
+
+. . .
+
+:::{style="font-size: 0.8em"}
+*Example*: The probability that a dog and a cat naturally reproduce is [0]{style="font-size: 1.5em"} 
+:::
+
+. . . 
+
+A probability of [1]{style="font-size: 1.5em"} means that an event is certain
+
+. . .
+
+:::{style="font-size: 0.8em"}
+*Example*: The probability that you are in this summer school as we speak is [1]{style="font-size: 1.5em"} 
+:::
+
+## The basics of probabilities
+
+**Notation**
+
+:::{style="font-size: 0.7em"}
+A classic way to write the probability of an event is to use the notation $P$.
+:::
+
+. . . 
+
+:::{style="font-size: 0.7em"}
+*Example*
+:::
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+:::{style="font-size: 0.7em"}
+The probability that it rains as you walk outside after the lecture is written as 
+
+$$P(r)$$
+where $r$ is the event you are interested in. Here, $r$ is whether it rains as you walk outside after the lecture today
+:::
+
+## Probabilities and events
+
+:::{style="font-size: 0.7em"}
+When dealing with discrete (countable) events, it is very practical to know the number of events that can occur. 
+:::
+. . .
+
+:::{style="font-size: 0.7em"}
+In the simplest case, we can either measure the probability of an event to occur or not.
+:::
+. . .
+
+:::{style="font-size: 0.7em"}
+*Example*
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+It can either rain or not. Mathematically, the probability that it rains is written as
+
+$$P(r)$$
+
+and the probability that it does not rain would be written as
+
+$$1 - P(r)$$
+
+:::
+
+## Probabilities and events
+
+Usually, these basic notions of probabilities are presented using coin flipping. When a coin is flip, it is usually assumed that 
+
+$$P(r)=0.5$$
+
+. . .
+
+However, in probability theory, P(r) can have any value ranging between 0 and 1.
+
+. . .
+
+*Example*
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+What do you think is the probability that it will rain at the end of the lecture?
+
+## Probabilities and events
+
+At this point we can note that when we add the probabilites of all possible events, the sum will always be 1
+
+. . .
+
+*Example*
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+$$P(r) + (1-P(r)) = 1$$
+
+. . . 
+
+This is true only if the events are independent from each other
+
+## Independent !?
+
+:::{style="font-size: 0.7em"}
+Events that are *independent* from each other means that the if an event occurs it is in no way related to the occurrence of another event. 
+:::
+
+. . . 
+
+:::{style="font-size: 0.7em"}
+*Example*
+:::
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+:::{style="font-size: 0.7em"}
+If we assume that weather events like a rainy day are independent from one another, it means that if it rains today it is unrelated to the weather of yesterday or tomorrow. 
+:::
+
+. . .
+
+:::{style="font-size: 0.7em"}
+**Note** : This can be a good or a bad or dangerous assumption to make depending on the problem you are working on.
+:::
+
+## Bernoulli distribution
+
+```{r echo=FALSE, out.width="40%", fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Jakob_Bernoulli.jpg/800px-Jakob_Bernoulli.jpg")
+```
+::: {.r-stack}
+Jacob Bernoulli (1655 - 1705)
+:::
+
+## Bernoulli distribution
+
+The probability distribution (or probability mass function) of the Bernoulli distribution defines the probability of an event to occur given that there is only one other event that can occur (e.g. rain or no rain)
+
+. . . 
+
+Classically, we will give a value of 1 to one event (no rain) and 0 to the other (rain). 
+
+. . .
+
+From a mathematical perspective, it does not matter which event is given a 1 (or a 0). However, often it is common practice to choose how we give values based on the interpretation we make of the results.
+
+## Bernoulli distribution
+
+Mathematically, the probability mass function of the Bernoulli distribution can be written as
+
+$$\begin{align*}
+p \quad & \text{if} \quad x =1\\
+(1-p) \quad & \text{if}\quad  x =0
+\end{align*}$$
+
+where $p$ is a shorthand for $P(x)$ and $x$ is one of two events.
+
+## Moment interlude
+
+Using probability distributions is practical because from them we can derive general information characterizing the each distribution.
+
+. . .
+
+These characteristics are know as [moments]{style="color: blue;"} of a distribution... And you know them :
+
+. . .
+
+- Mean
+- Variance
+- Skewness
+- Kurtosis
+- ... 
+
+
+## Moments of the Bernoulli distribution
+
+:::{style="font-size: 0.8em"}
+For the sake of conciseness, in this course, we will discuss only the first two moments of distributions.
+
+**Mean**
+
+$$p$$
+
+*Example*
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+If the probability that it rains is $p=0.14$ in any given day, it means that, on average in a week (7 days) we should expect it will rain 1 day.
+:::
+
+## Moments of the Bernoulli distribution
+
+:::{style="font-size: 0.8em"}
+**Variance**
+
+$$p(1-p)$$
+*Example*
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+If the probability that it rains is $p=0.5$ in any given day, it means that, across multiple weeks, some weeks might have no rain while some weeks it might rain all days because the variance is
+
+$$p(1-p)=0.5\times(1-0.5)=0.25\quad\text{and}\quad \sqrt{0.25} = 0.5$$
+:::
