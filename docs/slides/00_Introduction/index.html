@@ -413,8 +413,8 @@ F. Guillaume Blanchet – Andrew MacDonald
 <p><strong>Network : </strong></p>
 <p><strong>Password : </strong></p>
 </section>
-<section id="dos-and-donts-at-the-station-biologique-des-laurentides" class="slide level2">
-<h2>Dos and don’ts at the Station biologique des Laurentides</h2>
+<section id="dos-and-donts-at-the-jouvence" class="slide level2">
+<h2>Dos and don’ts at the Jouvence</h2>
 <p>Kim will give us a quick explanation about this</p>
 </section>
 <section id="course-material" class="slide level2">
@@ -424,10 +424,83 @@ F. Guillaume Blanchet – Andrew MacDonald
 <p>On it, you will find the slides but also practical examples.</p>
 </div>
 <div class="fragment">
-<p>You will also find course syllabus</p>
+<p>You will also find the course syllabus (in French)</p>
 </div>
 <div class="fragment">
-<p>Let’s take a look…</p>
+<p>Here is a brief overview of the course</p>
+</div>
+</section>
+<section id="statistiques-avancées-en-sciences-de-la-vie-bio709bio809" class="slide level2">
+<h2>Statistiques avancées en sciences de la vie (BIO709/BIO809)</h2>
+<p>3 credits course at Université de Sherbrooke</p>
+<div class="fragment">
+<p>It is a <strong>pass</strong> or <strong>fail</strong> course…</p>
+</div>
+<div class="fragment">
+<p>So, if you get involved, ask questions, try, work… you will pass.</p>
+</div>
+</section>
+<section id="what-we-want-to-do-during-this-course" class="slide level2">
+<h2>What we want to do during this course</h2>
+<div class="fragment">
+<p><strong>Basic knowldege of statistics</strong></p>
+<ul>
+<li>General introduction</li>
+<li>General overview of probability theory… for the life sciences</li>
+<li>Probability distribution</li>
+<li>Frequentist and Bayesian modelling</li>
+<li>Data simulation (how and when)</li>
+<li>Data simulation using different probability distribution</li>
+</ul>
+</div>
+</section>
+<section id="what-we-want-to-do-during-this-course-1" class="slide level2">
+<h2>What we want to do during this course</h2>
+<p><strong>Statistical computing</strong></p>
+<ul>
+<li>Introduction to Stan</li>
+</ul>
+<div style="color: red;font-size: 0.8em">
+<p>We will <strong><em>not</em></strong> give an introduction to any programming language (e.g.&nbsp;R, Python, Julia). We assume you know one and are conformtable using it… We are more comfortable in R, but can work with many other languages (but please no Fortran !)</p>
+</div>
+</section>
+<section id="what-we-want-to-do-during-this-course-2" class="slide level2">
+<h2>What we want to do during this course</h2>
+<p><strong><em>Simple</em></strong> <strong>regression models</strong></p>
+<ul>
+<li>Refresher in matrix algebra</li>
+<li>Refresher of linear model</li>
+<li>Generalized linear model</li>
+</ul>
+<p><strong><em>Simple</em></strong> <strong>hierarchical regression models</strong></p>
+<ul>
+<li>Model with a single hierarchical component on the intercept</li>
+<li>Model with a single hierarchical component on the slope</li>
+</ul>
+</section>
+<section id="what-we-want-to-do-during-this-course-3" class="slide level2">
+<h2>What we want to do during this course</h2>
+<p><strong><em>Complexe</em></strong> <strong>hierarchical regression models</strong></p>
+<ul>
+<li>Model with multiple hierarchical terms</li>
+<li>Model with multiple hierarchical levels</li>
+<li>Hierarchical model with constraints</li>
+<li>Gaussian process</li>
+</ul>
+</section>
+<section id="what-we-want-to-do-during-this-course-4" class="slide level2">
+<h2>What we want to do during this course</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-figure-spacer quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p>&nbsp;</p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p>We also want to learn about your research… and this might influence what we see during the course !</p>
+</div>
+</div>
 </div>
 </section>
 <section id="general-daily-schedule" class="slide level2">
@@ -622,7 +695,7 @@ F. Guillaume Blanchet – Andrew MacDonald
 <section id="good-reference" class="slide level2">
 <h2>Good reference</h2>
 
-<img data-src="https://xcelab.net/rm/wp-content/uploads/2019/12/sr2edcover-1-508x815.png" style="width:30.0%" class="r-stretch quarto-figure-center"><p>A good portion of this course material is based on this book.</p>
+<img data-src="https://images.tandf.co.uk/common/jackets/crclarge/978042902/9780429029608.jpg" style="width:30.0%" class="r-stretch quarto-figure-center"><p>A good portion of this course material is based on this book.</p>
 </section>
 <section id="great-technical-references" class="slide level2">
 <h2>Great technical references</h2>
@@ -652,7 +725,7 @@ F. Guillaume Blanchet – Andrew MacDonald
 <span id="cb1-10"><a href="#cb1-10"></a>                 <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">"https://mc-stan.org/r-packages/"</span>,</span>
 <span id="cb1-11"><a href="#cb1-11"></a>                           <span class="fu">getOption</span>(<span class="st">"repos"</span>)))</span>
 <span id="cb1-12"><a href="#cb1-12"></a>cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>()</span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="fu">install_cmdstan</span>(<span class="at">cores =</span> <span class="dv">2</span>) <span class="co"># If necessary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13"></a>cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>(<span class="at">cores =</span> <span class="dv">2</span>) <span class="co"># If necessary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

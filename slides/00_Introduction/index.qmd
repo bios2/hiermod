@@ -25,7 +25,7 @@ format:
 **Password : **
 
 
-## Dos and don'ts at the Station biologique des Laurentides
+## Dos and don'ts at the Jouvence
 
 Kim will give us a quick explanation about this
 
@@ -39,12 +39,78 @@ On it, you will find the slides but also practical examples.
 
 . . . 
 
-You will also find course syllabus
+You will also find the course syllabus (in French)
+
+. . .
+
+Here is a brief overview of the course
+
+
+## Statistiques avancées en sciences de la vie (BIO709/BIO809)
+
+3 credits course at Université de Sherbrooke
+
+. . .
+
+It is a **pass** or **fail** course... 
 
 . . . 
 
-Let's take a look...
+So, if you get involved, ask questions, try, work... you will pass.
 
+
+## What we want to do during this course
+
+. . .
+
+**Basic knowldege of statistics**
+
+- General introduction
+- General overview of probability theory... for the life sciences
+- Probability distribution
+- Frequentist and Bayesian modelling
+- Data simulation (how and when)
+- Data simulation using different probability distribution
+
+## What we want to do during this course
+
+**Statistical computing**
+
+- Introduction to Stan
+
+:::{style="color: red;font-size: 0.8em"}
+We will ***not*** give an introduction to any programming language (e.g. R, Python, Julia). We assume you know one and are conformtable using it... We are more comfortable in R, but can work with many other languages (but please no Fortran !)
+:::
+
+
+## What we want to do during this course
+
+***Simple*** **regression models**
+
+- Refresher in matrix algebra
+- Refresher of linear model
+- Generalized linear model
+
+
+***Simple*** **hierarchical regression models**
+
+- Model with a single hierarchical component on the intercept
+- Model with a single hierarchical component on the slope
+
+## What we want to do during this course
+
+***Complexe*** **hierarchical regression models**
+
+- Model with multiple hierarchical terms
+- Model with multiple hierarchical levels
+- Hierarchical model with constraints
+- Gaussian process
+
+## What we want to do during this course
+
+:::{layout="[[-1], [1], [-1]]"}
+We also want to learn about your research... and this might influence what we see during the course !
+:::
 
 ## General daily schedule
 
@@ -234,7 +300,7 @@ Instead we will implement our own models from scratch using [Stan]{style="color:
 ## Good reference
 
 ```{r echo=FALSE, out.width="30%", fig.align='center'}
-knitr::include_graphics("https://xcelab.net/rm/wp-content/uploads/2019/12/sr2edcover-1-508x815.png")
+knitr::include_graphics("https://images.tandf.co.uk/common/jackets/crclarge/978042902/9780429029608.jpg")
 ```
 
 A good portion of this course material is based on this book.
@@ -275,5 +341,5 @@ install.packages("cmdstanr",
                  repos = c("https://mc-stan.org/r-packages/",
                            getOption("repos")))
 cmdstanr::check_cmdstan_toolchain()
-install_cmdstan(cores = 2) # If necessary
+cmdstanr::install_cmdstan(cores = 2) # If necessary
 ```
