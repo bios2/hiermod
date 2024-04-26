@@ -72,7 +72,7 @@ samp_bill_dep <- normal_dist$sample(data = list_bill_dep,
 ## summarize the samples for each parameter into a nice table
 samp_bill_dep |> 
   posterior::summarise_draws() |> 
-  flextable::flextable()
+  knitr::kable()
 ```
 
 
@@ -294,7 +294,7 @@ samp_normal_dist_rng_spp <- normal_dist_rng_spp$sample(
 
 samp_normal_dist_rng_spp$draws(variables = c("mu", "sigma")) |> 
   posterior::summarise_draws() |> 
-  flextable::flextable()
+  knitr::kable()
 
 ```
 

@@ -821,10 +821,10 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
         }
-    
+
         function fireSlideChanged(previousSlide, currentSlide) {
           fireSlideEnter();
-    
+
           // dispatch for shiny
           if (window.jQuery) {
             if (previousSlide) {
@@ -835,7 +835,7 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
             }
           }
         }
-    
+
         // hookup for slidy
         if (window.w3c_slidy) {
           window.w3c_slidy.add_observer(function (slide_num) {
@@ -843,10 +843,10 @@ y  &amp;\sim \text{N}(\mu, \sigma_{obs}) \\
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
           });
         }
-    
+
       })();
     </script>
-    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

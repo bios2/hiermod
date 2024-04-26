@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A practice of the most basic bit of applied statistics you can do, and a foundation for what comes next.">
+<meta name="description" content="Repeating yesterday’s exercise, with the programming language Stan.">
 
 <title>Modèles hiérarchiques pour les sciences de la vie - Introduction to Stan and simulation</title>
 <style>
@@ -112,20 +112,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target="">
- <span class="menu-text">Advanced Statistics and hierarchical models</span></a>
-  </li>  
-</ul>
-            <div class="quarto-navbar-tools">
+        <div class="quarto-navbar-tools ms-auto">
+    <a href="https://github.com/bios2/hiermod" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
+          <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -138,15 +128,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#our-steps-today" id="toc-our-steps-today" class="nav-link active" data-scroll-target="#our-steps-today">Our steps today</a>
-  <ul class="collapse">
-  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
-  <li><a href="#statistical-field-work-exploring-your-dataset" id="toc-statistical-field-work-exploring-your-dataset" class="nav-link" data-scroll-target="#statistical-field-work-exploring-your-dataset">Statistical field work – exploring your dataset</a></li>
+  <li><a href="#the-process" id="toc-the-process" class="nav-link active" data-scroll-target="#the-process">The process</a></li>
+  <li><a href="#simulation-in-r" id="toc-simulation-in-r" class="nav-link" data-scroll-target="#simulation-in-r">Simulation in R</a></li>
   <li><a href="#simple-exercise-in-simulation" id="toc-simple-exercise-in-simulation" class="nav-link" data-scroll-target="#simple-exercise-in-simulation">Simple exercise in simulation</a>
   <ul class="collapse">
   <li><a href="#some-questions-to-ask-about-simulated-data" id="toc-some-questions-to-ask-about-simulated-data" class="nav-link" data-scroll-target="#some-questions-to-ask-about-simulated-data">Some questions to ask about simulated data</a></li>
-  <li><a href="#the-process" id="toc-the-process" class="nav-link" data-scroll-target="#the-process">The process</a></li>
-  <li><a href="#simulation-in-r" id="toc-simulation-in-r" class="nav-link" data-scroll-target="#simulation-in-r">Simulation in R</a></li>
   </ul></li>
   <li><a href="#simulating-data-in-stan" id="toc-simulating-data-in-stan" class="nav-link" data-scroll-target="#simulating-data-in-stan">Simulating data in Stan</a></li>
   <li><a href="#parameter-recovery" id="toc-parameter-recovery" class="nav-link" data-scroll-target="#parameter-recovery">Parameter recovery</a>
@@ -160,7 +146,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#shinystan" id="toc-shinystan" class="nav-link" data-scroll-target="#shinystan">Shinystan</a></li>
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -169,12 +154,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Catch a wild distribution</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Introduction to Stan and simulation</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 <div>
   <div class="description">
-    <p>A practice of the most basic bit of applied statistics you can do, and a foundation for what comes next.</p>
+    <p>Repeating yesterday’s exercise, with the programming language Stan.</p>
   </div>
 </div>
 
@@ -211,53 +196,6 @@ Goals of this lesson
 </ol>
 </div>
 </div>
-<section id="our-steps-today" class="level1 page-columns page-full">
-<h1>Our steps today</h1>
-<p>To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit!</p>
-<section id="exercise-catch-a-wild-distribution" class="level4 page-columns page-full">
-<h4 class="anchored" data-anchor-id="exercise-catch-a-wild-distribution">Exercise: Catch a wild distribution</h4>
-<aside>
-Please take some time with your group to talk about what we mean by the word “same” in this sentence! What makes things the “same” from the point of view of this exercise.
-</aside>
-<ol type="1">
-<li>Separate yourselves into groups. The groups should be at least 2 people. <em>Suggestion</em> pair with people you’ve only just met.</li>
-<li>Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the <strong>SAME</strong> thing. Here are some ideas to get you started:
-<ul>
-<li>How long can someone hop on one foot</li>
-<li>amount of change in everyone’s pockets</li>
-<li>how many birds can you hear in 2 minutes</li>
-</ul></li>
-<li><em>Hypothesize</em> What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you’re going to measure. 2 <em>Simulate</em>. create a simulation of the data you’re about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with <code>d</code> and <code>r</code> respectively, e.g.&nbsp;<code>dnorm()</code> and <code>rnorm</code>. Simulate about as many number as you hope to collect. There’s a quick example below.</li>
-<li><em>Collect</em> after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.</li>
-<li>Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn’t match, why might that be? For this step you have a couple of choices.</li>
-</ol>
-</section>
-<section id="part-2" class="level3">
-<h3 class="anchored" data-anchor-id="part-2">Part 2</h3>
-</section>
-<section id="statistical-field-work-exploring-your-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="statistical-field-work-exploring-your-dataset">Statistical field work – exploring your dataset</h2>
-<p><strong>Step 1.</strong> Return to your hypothesized distribution. Find its random number generation function (e.g.&nbsp;<code>rbinom()</code> for the Binomial Distribution). Experiment with different parameters values to create data that looks close to your own data.</p>
-<p><strong>Step 2.</strong> Attempt to fit the same parameters by Maximum likelihood. If you distribution has two parameters, fix one and find the Maximum Likelihood value of the other. <strong>Stretch goal</strong> Try to fit both of them at once.</p>
-<p><strong>Step 3.</strong> Look at the help for <code>?MASS::fitdistr()</code>. Try to use it to find your distribution parameters.</p>
-<p>Before starting work on real data, we are going to begin by learning how to generate data by simulation. There are at least three reasons why this is a good idea:</p>
-<ol type="1">
-<li><strong>Understand your priors.</strong>. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be <span class="math inline">\(\text{Normal}(2, 1)\)</span> ? Or should the standard deviation be bigger? Smaller? As we’ll see, simulation will demystify the process.</li>
-<li><strong>Validate your model.</strong> Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.</li>
-<li><strong>Test your understanding.</strong> Perhaps most importantly, simulation helps you to test your own intuition. If you can simulate data from your model, then you really understand it! If you can’t, then you don’t know quite how it works yet. It’s rare<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that a biologist will fail to learn something by simulating a dataset.</li>
-</ol>
-</section>
-<section id="simple-exercise-in-simulation" class="level2">
-<h2 class="anchored" data-anchor-id="simple-exercise-in-simulation">Simple exercise in simulation</h2>
-<p>Let’s imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?</p>
-<section id="some-questions-to-ask-about-simulated-data" class="level3">
-<h3 class="anchored" data-anchor-id="some-questions-to-ask-about-simulated-data">Some questions to ask about simulated data</h3>
-<ol type="1">
-<li><p>What kind of observations are you going to make? Do they have a minimum or maximum value? Are they integers, or are they decimal numbers, or something else?</p></li>
-<li><p>Where do the numbers come from? This could be anything, from simple linear approximations (i.e.&nbsp;the models we’re looking at in this course) to ODEs, mathematical models, GAMs, etc.</p></li>
-<li><p>How many observations will we be making?</p></li>
-</ol>
-</section>
 <section id="the-process" class="level3">
 <h3 class="anchored" data-anchor-id="the-process">The process</h3>
 <p>Let’s try to answer these questions for the bird walk we are about to take.</p>
@@ -295,6 +233,23 @@ Warning
 </section>
 <section id="simulation-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="simulation-in-r">Simulation in R</h3>
+<p>Before starting work on real data, we are going to begin by learning how to generate data by simulation. There are at least three reasons why this is a good idea:</p>
+<ol type="1">
+<li><strong>Understand your priors.</strong>. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be <span class="math inline">\(\text{Normal}(2, 1)\)</span> ? Or should the standard deviation be bigger? Smaller? As we’ll see, simulation will demystify the process.</li>
+<li><strong>Validate your model.</strong> Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.</li>
+<li><strong>Test your understanding.</strong> Perhaps most importantly, simulation helps you to test your own intuition. If you can simulate data from your model, then you really understand it! If you can’t, then you don’t know quite how it works yet. It’s rare<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that a biologist will fail to learn something by simulating a dataset.</li>
+</ol>
+</section>
+<section id="simple-exercise-in-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="simple-exercise-in-simulation">Simple exercise in simulation</h2>
+<p>Let’s imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?</p>
+<section id="some-questions-to-ask-about-simulated-data" class="level3">
+<h3 class="anchored" data-anchor-id="some-questions-to-ask-about-simulated-data">Some questions to ask about simulated data</h3>
+<ol type="1">
+<li>What kind of observations are you going to make? Do they have a minimum or maximum value? Are they integers, or are they decimal numbers, or something else?</li>
+<li>Where do the numbers come from? This could be anything, from simple linear approximations (i.e.&nbsp;the models we’re looking at in this course) to ODEs, mathematical models, GAMs, etc.</li>
+<li>How many observations will we be making?</li>
+</ol>
 <p>One of the most useful traits of Bayesian models is that they are <em>generative</em>: they can be used to make a simulated dataset. We’ll do that now for our bird example.</p>
 <p>let’s simulate from a Poisson distribution:</p>
 <div class="cell">
@@ -956,7 +911,7 @@ Visualize everything!
 <h4 class="anchored" data-anchor-id="level-2">Level 2</h4>
 <ul>
 <li>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?</li>
-<li>Take a closer look at <code>poisson_model_samp$summary()</code> all the values of <code>bird_count</code> are the same. That’s correct, but why?</li>
+<li>Take a closer look at <code>poisson_model_samp$summary()</code>. all the values of <code>bird_count</code> are the same. That’s correct, but why?</li>
 </ul>
 </section>
 <section id="level-3" class="level4">
@@ -975,7 +930,6 @@ Visualize everything!
 
 <!-- -->
 
-</section>
 </section>
 </section>
 

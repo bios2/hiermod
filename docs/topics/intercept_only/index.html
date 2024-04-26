@@ -112,20 +112,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target="">
- <span class="menu-text">Advanced Statistics and hierarchical models</span></a>
-  </li>  
-</ul>
-            <div class="quarto-navbar-tools">
+        <div class="quarto-navbar-tools ms-auto">
+    <a href="https://github.com/bios2/hiermod" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
+          <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -196,71 +186,66 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>This is cmdstanr version 0.5.3</code></pre>
+<pre><code>This is cmdstanr version 0.7.1</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>- CmdStan path: /Users/amacdonald/.cmdstan/cmdstan-2.31.0</code></pre>
+<pre><code>- CmdStan path: /home/andrew/software/cmdstan</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>- CmdStan version: 2.31.0</code></pre>
+<pre><code>- CmdStan version: 2.34.1</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-A newer version of CmdStan is available. See ?install_cmdstan() to install it.
-To disable this check set option or environment variable CMDSTANR_NO_VER_CHECK=TRUE.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">colnames</span>(mite)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">setNames</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mite), <span class="fu">colnames</span>(mite))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>mite_long <span class="ot">&lt;-</span> mite <span class="sc">|&gt;</span> </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_id =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(mite))) <span class="sc">|&gt;</span> </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>site_id,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">"spp"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">"abd"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">spp_id =</span> spp_names[spp])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">colnames</span>(mite)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">setNames</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mite), <span class="fu">colnames</span>(mite))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>mite_long <span class="ot">&lt;-</span> mite <span class="sc">|&gt;</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_id =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(mite))) <span class="sc">|&gt;</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>site_id,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">"spp"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">"abd"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">spp_id =</span> spp_names[spp])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.stan"</span>, </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.stan"</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<div class="sourceCode" id="cb9"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span>{</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N_spp;</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=N_spp&gt; spp_id;</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N_sites;</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=N_sites&gt; site_id;</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span> abd;</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span>{</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N_spp] spp_effects;</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N_sites] site_effects;</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] obs_effects;</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_spp;</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_sites;</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_obs;</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  abd ~ poisson_log(mu + spp_effects[spp_id] + site_effects[site_id] + obs_effects);</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  spp_effects ~ normal(<span class="dv">0</span>, sigma_spp);</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  site_effects ~ normal(<span class="dv">0</span>, sigma_sites);</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  obs_effects ~ normal(<span class="dv">0</span>, sigma_obs);</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">3</span>, <span class="dv">1</span>);</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  sigma_spp ~ exponential(<span class="dv">3</span>);</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  sigma_sites ~ exponential(<span class="dv">3</span>);</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  sigma_obs ~ exponential(<span class="dv">3</span>);</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span>{</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N;</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N_spp;</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=N_spp&gt; spp_id;</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> N_sites;</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>,<span class="kw">upper</span>=N_sites&gt; site_id;</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span> abd;</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span>{</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N_spp] spp_effects;</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N_sites] site_effects;</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] obs_effects;</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_spp;</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_sites;</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_obs;</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  abd ~ poisson_log(mu + spp_effects[spp_id] + site_effects[site_id] + obs_effects);</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  spp_effects ~ normal(<span class="dv">0</span>, sigma_spp);</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  site_effects ~ normal(<span class="dv">0</span>, sigma_sites);</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  obs_effects ~ normal(<span class="dv">0</span>, sigma_obs);</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  mu ~ normal(<span class="dv">3</span>, <span class="dv">1</span>);</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  sigma_spp ~ exponential(<span class="dv">3</span>);</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  sigma_sites ~ exponential(<span class="dv">3</span>);</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  sigma_obs ~ exponential(<span class="dv">3</span>);</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>Now we can sample this model.</p>
@@ -278,49 +263,49 @@ Warning: irresponsible statistics
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> spp_site_obs_intercepts<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="fu">nrow</span>(mite_long),</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_spp =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>spp_id),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">spp_id =</span> mite_long<span class="sc">$</span>spp_id,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_sites =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>site_id),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_id =</span> mite_long<span class="sc">$</span>site_id,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">abd =</span> mite_long<span class="sc">$</span>abd</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ),<span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">save_object</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> spp_site_obs_intercepts<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="fu">nrow</span>(mite_long),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_spp =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>spp_id),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">spp_id =</span> mite_long<span class="sc">$</span>spp_id,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_sites =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>site_id),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_id =</span> mite_long<span class="sc">$</span>site_id,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">abd =</span> mite_long<span class="sc">$</span>abd</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  ),<span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">save_object</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exploring-the-model-output" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-the-model-output">Exploring the model output</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       variable     mean   median    sd   mad       q5      q95 rhat ess_bulk
- lp__           17752.28 17751.55 54.63 55.45 17662.48 17839.50 1.00      318
- spp_effects[1]     1.97     1.96  0.31  0.31     1.47     2.49 1.02      190
- spp_effects[2]    -0.47    -0.47  0.34  0.35    -1.03     0.08 1.02      257
- spp_effects[3]     2.15     2.15  0.32  0.32     1.65     2.67 1.01      183
- spp_effects[4]    -0.70    -0.70  0.33  0.33    -1.27    -0.17 1.02      278
- spp_effects[5]    -1.98    -1.99  0.42  0.42    -2.67    -1.29 1.02      370
- spp_effects[6]    -1.95    -1.94  0.40  0.40    -2.63    -1.31 1.01      400
- spp_effects[7]     0.26     0.26  0.32  0.31    -0.26     0.78 1.02      231
- spp_effects[8]    -2.36    -2.35  0.44  0.45    -3.09    -1.65 1.01      477
- spp_effects[9]    -0.66    -0.67  0.35  0.35    -1.25    -0.09 1.02      277
+ lp__           17755.93 17756.60 56.81 55.89 17661.36 17845.10 1.01      236
+ spp_effects[1]     1.98     1.98  0.31  0.32     1.46     2.47 1.02      150
+ spp_effects[2]    -0.45    -0.44  0.35  0.35    -1.04     0.09 1.01      228
+ spp_effects[3]     2.16     2.15  0.32  0.32     1.63     2.68 1.01       99
+ spp_effects[4]    -0.69    -0.69  0.35  0.36    -1.26    -0.11 1.01      162
+ spp_effects[5]    -1.99    -2.00  0.41  0.41    -2.66    -1.32 1.00      410
+ spp_effects[6]    -1.95    -1.94  0.42  0.42    -2.67    -1.26 1.01      247
+ spp_effects[7]     0.25     0.24  0.32  0.31    -0.25     0.79 1.01      162
+ spp_effects[8]    -2.36    -2.37  0.46  0.45    -3.10    -1.62 1.01      353
+ spp_effects[9]    -0.66    -0.65  0.34  0.34    -1.25    -0.11 1.01      222
  ess_tail
-      630
-      431
-      668
-      331
-      735
-     1052
-     1041
-      640
-     1145
-      571
+      516
+      342
+      469
+      217
+      506
+      702
+      786
+      383
+     1208
+      866
 
  # showing 10 of 2560 rows (change via 'max_rows' argument or 'cmdstanr_max_rows' option)</code></pre>
 </div>
@@ -330,31 +315,31 @@ Warning: irresponsible statistics
 <section id="plot-the-standard-deviations" class="level2">
 <h2 class="anchored" data-anchor-id="plot-the-standard-deviations">Plot the standard deviations</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sigma_post <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>))</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>sigma_post</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sigma_post <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>sigma_post</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A draws_array: 1000 iterations, 2 chains, and 3 variables
 , , variable = sigma_spp
 
          chain
 iteration   1   2
-        1 1.6 1.9
-        2 1.6 1.5
-        3 1.6 1.3
-        4 1.7 1.2
-        5 1.7 1.3
+        1 1.8 1.7
+        2 1.3 1.4
+        3 1.4 1.6
+        4 1.3 1.5
+        5 1.5 1.7
 
 , , variable = sigma_sites
 
          chain
 iteration    1    2
-        1 0.62 0.49
-        2 0.58 0.65
-        3 0.69 0.68
-        4 0.58 0.63
-        5 0.67 0.69
+        1 0.73 0.67
+        2 0.58 0.63
+        3 0.50 0.55
+        4 0.56 0.70
+        5 0.61 0.60
 
 , , variable = sigma_obs
 
@@ -363,45 +348,45 @@ iteration   1   2
         1 1.5 1.5
         2 1.5 1.5
         3 1.5 1.5
-        4 1.5 1.6
-        5 1.5 1.5
+        4 1.5 1.5
+        5 1.5 1.6
 
 # ... with 995 more iterations</code></pre>
 </div>
 </div>
 <p>The default output is a draws array</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>sigma_post_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>sigma_post_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A draws_df: 1000 iterations, 2 chains, and 3 variables
    sigma_spp sigma_sites sigma_obs
-1        1.6        0.62       1.5
-2        1.6        0.58       1.5
-3        1.6        0.69       1.5
-4        1.7        0.58       1.5
-5        1.7        0.67       1.5
-6        1.2        0.53       1.5
-7        1.9        0.59       1.5
-8        1.8        0.61       1.5
-9        1.2        0.73       1.5
-10       2.0        0.67       1.5
+1        1.8        0.73       1.5
+2        1.3        0.58       1.5
+3        1.4        0.50       1.5
+4        1.3        0.56       1.5
+5        1.5        0.61       1.5
+6        1.3        0.51       1.5
+7        1.6        0.48       1.5
+8        1.4        0.58       1.6
+9        1.5        0.61       1.6
+10       1.4        0.69       1.5
 # ... with 1990 more draws
 # ... hidden reserved variables {'.chain', '.iteration', '.draw'}</code></pre>
 </div>
 </div>
 <p>We can also get a huge data frame. If you are comfortable manipulating data frames, you can use all your regular techniques here. Here I use tidyverse tools to reshape and plot the posterior distribution of the three <span class="math inline">\(\sigma\)</span> variables:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="sc">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"sigma"</span>), </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"sigma"</span>, </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span> </span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"sigma"</span>), </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"sigma"</span>, </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Dropping 'draws_df' class as required metadata was removed.</code></pre>
 </div>
@@ -429,20 +414,20 @@ Caution
 <h3 class="anchored" data-anchor-id="calculate-the-posterior-distribution-of-average-abundance-for-each-species">Calculate the posterior distribution of average abundance for each species</h3>
 <p>To do this we need to extract the average <span class="math inline">\(mu\)</span> and add it to the species effects, <span class="math inline">\(\beta_{\text{species}}\)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"spp_effects"</span>),</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="sc">|&gt;</span> </span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(mu, <span class="fu">starts_with</span>(<span class="st">"spp_effects"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">row_id =</span> <span class="fu">seq_along</span>(mu)) <span class="sc">|&gt;</span> </span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"row_id"</span>), </span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"parname"</span>, </span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"spp_effect"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effect) <span class="sc">|&gt;</span> </span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> spp_avg, <span class="at">group =</span> parname)) <span class="sc">+</span> </span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"spp_effects"</span>),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="sc">|&gt;</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(mu, <span class="fu">starts_with</span>(<span class="st">"spp_effects"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">row_id =</span> <span class="fu">seq_along</span>(mu)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"row_id"</span>), </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"parname"</span>, </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"spp_effect"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effect) <span class="sc">|&gt;</span> </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> spp_avg, <span class="at">group =</span> parname)) <span class="sc">+</span> </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Dropping 'draws_df' class as required metadata was removed.</code></pre>
 </div>
@@ -456,16 +441,16 @@ Caution
 <h2 class="anchored" data-anchor-id="with-rvars">with rvars</h2>
 <p>We can do the same operation even more quickly by using some of the tools from tidybayes</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp <span class="sc">|&gt;</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(mu, spp_effects[spp_id])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(mu, spp_effects[spp_id])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effects) <span class="sc">|&gt;</span> </span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">dist =</span> spp_avg, <span class="at">group =</span> spp_id)) <span class="sc">+</span> </span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_slab</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effects) <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">dist =</span> spp_avg, <span class="at">group =</span> spp_id)) <span class="sc">+</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_slab</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -761,176 +746,176 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb25" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co">  Fitting an intercept-only model</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">  Where is the variation</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: true</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resources</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="co">[</span><span class="ot">tidybayes</span><span class="co">](http://mjskay.github.io/tidybayes/index.html)</span> is an incredible tool, and the vignette is a great read for visualization approaches (even if you aren't using <span class="in">`rvars`</span>)</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the <span class="co">[</span><span class="ot">posterior package</span><span class="co">](https://mc-stan.org/posterior/)</span> is the best place to learn about how to manipulate Stan posterior distributions.</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>\text{Abundance}_i &amp;\sim \text{Poisson}(\lambda_i) <span class="sc">\\</span></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>\log{\lambda_i} &amp;\sim \mu + \beta_{\text{sample}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>} + \beta_{\text{species<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}} + \beta_i<span class="sc">\\</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>\mu &amp;\sim \text{Normal}(3, 1)<span class="sc">\\</span></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>\beta_{\text{sample}} &amp;\sim \text{Normal}(0,  \sigma_{\text{samp}})<span class="sc">\\</span></span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>\beta_{\text{species}} &amp;\sim \text{Normal}(0, \sigma_{\text{species}})<span class="sc">\\</span></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>\beta_i &amp;\sim \text{Normal}(0,                \sigma_{\text{obs}}) <span class="sc">\\</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>\sigma_{\text{samp}}    &amp;\sim \text{Exponential}(3)<span class="sc">\\</span></span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>\sigma_{\text{species}} &amp;\sim \text{Exponential}(3)<span class="sc">\\</span></span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>\sigma_{\text{obs}}     &amp;\sim \text{Exponential}(3)</span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
-<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">colnames</span>(mite)</span>
-<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">setNames</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mite), <span class="fu">colnames</span>(mite))</span>
-<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>mite_long <span class="ot">&lt;-</span> mite <span class="sc">|&gt;</span> </span>
-<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_id =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(mite))) <span class="sc">|&gt;</span> </span>
-<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>site_id,</span>
-<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">"spp"</span>,</span>
-<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">"abd"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">spp_id =</span> spp_names[spp])</span>
-<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.stan"</span>, </span>
-<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts</span>
-<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a>Now we can sample this model. </span>
-<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## Warning: irresponsible statistics</span></span>
-<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>I'm sampling only 2 chains below, for illustration purposes only! use more chains in your research.</span>
-<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
-<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> spp_site_obs_intercepts<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(</span>
-<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="fu">nrow</span>(mite_long),</span>
-<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_spp =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>spp_id),</span>
-<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">spp_id =</span> mite_long<span class="sc">$</span>spp_id,</span>
-<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_sites =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>site_id),</span>
-<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_id =</span> mite_long<span class="sc">$</span>site_id,</span>
-<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">abd =</span> mite_long<span class="sc">$</span>abd</span>
-<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a>  ),<span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>)</span>
-<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">save_object</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span>
-<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-90"><a href="#cb25-90" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span>
-<span id="cb25-91"><a href="#cb25-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-92"><a href="#cb25-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-93"><a href="#cb25-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exploring the model output</span></span>
-<span id="cb25-94"><a href="#cb25-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-97"><a href="#cb25-97" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-98"><a href="#cb25-98" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp</span>
-<span id="cb25-99"><a href="#cb25-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-100"><a href="#cb25-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-101"><a href="#cb25-101" aria-hidden="true" tabindex="-1"></a>The sampler was just fine! Note that we have just estimated many more parameters than observations.</span>
-<span id="cb25-102"><a href="#cb25-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-103"><a href="#cb25-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Plot the standard deviations</span></span>
-<span id="cb25-104"><a href="#cb25-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-107"><a href="#cb25-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-108"><a href="#cb25-108" aria-hidden="true" tabindex="-1"></a>sigma_post <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
-<span id="cb25-109"><a href="#cb25-109" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>))</span>
-<span id="cb25-110"><a href="#cb25-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-111"><a href="#cb25-111" aria-hidden="true" tabindex="-1"></a>sigma_post</span>
-<span id="cb25-112"><a href="#cb25-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-113"><a href="#cb25-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-114"><a href="#cb25-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-115"><a href="#cb25-115" aria-hidden="true" tabindex="-1"></a>The default output is a draws array</span>
-<span id="cb25-116"><a href="#cb25-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-119"><a href="#cb25-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-120"><a href="#cb25-120" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
-<span id="cb25-121"><a href="#cb25-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>),</span>
-<span id="cb25-122"><a href="#cb25-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
-<span id="cb25-123"><a href="#cb25-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-124"><a href="#cb25-124" aria-hidden="true" tabindex="-1"></a>sigma_post_df</span>
-<span id="cb25-125"><a href="#cb25-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-126"><a href="#cb25-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-127"><a href="#cb25-127" aria-hidden="true" tabindex="-1"></a>We can also get a huge data frame. </span>
-<span id="cb25-128"><a href="#cb25-128" aria-hidden="true" tabindex="-1"></a>If you are comfortable manipulating data frames, you can use all your regular techniques here. Here I use tidyverse tools to reshape and plot the posterior distribution of the three $\sigma$ variables:</span>
-<span id="cb25-129"><a href="#cb25-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-132"><a href="#cb25-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-133"><a href="#cb25-133" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="sc">|&gt;</span> </span>
-<span id="cb25-134"><a href="#cb25-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"sigma"</span>), </span>
-<span id="cb25-135"><a href="#cb25-135" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"sigma"</span>, </span>
-<span id="cb25-136"><a href="#cb25-136" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-137"><a href="#cb25-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span> </span>
-<span id="cb25-138"><a href="#cb25-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
-<span id="cb25-139"><a href="#cb25-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sigma)</span>
-<span id="cb25-140"><a href="#cb25-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-141"><a href="#cb25-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-142"><a href="#cb25-142" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb25-143"><a href="#cb25-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## Caution</span></span>
-<span id="cb25-144"><a href="#cb25-144" aria-hidden="true" tabindex="-1"></a>Parameters from a posterior are NOT independent. If you want to combine parameters in any way (to calculate an average for example) you have to do it WITHIN each posterior sample. Work on ROWS of the draws data frame above</span>
-<span id="cb25-145"><a href="#cb25-145" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb25-146"><a href="#cb25-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-147"><a href="#cb25-147" aria-hidden="true" tabindex="-1"></a><span class="fu">### Calculate the posterior distribution of average abundance for each species</span></span>
-<span id="cb25-148"><a href="#cb25-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-149"><a href="#cb25-149" aria-hidden="true" tabindex="-1"></a>To do this we need to extract the average $mu$ and add it to the species effects, $\beta_{\text{species}}$</span>
-<span id="cb25-150"><a href="#cb25-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-153"><a href="#cb25-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-154"><a href="#cb25-154" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
-<span id="cb25-155"><a href="#cb25-155" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"spp_effects"</span>),</span>
-<span id="cb25-156"><a href="#cb25-156" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
-<span id="cb25-157"><a href="#cb25-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-158"><a href="#cb25-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-159"><a href="#cb25-159" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="sc">|&gt;</span> </span>
-<span id="cb25-160"><a href="#cb25-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(mu, <span class="fu">starts_with</span>(<span class="st">"spp_effects"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb25-161"><a href="#cb25-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">row_id =</span> <span class="fu">seq_along</span>(mu)) <span class="sc">|&gt;</span> </span>
-<span id="cb25-162"><a href="#cb25-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"row_id"</span>), </span>
-<span id="cb25-163"><a href="#cb25-163" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"parname"</span>, </span>
-<span id="cb25-164"><a href="#cb25-164" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"spp_effect"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb25-165"><a href="#cb25-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effect) <span class="sc">|&gt;</span> </span>
-<span id="cb25-166"><a href="#cb25-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> spp_avg, <span class="at">group =</span> parname)) <span class="sc">+</span> </span>
-<span id="cb25-167"><a href="#cb25-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
-<span id="cb25-168"><a href="#cb25-168" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-169"><a href="#cb25-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-170"><a href="#cb25-170" aria-hidden="true" tabindex="-1"></a><span class="fu">## with rvars</span></span>
-<span id="cb25-171"><a href="#cb25-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-172"><a href="#cb25-172" aria-hidden="true" tabindex="-1"></a>We can do the same operation even more quickly by using some of the tools from tidybayes</span>
-<span id="cb25-173"><a href="#cb25-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-176"><a href="#cb25-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-177"><a href="#cb25-177" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp <span class="sc">|&gt;</span> </span>
-<span id="cb25-178"><a href="#cb25-178" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(mu, spp_effects[spp_id])</span>
-<span id="cb25-179"><a href="#cb25-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb25-180"><a href="#cb25-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-183"><a href="#cb25-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb25-184"><a href="#cb25-184" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="sc">|&gt;</span> </span>
-<span id="cb25-185"><a href="#cb25-185" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effects) <span class="sc">|&gt;</span> </span>
-<span id="cb25-186"><a href="#cb25-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">dist =</span> spp_avg, <span class="at">group =</span> spp_id)) <span class="sc">+</span> </span>
-<span id="cb25-187"><a href="#cb25-187" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_slab</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
-<span id="cb25-188"><a href="#cb25-188" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb25-189"><a href="#cb25-189" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb25-190"><a href="#cb25-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<div class="sourceCode" id="cb24" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co">  Fitting an intercept-only model</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">  Where is the variation</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: true</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Resources</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="co">[</span><span class="ot">tidybayes</span><span class="co">](http://mjskay.github.io/tidybayes/index.html)</span> is an incredible tool, and the vignette is a great read for visualization approaches (even if you aren't using <span class="in">`rvars`</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the <span class="co">[</span><span class="ot">posterior package</span><span class="co">](https://mc-stan.org/posterior/)</span> is the best place to learn about how to manipulate Stan posterior distributions.</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>\text{Abundance}_i &amp;\sim \text{Poisson}(\lambda_i) <span class="sc">\\</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>\log{\lambda_i} &amp;\sim \mu + \beta_{\text{sample}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>} + \beta_{\text{species<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}} + \beta_i<span class="sc">\\</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>\mu &amp;\sim \text{Normal}(3, 1)<span class="sc">\\</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>\beta_{\text{sample}} &amp;\sim \text{Normal}(0,  \sigma_{\text{samp}})<span class="sc">\\</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>\beta_{\text{species}} &amp;\sim \text{Normal}(0, \sigma_{\text{species}})<span class="sc">\\</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>\beta_i &amp;\sim \text{Normal}(0,                \sigma_{\text{obs}}) <span class="sc">\\</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>\sigma_{\text{samp}}    &amp;\sim \text{Exponential}(3)<span class="sc">\\</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>\sigma_{\text{species}} &amp;\sim \text{Exponential}(3)<span class="sc">\\</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>\sigma_{\text{obs}}     &amp;\sim \text{Exponential}(3)</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">colnames</span>(mite)</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>spp_names <span class="ot">&lt;-</span> <span class="fu">setNames</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mite), <span class="fu">colnames</span>(mite))</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>mite_long <span class="ot">&lt;-</span> mite <span class="sc">|&gt;</span> </span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site_id =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(mite))) <span class="sc">|&gt;</span> </span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>site_id,</span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">"spp"</span>,</span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">"abd"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">spp_id =</span> spp_names[spp])</span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.stan"</span>, </span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts</span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a>Now we can sample this model. </span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## Warning: irresponsible statistics</span></span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a>I'm sampling only 2 chains below, for illustration purposes only! use more chains in your research.</span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> spp_site_obs_intercepts<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(</span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="fu">nrow</span>(mite_long),</span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_spp =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>spp_id),</span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">spp_id =</span> mite_long<span class="sc">$</span>spp_id,</span>
+<span id="cb24-79"><a href="#cb24-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_sites =</span> <span class="fu">max</span>(mite_long<span class="sc">$</span>site_id),</span>
+<span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_id =</span> mite_long<span class="sc">$</span>site_id,</span>
+<span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">abd =</span> mite_long<span class="sc">$</span>abd</span>
+<span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a>  ),<span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>)</span>
+<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">save_object</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span>
+<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-90"><a href="#cb24-90" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/intercept_only/spp_site_obs_intercepts.rds"</span>)</span>
+<span id="cb24-91"><a href="#cb24-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-92"><a href="#cb24-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-93"><a href="#cb24-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exploring the model output</span></span>
+<span id="cb24-94"><a href="#cb24-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-97"><a href="#cb24-97" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-98"><a href="#cb24-98" aria-hidden="true" tabindex="-1"></a>spp_site_obs_intercepts_samp</span>
+<span id="cb24-99"><a href="#cb24-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-100"><a href="#cb24-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-101"><a href="#cb24-101" aria-hidden="true" tabindex="-1"></a>The sampler was just fine! Note that we have just estimated many more parameters than observations.</span>
+<span id="cb24-102"><a href="#cb24-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-103"><a href="#cb24-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Plot the standard deviations</span></span>
+<span id="cb24-104"><a href="#cb24-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-107"><a href="#cb24-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-108"><a href="#cb24-108" aria-hidden="true" tabindex="-1"></a>sigma_post <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
+<span id="cb24-109"><a href="#cb24-109" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>))</span>
+<span id="cb24-110"><a href="#cb24-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-111"><a href="#cb24-111" aria-hidden="true" tabindex="-1"></a>sigma_post</span>
+<span id="cb24-112"><a href="#cb24-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-113"><a href="#cb24-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-114"><a href="#cb24-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-115"><a href="#cb24-115" aria-hidden="true" tabindex="-1"></a>The default output is a draws array</span>
+<span id="cb24-116"><a href="#cb24-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-119"><a href="#cb24-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-120"><a href="#cb24-120" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
+<span id="cb24-121"><a href="#cb24-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"sigma_spp"</span>, <span class="st">"sigma_sites"</span>, <span class="st">"sigma_obs"</span>),</span>
+<span id="cb24-122"><a href="#cb24-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
+<span id="cb24-123"><a href="#cb24-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-124"><a href="#cb24-124" aria-hidden="true" tabindex="-1"></a>sigma_post_df</span>
+<span id="cb24-125"><a href="#cb24-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-126"><a href="#cb24-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-127"><a href="#cb24-127" aria-hidden="true" tabindex="-1"></a>We can also get a huge data frame. </span>
+<span id="cb24-128"><a href="#cb24-128" aria-hidden="true" tabindex="-1"></a>If you are comfortable manipulating data frames, you can use all your regular techniques here. Here I use tidyverse tools to reshape and plot the posterior distribution of the three $\sigma$ variables:</span>
+<span id="cb24-129"><a href="#cb24-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-132"><a href="#cb24-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-133"><a href="#cb24-133" aria-hidden="true" tabindex="-1"></a>sigma_post_df <span class="sc">|&gt;</span> </span>
+<span id="cb24-134"><a href="#cb24-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"sigma"</span>), </span>
+<span id="cb24-135"><a href="#cb24-135" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"sigma"</span>, </span>
+<span id="cb24-136"><a href="#cb24-136" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-137"><a href="#cb24-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span> </span>
+<span id="cb24-138"><a href="#cb24-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
+<span id="cb24-139"><a href="#cb24-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sigma)</span>
+<span id="cb24-140"><a href="#cb24-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-141"><a href="#cb24-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-142"><a href="#cb24-142" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb24-143"><a href="#cb24-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## Caution</span></span>
+<span id="cb24-144"><a href="#cb24-144" aria-hidden="true" tabindex="-1"></a>Parameters from a posterior are NOT independent. If you want to combine parameters in any way (to calculate an average for example) you have to do it WITHIN each posterior sample. Work on ROWS of the draws data frame above</span>
+<span id="cb24-145"><a href="#cb24-145" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb24-146"><a href="#cb24-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-147"><a href="#cb24-147" aria-hidden="true" tabindex="-1"></a><span class="fu">### Calculate the posterior distribution of average abundance for each species</span></span>
+<span id="cb24-148"><a href="#cb24-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-149"><a href="#cb24-149" aria-hidden="true" tabindex="-1"></a>To do this we need to extract the average $mu$ and add it to the species effects, $\beta_{\text{species}}$</span>
+<span id="cb24-150"><a href="#cb24-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-153"><a href="#cb24-153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-154"><a href="#cb24-154" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp<span class="sc">$</span><span class="fu">draws</span>(</span>
+<span id="cb24-155"><a href="#cb24-155" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"spp_effects"</span>),</span>
+<span id="cb24-156"><a href="#cb24-156" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"data.frame"</span>)</span>
+<span id="cb24-157"><a href="#cb24-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-158"><a href="#cb24-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-159"><a href="#cb24-159" aria-hidden="true" tabindex="-1"></a>spp_avg_effects_df <span class="sc">|&gt;</span> </span>
+<span id="cb24-160"><a href="#cb24-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(mu, <span class="fu">starts_with</span>(<span class="st">"spp_effects"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb24-161"><a href="#cb24-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">row_id =</span> <span class="fu">seq_along</span>(mu)) <span class="sc">|&gt;</span> </span>
+<span id="cb24-162"><a href="#cb24-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"row_id"</span>), </span>
+<span id="cb24-163"><a href="#cb24-163" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"parname"</span>, </span>
+<span id="cb24-164"><a href="#cb24-164" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"spp_effect"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-165"><a href="#cb24-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effect) <span class="sc">|&gt;</span> </span>
+<span id="cb24-166"><a href="#cb24-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> spp_avg, <span class="at">group =</span> parname)) <span class="sc">+</span> </span>
+<span id="cb24-167"><a href="#cb24-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span>
+<span id="cb24-168"><a href="#cb24-168" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-169"><a href="#cb24-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-170"><a href="#cb24-170" aria-hidden="true" tabindex="-1"></a><span class="fu">## with rvars</span></span>
+<span id="cb24-171"><a href="#cb24-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-172"><a href="#cb24-172" aria-hidden="true" tabindex="-1"></a>We can do the same operation even more quickly by using some of the tools from tidybayes</span>
+<span id="cb24-173"><a href="#cb24-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-176"><a href="#cb24-176" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-177"><a href="#cb24-177" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="ot">&lt;-</span> spp_site_obs_intercepts_samp <span class="sc">|&gt;</span> </span>
+<span id="cb24-178"><a href="#cb24-178" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(mu, spp_effects[spp_id])</span>
+<span id="cb24-179"><a href="#cb24-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-180"><a href="#cb24-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-183"><a href="#cb24-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-184"><a href="#cb24-184" aria-hidden="true" tabindex="-1"></a>spp_mu_rvars <span class="sc">|&gt;</span> </span>
+<span id="cb24-185"><a href="#cb24-185" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp_avg =</span> mu <span class="sc">+</span> spp_effects) <span class="sc">|&gt;</span> </span>
+<span id="cb24-186"><a href="#cb24-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">dist =</span> spp_avg, <span class="at">group =</span> spp_id)) <span class="sc">+</span> </span>
+<span id="cb24-187"><a href="#cb24-187" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_slab</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb24-188"><a href="#cb24-188" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb24-189"><a href="#cb24-189" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb24-190"><a href="#cb24-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
