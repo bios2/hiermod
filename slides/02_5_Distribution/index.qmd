@@ -85,7 +85,7 @@ A classic way to write the probability of an event is to use the notation $P$.
 . . . 
 
 :::{style="font-size: 0.7em"}
-*Example*
+***Example***
 :::
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
@@ -111,7 +111,7 @@ In the simplest case, we can either measure the probability of an event to occur
 . . .
 
 :::{style="font-size: 0.7em"}
-*Example*
+***Example***
 :::
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
@@ -142,7 +142,7 @@ However, in probability theory, P(r) can have any value ranging between 0 and 1.
 . . .
 
 :::{style="font-size: 0.7em"}
-*Example*
+***Example***
 :::
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
@@ -159,7 +159,7 @@ At this point we can note that when we add the probabilites of all possible even
 
 . . .
 
-*Example*
+***Example***
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
@@ -180,7 +180,7 @@ Events that are *independent* from each other means that the if an event occurs 
 . . . 
 
 :::{style="font-size: 0.7em"}
-*Example*
+***Example***
 :::
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
@@ -255,7 +255,7 @@ For the sake of conciseness, in this course, we will discuss only the first two 
 
 $$p$$
 
-*Example*
+***Example***
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
@@ -270,7 +270,7 @@ If the probability that it rains is $p=0.14$ in any given day, it means that, on
 **Variance**
 
 $$p(1-p)$$
-*Example*
+***Example***
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
@@ -281,6 +281,147 @@ If the probability that it rains is $p=0.5$ in any given day, it means that, acr
 $$p(1-p)=0.5\times(1-0.5)=0.25\quad\text{and}\quad \sqrt{0.25} = 0.5$$
 :::
 
+
+## Moments of the Bernoulli distribution
+
+If you want to go deeper down and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution
+
+<https://en.wikipedia.org/wiki/Bernoulli_distribution>
+
+
+
 ## Let's make it more complicated
 
-Instead of 
+So far, we focused on a situation where the two events to consider either occur or not. 
+
+. . .
+
+There are many problems were interest lies in studying the likeliness of an event occurring over a known number of independent trials. 
+
+. . .
+
+***Example***
+
+How many rainy day will there be during the five days of our summer school ?
+
+![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width=15%}
+![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width=15%}
+![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width=15%}
+
+## Binomial distribution
+
+Put differently, the binomial distribution is designed to approach questions where we are interested in finding the number of success (e.g. it rains !) out of a known set of independent trials (e.g. the five days of the summer school).
+
+. . . 
+
+The binomial distribution is a generalisation of the Bernoulli distribution
+
+. . . 
+
+It is a common distribution used when sampling is done with replacement
+
+. . . 
+
+Let's take a look at the math of the Binomial distribution
+
+## Binomial distribution
+
+**Probability mass function**
+
+$$\binom{n}{k}p^k(1-p)^{n-k}$$
+
+where
+
+- $n$ : Number of trails
+- $k$ : Number of success (an event occurs)
+- $p$ : Probability that an event occurs
+
+Note that $n \ge k$
+
+## Mathematical technicalities interlude
+
+:::{style="font-size: 0.8em"}
+$$\binom{n}{k}$$
+:::
+
+. . .
+
+:::{style="font-size: 0.8em"}
+$$\frac{n!}{k!(n-k)!}$$
+:::
+
+. . .
+
+:::{style="font-size: 0.8em"}
+$$\frac{n\times(n-1)\times(n-2)\times\dots\times 2\times 1}{(k\times(k-1)\times(k-2)\times\dots\times 2\times 1)(n-k)\times(n-k-1)\times(n-k-2)\times\dots\times 2\times 1}$$
+:::
+
+## Moment of the binomial distribution
+
+Again, for conciseness, we will focus on the first moment (mean) and second moment (variance) of the binomial distribution.
+
+. . .
+
+**Mean**
+
+$$np$$
+
+. . .
+
+**Example**
+
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+If the probability that it rains is $p=0.14$ in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days) 
+
+$$np = 5 \times 0.14 = 0.7$$
+
+
+## Moment of the binomial distribution
+
+**Variance**
+
+$$np(1-p)$$
+
+. . .
+
+**Example**
+
+
+```{r echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
+```
+
+If the probability that it rains is $p=0.5$ in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is
+
+$$np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229$$
+:::
+
+## Binomial distribution 
+
+The binomial distribution is related to many other probability distribution
+
+. . .
+
+- Bernoulli distribution (as we have seen)
+
+. . .
+
+- Poisson distribution (when there are an infinite number of trials)
+
+. . .
+
+- Normal distribution
+
+![](https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png){fig-align="center" width=20%}
+
+## Moments of the binomial distribution
+
+If you want to learn more about the other moments of the binomial distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the binomial distribution
+
+<https://en.wikipedia.org/wiki/binomial_distribution>
+
+

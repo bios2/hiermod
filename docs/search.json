@@ -2266,5 +2266,68 @@
     "title": "Complex hierarchical models",
     "section": "Pumpkinseed growth example",
     "text": "Pumpkinseed growth example\nQuestion\n\nDoes the growth of Pumpkinseed is influenced by water temperature?\n\n\n\n\n\n\n\nTry to build the model that best answer this question\n\n\nTo have the most precise model, we need to account for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink… teachers assistant may have an influence here as well)."
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#lets-make-it-more-complicated",
+    "href": "slides/02_5_Distribution/index.html#lets-make-it-more-complicated",
+    "title": "Probability Distribution",
+    "section": "Let’s make it more complicated",
+    "text": "Let’s make it more complicated\nSo far, we focused on a situation where the two events to consider either occur or not.\n\nThere are many problems were interest lies in studying the likeliness of an event occurring over a known number of independent trials.\n\n\nExample\nHow many rainy day will there be during the five days of our summer school ?"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#binomial-distribution",
+    "href": "slides/02_5_Distribution/index.html#binomial-distribution",
+    "title": "Probability Distribution",
+    "section": "Binomial distribution",
+    "text": "Binomial distribution\nPut differently, the binomial distribution is designed to approach questions where we are interested in finding the number of success (e.g. it rains !) out of a known set of independent trials (e.g. the five days of the summer school).\n\nThe binomial distribution is a generalisation of the Bernoulli distribution\n\n\nIt is a common distribution used when sampling is done with replacement\n\n\nLet’s take a look at the math of the Binomial distribution"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#binomial-distribution-1",
+    "href": "slides/02_5_Distribution/index.html#binomial-distribution-1",
+    "title": "Probability Distribution",
+    "section": "Binomial distribution",
+    "text": "Binomial distribution\nProbability mass function\n\\[\\binom{n}{k}p^k(1-p)^{n-k}\\]\nwhere\n\n\\(n\\) : Number of trails\n\\(k\\) : Number of success (an event occurs)\n\\(p\\) : Probability that an event occurs\n\nNote that \\(n \\ge k\\)"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#binomial-distribution-2",
+    "href": "slides/02_5_Distribution/index.html#binomial-distribution-2",
+    "title": "Probability Distribution",
+    "section": "Binomial distribution",
+    "text": "Binomial distribution\nThe binomial distribution is related to many other probability distribution\n\n\nBernoulli distribution (as we have seen)\n\n\n\n\nPoisson distribution (when there are an infinite number of trials)\n\n\n\n\nNormal distribution"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#moments-of-the-bernoulli-distribution-2",
+    "href": "slides/02_5_Distribution/index.html#moments-of-the-bernoulli-distribution-2",
+    "title": "Probability Distribution",
+    "section": "Moments of the Bernoulli distribution",
+    "text": "Moments of the Bernoulli distribution\nIf you want to go deeper down and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution\nhttps://en.wikipedia.org/wiki/Bernoulli_distribution"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#mathematical-technicalities-interlude",
+    "href": "slides/02_5_Distribution/index.html#mathematical-technicalities-interlude",
+    "title": "Probability Distribution",
+    "section": "Mathematical technicalities interlude",
+    "text": "Mathematical technicalities interlude\n\n\\[\\binom{n}{k}\\]\n\n\n\n\\[\\frac{n!}{k!(n-k)!}\\]\n\n\n\n\n\\[\\frac{n\\times(n-1)\\times(n-2)\\times\\dots\\times 2\\times 1}{(k\\times(k-1)\\times(k-2)\\times\\dots\\times 2\\times 1)(n-k)\\times(n-k-1)\\times(n-k-2)\\times\\dots\\times 2\\times 1}\\]"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#moment-of-the-binomial-distribution",
+    "href": "slides/02_5_Distribution/index.html#moment-of-the-binomial-distribution",
+    "title": "Probability Distribution",
+    "section": "Moment of the binomial distribution",
+    "text": "Moment of the binomial distribution\nAgain, for conciseness, we will focus on the first moment (mean) and second moment (variance) of the binomial distribution.\n\nMean\n\\[np\\]\n\n\nExample\n\n\n\n\n\n\n\n\n\nIf the probability that it rains is \\(p=0.14\\) in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days)\n\\[np = 5 \\times 0.14 = 0.7\\]"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#moment-of-the-binomial-distribution-1",
+    "href": "slides/02_5_Distribution/index.html#moment-of-the-binomial-distribution-1",
+    "title": "Probability Distribution",
+    "section": "Moment of the binomial distribution",
+    "text": "Moment of the binomial distribution\nVariance\n\\[np(1-p)\\]\n\nExample\n\n\n\n\n\n\n\n\n\nIf the probability that it rains is \\(p=0.5\\) in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is\n\\[np(1-p)=7 \\times 0.5\\times(1-0.5)=1.75\\quad\\text{and}\\quad \\sqrt{1.75} = 1.3229\\] :::"
+  },
+  {
+    "objectID": "slides/02_5_Distribution/index.html#moments-of-the-binomial-distribution",
+    "href": "slides/02_5_Distribution/index.html#moments-of-the-binomial-distribution",
+    "title": "Probability Distribution",
+    "section": "Moments of the binomial distribution",
+    "text": "Moments of the binomial distribution\nIf you want to learn more about the other moments of the binomial distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the binomial distribution\nhttps://en.wikipedia.org/wiki/binomial_distribution"
   }
 ]

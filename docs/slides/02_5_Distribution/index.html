@@ -400,7 +400,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.7em">
-<p><em>Example</em></p>
+<p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -429,7 +429,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.7em">
-<p><em>Example</em></p>
+<p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -460,7 +460,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.7em">
-<p><em>Example</em></p>
+<p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -480,7 +480,7 @@ Guillaume Blanchet – Andrew MacDonald
 <h2>Probabilities and events</h2>
 <p>At this point we can note that when we add the probabilites of all possible events, the sum will always be 1</p>
 <div class="fragment">
-<p><em>Example</em></p>
+<p><strong><em>Example</em></strong></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -503,7 +503,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.7em">
-<p><em>Example</em></p>
+<p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -572,7 +572,7 @@ p \quad &amp; \text{if} \quad x =1\\
 <p>For the sake of conciseness, in this course, we will discuss only the first two moments of distributions.</p>
 <p><strong>Mean</strong></p>
 <p><span class="math display">\[p\]</span></p>
-<p><em>Example</em></p>
+<p><strong><em>Example</em></strong></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -589,7 +589,7 @@ p \quad &amp; \text{if} \quad x =1\\
 <h2>Moments of the Bernoulli distribution</h2>
 <div style="font-size: 0.8em">
 <p><strong>Variance</strong></p>
-<p><span class="math display">\[p(1-p)\]</span> <em>Example</em></p>
+<p><span class="math display">\[p(1-p)\]</span> <strong><em>Example</em></strong></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -602,9 +602,137 @@ p \quad &amp; \text{if} \quad x =1\\
 <p>If the probability that it rains is <span class="math inline">\(p=0.5\)</span> in any given day, it means that, across multiple weeks, some weeks might have no rain while some weeks it might rain all days because the variance is</p>
 <p><span class="math display">\[p(1-p)=0.5\times(1-0.5)=0.25\quad\text{and}\quad \sqrt{0.25} = 0.5\]</span></p>
 </div>
+</section>
+<section id="moments-of-the-bernoulli-distribution-2" class="slide level2">
+<h2>Moments of the Bernoulli distribution</h2>
+<p>If you want to go deeper down and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution</p>
+<p><a href="https://en.wikipedia.org/wiki/Bernoulli_distribution" class="uri">https://en.wikipedia.org/wiki/Bernoulli_distribution</a></p>
+</section>
+<section id="lets-make-it-more-complicated" class="slide level2">
+<h2>Let’s make it more complicated</h2>
+<p>So far, we focused on a situation where the two events to consider either occur or not.</p>
+<div class="fragment">
+<p>There are many problems were interest lies in studying the likeliness of an event occurring over a known number of independent trials.</p>
+</div>
+<div class="fragment">
+<p><strong><em>Example</em></strong></p>
+<p>How many rainy day will there be during the five days of our summer school ?</p>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"> <img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"> <img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"></p>
+</div>
+</section>
+<section id="binomial-distribution" class="slide level2">
+<h2>Binomial distribution</h2>
+<p>Put differently, the binomial distribution is designed to approach questions where we are interested in finding the number of success (e.g.&nbsp;it rains !) out of a known set of independent trials (e.g.&nbsp;the five days of the summer school).</p>
+<div class="fragment">
+<p>The binomial distribution is a generalisation of the Bernoulli distribution</p>
+</div>
+<div class="fragment">
+<p>It is a common distribution used when sampling is done with replacement</p>
+</div>
+<div class="fragment">
+<p>Let’s take a look at the math of the Binomial distribution</p>
+</div>
+</section>
+<section id="binomial-distribution-1" class="slide level2">
+<h2>Binomial distribution</h2>
+<p><strong>Probability mass function</strong></p>
+<p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(n\)</span> : Number of trails</li>
+<li><span class="math inline">\(k\)</span> : Number of success (an event occurs)</li>
+<li><span class="math inline">\(p\)</span> : Probability that an event occurs</li>
+</ul>
+<p>Note that <span class="math inline">\(n \ge k\)</span></p>
+</section>
+<section id="mathematical-technicalities-interlude" class="slide level2">
+<h2>Mathematical technicalities interlude</h2>
+<div style="font-size: 0.8em">
+<p><span class="math display">\[\binom{n}{k}\]</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p><span class="math display">\[\frac{n!}{k!(n-k)!}\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p><span class="math display">\[\frac{n\times(n-1)\times(n-2)\times\dots\times 2\times 1}{(k\times(k-1)\times(k-2)\times\dots\times 2\times 1)(n-k)\times(n-k-1)\times(n-k-2)\times\dots\times 2\times 1}\]</span></p>
+</div>
+</div>
+</section>
+<section id="moment-of-the-binomial-distribution" class="slide level2">
+<h2>Moment of the binomial distribution</h2>
+<p>Again, for conciseness, we will focus on the first moment (mean) and second moment (variance) of the binomial distribution.</p>
+<div class="fragment">
+<p><strong>Mean</strong></p>
+<p><span class="math display">\[np\]</span></p>
+</div>
+<div class="fragment">
+<p><strong>Example</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If the probability that it rains is <span class="math inline">\(p=0.14\)</span> in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days)</p>
+<p><span class="math display">\[np = 5 \times 0.14 = 0.7\]</span></p>
+</div>
+</section>
+<section id="moment-of-the-binomial-distribution-1" class="slide level2">
+<h2>Moment of the binomial distribution</h2>
+<p><strong>Variance</strong></p>
+<p><span class="math display">\[np(1-p)\]</span></p>
+<div class="fragment">
+<p><strong>Example</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If the probability that it rains is <span class="math inline">\(p=0.5\)</span> in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is</p>
+<p><span class="math display">\[np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229\]</span> :::</p>
+</div>
+</section>
+<section id="binomial-distribution-2" class="slide level2">
+<h2>Binomial distribution</h2>
+<p>The binomial distribution is related to many other probability distribution</p>
+<div class="fragment">
+<ul>
+<li>Bernoulli distribution (as we have seen)</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Poisson distribution (when there are an infinite number of trials)</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Normal distribution</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png" style="width:20.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="moments-of-the-binomial-distribution" class="slide level2">
+<h2>Moments of the binomial distribution</h2>
+<p>If you want to learn more about the other moments of the binomial distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the binomial distribution</p>
+<p><a href="https://en.wikipedia.org/wiki/binomial_distribution" class="uri">https://en.wikipedia.org/wiki/binomial_distribution</a></p>
 
-<p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
-<div class="footer footer-default">
+
+<img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
 
 </div>
 </section>
