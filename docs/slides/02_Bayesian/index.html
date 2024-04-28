@@ -483,15 +483,15 @@ Guillaume Blanchet – Andrew MacDonald
 </section>
 <section id="a-few-words-about-the-prior-2" class="slide level2">
 <h2>A few words about the prior</h2>
-<h3 id="informative-priors">Informative priors</h3>
-<p>. . .</p>
+<p><strong>Informative priors</strong></p>
+<div class="fragment">
 <div style="font-size: 0.6em">
-<p><strong>Example</strong> If we know that</p>
+<p><em>Example</em> If we know that</p>
 <ul>
 <li>There are less sugar maples the higher we go</li>
 <li>The influence of elevation on sugar maple cannot be more than two folds</li>
 </ul>
-<h4 id="uniform-distribution">Uniform distribution</h4>
+<p><em>Uniform distribution</em></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><span class="math display">\[f(x)=\left\{
@@ -506,8 +506,17 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 </div>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="480" class="r-stretch quarto-figure-center"></section>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="estimating-bayesian-model" class="slide level2">
 <h2>Estimating Bayesian model</h2>
 <div class="fragment">
@@ -545,48 +554,71 @@ Guillaume Blanchet – Andrew MacDonald
 <img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg/1024px-Anas_platyrhynchos_male_female_quadrat.jpg" style="width:10.0%" class="r-stretch quarto-figure-center"></section>
 <section id="markov-chain-monte-carlo-mcmc-1" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
-<h4 id="a-simplistic-statistical-example">A simplistic statistical example</h4>
-<p>. . .</p>
+<p><strong>A simplistic statistical example</strong></p>
+<div class="fragment">
 <div style="font-size: 0.75em;">
 <p>Let’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm.</p>
 </div>
-<p>. . .</p>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="480" class="r-stretch quarto-figure-center"></section>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="markov-chain-monte-carlo-mcmc-2" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
-<h4 id="a-simplistic-statistical-example-1">A simplistic statistical example</h4>
-<p>. . .</p>
+<p><strong>A simplistic statistical example</strong></p>
+<div class="fragment">
 <div style="font-size: 0.65em;">
 <p>A growth model can be constructed using a simple linear regression</p>
 <p><span class="math display">\[y = \beta_0 + \beta x + \varepsilon\]</span> From this model we can infer that the average weight of a Mallard duck when it hatches is 107 grams (intercept), and the average daily growth of the Mallard is 13.5 grams (slope).</p>
 </div>
-<p>. . .</p>
-
-<img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="576" class="r-stretch quarto-figure-center"></section>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="markov-chain-monte-carlo-mcmc-3" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
-<h4 id="a-simplistic-statistical-example-2">A simplistic statistical example</h4>
+<p><strong>A simplistic statistical example</strong></p>
 <div style="font-size: 0.85em;">
 <p>Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling</p>
 </div>
 <div style="font-size: 0.85em;">
 <p><span class="math inline">\(\beta_0\)</span> as</p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.85em;">
 <p><span class="math display">\[\beta_0 \sim \mathcal{D}(\text{mean}, \text{variance}, \text{skewness}, \text{kurtosis}, \dots)\]</span></p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.85em;">
 <p>and <span class="math inline">\(\beta\)</span> as</p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.85em;">
 <p><span class="math display">\[\beta \sim \mathcal{D}(\text{mean}, \text{variance}, \text{skewness}, \text{kurtosis}, \dots)\]</span></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>In doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the <strong>distribution</strong> of best parameter values.</p>
+</div>
 </div>
 </section>
 <section id="markov-chain-monte-carlo-mcmc-4" class="slide level2">
@@ -655,16 +687,21 @@ Guillaume Blanchet – Andrew MacDonald
 </section>
 <section id="studying-convergence-3" class="slide level2">
 <h2>Studying convergence</h2>
-<h4 id="burn-in">Burn-in</h4>
+<p><strong>Burn-in</strong></p>
 <p>Burn-in is throwing away some iterations at the beginning of the MCMC run</p>
-<p>. . .</p>
-
-<img data-src="index_files/figure-revealjs/burnin1 -1.png" width="960" class="r-stretch"></section>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="index_files/figure-revealjs/burnin1 -1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
 <section id="studying-convergence-4" class="slide level2">
 <h2>Studying convergence</h2>
-<h4 id="burn-in-1">Burn-in</h4>
+<p><strong>Burn-in</strong></p>
 <p>After burn-in, we obtain</p>
-<p>. . .</p>
+<div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
 <p><img data-src="index_files/figure-revealjs/burnin2 -1.png" width="960"></p>
@@ -674,6 +711,7 @@ Guillaume Blanchet – Andrew MacDonald
 <p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
 <div class="footer footer-default">
 
+</div>
 </div>
 </section>
     </div>

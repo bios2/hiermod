@@ -194,17 +194,17 @@ legend("topright",legend=c(expression(sigma==1),
 
 ## A few words about the prior
 
-### Informative priors
+**Informative priors**
 
 . . . 
 
 :::::{style="font-size: 0.6em"}
-**Example** If we know that 
+*Example* If we know that 
   
   - There are less sugar maples the higher we go
   - The influence of elevation on sugar maple cannot be more than two folds
 
-#### Uniform distribution
+*Uniform distribution*
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -267,7 +267,7 @@ To explain what is an MCMC, let's imagine that we are interested in understandin
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg/1024px-Anas_platyrhynchos_male_female_quadrat.jpg){fig-align="center" width=10%}
 
 ## Markov Chain Monte Carlo (MCMC)
-#### A simplistic statistical example
+**A simplistic statistical example**
 
 . . .
 
@@ -297,7 +297,7 @@ reg <- lm(y ~ x)
 ```
 
 ## Markov Chain Monte Carlo (MCMC)
-#### A simplistic statistical example
+**A simplistic statistical example**
 
 . . .
 
@@ -330,7 +330,7 @@ abline(reg = reg, col = "orange", lwd = 8)
 ```
 
 ## Markov Chain Monte Carlo (MCMC)
-#### A simplistic statistical example
+**A simplistic statistical example**
 
 ::: {style="font-size: 0.85em;"}
 Estimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling 
@@ -465,7 +465,7 @@ plot(autoLong, type = "l", xlab = "Steps",
 :::
 
 ## Studying convergence
-#### Burn-in 
+**Burn-in**
 
 Burn-in is throwing away some iterations at the beginning of the MCMC run 
 
@@ -481,7 +481,7 @@ abline(v=500,col="red",lwd=3)
 ```
 
 ## Studying convergence
-#### Burn-in 
+**Burn-in**
 
 After burn-in, we obtain
 

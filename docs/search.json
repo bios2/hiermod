@@ -368,7 +368,7 @@
     "href": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-2",
     "title": "Bayesian modelling",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\nInformative priors\n. . .\n\nExample If we know that\n\nThere are less sugar maples the higher we go\nThe influence of elevation on sugar maple cannot be more than two folds\n\nUniform distribution\n\n\n\\[f(x)=\\left\\{\n  \\begin{array}{cl}\n    \\frac{1}{b-a} & \\text{for } x\\in [a,b]\\\\\n    0 &\\text{otherwise}\\\\\n  \\end{array}\n\\right.\\]\n\n\\(a &gt; -2\\)\n\\(b &lt; 0\\)"
+    "text": "A few words about the prior\nInformative priors\n\n\nExample If we know that\n\nThere are less sugar maples the higher we go\nThe influence of elevation on sugar maple cannot be more than two folds\n\nUniform distribution\n\n\n\\[f(x)=\\left\\{\n  \\begin{array}{cl}\n    \\frac{1}{b-a} & \\text{for } x\\in [a,b]\\\\\n    0 &\\text{otherwise}\\\\\n  \\end{array}\n\\right.\\]\n\n\\(a &gt; -2\\)\n\\(b &lt; 0\\)"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#estimating-bayesian-model",
@@ -389,21 +389,21 @@
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-1",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n. . .\n\nLet’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm.\n\n. . ."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nLet’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-2",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-2",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n. . .\n\nA growth model can be constructed using a simple linear regression\n\\[y = \\beta_0 + \\beta x + \\varepsilon\\] From this model we can infer that the average weight of a Mallard duck when it hatches is 107 grams (intercept), and the average daily growth of the Mallard is 13.5 grams (slope).\n\n. . ."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nA growth model can be constructed using a simple linear regression\n\\[y = \\beta_0 + \\beta x + \\varepsilon\\] From this model we can infer that the average weight of a Mallard duck when it hatches is 107 grams (intercept), and the average daily growth of the Mallard is 13.5 grams (slope)."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-3",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-3",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nEstimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling\n\n\n\\(\\beta_0\\) as\n\n. . .\n\n\\[\\beta_0 \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n. . .\n\nand \\(\\beta\\) as\n\n. . .\n\n\\[\\beta \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n\nIn doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the distribution of best parameter values."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nEstimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling\n\n\n\\(\\beta_0\\) as\n\n\n\n\\[\\beta_0 \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n\n\n\nand \\(\\beta\\) as\n\n\n\n\n\\[\\beta \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n\nIn doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the distribution of best parameter values."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-4",
@@ -459,14 +459,14 @@
     "href": "slides/02_Bayesian/index.html#studying-convergence-3",
     "title": "Bayesian modelling",
     "section": "Studying convergence",
-    "text": "Studying convergence\nBurn-in\nBurn-in is throwing away some iterations at the beginning of the MCMC run\n. . ."
+    "text": "Studying convergence\nBurn-in\nBurn-in is throwing away some iterations at the beginning of the MCMC run"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#studying-convergence-4",
     "href": "slides/02_Bayesian/index.html#studying-convergence-4",
     "title": "Bayesian modelling",
     "section": "Studying convergence",
-    "text": "Studying convergence\nBurn-in\nAfter burn-in, we obtain\n. . ."
+    "text": "Studying convergence\nBurn-in\nAfter burn-in, we obtain"
   },
   {
     "objectID": "slides/01_Data/index.html#illustrative-datasets",
