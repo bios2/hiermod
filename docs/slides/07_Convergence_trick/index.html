@@ -10,8 +10,8 @@
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.3.450">
 
-  <meta name="author" content="Guillaume Blanchet – Andrew MacDonald – Vincent Tolon">
-  <meta name="dcterms.date" content="2023-05-10">
+  <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
+  <meta name="dcterms.date" content="2024-05-01">
   <title>Modèles hiérarchiques pour les sciences de la vie - Convergence trick</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -331,12 +331,12 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Guillaume Blanchet – Andrew MacDonald – Vincent Tolon 
+Guillaume Blanchet – Andrew MacDonald 
 </div>
 </div>
 </div>
 
-  <p class="date">2023-05-10</p>
+  <p class="date">2024-05-01</p>
 </section>
 <section id="playing-with-the-gaussian-distribution" class="slide level2" style="font-size: 0.9em">
 <h2>Playing with the Gaussian distribution</h2>
@@ -362,35 +362,39 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 </section>
 <section id="the-convergence-trick-1" class="slide level2" style="font-size: 0.9em">
 <h2>The convergence trick</h2>
-<h3 id="translation">Translation</h3>
+<p><strong>Translation</strong></p>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="1920" class="r-stretch quarto-figure-center"></section>
 <section id="the-convergence-trick-2" class="slide level2">
 <h2>The convergence trick</h2>
-<h3 id="translation-1">Translation</h3>
+<p><strong>Translation</strong></p>
 <p>Mathematically, translation is the equivalent of adding or subtracting a value from the mean of the distribution.</p>
-<p>. . .</p>
+<div class="fragment">
 <p>This means that</p>
 <p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span></p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>is exactly the same as</p>
 <p><span class="math display">\[\mathcal{N}(0, \sigma^2) + \mu\]</span></p>
+</div>
 </section>
 <section id="the-convergence-trick-3" class="slide level2">
 <h2>The convergence trick</h2>
-<h3 id="scaling">Scaling</h3>
+<p><strong>Scaling</strong></p>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch quarto-figure-center"></section>
 <section id="the-convergence-trick-4" class="slide level2">
 <h2>The convergence trick</h2>
-<h3 id="scaling-1">Scaling</h3>
+<p><strong>Scaling</strong></p>
 <p>Mathematically, scaling amounts to multiplying the Gaussian distribution by a positive number.</p>
-<p>. . .</p>
+<div class="fragment">
 <p>This means that</p>
 <p><span class="math display">\[\mathcal{N}(\mu, \sigma^2)\]</span></p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>is exactly the same as</p>
 <p><span class="math display">\[\mathcal{N}(\mu, 1) \times \sigma^2\]</span></p>
+</div>
 </section>
 <section id="the-convergence-trick-5" class="slide level2">
 <h2>The convergence trick</h2>
@@ -443,7 +447,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="the-convergence-trick-10" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">The convergence trick</h2>
 <h3 id="multivariate-gaussian-distribution">Multivariate Gaussian distribution</h3>
-<h4 id="translation-2">Translation</h4>
+<h4 id="translation">Translation</h4>
 <p>For a multivariate distribution, a translation amounts to adding a <strong>vector</strong> of values to make the translation.</p>
 <p>Mathematically, this means that</p>
 <p><span class="math display">\[\mathcal{MVN}\left(
@@ -467,7 +471,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="the-convergence-trick-11" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">The convergence trick</h2>
 <h3 id="multivariate-gaussian-distribution-1">Multivariate Gaussian distribution</h3>
-<h4 id="scaling-2">Scaling</h4>
+<h4 id="scaling">Scaling</h4>
 <p>Unlike for the univariate Gaussian distribution, scalling for a multivariate distribution is a little trickier to perform… But mathematician and statistician have worked hard to figure out how to do this properly.</p>
 <p>However, we need to delve a little deeper into matrix algebra to understand how to scale a multivariate Gaussian distribution.</p>
 </section>
@@ -535,7 +539,7 @@ Guillaume Blanchet – Andrew MacDonald – Vincent Tolon
 <section id="the-convergence-trick-12" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">The convergence trick</h2>
 <h3 id="multivariate-gaussian-distribution-2">Multivariate Gaussian distribution</h3>
-<h4 id="scaling-3">Scaling</h4>
+<h4 id="scaling-1">Scaling</h4>
 <div style="font-size: 0.7em">
 <p>To scale the following multivariate Gaussian distribution <span class="math display">\[\mathcal{MVN}\left(\boldsymbol{\mu},\mathbf{\Sigma}\right),\]</span></p>
 <p>The following steps need to be applied</p>

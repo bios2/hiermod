@@ -15,7 +15,7 @@ format:
     background-transition: fade
 ---
 
-### Basic regression model
+## Basic regression model
 
 ::: {style="font-size: 0.8em"}
 Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.
@@ -186,7 +186,7 @@ As we will see later in this course, this writting style will become particularl
 
 ## Regression parameters
 
-### Variance of the model ($\sigma^2$)
+**Variance of the model ($\sigma^2$)**
 
 ::: {style="font-size: 0.75em"}
 In essence, $\sigma^2$ tells us about what the model could not account for.
@@ -216,7 +216,7 @@ y_obs_small <- rnorm(100, mean = y_mean, sd = obs_error_small)
 par(mfrow = c(1,2),
     mar = c(6,7,3,0.1))
 
-plot(humidity, b.exemplaris,
+plot(humidity, y_obs,
      pch = 19,
      col="blue", 
      las=1,
@@ -252,11 +252,12 @@ mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
 
 
 # For the next slide
+b.exemplaris <- y_obs
 i.chicktighii <- y_obs_small
 ```
 
 ## Regression parameters
-### Variance of the model ($\sigma^2$)
+**Variance of the model ($\sigma^2$)**
 
 By regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using `summary.lm`)
 
@@ -273,7 +274,7 @@ summaryRegIchicktighii <- summary(regIchicktighii)
 ```
 
 ## Regression parameters
-### Variance of the model ($\sigma^2$)
+**Variance of the model ($\sigma^2$)**
 
 :::: {.columns}
 
@@ -331,7 +332,7 @@ $$
 . . . 
 
 ::: {style="font-size: 0.85em"}
-Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in genral.
+Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in general.
 :::
 
 . . .
@@ -572,7 +573,7 @@ $$
 $$
 
 ## Multiple linear regression
-### Matrix notation
+**Matrix notation**
 
 $$
 \mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
@@ -645,7 +646,7 @@ $$
 where $g$ is the link function and $g^{-1}$ the inverse link function.
 
 ## Generalized linear models
-### Link functions
+**Link functions**
 
 ::: {style="font-size: 0.75em"}
 There are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.
@@ -659,7 +660,7 @@ Arguably the most common link function in ecology is
 
 . . .
 
-**logit link function**
+*logit link function*
 
 ::: {style="font-size: 0.75em"}
 It is commonly used for modelling binary (0-1) data.
@@ -680,13 +681,13 @@ $$
 :::
 
 ## Generalized linear models
-### Link functions
+**Link functions**
 
 Another commonly used link function is
 
 . . .
 
-**log link function**
+*log link function*
 
 It is commonly used for modelling count data.
 
