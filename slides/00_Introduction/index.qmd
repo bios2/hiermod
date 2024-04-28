@@ -25,7 +25,7 @@ format:
 **Password : **
 
 
-## Dos and don'ts at the Jouvence
+## Dos and don'ts at Jouvence
 
 Kim will give us a quick explanation about this
 
@@ -113,6 +113,35 @@ We assume you know one and are conformtable using it... We are more comfortable 
 :::{layout="[[-1], [1], [-1]]"}
 We also want to learn about your research... and this might influence what we see during the course !
 :::
+
+## Course general structure
+
+```{r,echo=FALSE, fig.align='center'}
+# Define the coordinates for the first triangle
+triangle1 <- matrix(c(0, 0,
+                      3, 0,
+                      0, 1), byrow = TRUE, ncol = 2)
+
+# Define the coordinates for the second triangle (shifted but with the same size as the first triangle)
+triangle2 <- matrix(c(3, 1,
+                      0, 1,
+                      3, 0), byrow = TRUE, ncol = 2)
+
+# Plot the triangles
+par(mar = c(0,0,0,0))
+plot(0, 0, type = "n", 
+     xlim = c(-1, 3),
+     ylim = c(-1, 1), xlab = "", ylab = "", asp = 1, axes = FALSE)
+
+text(-0.3,0.5, "Work type", srt = 90, cex = 3)
+text(1.5,-0.3, "Time", cex = 3)
+
+polygon(triangle1, col = "blue", lwd = 5, lend = "butt")
+polygon(triangle2, col = "orange", lwd = 5, lend = "butt")
+
+text(0.7,0.3, "Theory", col = "white", cex = 3.5)
+text(2.2,0.7, "Practice", col = "white", cex = 3.5)
+```
 
 ## General daily schedule
 
