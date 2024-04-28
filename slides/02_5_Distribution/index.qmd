@@ -400,6 +400,13 @@ If the probability that it rains is $p=0.5$ in any given day, it means that, acr
 $$np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229$$
 :::
 
+## Moments of the binomial distribution
+
+If you want to learn more about the other moments of the binomial distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the binomial distribution
+
+<https://en.wikipedia.org/wiki/binomial_distribution>
+
+
 ## Binomial distribution 
 
 The binomial distribution is related to many other probability distribution
@@ -410,7 +417,7 @@ The binomial distribution is related to many other probability distribution
 
 . . .
 
-- Poisson distribution (when there are an infinite number of trials)
+- Poisson distribution (when there are an infinite number of trials while $np$ converge to a finite value)
 
 . . .
 
@@ -418,10 +425,182 @@ The binomial distribution is related to many other probability distribution
 
 ![](https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png){fig-align="center" width=20%}
 
-## Moments of the binomial distribution
 
-If you want to learn more about the other moments of the binomial distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the binomial distribution
+## Jia Xian triangle
 
-<https://en.wikipedia.org/wiki/binomial_distribution>
+![](https://upload.wikimedia.org/wikipedia/commons/e/ea/Yanghui_triangle.gif){fig-align="center"}
 
 
+## Pascal's triangle
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/66/TrianguloPascal.jpg){fig-align="center"}
+
+## Pascal's triangle
+
+
+![](https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif){fig-align="center" width=50%}
+
+:::{style="font-size: 0.7em"}
+## Pascal's triangle and the binomial distribution
+
+The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
+
+**If $n = 3$**
+
+*When $k=0$*
+
+::::{style="font-size: 0.75em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{0}\times0.5^0 \times (1-0.5)^{(3-0)}=0.125$$
+::::
+
+*When $k=1$*
+
+::::{style="font-size: 0.75em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{1}\times0.5^1 \times (1-0.5)^{(3-1)}=0.375$$
+::::
+
+*When $k=2$*
+
+::::{style="font-size: 0.75em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{2}\times0.5^1 \times (1-0.5)^{(3-2)}=0.375$$
+::::
+
+*When $k=3$*
+
+::::{style="font-size: 0.75em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{3}\times0.5^1 \times (1-0.5)^{(3-3)}=0.125$$
+::::
+:::
+
+## Pascal's triangle and the binomial distribution
+
+The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
+
+**If $n = 3$**
+
+. . .
+
+```{r, echo = FALSE, fig.align='center', fig.height=4}
+barplot(dbinom(0:3,3,0.5), col = "blue", axes = FALSE)
+```
+
+## Pascal's triangle and the binomial distribution
+
+The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
+
+**If $n = 10$**
+
+. . .
+
+```{r, echo = FALSE, fig.align='center', fig.height=4}
+barplot(dbinom(0:10,10,0.5), col = "blue", axes = FALSE)
+```
+
+
+## Pascal's triangle and the binomial distribution
+
+The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
+
+**If $n = 50$**
+
+. . .
+
+```{r, echo = FALSE, fig.align='center', fig.height=4}
+barplot(dbinom(0:50,50,0.5), col = "blue", axes = FALSE)
+```
+
+## Pascal's triangle and the binomial distribution
+
+The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
+
+**If $n = 200$**
+
+. . .
+
+```{r, echo = FALSE, fig.align='center', fig.height=4}
+barplot(dbinom(0:200,200,0.5), col = "blue", axes = FALSE)
+```
+
+## Binomial and Gaussian distribution
+
+If the number trials ($n$) is large enough, it approximate to a Gaussian distribution
+
+```{r, echo = FALSE, fig.align='center', fig.height=4}
+par(mfrow = c(1,2), mar = c(1,1,1,1))
+barplot(dbinom(0:100,100,0.5),
+        col = "blue", axes = FALSE, main = "Binomial (n = 100)")
+
+xPoly <- seq(-6,6,l=2000)
+yPoly <- dnorm(xPoly)
+
+sel <- which(xPoly >= -6 & xPoly <= 6)
+xPolySel <- c(xPoly[sel],xPoly[sel[1]])
+yPolySel <- c(yPoly[sel],yPoly[sel[1]])
+n <- length(xPolySel)
+
+plot(0,0,type="n",xlim=c(-10,10),ylim=c(0.0125,0.385),
+     axes=FALSE, xlab = "", ylab = "", main = "Gaussian")
+
+polygon(xPolySel[n:1],yPolySel,col="orange",border = NA)
+curve(dnorm(x),-10,10,n=2000,xlab="",ylab="",add=TRUE)
+
+```
+
+## Gaussian (Normal) distribution
+
+
+```{r echo=FALSE, out.width="35%", fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Carl_Friedrich_Gauss_1840_by_Jensen.jpg/804px-Carl_Friedrich_Gauss_1840_by_Jensen.jpg")
+```
+::: {.r-stack}
+Carl Friedrich Gauss (1777-1855)
+:::
+
+## Gaussian (Normal) distribution
+
+Unlike the binomial distribution, the Gaussian distribution is a continuous distribution
+
+. . . 
+
+It is the a very common distribution that is underlying many random natural phenomenon and it is the basis of statistical theory
+
+. . . 
+
+Let's take a look at the mathematical formulation of the Gaussian distribution
+
+## Gaussian (Normal) distribution
+
+**Probability density function**
+
+$$\frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}$$
+
+where
+
+- $x$ : continuous variable of interest
+- $\mu$ : The mean of the distribution
+- $\sigma$ : The standard deviation of the distribution
+
+## Moment of the Gaussian distribution
+
+**Mean**
+
+$$\mu$$
+
+***Example***
+
+
+![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=50%}
+
+Let's say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a mean of $\mu$. We will look at this in more details in the practical exercices later today.
+
+## Moment of the Gaussian distribution
+
+**Variance**
+
+$$\sigma^2$$
+
+***Example***
+
+![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=50%}
+
+Let's say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a variance of $\sigma^2$. We will look at this in more details in the practical exercices later today.
