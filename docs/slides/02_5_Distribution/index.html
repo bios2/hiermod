@@ -30,6 +30,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -663,13 +728,18 @@ p \quad &amp; \text{if} \quad x =1\\
 </section>
 <section id="moment-of-the-binomial-distribution" class="slide level2">
 <h2>Moment of the binomial distribution</h2>
+<div style="font-size: 0.75em">
 <p>Again, for conciseness, we will focus on the first moment (mean) and second moment (variance) of the binomial distribution.</p>
-<div class="fragment">
-<p><strong>Mean</strong></p>
-<p><span class="math display">\[np\]</span></p>
 </div>
 <div class="fragment">
+<div style="font-size: 0.75em">
+<p><strong>Mean</strong> <span class="math display">\[np\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
 <p><strong>Example</strong></p>
+</div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -679,16 +749,22 @@ p \quad &amp; \text{if} \quad x =1\\
 </div>
 </div>
 </div>
+<div style="font-size: 0.75em">
 <p>If the probability that it rains is <span class="math inline">\(p=0.14\)</span> in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days)</p>
 <p><span class="math display">\[np = 5 \times 0.14 = 0.7\]</span></p>
+</div>
 </div>
 </section>
 <section id="moment-of-the-binomial-distribution-1" class="slide level2">
 <h2>Moment of the binomial distribution</h2>
+<div style="font-size: 0.75em">
 <p><strong>Variance</strong></p>
 <p><span class="math display">\[np(1-p)\]</span></p>
+</div>
 <div class="fragment">
+<div style="font-size: 0.75em">
 <p><strong>Example</strong></p>
+</div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -698,8 +774,10 @@ p \quad &amp; \text{if} \quad x =1\\
 </div>
 </div>
 </div>
+<div style="font-size: 0.75em">
 <p>If the probability that it rains is <span class="math inline">\(p=0.5\)</span> in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is</p>
-<p><span class="math display">\[np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229\]</span> :::</p>
+<p><span class="math display">\[np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229\]</span></p>
+</div>
 </div>
 </section>
 <section id="moments-of-the-binomial-distribution" class="slide level2">
@@ -722,8 +800,10 @@ p \quad &amp; \text{if} \quad x =1\\
 </div>
 <div class="fragment">
 <ul>
-<li>Normal distribution</li>
+<li>Normal distribution…</li>
 </ul>
+</div>
+<div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png" style="width:20.0%"></p>
@@ -743,29 +823,47 @@ p \quad &amp; \text{if} \quad x =1\\
 <h2>Pascal’s triangle</h2>
 
 <img data-src="https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif" style="width:50.0%" class="r-stretch quarto-figure-center"></section>
-<section id="pascals-triangle-and-the-binomial-distribution" class="slide level2" style="font-size: 0.7em">
-<h2>Pascal’s triangle and the binomial distribution</h2>
+<section id="pascals-triangle-2" class="slide level2">
+<h2>Pascal’s triangle</h2>
+<div style="font-size: 0.7em">
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p><strong>If <span class="math inline">\(n = 3\)</span></strong></p>
 <p><em>When <span class="math inline">\(k=0\)</span></em></p>
-<div style="font-size: 0.75em">
+</div>
+<div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{0}\times0.5^0 \times (1-0.5)^{(3-0)}=0.125\]</span></p>
 </div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p><em>When <span class="math inline">\(k=1\)</span></em></p>
-<div style="font-size: 0.75em">
+</div>
+<div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{1}\times0.5^1 \times (1-0.5)^{(3-1)}=0.375\]</span></p>
 </div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p><em>When <span class="math inline">\(k=2\)</span></em></p>
-<div style="font-size: 0.75em">
+</div>
+<div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{2}\times0.5^1 \times (1-0.5)^{(3-2)}=0.375\]</span></p>
 </div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
 <p><em>When <span class="math inline">\(k=3\)</span></em></p>
-<div style="font-size: 0.75em">
+</div>
+<div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{3}\times0.5^1 \times (1-0.5)^{(3-3)}=0.125\]</span></p>
 </div>
+</div>
 </section>
-<section id="pascals-triangle-and-the-binomial-distribution-1" class="slide level2">
-<h2>Pascal’s triangle and the binomial distribution</h2>
+<section id="pascals-triangle-3" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If <span class="math inline">\(n = 3\)</span></strong></p>
 <div class="fragment">
@@ -780,8 +878,8 @@ p \quad &amp; \text{if} \quad x =1\\
 </div>
 </div>
 </section>
-<section id="pascals-triangle-and-the-binomial-distribution-2" class="slide level2">
-<h2>Pascal’s triangle and the binomial distribution</h2>
+<section id="pascals-triangle-4" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If <span class="math inline">\(n = 10\)</span></strong></p>
 <div class="fragment">
@@ -796,8 +894,8 @@ p \quad &amp; \text{if} \quad x =1\\
 </div>
 </div>
 </section>
-<section id="pascals-triangle-and-the-binomial-distribution-3" class="slide level2">
-<h2>Pascal’s triangle and the binomial distribution</h2>
+<section id="pascals-triangle-5" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If <span class="math inline">\(n = 50\)</span></strong></p>
 <div class="fragment">
@@ -812,8 +910,8 @@ p \quad &amp; \text{if} \quad x =1\\
 </div>
 </div>
 </section>
-<section id="pascals-triangle-and-the-binomial-distribution-4" class="slide level2">
-<h2>Pascal’s triangle and the binomial distribution</h2>
+<section id="pascals-triangle-6" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If <span class="math inline">\(n = 200\)</span></strong></p>
 <div class="fragment">
@@ -867,23 +965,204 @@ p \quad &amp; \text{if} \quad x =1\\
 <p><span class="math display">\[\mu\]</span></p>
 <p><strong><em>Example</em></strong></p>
 
-<img data-src="https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg" style="width:50.0%" class="r-stretch quarto-figure-center"><p>Let’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a mean of <span class="math inline">\(\mu\)</span>. We will look at this in more details in the practical exercices later today.</p>
+<img data-src="https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"><div style="font-size: 0.8em">
+<p>Let’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a mean of <span class="math inline">\(\mu\)</span>. We will look at this in more details in the practical exercices later today.</p>
+</div>
 </section>
 <section id="moment-of-the-gaussian-distribution-1" class="slide level2">
 <h2>Moment of the Gaussian distribution</h2>
 <p><strong>Variance</strong></p>
 <p><span class="math display">\[\sigma^2\]</span></p>
 <p><strong><em>Example</em></strong></p>
+
+<img data-src="https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"><div style="font-size: 0.8em">
+<p>Let’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a variance of <span class="math inline">\(\sigma^2\)</span>. We will look at this in more details in the practical exercices later today.</p>
+</div>
+</section>
+<section id="general-properties-of-distributions" class="slide level2">
+<h2>General properties of distributions</h2>
+<p>In R, there are 4 functions associated to every distribution. As an example, for the Gaussian distribution, they are</p>
+<ul>
+<li><code>rnorm</code></li>
+<li><code>dnorm</code></li>
+<li><code>pnorm</code></li>
+<li><code>qnorm</code></li>
+</ul>
+<div class="fragment">
+<p>Knowing what these functions do will be very useful for this course</p>
+</div>
+</section>
+<section id="rnorm" class="slide level2">
+<h2><code>rnorm</code></h2>
+<div style="font-size: 0.8em">
+<p>The <code>r</code> in <code>rnorm</code> is for <span style="color: blue;">random</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>This function allows us to randomly sample directly from the distribution of interest.</p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Example</strong></p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg" style="width:50.0%"></p>
+<p><img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" style="width:8.0%"></p>
 </figure>
 </div>
-<p>Let’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a variance of <span class="math inline">\(\sigma^2\)</span>. We will look at this in more details in the practical exercices later today.</p>
+<div style="font-size: 0.8em">
+<p>Let’s assume that we look at the historical record and gather the minimum temperature measured on today’s date for the past 40 years. This data can be assumed to be a random sample of 40 temperature measurements with an average of <span class="math inline">\(4^{\circ}C\)</span> and a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>. We can simulate these values as follow</p>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">rnorm</span>(<span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="rnorm40-mean-4-sd-2" class="slide level2">
+<h2><code>rnorm(40, mean = 4, sd = 2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<section id="dnorm" class="slide level2">
+<h2><code>dnorm</code></h2>
+<div style="font-size: 0.8em">
+<p>The <code>d</code> in <code>dnorm</code> is for <span style="color: blue;">density</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>This function gives the height of the distribution for a chosen value.</p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Example</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" style="width:8.0%"></p>
+</figure>
+</div>
+<div style="font-size: 0.8em">
+<p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, we can calculate that the likeliness that a temperature of <span class="math inline">\(6^{\circ}C\)</span> to occur is</p>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">dnorm</span>(<span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1209854</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="dnorm6-mean-4-sd-2" class="slide level2">
+<h2><code>dnorm(6, mean = 4, sd = 2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
+<section id="qnorm" class="slide level2">
+<h2><code>qnorm</code></h2>
+<div style="font-size: 0.8em">
+<p>The <code>q</code> in <code>qnorm</code> is for <span style="color: blue;">quantile</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.8em">
+<p>This function gives the value of the distribution given a certain density</p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Example</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" style="width:8.0%"></p>
+</figure>
+</div>
+<div style="font-size: 0.8em">
+<p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, <code>qnorm</code> allows us to calculate the temperature expected to be obtained at the lowest quartile (1/4). It is calculate as</p>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">qnorm</span>(<span class="fl">0.25</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.65102</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="qnorm0.25-mean4-sd2" class="slide level2">
+<h2><code>qnorm(0.25, mean=4, sd=2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<section id="pnorm" class="slide level2">
+<h2><code>pnorm</code></h2>
+<p>The <code>p</code> in <code>pnorm</code> is for <span style="color: blue;">probability distribution function</span></p>
+<div class="fragment">
+<p>This function gives the integral (area under the curve) up to a specified value.</p>
+</div>
+<div class="fragment">
+<p>This is particularly useful because it informs us about the probability that an event is likely to occur (of course assuming a it follows a normal distribution).</p>
+</div>
+</section>
+<section id="pnorm-1" class="slide level2">
+<h2><code>pnorm</code></h2>
+<p><strong>Example</strong></p>
+
+<img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" style="width:5.0%" class="r-stretch quarto-figure-center"><p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, <code>pnorm</code> will tell us that the probability to have a temperature lower or equal to <span class="math inline">\(6^{\circ}C\)</span>. This is calculated as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">pnorm</span>(<span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8413447</code></pre>
+</div>
+</div>
+</section>
+<section id="pnorm6-mean-4-sd-2" class="slide level2">
+<h2><code>pnorm(6, mean = 4, sd = 2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
+<section id="binomial-and-bernoulli-distribution" class="slide level2">
+<h2>Binomial and Bernoulli distribution</h2>
+<p>As I mentionned previsouly, these function are available in base R for a large number of distributions.</p>
+</section>
+<section id="binomial-distribution-3" class="slide level2">
+<h2>Binomial distribution</h2>
+<ul>
+<li><code>rbinom</code></li>
+<li><code>dbinom</code></li>
+<li><code>qbinom</code></li>
+<li><code>pbinom</code></li>
+</ul>
+</section>
+<section id="bernoulli-distribution-3" class="slide level2">
+<h2>Bernoulli distribution</h2>
+<p>However, sometimes we must know a little bit of theory (as I have show today) to use the right function.</p>
+<ul>
+<li><code>rbinom</code></li>
+<li><code>dbinom</code></li>
+<li><code>qbinom</code></li>
+<li><code>pbinom</code></li>
+</ul>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png" style="width:20.0%" class="r-stretch quarto-figure-center"></section>
+<section id="bernoulli-distribution-4" class="slide level2">
+<h2>Bernoulli distribution</h2>
+<ul>
+<li><code>rbinom</code></li>
+<li><code>dbinom</code></li>
+<li><code>qbinom</code></li>
+<li><code>pbinom</code></li>
+</ul>
+<p>With <code>size = 1</code></p>
+</section>
+<section id="other-distributions" class="slide level2">
+<h2>Other distributions</h2>
+<p>Statisticians and biologists have been very, very (!!) creative in proposing new probability distribution for specific problems</p>
+<div class="fragment">
+<p>If you want to learn about the diversity of distribution that is out there, take a look at :</p>
+<p><a href="https://en.wikipedia.org/wiki/List_of_probability_distributions" class="uri">https://en.wikipedia.org/wiki/List_of_probability_distributions</a></p>
+</div>
+<div class="fragment">
+<p>Many of them have been implemented in R, either in base R or specialized packages</p>
+</div>
+<div class="fragment">
+<p>If you want to know if you favourite distribution has been implemented in R take a look at</p>
+<p><a href="https://cran.r-project.org/web/views/Distributions.html" class="uri">https://cran.r-project.org/web/views/Distributions.html</a></p>
 
 <p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
 <div class="footer footer-default">
 
+</div>
 </div>
 </section>
     </div>

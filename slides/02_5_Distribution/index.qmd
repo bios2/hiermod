@@ -358,43 +358,53 @@ $$\frac{n\times(n-1)\times(n-2)\times\dots\times 2\times 1}{(k\times(k-1)\times(
 
 ## Moment of the binomial distribution
 
+:::{style="font-size: 0.75em"}
 Again, for conciseness, we will focus on the first moment (mean) and second moment (variance) of the binomial distribution.
+:::
 
 . . .
 
+:::{style="font-size: 0.75em"}
 **Mean**
-
 $$np$$
+:::
 
 . . .
 
+:::{style="font-size: 0.75em"}
 **Example**
-
+:::
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
+:::{style="font-size: 0.75em"}
 If the probability that it rains is $p=0.14$ in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days) 
 
 $$np = 5 \times 0.14 = 0.7$$
+:::
 
 
 ## Moment of the binomial distribution
 
+:::{style="font-size: 0.75em"}
 **Variance**
 
 $$np(1-p)$$
+:::
 
 . . .
 
+:::{style="font-size: 0.75em"}
 **Example**
-
+:::
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
+:::{style="font-size: 0.75em"}
 If the probability that it rains is $p=0.5$ in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is
 
 $$np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229$$
@@ -421,7 +431,9 @@ The binomial distribution is related to many other probability distribution
 
 . . .
 
-- Normal distribution
+- Normal distribution...
+
+. . .
 
 ![](https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png){fig-align="center" width=20%}
 
@@ -440,39 +452,55 @@ The binomial distribution is related to many other probability distribution
 
 ![](https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif){fig-align="center" width=50%}
 
+## Pascal's triangle
+
 :::{style="font-size: 0.7em"}
-## Pascal's triangle and the binomial distribution
-
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
+:::
 
+. . .
+
+:::{style="font-size: 0.7em"}
 **If $n = 3$**
 
 *When $k=0$*
-
-::::{style="font-size: 0.75em"}
-$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{0}\times0.5^0 \times (1-0.5)^{(3-0)}=0.125$$
-::::
-
-*When $k=1$*
-
-::::{style="font-size: 0.75em"}
-$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{1}\times0.5^1 \times (1-0.5)^{(3-1)}=0.375$$
-::::
-
-*When $k=2$*
-
-::::{style="font-size: 0.75em"}
-$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{2}\times0.5^1 \times (1-0.5)^{(3-2)}=0.375$$
-::::
-
-*When $k=3$*
-
-::::{style="font-size: 0.75em"}
-$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{3}\times0.5^1 \times (1-0.5)^{(3-3)}=0.125$$
-::::
 :::
 
-## Pascal's triangle and the binomial distribution
+:::{style="font-size: 0.525em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{0}\times0.5^0 \times (1-0.5)^{(3-0)}=0.125$$
+:::
+
+. . .
+
+:::{style="font-size: 0.7em"}
+*When $k=1$*
+:::
+
+:::{style="font-size: 0.525em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{1}\times0.5^1 \times (1-0.5)^{(3-1)}=0.375$$
+:::
+
+. . .
+
+:::{style="font-size: 0.7em"}
+*When $k=2$*
+:::
+
+:::{style="font-size: 0.525em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{2}\times0.5^1 \times (1-0.5)^{(3-2)}=0.375$$
+:::
+
+. . .
+
+:::{style="font-size: 0.7em"}
+*When $k=3$*
+:::
+
+:::{style="font-size: 0.525em"}
+$$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{3}\times0.5^1 \times (1-0.5)^{(3-3)}=0.125$$
+:::
+
+## Pascal's triangle
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
@@ -484,7 +512,7 @@ The Pascal's triangle is directly related to the binomial distribution with $p=0
 barplot(dbinom(0:3,3,0.5), col = "blue", axes = FALSE)
 ```
 
-## Pascal's triangle and the binomial distribution
+## Pascal's triangle
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
@@ -497,7 +525,7 @@ barplot(dbinom(0:10,10,0.5), col = "blue", axes = FALSE)
 ```
 
 
-## Pascal's triangle and the binomial distribution
+## Pascal's triangle
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
@@ -509,7 +537,7 @@ The Pascal's triangle is directly related to the binomial distribution with $p=0
 barplot(dbinom(0:50,50,0.5), col = "blue", axes = FALSE)
 ```
 
-## Pascal's triangle and the binomial distribution
+## Pascal's triangle
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
@@ -589,9 +617,11 @@ $$\mu$$
 ***Example***
 
 
-![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=50%}
+![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=80%}
 
+:::{style="font-size: 0.8em"}
 Let's say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a mean of $\mu$. We will look at this in more details in the practical exercices later today.
+:::
 
 ## Moment of the Gaussian distribution
 
@@ -601,6 +631,259 @@ $$\sigma^2$$
 
 ***Example***
 
-![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=50%}
+![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=80%}
 
+:::{style="font-size: 0.8em"}
 Let's say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a variance of $\sigma^2$. We will look at this in more details in the practical exercices later today.
+:::
+
+## General properties of distributions
+
+In R, there are 4 functions associated to every distribution. As an example, for the Gaussian distribution, they are
+
+- `rnorm`
+- `dnorm`
+- `pnorm`
+- `qnorm`
+
+. . .
+
+Knowing what these functions do will be very useful for this course
+
+## `rnorm`
+
+:::{style="font-size: 0.8em"}
+The `r` in `rnorm` is for [random]{style="color: blue;"}
+:::
+
+. . .
+
+:::{style="font-size: 0.8em"}
+This function allows us to randomly sample directly from the distribution of interest.
+:::
+
+. . .
+
+**Example**
+
+![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width=8%}
+
+:::{style="font-size: 0.8em"}
+Let's assume that we look at the historical record and gather the minimum temperature measured on today's date for the past 40 years. This data can be assumed to be a random sample of 40 temperature measurements with an average of $4^{\circ}C$ and a standard deviation of $2^{\circ}C$. We can simulate these values as follow
+:::
+
+```{r, eval=FALSE}
+rnorm(40, mean = 4, sd = 2)
+```
+
+## `rnorm(40, mean = 4, sd = 2)`
+
+```{r, echo = FALSE}
+plot(0,0,type="n",xlim=c(-3,11),ylim=c(0,0.21),
+     xlab = "Temperature", ylab = "", las = 1, 
+     cex.axis = 1.7, cex.lab = 2.5)
+
+curve(dnorm(x, mean = 4, sd = 2),
+      -3,11,n=2000,xlab="",ylab="",
+      lwd = 3,add=TRUE)
+
+set.seed(42)
+
+abline(v = rnorm(40, mean = 4, sd = 2), col = "blue")
+```
+
+## `dnorm`
+
+:::{style="font-size: 0.8em"}
+The `d` in `dnorm` is for [density]{style="color: blue;"}
+:::
+. . .
+
+:::{style="font-size: 0.8em"}
+This function gives the height of the distribution for a chosen value.
+:::
+. . .
+
+
+**Example**
+
+![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width=8%}
+
+:::{style="font-size: 0.8em"}
+If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, we can calculate that the likeliness that a temperature of $6^{\circ}C$ to occur is 
+:::
+
+```{r}
+dnorm(6, mean = 4, sd = 2)
+```
+
+## `dnorm(6, mean = 4, sd = 2)`
+
+```{r, echo = FALSE}
+plot(0,0,type="n",xlim=c(-3,11),ylim=c(0,0.21),
+     xlab = "Temperature", ylab = "", las = 1, 
+     cex.axis = 1.7, cex.lab = 2.5)
+
+segments(x0 = 6, x1 = 6,
+         y0 = 0, y1 = dnorm(6, mean = 4, sd = 2),
+         col = "red", lwd =4, lend = "butt")
+
+curve(dnorm(x, mean = 4, sd = 2),-3,11,
+      n=2000,xlab="",ylab="",add=TRUE,
+      lwd = 3)
+
+points(6, dnorm(6, mean = 4, sd = 2), pch = 19, col = "red", cex = 3)
+```
+
+
+## `qnorm`
+
+:::{style="font-size: 0.8em"}
+The `q` in `qnorm` is for [quantile]{style="color: blue;"}
+:::
+
+. . .
+
+:::{style="font-size: 0.8em"}
+This function gives the value of the distribution given a certain density
+:::
+
+. . .
+
+**Example**
+
+![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width=8%}
+
+:::{style="font-size: 0.8em"}
+If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, `qnorm` allows us to calculate the temperature expected to be obtained at the lowest quartile (1/4). It is calculate as
+:::
+
+```{r}
+qnorm(0.25, mean = 4, sd = 2)
+```
+
+## `qnorm(0.25, mean=4, sd=2)`
+
+```{r, echo = FALSE}
+plot(0,0,type="n",xlim=c(-3,11),ylim=c(0,0.21),
+     xlab = "Temperature", ylab = "", las = 1, 
+     cex.axis = 1.7, cex.lab = 2.5)
+
+segments(x0 = qnorm(0.25, mean = 4, sd = 2),
+         x1 = qnorm(0.25, mean = 4, sd = 2),
+         y0 = 0, y1 = dnorm(qnorm(0.25, mean = 4, sd = 2),
+                            mean = 4, sd = 2),
+         col = "red", lwd =4, lend = "butt")
+
+curve(dnorm(x, mean = 4, sd = 2),-3,11,
+      n=2000,xlab="",ylab="",add=TRUE,
+      lwd = 3)
+
+points(qnorm(0.25, mean = 4, sd = 2),
+       0, pch = 19, col = "red", cex = 3)
+```
+
+
+## `pnorm`
+
+The `p` in `pnorm` is for [probability distribution function]{style="color: blue;"}
+
+. . .
+
+This function gives the integral (area under the curve) up to a specified value. 
+
+. . .
+
+This is particularly useful because it informs us about the probability that an event is likely to occur (of course assuming a it follows a normal distribution). 
+
+## `pnorm`
+
+**Example**
+
+```{r echo=FALSE, out.width="5%", fig.align='center'}
+knitr::include_graphics("https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png")
+```
+
+If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, `pnorm` will tell us that the probability to have a temperature lower or equal to $6^{\circ}C$. This is calculated as 
+
+```{r}
+pnorm(6, mean = 4, sd = 2)
+```
+
+## `pnorm(6, mean = 4, sd = 2)`
+
+```{r, echo = FALSE}
+xPoly <- seq(-3,11,l=2000)
+yPoly <- dnorm(xPoly, mean = 4, sd = 2)
+
+sel <- which(xPoly >= -3 & xPoly <= 6)
+xPolySel <- c(xPoly[sel],xPoly[sel[1]])
+yPolySel <- c(yPoly[sel],yPoly[sel[1]])
+n <- length(xPolySel)
+
+plot(0,0,type="n",xlim=c(-3,11),ylim=c(0,0.21),
+     xlab = "Temperature", ylab = "", las = 1, 
+     cex.axis = 1.7, cex.lab = 2.5)
+
+polygon(-xPolySel+3,yPolySel[n:1],col="blue",border = NA)
+curve(dnorm(x, mean = 4, sd = 2),-3,11,
+      n=2000,xlab="",ylab="",add=TRUE,
+      lwd = 3)
+
+text(3.5, 0.085,
+     round(pnorm(6, mean = 4, sd = 2),3),
+     col = "white", cex = 3)
+
+```
+
+## Binomial and Bernoulli distribution
+
+As I mentionned previsouly, these function are available in base R for a large number of distributions. 
+
+
+## Binomial distribution
+
+- `rbinom`
+- `dbinom`
+- `qbinom`
+- `pbinom`
+
+## Bernoulli distribution
+
+However, sometimes we must know a little bit of theory (as I have show today) to use the right function.
+
+- `rbinom`
+- `dbinom`
+- `qbinom`
+- `pbinom`
+
+![](https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png){fig-align="center" width=20%}
+
+## Bernoulli distribution
+
+- `rbinom`
+- `dbinom`
+- `qbinom`
+- `pbinom`
+
+With `size = 1` 
+
+## Other distributions
+
+Statisticians and biologists have been very, very (!!) creative in proposing new probability distribution for specific problems
+
+. . .
+
+If you want to learn about the diversity of distribution that is out there, take a look at :
+
+<https://en.wikipedia.org/wiki/List_of_probability_distributions>
+
+. . .
+
+Many of them have been implemented in R, either in base R or specialized packages
+
+. . .
+
+If you want to know if you favourite distribution has been implemented in R take a look at
+
+<https://cran.r-project.org/web/views/Distributions.html>
