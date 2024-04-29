@@ -242,7 +242,7 @@ Warning
 </section>
 <section id="simple-exercise-in-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="simple-exercise-in-simulation">Simple exercise in simulation</h2>
-<p>Let’s imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?</p>
+<p>Let’s imagine we are taking a walk as a group today at this beautiful field site. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?</p>
 <section id="some-questions-to-ask-about-simulated-data" class="level3">
 <h3 class="anchored" data-anchor-id="some-questions-to-ask-about-simulated-data">Some questions to ask about simulated data</h3>
 <ol type="1">
@@ -1290,7 +1290,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb39-64"><a href="#cb39-64" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-65"><a href="#cb39-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simple exercise in simulation</span></span>
 <span id="cb39-66"><a href="#cb39-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-67"><a href="#cb39-67" aria-hidden="true" tabindex="-1"></a>Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?</span>
+<span id="cb39-67"><a href="#cb39-67" aria-hidden="true" tabindex="-1"></a>Let's imagine we are taking a walk as a group today at this beautiful field site. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?</span>
 <span id="cb39-68"><a href="#cb39-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-69"><a href="#cb39-69" aria-hidden="true" tabindex="-1"></a><span class="fu">### Some questions to ask about simulated data</span></span>
 <span id="cb39-70"><a href="#cb39-70" aria-hidden="true" tabindex="-1"></a></span>
@@ -1669,24 +1669,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb39-479"><a href="#cb39-479" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-480"><a href="#cb39-480" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
 <span id="cb39-481"><a href="#cb39-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-482"><a href="#cb39-482" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?</span>
-<span id="cb39-483"><a href="#cb39-483" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>What would you do next to add complexity this model?</span>
-<span id="cb39-484"><a href="#cb39-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-485"><a href="#cb39-485" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
-<span id="cb39-486"><a href="#cb39-486" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?</span>
-<span id="cb39-487"><a href="#cb39-487" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Take a closer look at <span class="in">`poisson_model_samp$summary()`</span>. all the values of <span class="in">`bird_count`</span> are the same. That's correct, but why?</span>
-<span id="cb39-488"><a href="#cb39-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-489"><a href="#cb39-489" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
-<span id="cb39-490"><a href="#cb39-490" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>You would never actually do the analysis in this exercise! If all you want is the average of a Poisson distribution, you can get that without any sampling at all. Start by writing the model with a different prior:</span>
-<span id="cb39-491"><a href="#cb39-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-492"><a href="#cb39-492" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb39-493"><a href="#cb39-493" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb39-494"><a href="#cb39-494" aria-hidden="true" tabindex="-1"></a>\text{Number of Birds}_{\text{seen by person i}} &amp;\sim \text{Poisson}(\lambda) <span class="sc">\\</span></span>
-<span id="cb39-495"><a href="#cb39-495" aria-hidden="true" tabindex="-1"></a>\lambda &amp;\sim \text{Gamma}(9, .5)</span>
-<span id="cb39-496"><a href="#cb39-496" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb39-497"><a href="#cb39-497" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb39-498"><a href="#cb39-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-499"><a href="#cb39-499" aria-hidden="true" tabindex="-1"></a>This lets us calculate the posterior distribution directly. See the equation <span class="co">[</span><span class="ot">on Wikipedia</span><span class="co">](https://en.wikipedia.org/wiki/Poisson_distribution#Bayesian_inference)</span> and calculate the posterior for our bird data.</span>
+<span id="cb39-482"><a href="#cb39-482" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Consider the What would you do next to add complexity the bird-counting model above?</span>
+<span id="cb39-483"><a href="#cb39-483" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?</span>
+<span id="cb39-484"><a href="#cb39-484" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb39-485"><a href="#cb39-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-486"><a href="#cb39-486" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
+<span id="cb39-487"><a href="#cb39-487" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Take a closer look at <span class="in">`poisson_model_samp$summary()`</span>. All the values of <span class="in">`bird_count`</span> are the same. That's correct, but why?</span>
+<span id="cb39-488"><a href="#cb39-488" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Try to fit YOUR data and your chosen distribution from <span class="co">[</span><span class="ot">Monday's exercise</span><span class="co">](topics/00_distributions)</span>. Check to see if the distribution you chose is implemented in Stan -- see, for example, <span class="co">[</span><span class="ot">this list</span><span class="co">](https://mc-stan.org/docs/functions-reference/binary_distributions.html)</span>. </span>
+<span id="cb39-489"><a href="#cb39-489" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>check the fit using the plots we have already seen today.</span>
+<span id="cb39-490"><a href="#cb39-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-491"><a href="#cb39-491" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
+<span id="cb39-492"><a href="#cb39-492" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>You would never actually do the analysis in this exercise! If all you want is the average of a Poisson distribution, you can get that without any sampling at all. Start by writing the model with a different prior:</span>
+<span id="cb39-493"><a href="#cb39-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-494"><a href="#cb39-494" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-495"><a href="#cb39-495" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb39-496"><a href="#cb39-496" aria-hidden="true" tabindex="-1"></a>\text{Number of Birds}_{\text{seen by person i}} &amp;\sim \text{Poisson}(\lambda) <span class="sc">\\</span></span>
+<span id="cb39-497"><a href="#cb39-497" aria-hidden="true" tabindex="-1"></a>\lambda &amp;\sim \text{Gamma}(9, .5)</span>
+<span id="cb39-498"><a href="#cb39-498" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb39-499"><a href="#cb39-499" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-500"><a href="#cb39-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-501"><a href="#cb39-501" aria-hidden="true" tabindex="-1"></a>This lets us calculate the posterior distribution directly. See the equation <span class="co">[</span><span class="ot">on Wikipedia</span><span class="co">](https://en.wikipedia.org/wiki/Poisson_distribution#Bayesian_inference)</span> and calculate the posterior for our bird data.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

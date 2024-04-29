@@ -64,7 +64,7 @@ If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's
 
 ## Simple exercise in simulation
 
-Let's imagine we are taking a walk as a group today at the beautiful SBL. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?
+Let's imagine we are taking a walk as a group today at this beautiful field site. What is the number of birds (total abundance of ALL species) each of us is going to see on our hike?
 
 ### Some questions to ask about simulated data
 
@@ -443,12 +443,14 @@ shinystan::launch_shinystan(poisson_model_samp)
 
 #### Level 1
 
-* Let's go birding! everyone in the class, over lunch, will go and count birds by eye! we'll collect the vector, run and sample the model. Did our prior turn out to be appropriate?
-* What would you do next to add complexity this model?
+* Consider the What would you do next to add complexity the bird-counting model above?
+* We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?
+ 
 
 #### Level 2
-* We plotted histograms to evaluate our model. Experiment with other types of plots. For example, what is the maximum value in each posterior simulation? What is the minimum? How to these compare to the real data?
-* Take a closer look at `poisson_model_samp$summary()`. all the values of `bird_count` are the same. That's correct, but why?
+* Take a closer look at `poisson_model_samp$summary()`. All the values of `bird_count` are the same. That's correct, but why?
+* Try to fit YOUR data and your chosen distribution from [Monday's exercise](topics/00_distributions). Check to see if the distribution you chose is implemented in Stan -- see, for example, [this list](https://mc-stan.org/docs/functions-reference/binary_distributions.html). 
+* check the fit using the plots we have already seen today.
 
 #### Level 3
 * You would never actually do the analysis in this exercise! If all you want is the average of a Poisson distribution, you can get that without any sampling at all. Start by writing the model with a different prior:
