@@ -19,16 +19,15 @@ format:
 
 To understand **distributions**, we first need to have a basic understanding of *probabilities*.
 
-
 ## A bit of history
 
 ::: {style="font-size: 0.8em"}
 Unlike many other fields of science, the first contributors in the study of probability were not scholars, they were gamblers !
 :::
+
 . . .
 
 ::: {style="font-size: 0.8em"}
-
 For example, the emperor Claudius (10 BC -- 54 AD), who was an avid gambler (he had a carriage built to allow him and his party to gamble while travelling) wrote a treatise on randomness and probability.
 :::
 
@@ -37,7 +36,7 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/7/71/Cla
 ```
 
 ::: {style="font-size: 0.5em"}
-[Lanciani (1892) Gambling and Cheating in Ancient Rome. *The North American Review* 155:97-105]( https://www.jstor.org/stable/25102412)
+[Lanciani (1892) Gambling and Cheating in Ancient Rome. *The North American Review* 155:97-105](https://www.jstor.org/stable/25102412)
 :::
 
 ## A bit of history
@@ -54,63 +53,65 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/en/3/35/The_Drun
 
 A probability [**ALWAYS**]{style="color: red;"} ranges between 0 and 1
 
-. . . 
+. . .
 
 A probability of [0]{style="font-size: 1.5em"} means that an event is impossible
 
 . . .
 
-:::{style="font-size: 0.8em"}
-*Example*: The probability that a dog and a cat naturally reproduce is [0]{style="font-size: 1.5em"} 
+::: {style="font-size: 0.8em"}
+*Example*: The probability that a dog and a cat naturally reproduce is [0]{style="font-size: 1.5em"}
 :::
 
-. . . 
+. . .
 
 A probability of [1]{style="font-size: 1.5em"} means that an event is certain
 
 . . .
 
-:::{style="font-size: 0.8em"}
-*Example*: The probability that you are in this summer school as we speak is [1]{style="font-size: 1.5em"} 
+::: {style="font-size: 0.8em"}
+*Example*: The probability that you are in this summer school as we speak is [1]{style="font-size: 1.5em"}
 :::
 
 ## The basics of probabilities
 
 **Notation**
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 A classic way to write the probability of an event is to use the notation $P$.
 :::
 
-. . . 
+. . .
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 ***Example***
 :::
+
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
-:::{style="font-size: 0.7em"}
-The probability that it rains as you walk outside after the lecture is written as 
+::: {style="font-size: 0.7em"}
+The probability that it rains as you walk outside after the lecture is written as
 
-$$P(r)$$
-where $r$ is the event you are interested in. Here, $r$ is whether it rains as you walk outside after the lecture today
+$$P(r)$$ where $r$ is the event you are interested in. Here, $r$ is whether it rains as you walk outside after the lecture today
 :::
 
 ## Probabilities and events
 
-:::{style="font-size: 0.7em"}
-When dealing with discrete (countable) events, it is very practical to know the number of events that can occur. 
+::: {style="font-size: 0.7em"}
+When dealing with discrete (countable) events, it is very practical to know the number of events that can occur.
 :::
+
 . . .
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 In the simplest case, we can either measure the probability of an event to occur or not.
 :::
+
 . . .
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 ***Example***
 :::
 
@@ -118,30 +119,31 @@ In the simplest case, we can either measure the probability of an event to occur
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
-:::{style="font-size: 0.65em"}
+::: {style="font-size: 0.65em"}
 It can either rain or not. Mathematically, the probability that it rains is written as
 
-$$P(r)$$
-and the probability that it does not rain would be written as
+$$P(r)$$ and the probability that it does not rain would be written as
 
 $$1 - P(r)$$
 :::
 
 ## Probabilities and events
 
-:::{style="font-size: 0.7em"}
-Usually, these basic notions of probabilities are presented using coin flipping. When a coin is flip, it is usually assumed that 
+::: {style="font-size: 0.7em"}
+Usually, these basic notions of probabilities are presented using coin flipping. When a coin is flip, it is usually assumed that
 
 $$P(r)=0.5$$
 :::
+
 . . .
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 However, in probability theory, P(r) can have any value ranging between 0 and 1.
 :::
+
 . . .
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 ***Example***
 :::
 
@@ -149,7 +151,7 @@ However, in probability theory, P(r) can have any value ranging between 0 and 1.
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 What do you think is the probability that it will rain at the end of the lecture?
 :::
 
@@ -167,19 +169,19 @@ knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-w
 
 $$P(r) + (1-P(r)) = 1$$
 
-. . . 
+. . .
 
 This is true only if the events are independent from each other
 
 ## Independent !?
 
-:::{style="font-size: 0.7em"}
-Events that are *independent* from each other means that the if an event occurs it is in no way related to the occurrence of another event. 
+::: {style="font-size: 0.7em"}
+Events that are *independent* from each other means that the if an event occurs it is in no way related to the occurrence of another event.
 :::
 
-. . . 
+. . .
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 ***Example***
 :::
 
@@ -187,13 +189,13 @@ Events that are *independent* from each other means that the if an event occurs 
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
-:::{style="font-size: 0.7em"}
-If we assume that weather events like a rainy day are independent from one another, it means that if it rains today it is unrelated to the weather of yesterday or tomorrow. 
+::: {style="font-size: 0.7em"}
+If we assume that weather events like a rainy day are independent from one another, it means that if it rains today it is unrelated to the weather of yesterday or tomorrow.
 :::
 
 . . .
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 **Note** : This can be a good or a bad or dangerous assumption to make depending on the problem you are working on.
 :::
 
@@ -202,7 +204,8 @@ If we assume that weather events like a rainy day are independent from one anoth
 ```{r echo=FALSE, out.width="40%", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Jakob_Bernoulli.jpg/800px-Jakob_Bernoulli.jpg")
 ```
-::: {.r-stack}
+
+::: r-stack
 Jacob Bernoulli (1655 - 1705)
 :::
 
@@ -210,9 +213,9 @@ Jacob Bernoulli (1655 - 1705)
 
 The probability distribution (or probability mass function) of the Bernoulli distribution defines the probability of an event to occur given that there is only one other event that can occur (e.g. rain or no rain)
 
-. . . 
+. . .
 
-Classically, we will give a value of 1 to one event (no rain) and 0 to the other (rain). 
+Classically, we will give a value of 1 to one event (no rain) and 0 to the other (rain).
 
 . . .
 
@@ -239,16 +242,15 @@ These characteristics are know as [moments]{style="color: blue;"} of a distribut
 
 . . .
 
-- Mean
-- Variance
-- Skewness
-- Kurtosis
-- ... 
-
+-   Mean
+-   Variance
+-   Skewness
+-   Kurtosis
+-   ...
 
 ## Moments of the Bernoulli distribution
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 For the sake of conciseness, in this course, we will discuss only the first two moments of distributions.
 
 **Mean**
@@ -266,11 +268,10 @@ If the probability that it rains is $p=0.14$ in any given day, it means that, on
 
 ## Moments of the Bernoulli distribution
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 **Variance**
 
-$$p(1-p)$$
-***Example***
+$$p(1-p)$$ ***Example***
 
 ```{r echo=FALSE, out.width="15%", fig.align='center'}
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
@@ -281,22 +282,19 @@ If the probability that it rains is $p=0.5$ in any given day, it means that, acr
 $$p(1-p)=0.5\times(1-0.5)=0.25\quad\text{and}\quad \sqrt{0.25} = 0.5$$
 :::
 
-
 ## Moments of the Bernoulli distribution
 
 If you want to go deeper down and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution
 
 <https://en.wikipedia.org/wiki/Bernoulli_distribution>
 
-
-
 ## Let's make it more complicated
 
-So far, we focused on a situation where the two events to consider either occur or not. 
+So far, we focused on a situation where the two events to consider either occur or not.
 
 . . .
 
-There are many problems were interest lies in studying the likeliness of an event occurring over a known number of independent trials. 
+There are many problems were interest lies in studying the likeliness of an event occurring over a known number of independent trials.
 
 . . .
 
@@ -304,23 +302,21 @@ There are many problems were interest lies in studying the likeliness of an even
 
 How many rainy day will there be during the five days of our summer school ?
 
-![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width=15%}
-![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width=15%}
-![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width=15%}
+![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width="15%"} ![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width="15%"} ![](https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp){width="15%"}
 
 ## Binomial distribution
 
 Put differently, the binomial distribution is designed to approach questions where we are interested in finding the number of success (e.g. it rains !) out of a known set of independent trials (e.g. the five days of the summer school).
 
-. . . 
+. . .
 
 The binomial distribution is a generalisation of the Bernoulli distribution
 
-. . . 
+. . .
 
 It is a common distribution used when sampling is done with replacement
 
-. . . 
+. . .
 
 Let's take a look at the math of the Binomial distribution
 
@@ -332,46 +328,45 @@ $$\binom{n}{k}p^k(1-p)^{n-k}$$
 
 where
 
-- $n$ : Number of trails
-- $k$ : Number of success (an event occurs)
-- $p$ : Probability that an event occurs
+-   $n$ : Number of trails
+-   $k$ : Number of success (an event occurs)
+-   $p$ : Probability that an event occurs
 
 Note that $n \ge k$
 
 ## Mathematical technicalities interlude
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 $$\binom{n}{k}$$
 :::
 
 . . .
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 $$\frac{n!}{k!(n-k)!}$$
 :::
 
 . . .
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 $$\frac{n\times(n-1)\times(n-2)\times\dots\times 2\times 1}{(k\times(k-1)\times(k-2)\times\dots\times 2\times 1)(n-k)\times(n-k-1)\times(n-k-2)\times\dots\times 2\times 1}$$
 :::
 
 ## Moment of the binomial distribution
 
-:::{style="font-size: 0.75em"}
+::: {style="font-size: 0.75em"}
 Again, for conciseness, we will focus on the first moment (mean) and second moment (variance) of the binomial distribution.
 :::
 
 . . .
 
-:::{style="font-size: 0.75em"}
-**Mean**
-$$np$$
+::: {style="font-size: 0.75em"}
+**Mean** $$np$$
 :::
 
 . . .
 
-:::{style="font-size: 0.75em"}
+::: {style="font-size: 0.75em"}
 **Example**
 :::
 
@@ -379,16 +374,15 @@ $$np$$
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
-:::{style="font-size: 0.75em"}
-If the probability that it rains is $p=0.14$ in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days) 
+::: {style="font-size: 0.75em"}
+If the probability that it rains is $p=0.14$ in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days)
 
 $$np = 5 \times 0.14 = 0.7$$
 :::
 
-
 ## Moment of the binomial distribution
 
-:::{style="font-size: 0.75em"}
+::: {style="font-size: 0.75em"}
 **Variance**
 
 $$np(1-p)$$
@@ -396,7 +390,7 @@ $$np(1-p)$$
 
 . . .
 
-:::{style="font-size: 0.75em"}
+::: {style="font-size: 0.75em"}
 **Example**
 :::
 
@@ -404,7 +398,7 @@ $$np(1-p)$$
 knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp")
 ```
 
-:::{style="font-size: 0.75em"}
+::: {style="font-size: 0.75em"}
 If the probability that it rains is $p=0.5$ in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is
 
 $$np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229$$
@@ -416,32 +410,29 @@ If you want to learn more about the other moments of the binomial distribution (
 
 <https://en.wikipedia.org/wiki/binomial_distribution>
 
-
-## Binomial distribution 
+## Binomial distribution
 
 The binomial distribution is related to many other probability distribution
 
 . . .
 
-- Bernoulli distribution (as we have seen)
+-   Bernoulli distribution (as we have seen)
 
 . . .
 
-- Poisson distribution (when there are an infinite number of trials while $np$ converge to a finite value)
+-   Poisson distribution (when there are an infinite number of trials while $np$ converge to a finite value)
 
 . . .
 
-- Normal distribution...
+-   Normal distribution...
 
 . . .
 
-![](https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png){fig-align="center" width=20%}
-
+![](https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png){fig-align="center" width="20%"}
 
 ## Jia Xian triangle
 
 ![](https://upload.wikimedia.org/wikipedia/commons/e/ea/Yanghui_triangle.gif){fig-align="center"}
-
 
 ## Pascal's triangle
 
@@ -449,54 +440,53 @@ The binomial distribution is related to many other probability distribution
 
 ## Pascal's triangle
 
-
-![](https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif){fig-align="center" width=50%}
+![](https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif){fig-align="center" width="50%"}
 
 ## Pascal's triangle
 
-:::{style="font-size: 0.7em"}
+::: {style="font-size: 0.7em"}
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 :::
 
 . . .
 
-:::{style="font-size: 0.7em"}
-**If $n = 3$**
+::: {style="font-size: 0.7em"}
+**If** $n = 3$
 
-*When $k=0$*
+*When* $k=0$
 :::
 
-:::{style="font-size: 0.525em"}
+::: {style="font-size: 0.525em"}
 $$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{0}\times0.5^0 \times (1-0.5)^{(3-0)}=0.125$$
 :::
 
 . . .
 
-:::{style="font-size: 0.7em"}
-*When $k=1$*
+::: {style="font-size: 0.7em"}
+*When* $k=1$
 :::
 
-:::{style="font-size: 0.525em"}
+::: {style="font-size: 0.525em"}
 $$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{1}\times0.5^1 \times (1-0.5)^{(3-1)}=0.375$$
 :::
 
 . . .
 
-:::{style="font-size: 0.7em"}
-*When $k=2$*
+::: {style="font-size: 0.7em"}
+*When* $k=2$
 :::
 
-:::{style="font-size: 0.525em"}
+::: {style="font-size: 0.525em"}
 $$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{2}\times0.5^1 \times (1-0.5)^{(3-2)}=0.375$$
 :::
 
 . . .
 
-:::{style="font-size: 0.7em"}
-*When $k=3$*
+::: {style="font-size: 0.7em"}
+*When* $k=3$
 :::
 
-:::{style="font-size: 0.525em"}
+::: {style="font-size: 0.525em"}
 $$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{3}\times0.5^1 \times (1-0.5)^{(3-3)}=0.125$$
 :::
 
@@ -504,7 +494,7 @@ $$\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{3}\times0.5^1 \times (1-0.5)^{(3-3)}=0.12
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
-**If $n = 3$**
+**If** $n = 3$
 
 . . .
 
@@ -516,7 +506,7 @@ barplot(dbinom(0:3,3,0.5), col = "blue", axes = FALSE)
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
-**If $n = 10$**
+**If** $n = 10$
 
 . . .
 
@@ -524,12 +514,11 @@ The Pascal's triangle is directly related to the binomial distribution with $p=0
 barplot(dbinom(0:10,10,0.5), col = "blue", axes = FALSE)
 ```
 
-
 ## Pascal's triangle
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
-**If $n = 50$**
+**If** $n = 50$
 
 . . .
 
@@ -541,7 +530,7 @@ barplot(dbinom(0:50,50,0.5), col = "blue", axes = FALSE)
 
 The Pascal's triangle is directly related to the binomial distribution with $p=0.5$.
 
-**If $n = 200$**
+**If** $n = 200$
 
 . . .
 
@@ -576,11 +565,11 @@ curve(dnorm(x),-10,10,n=2000,xlab="",ylab="",add=TRUE)
 
 ## Gaussian (Normal) distribution
 
-
 ```{r echo=FALSE, out.width="35%", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Carl_Friedrich_Gauss_1840_by_Jensen.jpg/804px-Carl_Friedrich_Gauss_1840_by_Jensen.jpg")
 ```
-::: {.r-stack}
+
+::: r-stack
 Carl Friedrich Gauss (1777-1855)
 :::
 
@@ -588,11 +577,11 @@ Carl Friedrich Gauss (1777-1855)
 
 Unlike the binomial distribution, the Gaussian distribution is a continuous distribution
 
-. . . 
+. . .
 
 It is the a very common distribution that is underlying many random natural phenomenon and it is the basis of statistical theory
 
-. . . 
+. . .
 
 Let's take a look at the mathematical formulation of the Gaussian distribution
 
@@ -604,9 +593,9 @@ $$\frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)
 
 where
 
-- $x$ : continuous variable of interest
-- $\mu$ : The mean of the distribution
-- $\sigma$ : The standard deviation of the distribution
+-   $x$ : continuous variable of interest
+-   $\mu$ : The mean of the distribution
+-   $\sigma$ : The standard deviation of the distribution
 
 ## Moment of the Gaussian distribution
 
@@ -616,10 +605,9 @@ $$\mu$$
 
 ***Example***
 
+![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width="80%"}
 
-![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=80%}
-
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 Let's say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a mean of $\mu$. We will look at this in more details in the practical exercices later today.
 :::
 
@@ -631,9 +619,9 @@ $$\sigma^2$$
 
 ***Example***
 
-![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width=80%}
+![](https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg){fig-align="center" width="80%"}
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 Let's say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a variance of $\sigma^2$. We will look at this in more details in the practical exercices later today.
 :::
 
@@ -641,10 +629,10 @@ Let's say we measure the length of the left wing of individual of this species o
 
 In R, there are 4 functions associated to every distribution. As an example, for the Gaussian distribution, they are
 
-- `rnorm`
-- `dnorm`
-- `pnorm`
-- `qnorm`
+-   `rnorm`
+-   `dnorm`
+-   `pnorm`
+-   `qnorm`
 
 . . .
 
@@ -652,13 +640,13 @@ Knowing what these functions do will be very useful for this course
 
 ## `rnorm`
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 The `r` in `rnorm` is for [random]{style="color: blue;"}
 :::
 
 . . .
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 This function allows us to randomly sample directly from the distribution of interest.
 :::
 
@@ -666,9 +654,9 @@ This function allows us to randomly sample directly from the distribution of int
 
 **Example**
 
-![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width=8%}
+![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width="8%"}
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 Let's assume that we look at the historical record and gather the minimum temperature measured on today's date for the past 40 years. This data can be assumed to be a random sample of 40 temperature measurements with an average of $4^{\circ}C$ and a standard deviation of $2^{\circ}C$. We can simulate these values as follow
 :::
 
@@ -694,23 +682,24 @@ abline(v = rnorm(40, mean = 4, sd = 2), col = "blue")
 
 ## `dnorm`
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 The `d` in `dnorm` is for [density]{style="color: blue;"}
 :::
+
 . . .
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 This function gives the height of the distribution for a chosen value.
 :::
-. . .
 
+. . .
 
 **Example**
 
-![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width=8%}
+![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width="8%"}
 
-:::{style="font-size: 0.8em"}
-If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, we can calculate that the likeliness that a temperature of $6^{\circ}C$ to occur is 
+::: {style="font-size: 0.8em"}
+If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, we can calculate that the likeliness that a temperature of $6^{\circ}C$ to occur is
 :::
 
 ```{r}
@@ -735,16 +724,15 @@ curve(dnorm(x, mean = 4, sd = 2),-3,11,
 points(6, dnorm(6, mean = 4, sd = 2), pch = 19, col = "red", cex = 3)
 ```
 
-
 ## `qnorm`
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 The `q` in `qnorm` is for [quantile]{style="color: blue;"}
 :::
 
 . . .
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 This function gives the value of the distribution given a certain density
 :::
 
@@ -752,9 +740,9 @@ This function gives the value of the distribution given a certain density
 
 **Example**
 
-![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width=8%}
+![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width="8%"}
 
-:::{style="font-size: 0.8em"}
+::: {style="font-size: 0.8em"}
 If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, `qnorm` allows us to calculate the temperature expected to be obtained at the lowest quartile (1/4). It is calculate as
 :::
 
@@ -769,6 +757,18 @@ plot(0,0,type="n",xlim=c(-3,11),ylim=c(0,0.21),
      xlab = "Temperature", ylab = "", las = 1, 
      cex.axis = 1.7, cex.lab = 2.5)
 
+xPoly <- seq(-3,11,l=2000)
+yPoly <- dnorm(xPoly, mean = 4, sd = 2)
+
+sel <- which(xPoly >= -3 &
+                 xPoly <= qnorm(0.25, mean = 4, sd = 2))
+xPolySel <- c(xPoly[sel],xPoly[sel[1]])
+yPolySel <- c(yPoly[sel],yPoly[sel[1]])
+n <- length(xPolySel)
+
+polygon(-xPolySel-0.35,yPolySel[n:1],col="blue",border = NA)
+
+
 segments(x0 = qnorm(0.25, mean = 4, sd = 2),
          x1 = qnorm(0.25, mean = 4, sd = 2),
          y0 = 0, y1 = dnorm(qnorm(0.25, mean = 4, sd = 2),
@@ -781,8 +781,9 @@ curve(dnorm(x, mean = 4, sd = 2),-3,11,
 
 points(qnorm(0.25, mean = 4, sd = 2),
        0, pch = 19, col = "red", cex = 3)
-```
 
+text(x = 1.7, y = 0.05, labels= 0.25, cex = 2.5, col = "white")
+```
 
 ## `pnorm`
 
@@ -790,11 +791,11 @@ The `p` in `pnorm` is for [probability distribution function]{style="color: blue
 
 . . .
 
-This function gives the integral (area under the curve) up to a specified value. 
+This function gives the integral (area under the curve) up to a specified value.
 
 . . .
 
-This is particularly useful because it informs us about the probability that an event is likely to occur (of course assuming a it follows a normal distribution). 
+This is particularly useful because it informs us about the probability that an event is likely to occur (of course assuming a it follows a normal distribution).
 
 ## `pnorm`
 
@@ -804,7 +805,7 @@ This is particularly useful because it informs us about the probability that an 
 knitr::include_graphics("https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png")
 ```
 
-If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, `pnorm` will tell us that the probability to have a temperature lower or equal to $6^{\circ}C$. This is calculated as 
+If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, `pnorm` will tell us that the probability to have a temperature lower or equal to $6^{\circ}C$. This is calculated as
 
 ```{r}
 pnorm(6, mean = 4, sd = 2)
@@ -838,35 +839,34 @@ text(3.5, 0.085,
 
 ## Binomial and Bernoulli distribution
 
-As I mentionned previsouly, these function are available in base R for a large number of distributions. 
-
+As I mentionned previsouly, these function are available in base R for a large number of distributions.
 
 ## Binomial distribution
 
-- `rbinom`
-- `dbinom`
-- `qbinom`
-- `pbinom`
+-   `rbinom`
+-   `dbinom`
+-   `qbinom`
+-   `pbinom`
 
 ## Bernoulli distribution
 
 However, sometimes we must know a little bit of theory (as I have show today) to use the right function.
 
-- `rbinom`
-- `dbinom`
-- `qbinom`
-- `pbinom`
+-   `rbinom`
+-   `dbinom`
+-   `qbinom`
+-   `pbinom`
 
-![](https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png){fig-align="center" width=20%}
+![](https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png){fig-align="center" width="20%"}
 
 ## Bernoulli distribution
 
-- `rbinom`
-- `dbinom`
-- `qbinom`
-- `pbinom`
+-   `rbinom`
+-   `dbinom`
+-   `qbinom`
+-   `pbinom`
 
-With `size = 1` 
+With `size = 1`
 
 ## Other distributions
 
