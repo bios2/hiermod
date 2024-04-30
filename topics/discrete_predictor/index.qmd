@@ -7,6 +7,8 @@ execute:
 format:
   html:
     code-tools: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 Let's start by taking a look at the Palmer Penguin dataset. Let's look at the distribution of observations of bill size.
@@ -42,9 +44,8 @@ normal_dist <- cmdstan_model("topics/discrete_predictor/normal_dist.stan")
 normal_dist
 ```
 
-The model section looks very much like the approach shown above. 
+The model section looks very much like the mathematics shown above. 
 I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. 
-These are for all the probability distribution of all the quantities in the model, both observed and unobserved. Above, we state which is which. 
 Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian separates the world into unmeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).
 
 We can fit this model to data and see the result: 
@@ -151,7 +152,17 @@ bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
 
 ### Posterior predictions in Stan
 
-We can simulate our own data in R if we are comfortable translating between R and Stan. However, if you want, you can do the same process in Stan. Just combine the section we just looked at with the previous work on data simulation we started with: 
+::: {.callout-tip}
+### EXERCISE
+In the code above I show how to simulate the posterior predictive distribution using the posterior draws for $\mu$ and $\sigma$. 
+However, if you want, you can do the same process in Stan.   
+
+1. Extend the Stan code above to simulate new observations using the `generated quantities` block. (Tip: look back at the [Simulation exercise](topics/01_simulation)).  
+2. plot them using bayesplot, as above.
+:::
+
+::: {.callout-note collapse="true"}
+### SOLUTION
 
 ```{r}
 #| class-output: stan
@@ -178,6 +189,9 @@ bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
 ```
 
 The code is much shorter, because there is less to do in R. 
+
+:::
+
 Both of these gives the same outcome: the posterior predictive distribution. 
 This gives us a straightfoward way to test our model's performance: 
 
@@ -207,8 +221,8 @@ Sometimes scientists will plot histograms of data at the beginning of a research
 
 $$
 \begin{align}
-\text{Bill depth}_{\text{sp}[i]} &\sim \text{Normal}(\mu_{\text{sp}[i]}, \sigma) \\
-\mu &\sim \text{Normal}(17, 2) \\
+\text{Bill depth}_{i} &\sim \text{Normal}(\mu_{\text{sp}[i]}, \sigma) \\
+\mu_{\text{sp}} &\sim \text{Normal}(17, 2) \\
 \sigma &\sim \text{Exponential}(2) \\
 \end{align}
 $$
@@ -274,8 +288,15 @@ The only difference to the previous model is in the line with the for-loop, whic
 
 ### Sampling the species model
 
-We have to make a new data list, since we've added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species.
+:::{.callout-tip}
+### EXERCISE
+Fit one (or both) of the species-specific models above. 
+1. What changes do you need to make to the input data? Remember we've added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species. There are many ways to do this (e.g. try using `as.numeric` after `as.factor`)  
+2. Visualize the posterior with `bayesplot`. Does it look better than the model without species? How can you tell?
+:::
 
+::: {.callout-note collapse="true"}
+### SOLUTION
 
 ```{r}
 
@@ -318,6 +339,10 @@ bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
 
 
 The predicted distribution is now much more like the real data
+
+:::
+
+### Visualizing species -- using `tidybayes`
 
 We can also make figures for each individual species. 
 Here we will move away from using `bayesplot` and try to visualize our posterior using the handy functions in the `tidybayes` package [add a link]{.aside}

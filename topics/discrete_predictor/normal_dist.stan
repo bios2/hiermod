@@ -7,7 +7,9 @@ parameters {
   real<lower=0> sigma;
 }
 model {
-  measurements ~ normal(mu, sigma);
+  // priors
   mu ~ normal(17,2);
   sigma ~ exponential(1);
+  // likelihood
+  measurements ~ normal(mu, sigma);
 }

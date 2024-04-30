@@ -1029,386 +1029,388 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Notes for today</span><span class="co">](https://docs.google.com/document/d/1XhJIuKhLI-xG4rySntHgrps0PVQOZDt1bsJor7INY5c/edit?usp=sharing)</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: console</span></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Return to Simpson's Paradox</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Notes for today</span><span class="co">](https://docs.google.com/document/d/1XhJIuKhLI-xG4rySntHgrps0PVQOZDt1bsJor7INY5c/edit?usp=sharing)</span></span>
 <span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>We'll return to the Palmer penguins, and look at Simpson's paradox in Stan.</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Return to Simpson's Paradox</span></span>
 <span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
-<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm)) <span class="sc">+</span> </span>
-<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span>
-<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>Let's write a simple statistical model for these data:</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>We'll return to the Palmer penguins, and look at Simpson's paradox in Stan.</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm)) <span class="sc">+</span> </span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_i &amp;\sim \text{Normal}(\mu_i, \sigma) <span class="sc">\\</span></span>
-<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times\text{Bill length}_i <span class="sc">\\</span></span>
-<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>\beta_0 &amp;\sim \text{Normal}(??) <span class="sc">\\</span></span>
-<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a>\beta_1 &amp;\sim \text{Normal}(??) <span class="sc">\\</span></span>
-<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(??)</span>
-<span id="cb36-42"><a href="#cb36-42" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb36-43"><a href="#cb36-43" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-44"><a href="#cb36-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-45"><a href="#cb36-45" aria-hidden="true" tabindex="-1"></a>What should our priors be? Before we can answer that, we have a more important question:</span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>Let's write a simple statistical model for these data:</span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_i &amp;\sim \text{Normal}(\mu_i, \sigma) <span class="sc">\\</span></span>
+<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times\text{Bill length}_i <span class="sc">\\</span></span>
+<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a>\beta_0 &amp;\sim \text{Normal}(??) <span class="sc">\\</span></span>
+<span id="cb36-42"><a href="#cb36-42" aria-hidden="true" tabindex="-1"></a>\beta_1 &amp;\sim \text{Normal}(??) <span class="sc">\\</span></span>
+<span id="cb36-43"><a href="#cb36-43" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(??)</span>
+<span id="cb36-44"><a href="#cb36-44" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb36-45"><a href="#cb36-45" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb36-46"><a href="#cb36-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-47"><a href="#cb36-47" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb36-48"><a href="#cb36-48" aria-hidden="true" tabindex="-1"></a><span class="fu"># WHERE IS ZERO??</span></span>
-<span id="cb36-49"><a href="#cb36-49" aria-hidden="true" tabindex="-1"></a>It has to be somewhere. Does it make sense? take control and choose for yourself.</span>
-<span id="cb36-50"><a href="#cb36-50" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb36-51"><a href="#cb36-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-52"><a href="#cb36-52" aria-hidden="true" tabindex="-1"></a>If we fit a model like this **without** thinking about the location of zero, we get some pretty silly answers:</span>
+<span id="cb36-47"><a href="#cb36-47" aria-hidden="true" tabindex="-1"></a>What should our priors be? Before we can answer that, we have a more important question:</span>
+<span id="cb36-48"><a href="#cb36-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-49"><a href="#cb36-49" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb36-50"><a href="#cb36-50" aria-hidden="true" tabindex="-1"></a><span class="fu"># WHERE IS ZERO??</span></span>
+<span id="cb36-51"><a href="#cb36-51" aria-hidden="true" tabindex="-1"></a>It has to be somewhere. Does it make sense? take control and choose for yourself.</span>
+<span id="cb36-52"><a href="#cb36-52" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb36-53"><a href="#cb36-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-56"><a href="#cb36-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-57"><a href="#cb36-57" aria-hidden="true" tabindex="-1"></a>bill_line <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(bill_depth_mm <span class="sc">~</span> bill_length_mm, <span class="at">data =</span> penguins))</span>
-<span id="cb36-58"><a href="#cb36-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-59"><a href="#cb36-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-60"><a href="#cb36-60" aria-hidden="true" tabindex="-1"></a>When the value of bill length is 0, the average of the response is the intercept:</span>
+<span id="cb36-54"><a href="#cb36-54" aria-hidden="true" tabindex="-1"></a>If we fit a model like this **without** thinking about the location of zero, we get some pretty silly answers:</span>
+<span id="cb36-55"><a href="#cb36-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-58"><a href="#cb36-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-59"><a href="#cb36-59" aria-hidden="true" tabindex="-1"></a>bill_line <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(bill_depth_mm <span class="sc">~</span> bill_length_mm, <span class="at">data =</span> penguins))</span>
+<span id="cb36-60"><a href="#cb36-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-61"><a href="#cb36-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-62"><a href="#cb36-62" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-63"><a href="#cb36-63" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb36-64"><a href="#cb36-64" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times\text{Bill length}_i <span class="sc">\\</span></span>
-<span id="cb36-65"><a href="#cb36-65" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times0 <span class="sc">\\</span></span>
-<span id="cb36-66"><a href="#cb36-66" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 <span class="sc">\\</span></span>
-<span id="cb36-67"><a href="#cb36-67" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb36-68"><a href="#cb36-68" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-69"><a href="#cb36-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-70"><a href="#cb36-70" aria-hidden="true" tabindex="-1"></a>But, if we take the data as we found it, we're going to be talking about $\beta_0$ as the depth of a penguin's bill _when the bill has 0 length!_ Either way it is the same line. However, from the point of view of setting priors and interpreting coefficients, it helps a lot to set a meaningful 0.</span>
+<span id="cb36-62"><a href="#cb36-62" aria-hidden="true" tabindex="-1"></a>When the value of bill length is 0, the average of the response is the intercept:</span>
+<span id="cb36-63"><a href="#cb36-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-64"><a href="#cb36-64" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb36-65"><a href="#cb36-65" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb36-66"><a href="#cb36-66" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times\text{Bill length}_i <span class="sc">\\</span></span>
+<span id="cb36-67"><a href="#cb36-67" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times0 <span class="sc">\\</span></span>
+<span id="cb36-68"><a href="#cb36-68" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 <span class="sc">\\</span></span>
+<span id="cb36-69"><a href="#cb36-69" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb36-70"><a href="#cb36-70" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb36-71"><a href="#cb36-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-72"><a href="#cb36-72" aria-hidden="true" tabindex="-1"></a>A very common choice is to **subtract the average** from your independent variable, so that it is equal to 0 at the average:</span>
+<span id="cb36-72"><a href="#cb36-72" aria-hidden="true" tabindex="-1"></a>But, if we take the data as we found it, we're going to be talking about $\beta_0$ as the depth of a penguin's bill _when the bill has 0 length!_ Either way it is the same line. However, from the point of view of setting priors and interpreting coefficients, it helps a lot to set a meaningful 0.</span>
 <span id="cb36-73"><a href="#cb36-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-74"><a href="#cb36-74" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-75"><a href="#cb36-75" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb36-76"><a href="#cb36-76" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_i &amp;\sim \text{Normal}(\mu_i, \sigma) <span class="sc">\\</span></span>
-<span id="cb36-77"><a href="#cb36-77" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times(\text{Bill length}_i  - \overline{\text{Bill length}})<span class="sc">\\</span></span>
-<span id="cb36-78"><a href="#cb36-78" aria-hidden="true" tabindex="-1"></a>\beta_0 &amp;\sim \text{Normal}(??) <span class="sc">\\</span></span>
-<span id="cb36-79"><a href="#cb36-79" aria-hidden="true" tabindex="-1"></a>\beta_1 &amp;\sim \text{Normal}(??)</span>
-<span id="cb36-80"><a href="#cb36-80" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb36-81"><a href="#cb36-81" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-82"><a href="#cb36-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-83"><a href="#cb36-83" aria-hidden="true" tabindex="-1"></a>Now $\beta_0$ means the average _bill depth_ at the average _bill length_.  It becomes easier to think about priors:</span>
+<span id="cb36-74"><a href="#cb36-74" aria-hidden="true" tabindex="-1"></a>A very common choice is to **subtract the average** from your independent variable, so that it is equal to 0 at the average:</span>
+<span id="cb36-75"><a href="#cb36-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-76"><a href="#cb36-76" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb36-77"><a href="#cb36-77" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb36-78"><a href="#cb36-78" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_i &amp;\sim \text{Normal}(\mu_i, \sigma) <span class="sc">\\</span></span>
+<span id="cb36-79"><a href="#cb36-79" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times(\text{Bill length}_i  - \overline{\text{Bill length}})<span class="sc">\\</span></span>
+<span id="cb36-80"><a href="#cb36-80" aria-hidden="true" tabindex="-1"></a>\beta_0 &amp;\sim \text{Normal}(??) <span class="sc">\\</span></span>
+<span id="cb36-81"><a href="#cb36-81" aria-hidden="true" tabindex="-1"></a>\beta_1 &amp;\sim \text{Normal}(??)</span>
+<span id="cb36-82"><a href="#cb36-82" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb36-83"><a href="#cb36-83" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb36-84"><a href="#cb36-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-85"><a href="#cb36-85" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-86"><a href="#cb36-86" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb36-87"><a href="#cb36-87" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_i &amp;\sim \text{Normal}(\mu_i, \sigma) <span class="sc">\\</span></span>
-<span id="cb36-88"><a href="#cb36-88" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times(\text{Bill length}_i  - \overline{\text{Bill length}})<span class="sc">\\</span></span>
-<span id="cb36-89"><a href="#cb36-89" aria-hidden="true" tabindex="-1"></a>\beta_0 &amp;\sim \text{Normal}(17,2) <span class="sc">\\</span></span>
-<span id="cb36-90"><a href="#cb36-90" aria-hidden="true" tabindex="-1"></a>\beta_1 &amp;\sim \text{Normal}(0,.5) <span class="sc">\\</span></span>
-<span id="cb36-91"><a href="#cb36-91" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(0.5)</span>
-<span id="cb36-92"><a href="#cb36-92" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb36-93"><a href="#cb36-93" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb36-94"><a href="#cb36-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-95"><a href="#cb36-95" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb36-96"><a href="#cb36-96" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise</span></span>
-<span id="cb36-97"><a href="#cb36-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-98"><a href="#cb36-98" aria-hidden="true" tabindex="-1"></a>What continuous predictors have you used in your analysis? How would you find a biologically meaningful zero? Think about how you would center time, age, mass, fitness etc.</span>
-<span id="cb36-99"><a href="#cb36-99" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb36-100"><a href="#cb36-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-101"><a href="#cb36-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prior predictive simulations</span></span>
+<span id="cb36-85"><a href="#cb36-85" aria-hidden="true" tabindex="-1"></a>Now $\beta_0$ means the average _bill depth_ at the average _bill length_.  It becomes easier to think about priors:</span>
+<span id="cb36-86"><a href="#cb36-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-87"><a href="#cb36-87" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb36-88"><a href="#cb36-88" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb36-89"><a href="#cb36-89" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_i &amp;\sim \text{Normal}(\mu_i, \sigma) <span class="sc">\\</span></span>
+<span id="cb36-90"><a href="#cb36-90" aria-hidden="true" tabindex="-1"></a>\mu_i &amp;= \beta_0 + \beta_1\times(\text{Bill length}_i  - \overline{\text{Bill length}})<span class="sc">\\</span></span>
+<span id="cb36-91"><a href="#cb36-91" aria-hidden="true" tabindex="-1"></a>\beta_0 &amp;\sim \text{Normal}(17,2) <span class="sc">\\</span></span>
+<span id="cb36-92"><a href="#cb36-92" aria-hidden="true" tabindex="-1"></a>\beta_1 &amp;\sim \text{Normal}(0,.5) <span class="sc">\\</span></span>
+<span id="cb36-93"><a href="#cb36-93" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(0.5)</span>
+<span id="cb36-94"><a href="#cb36-94" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb36-95"><a href="#cb36-95" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb36-96"><a href="#cb36-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-97"><a href="#cb36-97" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb36-98"><a href="#cb36-98" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise</span></span>
+<span id="cb36-99"><a href="#cb36-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-100"><a href="#cb36-100" aria-hidden="true" tabindex="-1"></a>What continuous predictors have you used in your analysis? How would you find a biologically meaningful zero? Think about how you would center time, age, mass, fitness etc.</span>
+<span id="cb36-101"><a href="#cb36-101" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb36-102"><a href="#cb36-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-103"><a href="#cb36-103" aria-hidden="true" tabindex="-1"></a>Armed with this model, it becomes much easier to think about prior predictions.</span>
+<span id="cb36-103"><a href="#cb36-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prior predictive simulations</span></span>
 <span id="cb36-104"><a href="#cb36-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-105"><a href="#cb36-105" aria-hidden="true" tabindex="-1"></a>We'll make a bunch of lines implied by the equation above. There's two steps:</span>
+<span id="cb36-105"><a href="#cb36-105" aria-hidden="true" tabindex="-1"></a>Armed with this model, it becomes much easier to think about prior predictions.</span>
 <span id="cb36-106"><a href="#cb36-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-107"><a href="#cb36-107" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Center the predictor</span>
-<span id="cb36-108"><a href="#cb36-108" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Make up a vector that goes from the minimum to the maximum of the predictor. This is just for convenience!</span>
-<span id="cb36-109"><a href="#cb36-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-112"><a href="#cb36-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-113"><a href="#cb36-113" aria-hidden="true" tabindex="-1"></a>bill_len_centered <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins,</span>
-<span id="cb36-114"><a href="#cb36-114" aria-hidden="true" tabindex="-1"></a>                          bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm,</span>
-<span id="cb36-115"><a href="#cb36-115" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb36-116"><a href="#cb36-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-117"><a href="#cb36-117" aria-hidden="true" tabindex="-1"></a><span class="do">## make up a short vector</span></span>
-<span id="cb36-118"><a href="#cb36-118" aria-hidden="true" tabindex="-1"></a>some_bill_lengths <span class="ot">&lt;-</span> <span class="fu">seq</span>(</span>
-<span id="cb36-119"><a href="#cb36-119" aria-hidden="true" tabindex="-1"></a>  <span class="at">from =</span> <span class="fu">min</span>(bill_len_centered, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb36-120"><a href="#cb36-120" aria-hidden="true" tabindex="-1"></a>  <span class="at">to =</span> <span class="fu">max</span>(bill_len_centered, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb36-121"><a href="#cb36-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">length.out =</span> <span class="dv">10</span></span>
-<span id="cb36-122"><a href="#cb36-122" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb36-123"><a href="#cb36-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-124"><a href="#cb36-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-125"><a href="#cb36-125" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb36-126"><a href="#cb36-126" aria-hidden="true" tabindex="-1"></a><span class="fu">## Shortcuts to these common tasks</span></span>
-<span id="cb36-127"><a href="#cb36-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-128"><a href="#cb36-128" aria-hidden="true" tabindex="-1"></a>These tasks are so common that they are automated in helper functions.</span>
+<span id="cb36-107"><a href="#cb36-107" aria-hidden="true" tabindex="-1"></a>We'll make a bunch of lines implied by the equation above. There's two steps:</span>
+<span id="cb36-108"><a href="#cb36-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-109"><a href="#cb36-109" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Center the predictor</span>
+<span id="cb36-110"><a href="#cb36-110" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Make up a vector that goes from the minimum to the maximum of the predictor. This is just for convenience!</span>
+<span id="cb36-111"><a href="#cb36-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-114"><a href="#cb36-114" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-115"><a href="#cb36-115" aria-hidden="true" tabindex="-1"></a>bill_len_centered <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins,</span>
+<span id="cb36-116"><a href="#cb36-116" aria-hidden="true" tabindex="-1"></a>                          bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm,</span>
+<span id="cb36-117"><a href="#cb36-117" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb36-118"><a href="#cb36-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-119"><a href="#cb36-119" aria-hidden="true" tabindex="-1"></a><span class="do">## make up a short vector</span></span>
+<span id="cb36-120"><a href="#cb36-120" aria-hidden="true" tabindex="-1"></a>some_bill_lengths <span class="ot">&lt;-</span> <span class="fu">seq</span>(</span>
+<span id="cb36-121"><a href="#cb36-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">from =</span> <span class="fu">min</span>(bill_len_centered, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb36-122"><a href="#cb36-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">to =</span> <span class="fu">max</span>(bill_len_centered, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb36-123"><a href="#cb36-123" aria-hidden="true" tabindex="-1"></a>  <span class="at">length.out =</span> <span class="dv">10</span></span>
+<span id="cb36-124"><a href="#cb36-124" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-125"><a href="#cb36-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-126"><a href="#cb36-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-127"><a href="#cb36-127" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb36-128"><a href="#cb36-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## Shortcuts to these common tasks</span></span>
 <span id="cb36-129"><a href="#cb36-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-130"><a href="#cb36-130" aria-hidden="true" tabindex="-1"></a>For centering predictors, see the base R function <span class="in">`?scale`</span></span>
+<span id="cb36-130"><a href="#cb36-130" aria-hidden="true" tabindex="-1"></a>These tasks are so common that they are automated in helper functions.</span>
 <span id="cb36-131"><a href="#cb36-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-132"><a href="#cb36-132" aria-hidden="true" tabindex="-1"></a>For creating a short vector over the range of a predictor, see <span class="in">`modelr::seq_range`</span>. The R package <span class="co">[</span><span class="ot">`modelr`</span><span class="co">](https://modelr.tidyverse.org/)</span> has many different functions to help with modelling.</span>
-<span id="cb36-133"><a href="#cb36-133" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb36-134"><a href="#cb36-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-135"><a href="#cb36-135" aria-hidden="true" tabindex="-1"></a>To simulate, we'll use some matrix algebra, as we saw in lecture:</span>
+<span id="cb36-132"><a href="#cb36-132" aria-hidden="true" tabindex="-1"></a>For centering predictors, see the base R function <span class="in">`?scale`</span></span>
+<span id="cb36-133"><a href="#cb36-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-134"><a href="#cb36-134" aria-hidden="true" tabindex="-1"></a>For creating a short vector over the range of a predictor, see <span class="in">`modelr::seq_range`</span>. The R package <span class="co">[</span><span class="ot">`modelr`</span><span class="co">](https://modelr.tidyverse.org/)</span> has many different functions to help with modelling.</span>
+<span id="cb36-135"><a href="#cb36-135" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb36-136"><a href="#cb36-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-139"><a href="#cb36-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-140"><a href="#cb36-140" aria-hidden="true" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">0</span>, .<span class="dv">5</span>)</span>
-<span id="cb36-141"><a href="#cb36-141" aria-hidden="true" tabindex="-1"></a>inters <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">17</span>, <span class="dv">2</span>)</span>
-<span id="cb36-142"><a href="#cb36-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-143"><a href="#cb36-143" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, some_bill_lengths)</span>
-<span id="cb36-144"><a href="#cb36-144" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rbind</span>(inters, slopes)</span>
-<span id="cb36-145"><a href="#cb36-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-146"><a href="#cb36-146" aria-hidden="true" tabindex="-1"></a>prior_mus <span class="ot">&lt;-</span> X <span class="sc">%*%</span> B</span>
+<span id="cb36-137"><a href="#cb36-137" aria-hidden="true" tabindex="-1"></a>To simulate, we'll use some matrix algebra, as we saw in lecture:</span>
+<span id="cb36-138"><a href="#cb36-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-141"><a href="#cb36-141" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-142"><a href="#cb36-142" aria-hidden="true" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">0</span>, .<span class="dv">5</span>)</span>
+<span id="cb36-143"><a href="#cb36-143" aria-hidden="true" tabindex="-1"></a>inters <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">17</span>, <span class="dv">2</span>)</span>
+<span id="cb36-144"><a href="#cb36-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-145"><a href="#cb36-145" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, some_bill_lengths)</span>
+<span id="cb36-146"><a href="#cb36-146" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rbind</span>(inters, slopes)</span>
 <span id="cb36-147"><a href="#cb36-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-148"><a href="#cb36-148" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="at">x =</span> some_bill_lengths,</span>
-<span id="cb36-149"><a href="#cb36-149" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> prior_mus, <span class="at">type =</span> <span class="st">"l"</span>)</span>
-<span id="cb36-150"><a href="#cb36-150" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-151"><a href="#cb36-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-152"><a href="#cb36-152" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb36-153"><a href="#cb36-153" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise</span></span>
-<span id="cb36-154"><a href="#cb36-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-155"><a href="#cb36-155" aria-hidden="true" tabindex="-1"></a>Copy the code above. Increase the number of simulations. Which priors are too wide? Which are too narrow?</span>
-<span id="cb36-156"><a href="#cb36-156" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb36-157"><a href="#cb36-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-158"><a href="#cb36-158" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulating Observations</span></span>
+<span id="cb36-148"><a href="#cb36-148" aria-hidden="true" tabindex="-1"></a>prior_mus <span class="ot">&lt;-</span> X <span class="sc">%*%</span> B</span>
+<span id="cb36-149"><a href="#cb36-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-150"><a href="#cb36-150" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="at">x =</span> some_bill_lengths,</span>
+<span id="cb36-151"><a href="#cb36-151" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> prior_mus, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb36-152"><a href="#cb36-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-153"><a href="#cb36-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-154"><a href="#cb36-154" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb36-155"><a href="#cb36-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise</span></span>
+<span id="cb36-156"><a href="#cb36-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-157"><a href="#cb36-157" aria-hidden="true" tabindex="-1"></a>Copy the code above. Increase the number of simulations. Which priors are too wide? Which are too narrow?</span>
+<span id="cb36-158"><a href="#cb36-158" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb36-159"><a href="#cb36-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-160"><a href="#cb36-160" aria-hidden="true" tabindex="-1"></a>There are always at least TWO kinds of predictions we can be thinking about: </span>
+<span id="cb36-160"><a href="#cb36-160" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulating Observations</span></span>
 <span id="cb36-161"><a href="#cb36-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-162"><a href="#cb36-162" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Predicted averages</span>
-<span id="cb36-163"><a href="#cb36-163" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Predicted observations</span>
-<span id="cb36-164"><a href="#cb36-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-165"><a href="#cb36-165" aria-hidden="true" tabindex="-1"></a>We can use the full model to simulate observations! </span>
+<span id="cb36-162"><a href="#cb36-162" aria-hidden="true" tabindex="-1"></a>There are always at least TWO kinds of predictions we can be thinking about: </span>
+<span id="cb36-163"><a href="#cb36-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-164"><a href="#cb36-164" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Predicted averages</span>
+<span id="cb36-165"><a href="#cb36-165" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Predicted observations</span>
 <span id="cb36-166"><a href="#cb36-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-169"><a href="#cb36-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-170"><a href="#cb36-170" aria-hidden="true" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">0</span>, .<span class="dv">5</span>)</span>
-<span id="cb36-171"><a href="#cb36-171" aria-hidden="true" tabindex="-1"></a>inters <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">17</span>, <span class="dv">2</span>)</span>
-<span id="cb36-172"><a href="#cb36-172" aria-hidden="true" tabindex="-1"></a>sigmas <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">7</span>, <span class="at">rate =</span> <span class="fl">0.3</span>)</span>
-<span id="cb36-173"><a href="#cb36-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-174"><a href="#cb36-174" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, some_bill_lengths)</span>
-<span id="cb36-175"><a href="#cb36-175" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rbind</span>(inters, slopes)</span>
-<span id="cb36-176"><a href="#cb36-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-177"><a href="#cb36-177" aria-hidden="true" tabindex="-1"></a>prior_mus <span class="ot">&lt;-</span> X <span class="sc">%*%</span> B</span>
+<span id="cb36-167"><a href="#cb36-167" aria-hidden="true" tabindex="-1"></a>We can use the full model to simulate observations! </span>
+<span id="cb36-168"><a href="#cb36-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-171"><a href="#cb36-171" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-172"><a href="#cb36-172" aria-hidden="true" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">0</span>, .<span class="dv">5</span>)</span>
+<span id="cb36-173"><a href="#cb36-173" aria-hidden="true" tabindex="-1"></a>inters <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">17</span>, <span class="dv">2</span>)</span>
+<span id="cb36-174"><a href="#cb36-174" aria-hidden="true" tabindex="-1"></a>sigmas <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">7</span>, <span class="at">rate =</span> <span class="fl">0.3</span>)</span>
+<span id="cb36-175"><a href="#cb36-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-176"><a href="#cb36-176" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, some_bill_lengths)</span>
+<span id="cb36-177"><a href="#cb36-177" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rbind</span>(inters, slopes)</span>
 <span id="cb36-178"><a href="#cb36-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-179"><a href="#cb36-179" aria-hidden="true" tabindex="-1"></a>prior_obs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(prior_mus), <span class="at">ncol =</span> <span class="fu">ncol</span>(prior_mus))</span>
+<span id="cb36-179"><a href="#cb36-179" aria-hidden="true" tabindex="-1"></a>prior_mus <span class="ot">&lt;-</span> X <span class="sc">%*%</span> B</span>
 <span id="cb36-180"><a href="#cb36-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-181"><a href="#cb36-181" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(prior_obs)) {</span>
-<span id="cb36-182"><a href="#cb36-182" aria-hidden="true" tabindex="-1"></a>  prior_obs[,j] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">nrow</span>(prior_mus),</span>
-<span id="cb36-183"><a href="#cb36-183" aria-hidden="true" tabindex="-1"></a>                         <span class="at">mean =</span> prior_mus[,j],</span>
-<span id="cb36-184"><a href="#cb36-184" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sd =</span> sigmas[j])</span>
-<span id="cb36-185"><a href="#cb36-185" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb36-186"><a href="#cb36-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-187"><a href="#cb36-187" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="at">x =</span> some_bill_lengths,</span>
-<span id="cb36-188"><a href="#cb36-188" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> prior_obs, <span class="at">type =</span> <span class="st">"p"</span>)</span>
-<span id="cb36-189"><a href="#cb36-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-190"><a href="#cb36-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-191"><a href="#cb36-191" aria-hidden="true" tabindex="-1"></a>Tidyverse style for those who indulge:</span>
+<span id="cb36-181"><a href="#cb36-181" aria-hidden="true" tabindex="-1"></a>prior_obs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(prior_mus), <span class="at">ncol =</span> <span class="fu">ncol</span>(prior_mus))</span>
+<span id="cb36-182"><a href="#cb36-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-183"><a href="#cb36-183" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(prior_obs)) {</span>
+<span id="cb36-184"><a href="#cb36-184" aria-hidden="true" tabindex="-1"></a>  prior_obs[,j] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">nrow</span>(prior_mus),</span>
+<span id="cb36-185"><a href="#cb36-185" aria-hidden="true" tabindex="-1"></a>                         <span class="at">mean =</span> prior_mus[,j],</span>
+<span id="cb36-186"><a href="#cb36-186" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sd =</span> sigmas[j])</span>
+<span id="cb36-187"><a href="#cb36-187" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-188"><a href="#cb36-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-189"><a href="#cb36-189" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="at">x =</span> some_bill_lengths,</span>
+<span id="cb36-190"><a href="#cb36-190" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> prior_obs, <span class="at">type =</span> <span class="st">"p"</span>)</span>
+<span id="cb36-191"><a href="#cb36-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-192"><a href="#cb36-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-195"><a href="#cb36-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-196"><a href="#cb36-196" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb36-197"><a href="#cb36-197" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,</span>
-<span id="cb36-198"><a href="#cb36-198" aria-hidden="true" tabindex="-1"></a>  <span class="at">slopes =</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">0</span>, .<span class="dv">5</span>),</span>
-<span id="cb36-199"><a href="#cb36-199" aria-hidden="true" tabindex="-1"></a>  <span class="at">inters =</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">17</span>, <span class="dv">2</span>),</span>
-<span id="cb36-200"><a href="#cb36-200" aria-hidden="true" tabindex="-1"></a>  <span class="at">sigmas =</span> <span class="fu">rexp</span>(<span class="dv">7</span>, <span class="at">rate =</span> <span class="fl">0.4</span>)</span>
-<span id="cb36-201"><a href="#cb36-201" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb36-202"><a href="#cb36-202" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">list</span>(<span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">6</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb36-203"><a href="#cb36-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb36-204"><a href="#cb36-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg =</span> <span class="fu">list</span>(x <span class="sc">*</span> slopes <span class="sc">+</span> inters),</span>
-<span id="cb36-205"><a href="#cb36-205" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs =</span> <span class="fu">list</span>(<span class="fu">rnorm</span>(<span class="fu">length</span>(avg), <span class="at">mean =</span> avg, <span class="at">sd =</span> sigmas))) <span class="sc">|&gt;</span> </span>
-<span id="cb36-206"><a href="#cb36-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"avg"</span>, <span class="st">"obs"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb36-207"><a href="#cb36-207" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> x, <span class="at">y =</span> avg, <span class="at">group =</span> sim_id, <span class="at">colour =</span> sim_id)) <span class="sc">+</span> </span>
-<span id="cb36-208"><a href="#cb36-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
-<span id="cb36-209"><a href="#cb36-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> obs)) <span class="sc">+</span> </span>
-<span id="cb36-210"><a href="#cb36-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_distiller</span>(<span class="at">type =</span> <span class="st">"qual"</span>)</span>
-<span id="cb36-211"><a href="#cb36-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-212"><a href="#cb36-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-193"><a href="#cb36-193" aria-hidden="true" tabindex="-1"></a>Tidyverse style for those who indulge:</span>
+<span id="cb36-194"><a href="#cb36-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-197"><a href="#cb36-197" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-198"><a href="#cb36-198" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb36-199"><a href="#cb36-199" aria-hidden="true" tabindex="-1"></a>  <span class="at">sim_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,</span>
+<span id="cb36-200"><a href="#cb36-200" aria-hidden="true" tabindex="-1"></a>  <span class="at">slopes =</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">0</span>, .<span class="dv">5</span>),</span>
+<span id="cb36-201"><a href="#cb36-201" aria-hidden="true" tabindex="-1"></a>  <span class="at">inters =</span> <span class="fu">rnorm</span>(<span class="dv">7</span>, <span class="dv">17</span>, <span class="dv">2</span>),</span>
+<span id="cb36-202"><a href="#cb36-202" aria-hidden="true" tabindex="-1"></a>  <span class="at">sigmas =</span> <span class="fu">rexp</span>(<span class="dv">7</span>, <span class="at">rate =</span> <span class="fl">0.4</span>)</span>
+<span id="cb36-203"><a href="#cb36-203" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb36-204"><a href="#cb36-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">list</span>(<span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">6</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb36-205"><a href="#cb36-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb36-206"><a href="#cb36-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg =</span> <span class="fu">list</span>(x <span class="sc">*</span> slopes <span class="sc">+</span> inters),</span>
+<span id="cb36-207"><a href="#cb36-207" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs =</span> <span class="fu">list</span>(<span class="fu">rnorm</span>(<span class="fu">length</span>(avg), <span class="at">mean =</span> avg, <span class="at">sd =</span> sigmas))) <span class="sc">|&gt;</span> </span>
+<span id="cb36-208"><a href="#cb36-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"avg"</span>, <span class="st">"obs"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb36-209"><a href="#cb36-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> x, <span class="at">y =</span> avg, <span class="at">group =</span> sim_id, <span class="at">colour =</span> sim_id)) <span class="sc">+</span> </span>
+<span id="cb36-210"><a href="#cb36-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb36-211"><a href="#cb36-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> obs)) <span class="sc">+</span> </span>
+<span id="cb36-212"><a href="#cb36-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_distiller</span>(<span class="at">type =</span> <span class="st">"qual"</span>)</span>
 <span id="cb36-213"><a href="#cb36-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-214"><a href="#cb36-214" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear regression in Stan</span></span>
+<span id="cb36-214"><a href="#cb36-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-215"><a href="#cb36-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-216"><a href="#cb36-216" aria-hidden="true" tabindex="-1"></a>Now we write a Stan program for this model. </span>
-<span id="cb36-217"><a href="#cb36-217" aria-hidden="true" tabindex="-1"></a>We'll begin with a simple model that has no posterior predictions</span>
-<span id="cb36-218"><a href="#cb36-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-219"><a href="#cb36-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE, include=FALSE}</span></span>
-<span id="cb36-220"><a href="#cb36-220" aria-hidden="true" tabindex="-1"></a>bill_line <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(bill_depth_mm <span class="sc">~</span> species <span class="sc">+</span> <span class="fu">I</span>(bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="at">data =</span> penguins))</span>
-<span id="cb36-221"><a href="#cb36-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-222"><a href="#cb36-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-225"><a href="#cb36-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-226"><a href="#cb36-226" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb36-227"><a href="#cb36-227" aria-hidden="true" tabindex="-1"></a>normal_regression_no_prediction <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb36-228"><a href="#cb36-228" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/02_regression/normal_regression_no_prediction.stan"</span>)</span>
-<span id="cb36-229"><a href="#cb36-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-230"><a href="#cb36-230" aria-hidden="true" tabindex="-1"></a>normal_regression_no_prediction</span>
-<span id="cb36-231"><a href="#cb36-231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-232"><a href="#cb36-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-233"><a href="#cb36-233" aria-hidden="true" tabindex="-1"></a>In order to get the posterior, we need to put our data in Stan. Remember to remove NAs first! </span>
+<span id="cb36-216"><a href="#cb36-216" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear regression in Stan</span></span>
+<span id="cb36-217"><a href="#cb36-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-218"><a href="#cb36-218" aria-hidden="true" tabindex="-1"></a>Now we write a Stan program for this model. </span>
+<span id="cb36-219"><a href="#cb36-219" aria-hidden="true" tabindex="-1"></a>We'll begin with a simple model that has no posterior predictions</span>
+<span id="cb36-220"><a href="#cb36-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-221"><a href="#cb36-221" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE, include=FALSE}</span></span>
+<span id="cb36-222"><a href="#cb36-222" aria-hidden="true" tabindex="-1"></a>bill_line <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(bill_depth_mm <span class="sc">~</span> species <span class="sc">+</span> <span class="fu">I</span>(bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), <span class="at">data =</span> penguins))</span>
+<span id="cb36-223"><a href="#cb36-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-224"><a href="#cb36-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-227"><a href="#cb36-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-228"><a href="#cb36-228" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb36-229"><a href="#cb36-229" aria-hidden="true" tabindex="-1"></a>normal_regression_no_prediction <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb36-230"><a href="#cb36-230" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/02_regression/normal_regression_no_prediction.stan"</span>)</span>
+<span id="cb36-231"><a href="#cb36-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-232"><a href="#cb36-232" aria-hidden="true" tabindex="-1"></a>normal_regression_no_prediction</span>
+<span id="cb36-233"><a href="#cb36-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-234"><a href="#cb36-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-237"><a href="#cb36-237" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-238"><a href="#cb36-238" aria-hidden="true" tabindex="-1"></a><span class="do">## drop NAs</span></span>
-<span id="cb36-239"><a href="#cb36-239" aria-hidden="true" tabindex="-1"></a>penguins_no_NA <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb36-240"><a href="#cb36-240" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">drop_na</span>(bill_depth_mm, bill_length_mm) <span class="sc">|&gt;</span> </span>
-<span id="cb36-241"><a href="#cb36-241" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb36-242"><a href="#cb36-242" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_length_center =</span> bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm))</span>
-<span id="cb36-243"><a href="#cb36-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-244"><a href="#cb36-244" aria-hidden="true" tabindex="-1"></a><span class="do">## assemble data list</span></span>
-<span id="cb36-245"><a href="#cb36-245" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_no_NA,</span>
-<span id="cb36-246"><a href="#cb36-246" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_length_center),</span>
-<span id="cb36-247"><a href="#cb36-247" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_len =</span> bill_length_center,</span>
-<span id="cb36-248"><a href="#cb36-248" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_dep =</span> bill_depth_mm</span>
-<span id="cb36-249"><a href="#cb36-249" aria-hidden="true" tabindex="-1"></a>          ))</span>
-<span id="cb36-250"><a href="#cb36-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-251"><a href="#cb36-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-254"><a href="#cb36-254" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-255"><a href="#cb36-255" aria-hidden="true" tabindex="-1"></a>normal_reg_no_pred <span class="ot">&lt;-</span> normal_regression_no_prediction<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb36-256"><a href="#cb36-256" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list, </span>
-<span id="cb36-257"><a href="#cb36-257" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>)</span>
-<span id="cb36-258"><a href="#cb36-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-259"><a href="#cb36-259" aria-hidden="true" tabindex="-1"></a>normal_reg_no_pred<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb36-235"><a href="#cb36-235" aria-hidden="true" tabindex="-1"></a>In order to get the posterior, we need to put our data in Stan. Remember to remove NAs first! </span>
+<span id="cb36-236"><a href="#cb36-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-239"><a href="#cb36-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-240"><a href="#cb36-240" aria-hidden="true" tabindex="-1"></a><span class="do">## drop NAs</span></span>
+<span id="cb36-241"><a href="#cb36-241" aria-hidden="true" tabindex="-1"></a>penguins_no_NA <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb36-242"><a href="#cb36-242" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">drop_na</span>(bill_depth_mm, bill_length_mm) <span class="sc">|&gt;</span> </span>
+<span id="cb36-243"><a href="#cb36-243" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb36-244"><a href="#cb36-244" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_length_center =</span> bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm))</span>
+<span id="cb36-245"><a href="#cb36-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-246"><a href="#cb36-246" aria-hidden="true" tabindex="-1"></a><span class="do">## assemble data list</span></span>
+<span id="cb36-247"><a href="#cb36-247" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_no_NA,</span>
+<span id="cb36-248"><a href="#cb36-248" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_length_center),</span>
+<span id="cb36-249"><a href="#cb36-249" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_len =</span> bill_length_center,</span>
+<span id="cb36-250"><a href="#cb36-250" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_dep =</span> bill_depth_mm</span>
+<span id="cb36-251"><a href="#cb36-251" aria-hidden="true" tabindex="-1"></a>          ))</span>
+<span id="cb36-252"><a href="#cb36-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-253"><a href="#cb36-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-256"><a href="#cb36-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-257"><a href="#cb36-257" aria-hidden="true" tabindex="-1"></a>normal_reg_no_pred <span class="ot">&lt;-</span> normal_regression_no_prediction<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb36-258"><a href="#cb36-258" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_list, </span>
+<span id="cb36-259"><a href="#cb36-259" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>)</span>
 <span id="cb36-260"><a href="#cb36-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-261"><a href="#cb36-261" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-261"><a href="#cb36-261" aria-hidden="true" tabindex="-1"></a>normal_reg_no_pred<span class="sc">$</span><span class="fu">summary</span>()</span>
 <span id="cb36-262"><a href="#cb36-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-265"><a href="#cb36-265" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-266"><a href="#cb36-266" aria-hidden="true" tabindex="-1"></a>normal_reg_no_pred<span class="sc">$</span><span class="fu">draws</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb36-267"><a href="#cb36-267" aria-hidden="true" tabindex="-1"></a>  bayesplot<span class="sc">::</span><span class="fu">mcmc_areas</span>(<span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"slope"</span>, <span class="st">"intercept"</span>, <span class="st">"sigma"</span>))</span>
-<span id="cb36-268"><a href="#cb36-268" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-269"><a href="#cb36-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-270"><a href="#cb36-270" aria-hidden="true" tabindex="-1"></a><span class="fu">## Posterior predictions in Stan</span></span>
+<span id="cb36-263"><a href="#cb36-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-264"><a href="#cb36-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-267"><a href="#cb36-267" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-268"><a href="#cb36-268" aria-hidden="true" tabindex="-1"></a>normal_reg_no_pred<span class="sc">$</span><span class="fu">draws</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb36-269"><a href="#cb36-269" aria-hidden="true" tabindex="-1"></a>  bayesplot<span class="sc">::</span><span class="fu">mcmc_areas</span>(<span class="at">pars =</span> <span class="fu">c</span>(<span class="st">"slope"</span>, <span class="st">"intercept"</span>, <span class="st">"sigma"</span>))</span>
+<span id="cb36-270"><a href="#cb36-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-271"><a href="#cb36-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-274"><a href="#cb36-274" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-275"><a href="#cb36-275" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb36-276"><a href="#cb36-276" aria-hidden="true" tabindex="-1"></a>normal_regression <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/02_regression/normal_regression.stan"</span>)</span>
-<span id="cb36-277"><a href="#cb36-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-278"><a href="#cb36-278" aria-hidden="true" tabindex="-1"></a>normal_regression</span>
-<span id="cb36-279"><a href="#cb36-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-280"><a href="#cb36-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-283"><a href="#cb36-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-284"><a href="#cb36-284" aria-hidden="true" tabindex="-1"></a>penguins_no_NA <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb36-285"><a href="#cb36-285" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">drop_na</span>(bill_depth_mm, bill_length_mm) <span class="sc">|&gt;</span> </span>
-<span id="cb36-286"><a href="#cb36-286" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb36-287"><a href="#cb36-287" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_length_center =</span> bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm))</span>
-<span id="cb36-288"><a href="#cb36-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-289"><a href="#cb36-289" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_no_NA,</span>
-<span id="cb36-290"><a href="#cb36-290" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_length_center),</span>
-<span id="cb36-291"><a href="#cb36-291" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_len =</span> bill_length_center,</span>
-<span id="cb36-292"><a href="#cb36-292" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_dep =</span> bill_depth_mm,</span>
-<span id="cb36-293"><a href="#cb36-293" aria-hidden="true" tabindex="-1"></a>          <span class="at">npost =</span> <span class="dv">6</span>,</span>
-<span id="cb36-294"><a href="#cb36-294" aria-hidden="true" tabindex="-1"></a>          <span class="at">pred_values =</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(penguins_no_NA<span class="sc">$</span>bill_length_center, <span class="at">n =</span> <span class="dv">6</span>)</span>
-<span id="cb36-295"><a href="#cb36-295" aria-hidden="true" tabindex="-1"></a>          ))</span>
-<span id="cb36-296"><a href="#cb36-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-297"><a href="#cb36-297" aria-hidden="true" tabindex="-1"></a>bill_norm_reg <span class="ot">&lt;-</span> normal_regression<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> data_list, </span>
-<span id="cb36-298"><a href="#cb36-298" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">refresh =</span> <span class="dv">0</span>)</span>
-<span id="cb36-299"><a href="#cb36-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-300"><a href="#cb36-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-303"><a href="#cb36-303" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-304"><a href="#cb36-304" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb36-305"><a href="#cb36-305" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb36-306"><a href="#cb36-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-307"><a href="#cb36-307" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="ot">&lt;-</span> bill_norm_reg <span class="sc">|&gt;</span> </span>
-<span id="cb36-308"><a href="#cb36-308" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(post_bill_dep_average[i],</span>
-<span id="cb36-309"><a href="#cb36-309" aria-hidden="true" tabindex="-1"></a>                          post_bill_dep_obs[i]) <span class="sc">|&gt;</span></span>
-<span id="cb36-310"><a href="#cb36-310" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_length =</span> data_list<span class="sc">$</span>pred_values[i]) </span>
-<span id="cb36-311"><a href="#cb36-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-312"><a href="#cb36-312" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb36-313"><a href="#cb36-313" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length, <span class="at">dist =</span> post_bill_dep_average)) <span class="sc">+</span> </span>
-<span id="cb36-314"><a href="#cb36-314" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb36-315"><a href="#cb36-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center, <span class="at">y =</span> bill_depth_mm),</span>
-<span id="cb36-316"><a href="#cb36-316" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
-<span id="cb36-317"><a href="#cb36-317" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
-<span id="cb36-318"><a href="#cb36-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Greens"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
-<span id="cb36-319"><a href="#cb36-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average response"</span>)</span>
-<span id="cb36-320"><a href="#cb36-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-321"><a href="#cb36-321" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb36-322"><a href="#cb36-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length, <span class="at">dist =</span> post_bill_dep_obs)) <span class="sc">+</span> </span>
-<span id="cb36-323"><a href="#cb36-323" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb36-324"><a href="#cb36-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center, <span class="at">y =</span> bill_depth_mm),</span>
-<span id="cb36-325"><a href="#cb36-325" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
-<span id="cb36-326"><a href="#cb36-326" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
-<span id="cb36-327"><a href="#cb36-327" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Greens"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb36-328"><a href="#cb36-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Predicted observations"</span>)</span>
-<span id="cb36-329"><a href="#cb36-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-330"><a href="#cb36-330" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-272"><a href="#cb36-272" aria-hidden="true" tabindex="-1"></a><span class="fu">## Posterior predictions in Stan</span></span>
+<span id="cb36-273"><a href="#cb36-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-276"><a href="#cb36-276" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-277"><a href="#cb36-277" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb36-278"><a href="#cb36-278" aria-hidden="true" tabindex="-1"></a>normal_regression <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/02_regression/normal_regression.stan"</span>)</span>
+<span id="cb36-279"><a href="#cb36-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-280"><a href="#cb36-280" aria-hidden="true" tabindex="-1"></a>normal_regression</span>
+<span id="cb36-281"><a href="#cb36-281" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-282"><a href="#cb36-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-285"><a href="#cb36-285" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-286"><a href="#cb36-286" aria-hidden="true" tabindex="-1"></a>penguins_no_NA <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb36-287"><a href="#cb36-287" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">drop_na</span>(bill_depth_mm, bill_length_mm) <span class="sc">|&gt;</span> </span>
+<span id="cb36-288"><a href="#cb36-288" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb36-289"><a href="#cb36-289" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_length_center =</span> bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm))</span>
+<span id="cb36-290"><a href="#cb36-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-291"><a href="#cb36-291" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_no_NA,</span>
+<span id="cb36-292"><a href="#cb36-292" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_length_center),</span>
+<span id="cb36-293"><a href="#cb36-293" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_len =</span> bill_length_center,</span>
+<span id="cb36-294"><a href="#cb36-294" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_dep =</span> bill_depth_mm,</span>
+<span id="cb36-295"><a href="#cb36-295" aria-hidden="true" tabindex="-1"></a>          <span class="at">npost =</span> <span class="dv">6</span>,</span>
+<span id="cb36-296"><a href="#cb36-296" aria-hidden="true" tabindex="-1"></a>          <span class="at">pred_values =</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(penguins_no_NA<span class="sc">$</span>bill_length_center, <span class="at">n =</span> <span class="dv">6</span>)</span>
+<span id="cb36-297"><a href="#cb36-297" aria-hidden="true" tabindex="-1"></a>          ))</span>
+<span id="cb36-298"><a href="#cb36-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-299"><a href="#cb36-299" aria-hidden="true" tabindex="-1"></a>bill_norm_reg <span class="ot">&lt;-</span> normal_regression<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> data_list, </span>
+<span id="cb36-300"><a href="#cb36-300" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">refresh =</span> <span class="dv">0</span>)</span>
+<span id="cb36-301"><a href="#cb36-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-302"><a href="#cb36-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-305"><a href="#cb36-305" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-306"><a href="#cb36-306" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb36-307"><a href="#cb36-307" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb36-308"><a href="#cb36-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-309"><a href="#cb36-309" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="ot">&lt;-</span> bill_norm_reg <span class="sc">|&gt;</span> </span>
+<span id="cb36-310"><a href="#cb36-310" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(post_bill_dep_average[i],</span>
+<span id="cb36-311"><a href="#cb36-311" aria-hidden="true" tabindex="-1"></a>                          post_bill_dep_obs[i]) <span class="sc">|&gt;</span></span>
+<span id="cb36-312"><a href="#cb36-312" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_length =</span> data_list<span class="sc">$</span>pred_values[i]) </span>
+<span id="cb36-313"><a href="#cb36-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-314"><a href="#cb36-314" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb36-315"><a href="#cb36-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length, <span class="at">dist =</span> post_bill_dep_average)) <span class="sc">+</span> </span>
+<span id="cb36-316"><a href="#cb36-316" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb36-317"><a href="#cb36-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center, <span class="at">y =</span> bill_depth_mm),</span>
+<span id="cb36-318"><a href="#cb36-318" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
+<span id="cb36-319"><a href="#cb36-319" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb36-320"><a href="#cb36-320" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Greens"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
+<span id="cb36-321"><a href="#cb36-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average response"</span>)</span>
+<span id="cb36-322"><a href="#cb36-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-323"><a href="#cb36-323" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb36-324"><a href="#cb36-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length, <span class="at">dist =</span> post_bill_dep_obs)) <span class="sc">+</span> </span>
+<span id="cb36-325"><a href="#cb36-325" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb36-326"><a href="#cb36-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center, <span class="at">y =</span> bill_depth_mm),</span>
+<span id="cb36-327"><a href="#cb36-327" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
+<span id="cb36-328"><a href="#cb36-328" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb36-329"><a href="#cb36-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Greens"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb36-330"><a href="#cb36-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Predicted observations"</span>)</span>
 <span id="cb36-331"><a href="#cb36-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-332"><a href="#cb36-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-333"><a href="#cb36-333" aria-hidden="true" tabindex="-1"></a>Now, what I would like you to do is to extend this model to include species. Specifically, let each species have its own value of the <span class="in">`intercept`</span>.</span>
+<span id="cb36-332"><a href="#cb36-332" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-333"><a href="#cb36-333" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-334"><a href="#cb36-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-335"><a href="#cb36-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-336"><a href="#cb36-336" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, include=TRUE}</span></span>
-<span id="cb36-337"><a href="#cb36-337" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb36-338"><a href="#cb36-338" aria-hidden="true" tabindex="-1"></a>normal_regression_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/02_regression/normal_regression_spp.stan"</span>)</span>
-<span id="cb36-339"><a href="#cb36-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-340"><a href="#cb36-340" aria-hidden="true" tabindex="-1"></a>normal_regression_spp</span>
-<span id="cb36-341"><a href="#cb36-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-342"><a href="#cb36-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-343"><a href="#cb36-343" aria-hidden="true" tabindex="-1"></a>We set up a list for this model just as we did before. </span>
-<span id="cb36-344"><a href="#cb36-344" aria-hidden="true" tabindex="-1"></a>Note that this time we are using TRIPLE the <span class="in">`pred_values`</span>, because we want to run independent predictions for each species.</span>
-<span id="cb36-345"><a href="#cb36-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-346"><a href="#cb36-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-349"><a href="#cb36-349" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-350"><a href="#cb36-350" aria-hidden="true" tabindex="-1"></a>bill_vec <span class="ot">&lt;-</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(penguins_no_NA<span class="sc">$</span>bill_length_center, <span class="at">n =</span> <span class="dv">6</span>)</span>
-<span id="cb36-351"><a href="#cb36-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-352"><a href="#cb36-352" aria-hidden="true" tabindex="-1"></a>data_list_spp <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_no_NA,</span>
-<span id="cb36-353"><a href="#cb36-353" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_length_center),</span>
-<span id="cb36-354"><a href="#cb36-354" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_len =</span> bill_length_center,</span>
-<span id="cb36-355"><a href="#cb36-355" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_dep =</span> bill_depth_mm,</span>
-<span id="cb36-356"><a href="#cb36-356" aria-hidden="true" tabindex="-1"></a>          <span class="at">spp_id =</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(species)),</span>
-<span id="cb36-357"><a href="#cb36-357" aria-hidden="true" tabindex="-1"></a>          <span class="at">npost =</span> <span class="dv">3</span><span class="sc">*</span><span class="dv">6</span>,</span>
-<span id="cb36-358"><a href="#cb36-358" aria-hidden="true" tabindex="-1"></a>          <span class="at">pred_values =</span> <span class="fu">rep</span>(bill_vec, <span class="dv">3</span>),</span>
-<span id="cb36-359"><a href="#cb36-359" aria-hidden="true" tabindex="-1"></a>          <span class="at">pred_spp_id =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">6</span>)</span>
-<span id="cb36-360"><a href="#cb36-360" aria-hidden="true" tabindex="-1"></a>          ))</span>
-<span id="cb36-361"><a href="#cb36-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-362"><a href="#cb36-362" aria-hidden="true" tabindex="-1"></a>normal_reg_spp_post <span class="ot">&lt;-</span> normal_regression_spp<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> data_list_spp, <span class="at">refresh =</span> <span class="dv">0</span>)</span>
+<span id="cb36-335"><a href="#cb36-335" aria-hidden="true" tabindex="-1"></a>Now, what I would like you to do is to extend this model to include species. Specifically, let each species have its own value of the <span class="in">`intercept`</span>.</span>
+<span id="cb36-336"><a href="#cb36-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-337"><a href="#cb36-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-338"><a href="#cb36-338" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, include=TRUE}</span></span>
+<span id="cb36-339"><a href="#cb36-339" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb36-340"><a href="#cb36-340" aria-hidden="true" tabindex="-1"></a>normal_regression_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/02_regression/normal_regression_spp.stan"</span>)</span>
+<span id="cb36-341"><a href="#cb36-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-342"><a href="#cb36-342" aria-hidden="true" tabindex="-1"></a>normal_regression_spp</span>
+<span id="cb36-343"><a href="#cb36-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-344"><a href="#cb36-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-345"><a href="#cb36-345" aria-hidden="true" tabindex="-1"></a>We set up a list for this model just as we did before. </span>
+<span id="cb36-346"><a href="#cb36-346" aria-hidden="true" tabindex="-1"></a>Note that this time we are using TRIPLE the <span class="in">`pred_values`</span>, because we want to run independent predictions for each species.</span>
+<span id="cb36-347"><a href="#cb36-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-348"><a href="#cb36-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-351"><a href="#cb36-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-352"><a href="#cb36-352" aria-hidden="true" tabindex="-1"></a>bill_vec <span class="ot">&lt;-</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(penguins_no_NA<span class="sc">$</span>bill_length_center, <span class="at">n =</span> <span class="dv">6</span>)</span>
+<span id="cb36-353"><a href="#cb36-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-354"><a href="#cb36-354" aria-hidden="true" tabindex="-1"></a>data_list_spp <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_no_NA,</span>
+<span id="cb36-355"><a href="#cb36-355" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(bill_length_center),</span>
+<span id="cb36-356"><a href="#cb36-356" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_len =</span> bill_length_center,</span>
+<span id="cb36-357"><a href="#cb36-357" aria-hidden="true" tabindex="-1"></a>          <span class="at">bill_dep =</span> bill_depth_mm,</span>
+<span id="cb36-358"><a href="#cb36-358" aria-hidden="true" tabindex="-1"></a>          <span class="at">spp_id =</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(species)),</span>
+<span id="cb36-359"><a href="#cb36-359" aria-hidden="true" tabindex="-1"></a>          <span class="at">npost =</span> <span class="dv">3</span><span class="sc">*</span><span class="dv">6</span>,</span>
+<span id="cb36-360"><a href="#cb36-360" aria-hidden="true" tabindex="-1"></a>          <span class="at">pred_values =</span> <span class="fu">rep</span>(bill_vec, <span class="dv">3</span>),</span>
+<span id="cb36-361"><a href="#cb36-361" aria-hidden="true" tabindex="-1"></a>          <span class="at">pred_spp_id =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">6</span>)</span>
+<span id="cb36-362"><a href="#cb36-362" aria-hidden="true" tabindex="-1"></a>          ))</span>
 <span id="cb36-363"><a href="#cb36-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-364"><a href="#cb36-364" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-364"><a href="#cb36-364" aria-hidden="true" tabindex="-1"></a>normal_reg_spp_post <span class="ot">&lt;-</span> normal_regression_spp<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> data_list_spp, <span class="at">refresh =</span> <span class="dv">0</span>)</span>
 <span id="cb36-365"><a href="#cb36-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-366"><a href="#cb36-366" aria-hidden="true" tabindex="-1"></a>Note that the sign of the slope is different now! </span>
+<span id="cb36-366"><a href="#cb36-366" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-367"><a href="#cb36-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-370"><a href="#cb36-370" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-371"><a href="#cb36-371" aria-hidden="true" tabindex="-1"></a>normal_reg_spp_post<span class="sc">$</span><span class="fu">summary</span>()</span>
-<span id="cb36-372"><a href="#cb36-372" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb36-373"><a href="#cb36-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-374"><a href="#cb36-374" aria-hidden="true" tabindex="-1"></a><span class="fu">### Plotting posterior predictions</span></span>
+<span id="cb36-368"><a href="#cb36-368" aria-hidden="true" tabindex="-1"></a>Note that the sign of the slope is different now! </span>
+<span id="cb36-369"><a href="#cb36-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-372"><a href="#cb36-372" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-373"><a href="#cb36-373" aria-hidden="true" tabindex="-1"></a>normal_reg_spp_post<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb36-374"><a href="#cb36-374" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-375"><a href="#cb36-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-378"><a href="#cb36-378" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb36-379"><a href="#cb36-379" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb36-380"><a href="#cb36-380" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb36-381"><a href="#cb36-381" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="ot">&lt;-</span> normal_reg_spp_post <span class="sc">|&gt;</span> </span>
-<span id="cb36-382"><a href="#cb36-382" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(post_bill_dep_average[i],</span>
-<span id="cb36-383"><a href="#cb36-383" aria-hidden="true" tabindex="-1"></a>                          post_bill_dep_obs[i]) <span class="sc">|&gt;</span></span>
-<span id="cb36-384"><a href="#cb36-384" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_length =</span> data_list_spp<span class="sc">$</span>pred_values[i],</span>
-<span id="cb36-385"><a href="#cb36-385" aria-hidden="true" tabindex="-1"></a>         <span class="at">spp =</span> data_list_spp<span class="sc">$</span>pred_spp_id) <span class="sc">|&gt;</span> </span>
-<span id="cb36-386"><a href="#cb36-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp =</span> <span class="fu">as.factor</span>(<span class="fu">levels</span>(penguins<span class="sc">$</span>species)[spp]))</span>
-<span id="cb36-387"><a href="#cb36-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-388"><a href="#cb36-388" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb36-389"><a href="#cb36-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length,</span>
-<span id="cb36-390"><a href="#cb36-390" aria-hidden="true" tabindex="-1"></a>             <span class="at">ydist =</span> post_bill_dep_average,</span>
-<span id="cb36-391"><a href="#cb36-391" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> spp, </span>
-<span id="cb36-392"><a href="#cb36-392" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> spp)) <span class="sc">+</span> </span>
-<span id="cb36-393"><a href="#cb36-393" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb36-394"><a href="#cb36-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center,</span>
-<span id="cb36-395"><a href="#cb36-395" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> bill_depth_mm,</span>
-<span id="cb36-396"><a href="#cb36-396" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> species, <span class="at">colour =</span> species),</span>
-<span id="cb36-397"><a href="#cb36-397" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
-<span id="cb36-398"><a href="#cb36-398" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span>   </span>
-<span id="cb36-399"><a href="#cb36-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
-<span id="cb36-400"><a href="#cb36-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span> </span>
-<span id="cb36-401"><a href="#cb36-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average response"</span>)</span>
-<span id="cb36-402"><a href="#cb36-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-403"><a href="#cb36-403" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb36-404"><a href="#cb36-404" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length,</span>
-<span id="cb36-405"><a href="#cb36-405" aria-hidden="true" tabindex="-1"></a>             <span class="at">dist =</span> post_bill_dep_obs,</span>
-<span id="cb36-406"><a href="#cb36-406" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> spp,</span>
-<span id="cb36-407"><a href="#cb36-407" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> spp)) <span class="sc">+</span> </span>
-<span id="cb36-408"><a href="#cb36-408" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb36-409"><a href="#cb36-409" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center,</span>
-<span id="cb36-410"><a href="#cb36-410" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> bill_depth_mm,</span>
-<span id="cb36-411"><a href="#cb36-411" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colour =</span> species),</span>
-<span id="cb36-412"><a href="#cb36-412" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
-<span id="cb36-413"><a href="#cb36-413" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
-<span id="cb36-414"><a href="#cb36-414" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
-<span id="cb36-415"><a href="#cb36-415" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span> </span>
-<span id="cb36-416"><a href="#cb36-416" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Predicted observations"</span>) <span class="sc">+</span> </span>
-<span id="cb36-417"><a href="#cb36-417" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>spp, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
-<span id="cb36-418"><a href="#cb36-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-419"><a href="#cb36-419" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-376"><a href="#cb36-376" aria-hidden="true" tabindex="-1"></a><span class="fu">### Plotting posterior predictions</span></span>
+<span id="cb36-377"><a href="#cb36-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-380"><a href="#cb36-380" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-381"><a href="#cb36-381" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb36-382"><a href="#cb36-382" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb36-383"><a href="#cb36-383" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="ot">&lt;-</span> normal_reg_spp_post <span class="sc">|&gt;</span> </span>
+<span id="cb36-384"><a href="#cb36-384" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(post_bill_dep_average[i],</span>
+<span id="cb36-385"><a href="#cb36-385" aria-hidden="true" tabindex="-1"></a>                          post_bill_dep_obs[i]) <span class="sc">|&gt;</span></span>
+<span id="cb36-386"><a href="#cb36-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_length =</span> data_list_spp<span class="sc">$</span>pred_values[i],</span>
+<span id="cb36-387"><a href="#cb36-387" aria-hidden="true" tabindex="-1"></a>         <span class="at">spp =</span> data_list_spp<span class="sc">$</span>pred_spp_id) <span class="sc">|&gt;</span> </span>
+<span id="cb36-388"><a href="#cb36-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spp =</span> <span class="fu">as.factor</span>(<span class="fu">levels</span>(penguins<span class="sc">$</span>species)[spp]))</span>
+<span id="cb36-389"><a href="#cb36-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-390"><a href="#cb36-390" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb36-391"><a href="#cb36-391" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length,</span>
+<span id="cb36-392"><a href="#cb36-392" aria-hidden="true" tabindex="-1"></a>             <span class="at">ydist =</span> post_bill_dep_average,</span>
+<span id="cb36-393"><a href="#cb36-393" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> spp, </span>
+<span id="cb36-394"><a href="#cb36-394" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> spp)) <span class="sc">+</span> </span>
+<span id="cb36-395"><a href="#cb36-395" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb36-396"><a href="#cb36-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center,</span>
+<span id="cb36-397"><a href="#cb36-397" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb36-398"><a href="#cb36-398" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> species, <span class="at">colour =</span> species),</span>
+<span id="cb36-399"><a href="#cb36-399" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
+<span id="cb36-400"><a href="#cb36-400" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span>   </span>
+<span id="cb36-401"><a href="#cb36-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
+<span id="cb36-402"><a href="#cb36-402" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span> </span>
+<span id="cb36-403"><a href="#cb36-403" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average response"</span>)</span>
+<span id="cb36-404"><a href="#cb36-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-405"><a href="#cb36-405" aria-hidden="true" tabindex="-1"></a>bill_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb36-406"><a href="#cb36-406" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length,</span>
+<span id="cb36-407"><a href="#cb36-407" aria-hidden="true" tabindex="-1"></a>             <span class="at">dist =</span> post_bill_dep_obs,</span>
+<span id="cb36-408"><a href="#cb36-408" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> spp,</span>
+<span id="cb36-409"><a href="#cb36-409" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> spp)) <span class="sc">+</span> </span>
+<span id="cb36-410"><a href="#cb36-410" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb36-411"><a href="#cb36-411" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_length_center,</span>
+<span id="cb36-412"><a href="#cb36-412" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb36-413"><a href="#cb36-413" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colour =</span> species),</span>
+<span id="cb36-414"><a href="#cb36-414" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> penguins_no_NA, </span>
+<span id="cb36-415"><a href="#cb36-415" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb36-416"><a href="#cb36-416" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
+<span id="cb36-417"><a href="#cb36-417" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span> </span>
+<span id="cb36-418"><a href="#cb36-418" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Predicted observations"</span>) <span class="sc">+</span> </span>
+<span id="cb36-419"><a href="#cb36-419" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>spp, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
 <span id="cb36-420"><a href="#cb36-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-421"><a href="#cb36-421" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise! </span></span>
+<span id="cb36-421"><a href="#cb36-421" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb36-422"><a href="#cb36-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-423"><a href="#cb36-423" aria-hidden="true" tabindex="-1"></a>show how the $\sigma$ is different between these two models</span>
+<span id="cb36-423"><a href="#cb36-423" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise! </span></span>
+<span id="cb36-424"><a href="#cb36-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-425"><a href="#cb36-425" aria-hidden="true" tabindex="-1"></a>show how the $\sigma$ is different between these two models</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
