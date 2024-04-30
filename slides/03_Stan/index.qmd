@@ -13,7 +13,163 @@ format:
     logo: ../img/UdeS_logo_h_rgbHR.png
     transition: slide
     background-transition: fade
+include-in-header:
+  - text: |
+      <style>
+      .reveal .custom3070 > div.column:first-child {
+        width: 60%;
+      }
+      .reveal .custom3070 div.column:not(:first-child) {
+        width: 40%;
+      }
+      </style>
 ---
+
+## What is the point of this?
+
+$$
+\begin{equation}
+P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
+\end{equation}
+$$
+
+
+## What is the point of this
+
+$$
+\begin{equation}
+P(\boldsymbol{\theta}|\text{data}) = \frac{P(\boldsymbol{\text{data}|\theta}) \cdot P(\boldsymbol{\theta})}{P(\text{data})}
+\end{equation}
+$$
+
+## What is the point of this
+
+$$
+\begin{equation}
+P(\boldsymbol{\theta}|\text{data}) \propto P(\boldsymbol{\text{data}|\theta}) \cdot P(\boldsymbol{\theta})
+\end{equation}
+$$
+
+## What we talk about when we talk about $P(\boldsymbol{\text{data}|\theta})$
+
+A concrete example
+
+
+| Laid   | Hatched |
+|--------|---------|
+| Egg 1  | Chick 1 |
+| Egg 2  | Chick 2 |
+| Egg 3  | Chick 3 |
+
+## What we talk about when we talk about $P(\boldsymbol{\text{data}|\theta})$
+
+What's the probability of this dataset?  
+This is called the _likelihood_
+
+$$
+\begin{align}
+\text{hatch} &\sim \text{Binomial}(p, 5) \\
+\end{align}
+$$
+
+## What we talk about when we talk about $P(\boldsymbol{\text{data}|\theta})$
+
+$$
+\begin{align*}
+    P(3, 4, 5 | p) &= \text{Binomial}(3 | p, 5) \\
+                   &\quad \times \text{Binomial}(4 | p, 5) \\
+                   &\quad \times \text{Binomial}(5 | p, 5)
+\end{align*}
+$$
+
+## What we talk about when we talk about $P(\boldsymbol{\text{data}|\theta})$
+
+$$
+\begin{align*}
+    \ln{P(3, 4, 5 | p)} &=  \log(\text{Binomial}(3 | p, 5)) \\
+                   &+  \log(\text{Binomial}(4 | p, 5)) \\
+                   &+ \log(\text{Binomial}(5 | p, 5))
+\end{align*}
+$$
+
+
+## log-likelihood code in R 
+
+```{r}
+#| output-location: column
+#| classes: custom3070
+#| fig-height: 16
+
+surv <- c(3, 4, 5)
+
+calc_ll <- function(x) {
+  res <- sum(-dbinom(surv, 5,
+                     prob = x,
+                     log = TRUE))
+  return(res)
+}
+
+prob_val <- seq(from = 0, to = 1,
+                length.out = 30)
+log_lik <- numeric(30L)
+
+for (i in 1:length(prob_val)) {
+  log_lik[i] <- calc_ll(prob_val[i])
+}
+par(cex = 3)
+plot(prob_val, log_lik, type = "b")
+```
+
+
+
+## Make it Bayes: add a prior
+
+
+$$
+\begin{align}
+\text{hatch} &\sim \text{Binomial}(p, 5) \\
+p &\sim \text{Uniform}(0,1)
+\end{align}
+$$
+
+
+## Make it Bayes: add a prior
+
+$$
+\begin{align*}
+P(\boldsymbol{\theta}|\text{data}) &\propto P(\boldsymbol{\text{data}|\theta}) \cdot P(\boldsymbol{\theta}) \\[10pt]
+&\propto \text{Bin}(3|p,5) \cdot \text{Bin}(4|p,5) \\
+&\qquad \cdot \text{Bin}(5|p,5)\cdot \text{Uniform}(p|0,1) \\[10pt]
+\log(P(\boldsymbol{\theta}|\text{data})) &\propto \log(\text{Bin}(3|p,5)) + \log(\text{Bin}(4|p,5)) \\
+&\qquad + \log(\text{Bin}(5|p,5)) + \log(\text{Uniform}(p|0,1)) \\
+\end{align*}
+$$
+
+
+## Sampling the uncalculable
+
+:::: {layout="[ 40, 60 ]"}
+
+::: {#first-column}
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Operators_in_front_of_the_MANIAC.jpg/1920px-Operators_in_front_of_the_MANIAC.jpg)
+
+MANIAC I, 1956 (top) 
+Arianna W. Rosenbluth
+
+:::
+
+::: {#second-column}
+![](https://upload.wikimedia.org/wikipedia/commons/5/58/Arianna_W_Rosenbluth.jpg)
+:::
+
+::::
+
+
+
+## Sampling the uncalculable
+
+
+
 
 ## What is Stan?
 <hr width="100%" align="left" size="0.3" color="orange"></hr>

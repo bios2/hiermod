@@ -2560,5 +2560,96 @@
     "title": "Complex hierarchical models",
     "section": "Pumpkinseed growth example",
     "text": "Pumpkinseed growth example\nQuestion\n\nDoes the growth of Pumpkinseed is influenced by water temperature?\n\n\n\n\n\n\n\nTry to build the model that best answer this question\n\n\nTo have the most precise model, we need to account for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink… teachers assistant may have an influence here as well)."
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#what-is-the-point-of-this",
+    "href": "slides/03_Stan/index.html#what-is-the-point-of-this",
+    "title": "Stan",
+    "section": "What is the point of this?",
+    "text": "What is the point of this?\n\\[\n\\begin{equation}\nP(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}\n\\end{equation}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#what-is-the-point-of-this-1",
+    "href": "slides/03_Stan/index.html#what-is-the-point-of-this-1",
+    "title": "Stan",
+    "section": "What is the point of this",
+    "text": "What is the point of this\n\\[\n\\begin{equation}\nP(\\boldsymbol{\\theta}|\\text{data}) = \\frac{P(\\boldsymbol{\\text{data}|\\theta}) \\cdot P(\\boldsymbol{\\theta})}{P(\\text{data})}\n\\end{equation}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta",
+    "href": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta",
+    "title": "Stan",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\nA concrete example\n\n\n\nLaid\nHatched\n\n\n\n\nEgg 1\nChick 1\n\n\nEgg 2\nChick 2\n\n\nEgg 3\nChick 3"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#what-is-the-point-of-this-2",
+    "href": "slides/03_Stan/index.html#what-is-the-point-of-this-2",
+    "title": "Stan",
+    "section": "What is the point of this",
+    "text": "What is the point of this\n\\[\n\\begin{equation}\nP(\\boldsymbol{\\theta}|\\text{data}) \\propto P(\\boldsymbol{\\text{data}|\\theta}) \\cdot P(\\boldsymbol{\\theta})\n\\end{equation}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-1",
+    "href": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-1",
+    "title": "Stan",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\nWhat’s the probability of this dataset?\nThis is called the likelihood\n\\[\n\\begin{align}\n\\text{hatch} &\\sim \\text{Binomial}(p, 5) \\\\\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#sampling-the-uncalculable",
+    "href": "slides/03_Stan/index.html#sampling-the-uncalculable",
+    "title": "Stan",
+    "section": "Sampling the uncalculable",
+    "text": "Sampling the uncalculable\n\n\n\n\nMANIAC I, 1956 (top) Arianna W. Rosenbluth"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-2",
+    "href": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-2",
+    "title": "Stan",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\n\\[\n\\begin{align*}\n    P(3, 4, 5 | p) &= \\text{Binomial}(3 | p, 5) \\\\\n                   &\\quad \\times \\text{Binomial}(4 | p, 5) \\\\\n                   &\\quad \\times \\text{Binomial}(5 | p, 5)\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-3",
+    "href": "slides/03_Stan/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-3",
+    "title": "Stan",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\n\\[\n\\begin{align*}\n    \\ln{P(3, 4, 5 | p)} &=  \\log(\\text{Binomial}(3 | p, 5)) \\\\\n                   &+  \\log(\\text{Binomial}(4 | p, 5)) \\\\\n                   &+ \\log(\\text{Binomial}(5 | p, 5))\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#make-it-bayes-add-a-prior",
+    "href": "slides/03_Stan/index.html#make-it-bayes-add-a-prior",
+    "title": "Stan",
+    "section": "Make it Bayes: add a prior",
+    "text": "Make it Bayes: add a prior\n\\[\n\\begin{align}\n\\text{hatch} &\\sim \\text{Binomial}(p, 5) \\\\\np &\\sim \\text{Uniform}(0,1)\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#make-it-bayes-add-a-prior-1",
+    "href": "slides/03_Stan/index.html#make-it-bayes-add-a-prior-1",
+    "title": "Stan",
+    "section": "Make it Bayes: add a prior",
+    "text": "Make it Bayes: add a prior\n\\[\n\\begin{align*}\nP(\\boldsymbol{\\theta}|\\text{data}) &\\propto P(\\boldsymbol{\\text{data}|\\theta}) \\cdot P(\\boldsymbol{\\theta}) \\\\[10pt]\n&\\propto \\text{Bin}(3|p,5) \\cdot \\text{Bin}(4|p,5) \\\\\n&\\qquad \\cdot \\text{Bin}(5|p,5)\\cdot \\text{Uniform}(p|0,1) \\\\[10pt]\n\\log(P(\\boldsymbol{\\theta}|\\text{data})) &\\propto \\log(\\text{Bin}(3|p,5)) + \\log(\\text{Bin}(4|p,5)) \\\\\n&\\qquad + \\log(\\text{Bin}(5|p,5)) + \\log(\\text{Uniform}(p|0,1)) \\\\\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#code-in-r",
+    "href": "slides/03_Stan/index.html#code-in-r",
+    "title": "Stan",
+    "section": "Code in R",
+    "text": "Code in R\n\n\nsurv &lt;- c(3, 4, 5)\n\ncalc_ll &lt;- function(x) {\n  res &lt;- sum(-dbinom(surv, 5,\n                     prob = x,\n                     log = TRUE))\n  return(res)\n}\n\nprob_val &lt;- seq(from = 0, to = 1,\n                length.out = 30)\nlog_lik &lt;- numeric(30L)\n\nfor (i in 1:length(prob_val)) {\n  log_lik[i] &lt;- calc_ll(prob_val[i])\n}\npar(cex = 3)\nplot(prob_val, log_lik, type = \"b\")"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#log-likelihood-code-in-r",
+    "href": "slides/03_Stan/index.html#log-likelihood-code-in-r",
+    "title": "Stan",
+    "section": "log-likelihood code in R",
+    "text": "log-likelihood code in R\n\n\nsurv &lt;- c(3, 4, 5)\n\ncalc_ll &lt;- function(x) {\n  res &lt;- sum(-dbinom(surv, 5,\n                     prob = x,\n                     log = TRUE))\n  return(res)\n}\n\nprob_val &lt;- seq(from = 0, to = 1,\n                length.out = 30)\nlog_lik &lt;- numeric(30L)\n\nfor (i in 1:length(prob_val)) {\n  log_lik[i] &lt;- calc_ll(prob_val[i])\n}\npar(cex = 3)\nplot(prob_val, log_lik, type = \"b\")"
+  },
+  {
+    "objectID": "slides/03_Stan/index.html#sampling-the-uncalculable-1",
+    "href": "slides/03_Stan/index.html#sampling-the-uncalculable-1",
+    "title": "Stan",
+    "section": "Sampling the uncalculable",
+    "text": "Sampling the uncalculable"
   }
 ]
