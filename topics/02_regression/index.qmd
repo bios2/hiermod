@@ -13,7 +13,39 @@ editor_options:
   chunk_output_type: console
 ---
 
-[Notes for today](https://docs.google.com/document/d/1XhJIuKhLI-xG4rySntHgrps0PVQOZDt1bsJor7INY5c/edit?usp=sharing)
+## Simulation workout! 
+
+1) make a histogram of 500 numbers from a distribution! 
+   * normal 
+   * poisson
+   * ** EXTRA** try a new one, like beta, gamma, lognormal
+   
+2) make a histogram of poisson observations, using the **link function**
+
+:::{.callout-note collapse="true"}
+### TIP
+```{r}
+rpois(500, exp(3))
+```
+:::
+
+3)  make a histogram of Binomial observations, using the **link function**
+
+```{r}
+curve(1 / (1 + exp(-x)), xlim = c(-3, 3), ylim = c(0, 1))
+```
+
+
+:::{.callout-note collapse="true"}
+### TIP
+```{r}
+a <- rnorm(1, mean = 0, 1)
+hist(rbinom(n = 500, size = 50, prob = 1 / (1 + exp(-a))))
+```
+:::
+
+
+
 
 ## Return to Simpson's Paradox
 
@@ -137,6 +169,10 @@ inters <- rnorm(7, 17, 2)
 X <- cbind(1, some_bill_lengths)
 B <- rbind(inters, slopes)
 
+knitr::kable(head(X))
+knitr::kable(head(B))
+
+
 prior_mus <- X %*% B
 
 matplot(x = some_bill_lengths,
@@ -187,19 +223,31 @@ tibble(
   sim_id = 1:7,
   slopes = rnorm(7, 0, .5),
   inters = rnorm(7, 17, 2),
-  sigmas = rexp(7, rate = 0.4)
+  sigmas = rexp(7, rate = 0.2)
   ) |> 
   mutate(x = list(seq(from = -10, to = 10, length.out = 6))) |> 
   rowwise() |> 
   mutate(avg = list(x * slopes + inters),
-         obs = list(rnorm(length(avg), mean = avg, sd = sigmas))) |> 
+         obs = list(rnorm(length(avg), mean = avg, sd = sigmas)),
+         sim_id = as.factor(sim_id)) |> 
   unnest(cols = c("x", "avg", "obs")) |> 
-  ggplot(aes(x= x, y = avg, group = sim_id, colour = sim_id)) + 
-  geom_line() + 
-  geom_point(aes(y = obs)) + 
-  scale_color_distiller(type = "qual")
+  ggplot(aes(x= x, y = avg, group = sim_id, fill = sim_id)) + 
+  geom_line(aes(colour = sim_id)) + 
+  geom_point(aes(y = obs, fill = sim_id), pch = 21, size = 3) + 
+  scale_fill_brewer(type = "qual") + 
+  scale_colour_brewer(type = "qual") + 
+  facet_wrap(~sim_id)
 
 ```
+
+:::{.callout-tip}
+### EXERCISE
+Pick one of the two simulations above and modify it. Here are some suggested modifications:
+
+* Experiment with priors that are "too narrow" or "too wide". 
+* try a different distribution than the one used
+* instead of bill size, imagine that we are applying this model to YOUR data. What would you change?
+:::
 
 ## Linear regression in Stan
 
@@ -248,6 +296,13 @@ normal_reg_no_pred$summary()
 normal_reg_no_pred$draws() |> 
   bayesplot::mcmc_areas(pars = c("slope", "intercept", "sigma"))
 ```
+
+:::{.callout-tip}
+### EXERCISE
+**Discussion** : Look just at the posterior distribution of the slope right above. 
+Do we have evidence that there's a relationship between bill length and bill depth.
+:::
+
 
 ## Posterior predictions in Stan
 
@@ -305,10 +360,15 @@ bill_posterior |>
 
 ```
 
+:::{.callout-tip}
+### EXERCISE
+Extend this model to include species. Specifically, let each species have its own value of the `intercept`. This involves combining this regression example with the previous activity on discrete predictors.
 
-Now, what I would like you to do is to extend this model to include species. Specifically, let each species have its own value of the `intercept`.
+When you're done, look at the resulting summary of coefficients. What do you notice that's different?
+::: 
 
-
+:::{.callout-note collapse="true"}
+### SOLUTION
 ```{r, include=TRUE}
 #| class-output: stan
 normal_regression_spp <- cmdstan_model(stan_file = "topics/02_regression/normal_regression_spp.stan")
@@ -343,7 +403,11 @@ Note that the sign of the slope is different now!
 normal_reg_spp_post$summary()
 ```
 
+:::
+
 ### Plotting posterior predictions
+
+Using `stat_lineribbon()`, let's plot the average and predicted intervals for this regression.
 
 ```{r}
 #| layout-ncol: 2
