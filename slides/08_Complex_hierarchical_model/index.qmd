@@ -4,7 +4,7 @@ title-slide-attributes:
   data-background-image: ../img/bg.jpg
   data-background-size: full
 author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2024-05-02"
+date: "2024-05-01"
 execute:
   echo: true
 format: 
@@ -62,7 +62,7 @@ $$\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\time
 . . .
 
 ::: {style="font-size: 0.7em"}
-Note that a multi-factor hierarchy can be constructed my multiplying the levels of each factor to account for a more complexe hierarchy. 
+Note that a multi-factor hierarchy can be constructed by multiplying the levels of each factor to account for a more complexe hierarchy. 
 :::
 
 ## Interacting hierarchies
@@ -339,7 +339,7 @@ This model assumes there is a hierarchy that varies independently among the leve
 ::: {style="font-size: 0.65em"}
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{z}\mathbf{b}_{0f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
 or 
 
 $$y_i = b_{0f[i]}+b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
@@ -491,7 +491,7 @@ This model assumes the hierarchy between the intercept and the slope is correlat
 ::: {style="font-size: 0.9em"}
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{z}\mathbf{b}_{1f},\mathbf{\Sigma})$$
 or 
 
 $$y_i = b_{0f[i]} + b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
@@ -701,15 +701,15 @@ So, in the next slides we will discuss about the pumpkinseed (*Lepomis gibbosus*
 ## Combining different types of hierarchy {style="font-size: 0.8em"}
 **Fictive context**
 
-Pumpkinseed (*Lepomis gibbosus*) growth has been studied in the 15 lakes of Estrie during the famous ichthyology course given at Université de Sherbrooke in the past 30 years. 
+Pumpkinseed (*Lepomis gibbosus*) growth has been studied in 15 lakes of Estrie during the famous ichthyology course given at Université de Sherbrooke in the past 30 years. 
 
 . . .
 
-During these ichthyology courses, fish are sampled, measured and tag in all 15 lakes and every year fish are recaptured by students and remeasured. So far, there has been 10 teachers assistant showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision. 
+During these ichthyology courses, fish are sampled, measured and tag in all 15 lakes and every year fish are recaptured by students and remeasured. So far, there has been 10 teaching assistants showing there own specific way to measure Pumpkinseed, with, albeit, uneven levels of precision. 
 
 . . .
 
-Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of their area and depth (which are also known for these lakes), the different lakes have different average temperature.
+Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of the area and depth of lakes (which are also known for all these lakes), the different lakes have different average temperature.
 
 . . .
 
