@@ -19,7 +19,7 @@ format:
 
 . . . 
 
-Here, we use the term "simple" in a rather loose way to discuss hierarchical models on **one** parameter without any constrains, whether they are spatial, temporal, phylogenetic or others. 
+Here, we use the term "simple" in a rather loose way to discuss hierarchical models where the hierarchy is on **one** parameter without any constrains, whether they are spatial, temporal, phylogenetic or others. 
 
 . . . 
 
@@ -64,7 +64,7 @@ Before we get into writing math, we need to define a bit of notation in addition
 . . .
 
 ::: {style="font-size: 0.9em"}
-Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript. 
+Specifically, when defining a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript. 
 
 We will use square brackets to define the sample.
 :::
@@ -75,7 +75,7 @@ We will use square brackets to define the sample.
 
 ::: {style="font-size: 0.9em"}
 $$\mathbf{Z}_{f[i]}$$
-This means that, within $\mathbf{Z}$, we focus on the $i^{\text{th}}$ factor $f$. 
+This means that, within $\mathbf{Z}$, we focus on the $i^{\text{th}}$ sample within factor $f$. 
 :::
 
 . . .
@@ -161,7 +161,7 @@ abline(h = rnorm(30, mean = 1, sd = 0.5),
        col = "blue")
 ```
 
-## Hierarchy on the slopes
+## Hierarchy on the slope
 
 ::: {style="font-size: 0.8em"}
 `lme4` notation : `y ~ 1 + (x | f)`
@@ -170,7 +170,7 @@ abline(h = rnorm(30, mean = 1, sd = 0.5),
 . . .
 
 ::: {style="font-size: 0.8em"}
-This model assumes there is a hierarchy on the parameters associated to variable `x`.
+This model assumes there is a hierarchy on the parameter associated to variable `x`.
 :::
 
 . . .
@@ -194,7 +194,7 @@ $$y_i = \beta_0 + b_{f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
 ::: {style="font-size: 0.8em"}
 where 
 
-$\mathbf{z}$ is an explanatory variable, $z_i$ the $i^{\text{th}}$ values of $\mathbf{z}$ and 
+$\mathbf{z}$ is an explanatory variable, $z_i$ the $i^{\text{th}}$ sample of $\mathbf{z}$ and 
 
 $$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
 :::
@@ -295,7 +295,7 @@ So, another way to ask this question is: "What is the minimum number of samples 
 
 . . .
 
-However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.
+However, in the context of how we defined hierarchical models, a sample is a single level of a factor.
 
 ## How many levels ?
 
@@ -771,7 +771,7 @@ abline(a = 0, b = 1.25,
 . . .
 
 ::: {style="font-size: 0.8em;"}
-As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.
+As can be seen, it is important in hierarchical models to track the different parameters that are estimated to ensure we can make proper inferences with our model.
 :::
 
 . . .

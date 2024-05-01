@@ -341,7 +341,7 @@ Guillaume Blanchet – Andrew MacDonald
 <section id="simple-hierarchical-model" class="slide level2">
 <h2>“Simple” hierarchical model</h2>
 <div class="fragment">
-<p>Here, we use the term “simple” in a rather loose way to discuss hierarchical models on <strong>one</strong> parameter without any constrains, whether they are spatial, temporal, phylogenetic or others.</p>
+<p>Here, we use the term “simple” in a rather loose way to discuss hierarchical models where the hierarchy is on <strong>one</strong> parameter without any constrains, whether they are spatial, temporal, phylogenetic or others.</p>
 </div>
 <div class="fragment">
 <p>Futhermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.</p>
@@ -382,14 +382,14 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.9em">
-<p>Specifically, when define a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.</p>
+<p>Specifically, when defining a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.</p>
 <p>We will use square brackets to define the sample.</p>
 </div>
 </div>
 <div class="fragment">
 <p><strong>Example</strong></p>
 <div style="font-size: 0.9em">
-<p><span class="math display">\[\mathbf{Z}_{f[i]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on the <span class="math inline">\(i^{\text{th}}\)</span> factor <span class="math inline">\(f\)</span>.</p>
+<p><span class="math display">\[\mathbf{Z}_{f[i]}\]</span> This means that, within <span class="math inline">\(\mathbf{Z}\)</span>, we focus on the <span class="math inline">\(i^{\text{th}}\)</span> sample within factor <span class="math inline">\(f\)</span>.</p>
 </div>
 </div>
 <div class="fragment">
@@ -433,14 +433,14 @@ Guillaume Blanchet – Andrew MacDonald
 <h2>Hierarchy on the intercept</h2>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" class="r-stretch quarto-figure-center"></section>
-<section id="hierarchy-on-the-slopes" class="slide level2">
-<h2>Hierarchy on the slopes</h2>
+<section id="hierarchy-on-the-slope" class="slide level2">
+<h2>Hierarchy on the slope</h2>
 <div style="font-size: 0.8em">
 <p><code>lme4</code> notation : <code>y ~ 1 + (x | f)</code></p>
 </div>
 <div class="fragment">
 <div style="font-size: 0.8em">
-<p>This model assumes there is a hierarchy on the parameters associated to variable <code>x</code>.</p>
+<p>This model assumes there is a hierarchy on the parameter associated to variable <code>x</code>.</p>
 </div>
 </div>
 <div class="fragment">
@@ -458,12 +458,12 @@ Guillaume Blanchet – Andrew MacDonald
 <div class="fragment">
 <div style="font-size: 0.8em">
 <p>where</p>
-<p><span class="math inline">\(\mathbf{z}\)</span> is an explanatory variable, <span class="math inline">\(z_i\)</span> the <span class="math inline">\(i^{\text{th}}\)</span> values of <span class="math inline">\(\mathbf{z}\)</span> and</p>
+<p><span class="math inline">\(\mathbf{z}\)</span> is an explanatory variable, <span class="math inline">\(z_i\)</span> the <span class="math inline">\(i^{\text{th}}\)</span> sample of <span class="math inline">\(\mathbf{z}\)</span> and</p>
 <p><span class="math display">\[\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)\]</span></p>
 </div>
 </div>
 </section>
-<section id="hierarchy-on-the-slopes-1" class="slide level2">
+<section id="hierarchy-on-the-slopes" class="slide level2">
 <h2>Hierarchy on the slopes</h2>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="768" class="r-stretch quarto-figure-center"></section>
@@ -514,7 +514,7 @@ Guillaume Blanchet – Andrew MacDonald
 <p>So, another way to ask this question is: “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”</p>
 </div>
 <div class="fragment">
-<p>However, in the context of how we defined hierarchical models, a sample amounts to being the level of a factor.</p>
+<p>However, in the context of how we defined hierarchical models, a sample is a single level of a factor.</p>
 </div>
 </section>
 <section id="how-many-levels-2" class="slide level2">
@@ -743,7 +743,7 @@ Guillaume Blanchet – Andrew MacDonald
 <h2>Tracking the estimated parameters</h2>
 <div class="fragment">
 <div style="font-size: 0.8em;">
-<p>As can be seen, it is important in hierarchical model to track the different parameters that are estimated to make sure we can make proper inferences with our model.</p>
+<p>As can be seen, it is important in hierarchical models to track the different parameters that are estimated to ensure we can make proper inferences with our model.</p>
 </div>
 </div>
 <div class="fragment">
