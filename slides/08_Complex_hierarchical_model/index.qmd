@@ -15,6 +15,29 @@ format:
     background-transition: fade
 ---
 
+## Hierarchical model structure so far
+
+::: {style="font-size: 0.8em"}
+Mathematically, the basic structure of a hierarchical model is
+::: 
+
+::: {style="font-size: 0.8em"}
+$$\mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b} + \boldsymbol{\varepsilon}$$
+::: 
+::: {style="font-size: 0.8em"}
+where
+::: 
+
+::: {style="font-size: 0.8em"}
+- $\mathbf{y}$ : Vector of response variable
+- $\mathbf{X}$ : Matrix of explanatory variables on which **no** hierarchies are accounted for
+- $\mathbf{Z}$ : Matrix of explanatory variables on which hierarchies are accounted for
+- $\boldsymbol{\beta}$ : parameter estimated without a hierarchy
+- $\mathbf{b}$ : parameter estimated with a hierarchy
+- $\boldsymbol{\varepsilon}$ : a vector that follows a Gaussian distribution such that ${\cal N}(0, \sigma^2)$
+::: 
+
+
 ## "Complex" hierarchical model
 
 By "complex" we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy. 
