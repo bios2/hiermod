@@ -585,7 +585,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation",
     "title": "‘Simple’ hierarchical models",
     "section": "A bit of notation",
-    "text": "A bit of notation\n\n\nBefore we get into writing math, we need to define a bit of notation in addition of the one we have used so far.\n\n\n\n\nSpecifically, when defining a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.\nWe will use square brackets to define the sample.\n\n\n\nExample\n\n\\[\\mathbf{Z}_{f[i]}\\] This means that, within \\(\\mathbf{Z}\\), we focus on the \\(i^{\\text{th}}\\) sample within factor \\(f\\).\n\n\n\n\nNote The \\(i^{\\text{th}}\\) sample of factor \\(f\\) maybe associated to any level of factor \\(f\\)."
+    "text": "A bit of notation\n\nMathematically, the basic structure of a hierarchical model is\n\n\n\\[\\mathbf{y} = \\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b} + \\boldsymbol{\\varepsilon}\\]\n\n\nwhere\n\n\n\n\\(\\mathbf{y}\\) : Vector of response variable\n\\(\\mathbf{X}\\) : Matrix of explanatory variables on which no hierarchies are accounted for\n\\(\\mathbf{Z}\\) : Matrix of explanatory variables on which hierarchies are accounted for\n\\(\\boldsymbol{\\beta}\\) : parameter estimated without a hierarchy\n\\(\\mathbf{b}\\) : parameter estimated with a hierarchy\n\\(\\boldsymbol{\\varepsilon}\\) : a vector that follows a Gaussian distribution such that \\({\\cal N}(0, \\sigma^2)\\)"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept",
@@ -2686,5 +2686,19 @@
     "title": "Univariate regression",
     "section": "Posterior predictions in R",
     "text": "Posterior predictions in R\nWe can calculate a posterior prediction line directly in R for these data. I’ll show each step in this workflow separately:\n\nnormal_reg_no_pred |&gt; \n  spread_rvars(slope, intercept, sigma)\n\n# A tibble: 1 × 3\n            slope  intercept        sigma\n       &lt;rvar[1d]&gt; &lt;rvar[1d]&gt;   &lt;rvar[1d]&gt;\n1  -0.085 ± 0.019   17 ± 0.1  1.9 ± 0.075\n\n\ntidybayes helps us extract the posterior distribution of the parameters into a convenient object called an rvar. Learn more about tidybayes here and about the rvar datatype here\nNext we combine these posteriors with a vector of observations to make a posterior distribution of LINES:\n\nnormal_reg_predline &lt;- normal_reg_no_pred |&gt; \n  tidybayes::spread_rvars(slope, intercept, sigma) |&gt; \n  expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |&gt; \n  mutate(mu = intercept + slope*x)\n\nknitr::kable(normal_reg_predline)\n\n\n\n\nslope\nintercept\nsigma\nx\nmu\n\n\n\n\n-0.085 ± 0.019\n17 ± 0.1\n1.9 ± 0.075\n-15.0\n18 ± 0.30\n\n\n-0.085 ± 0.019\n17 ± 0.1\n1.9 ± 0.075\n-7.5\n18 ± 0.17\n\n\n-0.085 ± 0.019\n17 ± 0.1\n1.9 ± 0.075\n0.0\n17 ± 0.10\n\n\n-0.085 ± 0.019\n17 ± 0.1\n1.9 ± 0.075\n7.5\n17 ± 0.17\n\n\n-0.085 ± 0.019\n17 ± 0.1\n1.9 ± 0.075\n15.0\n16 ± 0.30\n\n\n\n\n\nFinally we’ll plot these:\n\nnormal_reg_predline |&gt; \n  ggplot(aes(x = x, dist = mu)) + \n  stat_lineribbon() + \n  geom_point(aes(x = bill_length_center, y = bill_depth_mm),\n             inherit.aes = FALSE,\n             data = penguins_no_NA)"
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchical-models",
+    "href": "slides/06_Simple_hierarchical_model/index.html#hierarchical-models",
+    "title": "‘Simple’ hierarchical models",
+    "section": "Hierarchical models",
+    "text": "Hierarchical models\n\nWith a hierarchical model, our interest lies not in finding a single value for a parameter of interest but rather to estimate the distribution of a parameter of interest and, specifically, the variance of this distribution.\n\n\nIf we want to estimate the variance of a distribution, we need to gather some samples from this distribution.\n\n\nIn the context of a hierarchical model, the “samples” are the levels of a factor, which will be used to estimate the variance of the distribution."
+  },
+  {
+    "objectID": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation-1",
+    "href": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation-1",
+    "title": "‘Simple’ hierarchical models",
+    "section": "A bit of notation",
+    "text": "A bit of notation\n\n\nBefore we get into writing math, we need to define a bit of notation in addition of the one we have used so far.\n\n\n\n\nSpecifically, when defining a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.\nWe will use square brackets to define the sample.\n\n\n\nExample\n\n\\[\\mathbf{Z}_{f[i]}\\] This means that, within \\(\\mathbf{Z}\\), we focus on the \\(i^{\\text{th}}\\) sample within factor \\(f\\).\n\n\n\n\nNote The \\(i^{\\text{th}}\\) sample of factor \\(f\\) maybe associated to any level of factor \\(f\\)."
   }
 ]
