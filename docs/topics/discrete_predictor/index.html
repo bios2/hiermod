@@ -1325,244 +1325,246 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb46-156"><a href="#cb46-156" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> subset_draws[r, <span class="st">"sigma"</span>])</span>
 <span id="cb46-157"><a href="#cb46-157" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb46-158"><a href="#cb46-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-159"><a href="#cb46-159" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
-<span id="cb46-160"><a href="#cb46-160" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> yrep)</span>
-<span id="cb46-161"><a href="#cb46-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-162"><a href="#cb46-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-159"><a href="#cb46-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-160"><a href="#cb46-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-161"><a href="#cb46-161" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
+<span id="cb46-162"><a href="#cb46-162" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> yrep)</span>
 <span id="cb46-163"><a href="#cb46-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-164"><a href="#cb46-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-165"><a href="#cb46-165" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictions in Stan</span></span>
+<span id="cb46-164"><a href="#cb46-164" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-165"><a href="#cb46-165" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-166"><a href="#cb46-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-167"><a href="#cb46-167" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb46-168"><a href="#cb46-168" aria-hidden="true" tabindex="-1"></a><span class="fu">### EXERCISE</span></span>
-<span id="cb46-169"><a href="#cb46-169" aria-hidden="true" tabindex="-1"></a>In the code above I show how to simulate the posterior predictive distribution using the posterior draws for $\mu$ and $\sigma$. </span>
-<span id="cb46-170"><a href="#cb46-170" aria-hidden="true" tabindex="-1"></a>However, if you want, you can do the same process in Stan.   </span>
-<span id="cb46-171"><a href="#cb46-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-172"><a href="#cb46-172" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Extend the Stan code above to simulate new observations using the <span class="in">`generated quantities`</span> block. (Tip: look back at the <span class="co">[</span><span class="ot">Simulation exercise</span><span class="co">](topics/01_simulation)</span>).  </span>
-<span id="cb46-173"><a href="#cb46-173" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>plot them using bayesplot, as above.</span>
-<span id="cb46-174"><a href="#cb46-174" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb46-175"><a href="#cb46-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-176"><a href="#cb46-176" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
-<span id="cb46-177"><a href="#cb46-177" aria-hidden="true" tabindex="-1"></a><span class="fu">### SOLUTION</span></span>
-<span id="cb46-178"><a href="#cb46-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-181"><a href="#cb46-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-182"><a href="#cb46-182" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb46-183"><a href="#cb46-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-184"><a href="#cb46-184" aria-hidden="true" tabindex="-1"></a>normal_dist_rng <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng.stan"</span>)</span>
+<span id="cb46-167"><a href="#cb46-167" aria-hidden="true" tabindex="-1"></a><span class="fu">### Posterior predictions in Stan</span></span>
+<span id="cb46-168"><a href="#cb46-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-169"><a href="#cb46-169" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb46-170"><a href="#cb46-170" aria-hidden="true" tabindex="-1"></a><span class="fu">### EXERCISE</span></span>
+<span id="cb46-171"><a href="#cb46-171" aria-hidden="true" tabindex="-1"></a>In the code above I show how to simulate the posterior predictive distribution using the posterior draws for $\mu$ and $\sigma$. </span>
+<span id="cb46-172"><a href="#cb46-172" aria-hidden="true" tabindex="-1"></a>However, if you want, you can do the same process in Stan.   </span>
+<span id="cb46-173"><a href="#cb46-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-174"><a href="#cb46-174" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Extend the Stan code above to simulate new observations using the <span class="in">`generated quantities`</span> block. (Tip: look back at the <span class="co">[</span><span class="ot">Simulation exercise</span><span class="co">](topics/01_simulation)</span>).  </span>
+<span id="cb46-175"><a href="#cb46-175" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>plot them using bayesplot, as above.</span>
+<span id="cb46-176"><a href="#cb46-176" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb46-177"><a href="#cb46-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-178"><a href="#cb46-178" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb46-179"><a href="#cb46-179" aria-hidden="true" tabindex="-1"></a><span class="fu">### SOLUTION</span></span>
+<span id="cb46-180"><a href="#cb46-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-183"><a href="#cb46-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-184"><a href="#cb46-184" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
 <span id="cb46-185"><a href="#cb46-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-186"><a href="#cb46-186" aria-hidden="true" tabindex="-1"></a>normal_dist_rng</span>
-<span id="cb46-187"><a href="#cb46-187" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-188"><a href="#cb46-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-189"><a href="#cb46-189" aria-hidden="true" tabindex="-1"></a>Here we have a handy random number generator _inside_ Stan.</span>
+<span id="cb46-186"><a href="#cb46-186" aria-hidden="true" tabindex="-1"></a>normal_dist_rng <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng.stan"</span>)</span>
+<span id="cb46-187"><a href="#cb46-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-188"><a href="#cb46-188" aria-hidden="true" tabindex="-1"></a>normal_dist_rng</span>
+<span id="cb46-189"><a href="#cb46-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-190"><a href="#cb46-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-193"><a href="#cb46-193" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-194"><a href="#cb46-194" aria-hidden="true" tabindex="-1"></a>samp_bill_dep_rng <span class="ot">&lt;-</span> normal_dist_rng<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb46-195"><a href="#cb46-195" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep,</span>
-<span id="cb46-196"><a href="#cb46-196" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb46-197"><a href="#cb46-197" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span>
-<span id="cb46-198"><a href="#cb46-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-199"><a href="#cb46-199" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep_rng<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
-<span id="cb46-200"><a href="#cb46-200" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
-<span id="cb46-201"><a href="#cb46-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-202"><a href="#cb46-202" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
-<span id="cb46-203"><a href="#cb46-203" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(draws_matrix, <span class="dv">50</span>))</span>
-<span id="cb46-204"><a href="#cb46-204" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-205"><a href="#cb46-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-206"><a href="#cb46-206" aria-hidden="true" tabindex="-1"></a>The code is much shorter, because there is less to do in R. </span>
+<span id="cb46-191"><a href="#cb46-191" aria-hidden="true" tabindex="-1"></a>Here we have a handy random number generator _inside_ Stan.</span>
+<span id="cb46-192"><a href="#cb46-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-195"><a href="#cb46-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-196"><a href="#cb46-196" aria-hidden="true" tabindex="-1"></a>samp_bill_dep_rng <span class="ot">&lt;-</span> normal_dist_rng<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb46-197"><a href="#cb46-197" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep,</span>
+<span id="cb46-198"><a href="#cb46-198" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb46-199"><a href="#cb46-199" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span>
+<span id="cb46-200"><a href="#cb46-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-201"><a href="#cb46-201" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> samp_bill_dep_rng<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
+<span id="cb46-202"><a href="#cb46-202" aria-hidden="true" tabindex="-1"></a>draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(draws)</span>
+<span id="cb46-203"><a href="#cb46-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-204"><a href="#cb46-204" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
+<span id="cb46-205"><a href="#cb46-205" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(draws_matrix, <span class="dv">50</span>))</span>
+<span id="cb46-206"><a href="#cb46-206" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-207"><a href="#cb46-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-208"><a href="#cb46-208" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb46-208"><a href="#cb46-208" aria-hidden="true" tabindex="-1"></a>The code is much shorter, because there is less to do in R. </span>
 <span id="cb46-209"><a href="#cb46-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-210"><a href="#cb46-210" aria-hidden="true" tabindex="-1"></a>Both of these gives the same outcome: the posterior predictive distribution. </span>
-<span id="cb46-211"><a href="#cb46-211" aria-hidden="true" tabindex="-1"></a>This gives us a straightfoward way to test our model's performance: </span>
-<span id="cb46-212"><a href="#cb46-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-213"><a href="#cb46-213" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>we use the model to generate fake observations. </span>
-<span id="cb46-214"><a href="#cb46-214" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>plot these on top of the real data</span>
-<span id="cb46-215"><a href="#cb46-215" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>if the data is a really poor match, we know our model has a distorted view of the world.</span>
-<span id="cb46-216"><a href="#cb46-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-217"><a href="#cb46-217" aria-hidden="true" tabindex="-1"></a><span class="fu">## Different groups are different</span></span>
+<span id="cb46-210"><a href="#cb46-210" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb46-211"><a href="#cb46-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-212"><a href="#cb46-212" aria-hidden="true" tabindex="-1"></a>Both of these gives the same outcome: the posterior predictive distribution. </span>
+<span id="cb46-213"><a href="#cb46-213" aria-hidden="true" tabindex="-1"></a>This gives us a straightfoward way to test our model's performance: </span>
+<span id="cb46-214"><a href="#cb46-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-215"><a href="#cb46-215" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>we use the model to generate fake observations. </span>
+<span id="cb46-216"><a href="#cb46-216" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>plot these on top of the real data</span>
+<span id="cb46-217"><a href="#cb46-217" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>if the data is a really poor match, we know our model has a distorted view of the world.</span>
 <span id="cb46-218"><a href="#cb46-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-219"><a href="#cb46-219" aria-hidden="true" tabindex="-1"></a>let's add in differences among species</span>
+<span id="cb46-219"><a href="#cb46-219" aria-hidden="true" tabindex="-1"></a><span class="fu">## Different groups are different</span></span>
 <span id="cb46-220"><a href="#cb46-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-223"><a href="#cb46-223" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-224"><a href="#cb46-224" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
-<span id="cb46-225"><a href="#cb46-225" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm, <span class="at">fill =</span> species))<span class="sc">+</span> </span>
-<span id="cb46-226"><a href="#cb46-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
-<span id="cb46-227"><a href="#cb46-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
-<span id="cb46-228"><a href="#cb46-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-229"><a href="#cb46-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-230"><a href="#cb46-230" aria-hidden="true" tabindex="-1"></a>Now we can see that the distribution is in fact three different shapes, all placed together. </span>
+<span id="cb46-221"><a href="#cb46-221" aria-hidden="true" tabindex="-1"></a>let's add in differences among species</span>
+<span id="cb46-222"><a href="#cb46-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-225"><a href="#cb46-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-226"><a href="#cb46-226" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> </span>
+<span id="cb46-227"><a href="#cb46-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm, <span class="at">fill =</span> species))<span class="sc">+</span> </span>
+<span id="cb46-228"><a href="#cb46-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb46-229"><a href="#cb46-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
+<span id="cb46-230"><a href="#cb46-230" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-231"><a href="#cb46-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-232"><a href="#cb46-232" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb46-233"><a href="#cb46-233" aria-hidden="true" tabindex="-1"></a>Sometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are "normally distributed" or not. This is not helpful! Instead, decide on a model first, and ask yourself what kind of data you expect.</span>
-<span id="cb46-234"><a href="#cb46-234" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb46-235"><a href="#cb46-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-236"><a href="#cb46-236" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stan code for species differences</span></span>
+<span id="cb46-232"><a href="#cb46-232" aria-hidden="true" tabindex="-1"></a>Now we can see that the distribution is in fact three different shapes, all placed together. </span>
+<span id="cb46-233"><a href="#cb46-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-234"><a href="#cb46-234" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb46-235"><a href="#cb46-235" aria-hidden="true" tabindex="-1"></a>Sometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are "normally distributed" or not. This is not helpful! Instead, decide on a model first, and ask yourself what kind of data you expect.</span>
+<span id="cb46-236"><a href="#cb46-236" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb46-237"><a href="#cb46-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-238"><a href="#cb46-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-239"><a href="#cb46-239" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb46-240"><a href="#cb46-240" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb46-241"><a href="#cb46-241" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_{i} &amp;\sim \text{Normal}(\mu_{\text{sp}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}, \sigma) <span class="sc">\\</span></span>
-<span id="cb46-242"><a href="#cb46-242" aria-hidden="true" tabindex="-1"></a>\mu_{\text{sp}} &amp;\sim \text{Normal}(17, 2) <span class="sc">\\</span></span>
-<span id="cb46-243"><a href="#cb46-243" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(2) <span class="sc">\\</span></span>
-<span id="cb46-244"><a href="#cb46-244" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb46-245"><a href="#cb46-245" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb46-246"><a href="#cb46-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-247"><a href="#cb46-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-250"><a href="#cb46-250" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-251"><a href="#cb46-251" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb46-252"><a href="#cb46-252" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan"</span>)</span>
-<span id="cb46-253"><a href="#cb46-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-254"><a href="#cb46-254" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop</span>
-<span id="cb46-255"><a href="#cb46-255" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-256"><a href="#cb46-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-257"><a href="#cb46-257" aria-hidden="true" tabindex="-1"></a>There's a few differences to notice here:</span>
+<span id="cb46-238"><a href="#cb46-238" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stan code for species differences</span></span>
+<span id="cb46-239"><a href="#cb46-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-240"><a href="#cb46-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-241"><a href="#cb46-241" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb46-242"><a href="#cb46-242" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb46-243"><a href="#cb46-243" aria-hidden="true" tabindex="-1"></a>\text{Bill depth}_{i} &amp;\sim \text{Normal}(\mu_{\text{sp}<span class="co">[</span><span class="ot">i</span><span class="co">]</span>}, \sigma) <span class="sc">\\</span></span>
+<span id="cb46-244"><a href="#cb46-244" aria-hidden="true" tabindex="-1"></a>\mu_{\text{sp}} &amp;\sim \text{Normal}(17, 2) <span class="sc">\\</span></span>
+<span id="cb46-245"><a href="#cb46-245" aria-hidden="true" tabindex="-1"></a>\sigma &amp;\sim \text{Exponential}(2) <span class="sc">\\</span></span>
+<span id="cb46-246"><a href="#cb46-246" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb46-247"><a href="#cb46-247" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb46-248"><a href="#cb46-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-249"><a href="#cb46-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-252"><a href="#cb46-252" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-253"><a href="#cb46-253" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb46-254"><a href="#cb46-254" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp_forloop.stan"</span>)</span>
+<span id="cb46-255"><a href="#cb46-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-256"><a href="#cb46-256" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp_forloop</span>
+<span id="cb46-257"><a href="#cb46-257" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-258"><a href="#cb46-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-259"><a href="#cb46-259" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>in the <span class="in">`data`</span> block: We have a new input! A declaration of the array of integers at the top, saying if this is "species 1", "species 2", or "species 3"</span>
-<span id="cb46-260"><a href="#cb46-260" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`mu`</span> is a vector now. why?</span>
-<span id="cb46-261"><a href="#cb46-261" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>notice the for-loop. </span>
-<span id="cb46-262"><a href="#cb46-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-263"><a href="#cb46-263" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quick detour : vector indexing</span></span>
+<span id="cb46-259"><a href="#cb46-259" aria-hidden="true" tabindex="-1"></a>There's a few differences to notice here:</span>
+<span id="cb46-260"><a href="#cb46-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-261"><a href="#cb46-261" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>in the <span class="in">`data`</span> block: We have a new input! A declaration of the array of integers at the top, saying if this is "species 1", "species 2", or "species 3"</span>
+<span id="cb46-262"><a href="#cb46-262" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span><span class="in">`mu`</span> is a vector now. why?</span>
+<span id="cb46-263"><a href="#cb46-263" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>notice the for-loop. </span>
 <span id="cb46-264"><a href="#cb46-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-265"><a href="#cb46-265" aria-hidden="true" tabindex="-1"></a>A **very** useful technique, in both R and Stan, is transforming a vector with _indexing_. </span>
-<span id="cb46-266"><a href="#cb46-266" aria-hidden="true" tabindex="-1"></a>Vector indexing requires two vectors: the first contains values we want to select or replicate, the second contains integers giving the positions of the elements we want. For example:</span>
-<span id="cb46-267"><a href="#cb46-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-270"><a href="#cb46-270" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-271"><a href="#cb46-271" aria-hidden="true" tabindex="-1"></a>some_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>, <span class="st">"cheeze"</span>, <span class="st">"pizza"</span>)</span>
-<span id="cb46-272"><a href="#cb46-272" aria-hidden="true" tabindex="-1"></a>positions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">5</span>)</span>
-<span id="cb46-273"><a href="#cb46-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-274"><a href="#cb46-274" aria-hidden="true" tabindex="-1"></a>some_values[positions]</span>
-<span id="cb46-275"><a href="#cb46-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-276"><a href="#cb46-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-277"><a href="#cb46-277" aria-hidden="true" tabindex="-1"></a>This works for number values as well, and is very useful when you want to do simulations! let's simulate three groups with different averages.</span>
+<span id="cb46-265"><a href="#cb46-265" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quick detour : vector indexing</span></span>
+<span id="cb46-266"><a href="#cb46-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-267"><a href="#cb46-267" aria-hidden="true" tabindex="-1"></a>A **very** useful technique, in both R and Stan, is transforming a vector with _indexing_. </span>
+<span id="cb46-268"><a href="#cb46-268" aria-hidden="true" tabindex="-1"></a>Vector indexing requires two vectors: the first contains values we want to select or replicate, the second contains integers giving the positions of the elements we want. For example:</span>
+<span id="cb46-269"><a href="#cb46-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-272"><a href="#cb46-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-273"><a href="#cb46-273" aria-hidden="true" tabindex="-1"></a>some_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>, <span class="st">"cheeze"</span>, <span class="st">"pizza"</span>)</span>
+<span id="cb46-274"><a href="#cb46-274" aria-hidden="true" tabindex="-1"></a>positions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">5</span>)</span>
+<span id="cb46-275"><a href="#cb46-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-276"><a href="#cb46-276" aria-hidden="true" tabindex="-1"></a>some_values[positions]</span>
+<span id="cb46-277"><a href="#cb46-277" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-278"><a href="#cb46-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-281"><a href="#cb46-281" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-282"><a href="#cb46-282" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
-<span id="cb46-283"><a href="#cb46-283" aria-hidden="true" tabindex="-1"></a>some_means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">17</span>, <span class="dv">19</span>)</span>
-<span id="cb46-284"><a href="#cb46-284" aria-hidden="true" tabindex="-1"></a>some_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>)</span>
-<span id="cb46-285"><a href="#cb46-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-286"><a href="#cb46-286" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">42</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb46-287"><a href="#cb46-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">the_mean =</span> some_means[index],</span>
-<span id="cb46-288"><a href="#cb46-288" aria-hidden="true" tabindex="-1"></a>         <span class="at">labels =</span> some_labels[index],</span>
-<span id="cb46-289"><a href="#cb46-289" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(the_mean),</span>
-<span id="cb46-290"><a href="#cb46-290" aria-hidden="true" tabindex="-1"></a>                     <span class="at">mean =</span> the_mean,</span>
-<span id="cb46-291"><a href="#cb46-291" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sd =</span> <span class="dv">1</span>))</span>
-<span id="cb46-292"><a href="#cb46-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-293"><a href="#cb46-293" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="sc">|&gt;</span> </span>
-<span id="cb46-294"><a href="#cb46-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> obs, <span class="at">fill =</span> labels)) <span class="sc">+</span> </span>
-<span id="cb46-295"><a href="#cb46-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span>
-<span id="cb46-296"><a href="#cb46-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-297"><a href="#cb46-297" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-279"><a href="#cb46-279" aria-hidden="true" tabindex="-1"></a>This works for number values as well, and is very useful when you want to do simulations! let's simulate three groups with different averages.</span>
+<span id="cb46-280"><a href="#cb46-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-283"><a href="#cb46-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-284"><a href="#cb46-284" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
+<span id="cb46-285"><a href="#cb46-285" aria-hidden="true" tabindex="-1"></a>some_means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">17</span>, <span class="dv">19</span>)</span>
+<span id="cb46-286"><a href="#cb46-286" aria-hidden="true" tabindex="-1"></a>some_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"taco"</span>, <span class="st">"cat"</span>, <span class="st">"goat"</span>)</span>
+<span id="cb46-287"><a href="#cb46-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-288"><a href="#cb46-288" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">42</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb46-289"><a href="#cb46-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">the_mean =</span> some_means[index],</span>
+<span id="cb46-290"><a href="#cb46-290" aria-hidden="true" tabindex="-1"></a>         <span class="at">labels =</span> some_labels[index],</span>
+<span id="cb46-291"><a href="#cb46-291" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs =</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(the_mean),</span>
+<span id="cb46-292"><a href="#cb46-292" aria-hidden="true" tabindex="-1"></a>                     <span class="at">mean =</span> the_mean,</span>
+<span id="cb46-293"><a href="#cb46-293" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sd =</span> <span class="dv">1</span>))</span>
+<span id="cb46-294"><a href="#cb46-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-295"><a href="#cb46-295" aria-hidden="true" tabindex="-1"></a>df_of_means <span class="sc">|&gt;</span> </span>
+<span id="cb46-296"><a href="#cb46-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> obs, <span class="at">fill =</span> labels)) <span class="sc">+</span> </span>
+<span id="cb46-297"><a href="#cb46-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span>
 <span id="cb46-298"><a href="#cb46-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-299"><a href="#cb46-299" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vector indexing in Stan</span></span>
+<span id="cb46-299"><a href="#cb46-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-300"><a href="#cb46-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-301"><a href="#cb46-301" aria-hidden="true" tabindex="-1"></a>We can use this precise technique in Stan: </span>
+<span id="cb46-301"><a href="#cb46-301" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vector indexing in Stan</span></span>
 <span id="cb46-302"><a href="#cb46-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-305"><a href="#cb46-305" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-306"><a href="#cb46-306" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb46-307"><a href="#cb46-307" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp.stan"</span>)</span>
-<span id="cb46-308"><a href="#cb46-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-309"><a href="#cb46-309" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp</span>
-<span id="cb46-310"><a href="#cb46-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-311"><a href="#cb46-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-312"><a href="#cb46-312" aria-hidden="true" tabindex="-1"></a>The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However it's not possible in every case.</span>
+<span id="cb46-303"><a href="#cb46-303" aria-hidden="true" tabindex="-1"></a>We can use this precise technique in Stan: </span>
+<span id="cb46-304"><a href="#cb46-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-307"><a href="#cb46-307" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-308"><a href="#cb46-308" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb46-309"><a href="#cb46-309" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/discrete_predictor/normal_dist_rng_spp.stan"</span>)</span>
+<span id="cb46-310"><a href="#cb46-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-311"><a href="#cb46-311" aria-hidden="true" tabindex="-1"></a>normal_dist_rng_spp</span>
+<span id="cb46-312"><a href="#cb46-312" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-313"><a href="#cb46-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-314"><a href="#cb46-314" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling the species model</span></span>
+<span id="cb46-314"><a href="#cb46-314" aria-hidden="true" tabindex="-1"></a>The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However it's not possible in every case.</span>
 <span id="cb46-315"><a href="#cb46-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-316"><a href="#cb46-316" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
-<span id="cb46-317"><a href="#cb46-317" aria-hidden="true" tabindex="-1"></a><span class="fu">### EXERCISE</span></span>
-<span id="cb46-318"><a href="#cb46-318" aria-hidden="true" tabindex="-1"></a>Fit one (or both) of the species-specific models above. </span>
-<span id="cb46-319"><a href="#cb46-319" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>What changes do you need to make to the input data? Remember we've added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species. There are many ways to do this (e.g. try using <span class="in">`as.numeric`</span> after <span class="in">`as.factor`</span>)  </span>
-<span id="cb46-320"><a href="#cb46-320" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Visualize the posterior with <span class="in">`bayesplot`</span>. Does it look better than the model without species? How can you tell?</span>
-<span id="cb46-321"><a href="#cb46-321" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb46-322"><a href="#cb46-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-323"><a href="#cb46-323" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
-<span id="cb46-324"><a href="#cb46-324" aria-hidden="true" tabindex="-1"></a><span class="fu">### SOLUTION</span></span>
-<span id="cb46-325"><a href="#cb46-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-328"><a href="#cb46-328" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-329"><a href="#cb46-329" aria-hidden="true" tabindex="-1"></a>list_bill_dep_spp <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_nobillNA,</span>
-<span id="cb46-330"><a href="#cb46-330" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(</span>
-<span id="cb46-331"><a href="#cb46-331" aria-hidden="true" tabindex="-1"></a>       <span class="at">N =</span> <span class="fu">length</span>(bill_depth_mm),</span>
-<span id="cb46-332"><a href="#cb46-332" aria-hidden="true" tabindex="-1"></a>       <span class="at">measurements =</span> bill_depth_mm,</span>
-<span id="cb46-333"><a href="#cb46-333" aria-hidden="true" tabindex="-1"></a>       <span class="at">spp_id =</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(species))</span>
-<span id="cb46-334"><a href="#cb46-334" aria-hidden="true" tabindex="-1"></a>     )</span>
-<span id="cb46-335"><a href="#cb46-335" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb46-336"><a href="#cb46-336" aria-hidden="true" tabindex="-1"></a>     </span>
-<span id="cb46-337"><a href="#cb46-337" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp <span class="ot">&lt;-</span> normal_dist_rng_spp<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb46-338"><a href="#cb46-338" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep_spp, </span>
-<span id="cb46-339"><a href="#cb46-339" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
-<span id="cb46-340"><a href="#cb46-340" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>)</span>
-<span id="cb46-341"><a href="#cb46-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-342"><a href="#cb46-342" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb46-343"><a href="#cb46-343" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">summarise_draws</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb46-344"><a href="#cb46-344" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
-<span id="cb46-345"><a href="#cb46-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-346"><a href="#cb46-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-316"><a href="#cb46-316" aria-hidden="true" tabindex="-1"></a><span class="fu">### Sampling the species model</span></span>
+<span id="cb46-317"><a href="#cb46-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-318"><a href="#cb46-318" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
+<span id="cb46-319"><a href="#cb46-319" aria-hidden="true" tabindex="-1"></a><span class="fu">### EXERCISE</span></span>
+<span id="cb46-320"><a href="#cb46-320" aria-hidden="true" tabindex="-1"></a>Fit one (or both) of the species-specific models above. </span>
+<span id="cb46-321"><a href="#cb46-321" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>What changes do you need to make to the input data? Remember we've added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species. There are many ways to do this (e.g. try using <span class="in">`as.numeric`</span> after <span class="in">`as.factor`</span>)  </span>
+<span id="cb46-322"><a href="#cb46-322" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Visualize the posterior with <span class="in">`bayesplot`</span>. Does it look better than the model without species? How can you tell?</span>
+<span id="cb46-323"><a href="#cb46-323" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb46-324"><a href="#cb46-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-325"><a href="#cb46-325" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb46-326"><a href="#cb46-326" aria-hidden="true" tabindex="-1"></a><span class="fu">### SOLUTION</span></span>
+<span id="cb46-327"><a href="#cb46-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-330"><a href="#cb46-330" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-331"><a href="#cb46-331" aria-hidden="true" tabindex="-1"></a>list_bill_dep_spp <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_nobillNA,</span>
+<span id="cb46-332"><a href="#cb46-332" aria-hidden="true" tabindex="-1"></a>     <span class="fu">list</span>(</span>
+<span id="cb46-333"><a href="#cb46-333" aria-hidden="true" tabindex="-1"></a>       <span class="at">N =</span> <span class="fu">length</span>(bill_depth_mm),</span>
+<span id="cb46-334"><a href="#cb46-334" aria-hidden="true" tabindex="-1"></a>       <span class="at">measurements =</span> bill_depth_mm,</span>
+<span id="cb46-335"><a href="#cb46-335" aria-hidden="true" tabindex="-1"></a>       <span class="at">spp_id =</span> <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(species))</span>
+<span id="cb46-336"><a href="#cb46-336" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb46-337"><a href="#cb46-337" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-338"><a href="#cb46-338" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb46-339"><a href="#cb46-339" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp <span class="ot">&lt;-</span> normal_dist_rng_spp<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb46-340"><a href="#cb46-340" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_bill_dep_spp, </span>
+<span id="cb46-341"><a href="#cb46-341" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb46-342"><a href="#cb46-342" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>)</span>
+<span id="cb46-343"><a href="#cb46-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-344"><a href="#cb46-344" aria-hidden="true" tabindex="-1"></a>samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"mu"</span>, <span class="st">"sigma"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb46-345"><a href="#cb46-345" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">summarise_draws</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb46-346"><a href="#cb46-346" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
 <span id="cb46-347"><a href="#cb46-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-348"><a href="#cb46-348" aria-hidden="true" tabindex="-1"></a>Let's take a look at this in Shinystan</span>
+<span id="cb46-348"><a href="#cb46-348" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb46-349"><a href="#cb46-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-350"><a href="#cb46-350" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb46-351"><a href="#cb46-351" aria-hidden="true" tabindex="-1"></a>shinystan<span class="sc">::</span><span class="fu">launch_shinystan</span>(samp_normal_dist_rng_spp)</span>
-<span id="cb46-352"><a href="#cb46-352" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-353"><a href="#cb46-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-354"><a href="#cb46-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-355"><a href="#cb46-355" aria-hidden="true" tabindex="-1"></a>and we can repeat the posterior checking from before:</span>
+<span id="cb46-350"><a href="#cb46-350" aria-hidden="true" tabindex="-1"></a>Let's take a look at this in Shinystan</span>
+<span id="cb46-351"><a href="#cb46-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-352"><a href="#cb46-352" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
+<span id="cb46-353"><a href="#cb46-353" aria-hidden="true" tabindex="-1"></a>shinystan<span class="sc">::</span><span class="fu">launch_shinystan</span>(samp_normal_dist_rng_spp)</span>
+<span id="cb46-354"><a href="#cb46-354" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-355"><a href="#cb46-355" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-356"><a href="#cb46-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-359"><a href="#cb46-359" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-360"><a href="#cb46-360" aria-hidden="true" tabindex="-1"></a>spp_yrep_draws <span class="ot">&lt;-</span> samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
-<span id="cb46-361"><a href="#cb46-361" aria-hidden="true" tabindex="-1"></a>spp_draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(spp_yrep_draws)</span>
-<span id="cb46-362"><a href="#cb46-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-363"><a href="#cb46-363" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
-<span id="cb46-364"><a href="#cb46-364" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(spp_draws_matrix, <span class="dv">50</span>))</span>
-<span id="cb46-365"><a href="#cb46-365" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-366"><a href="#cb46-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-367"><a href="#cb46-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-368"><a href="#cb46-368" aria-hidden="true" tabindex="-1"></a>The predicted distribution is now much more like the real data</span>
+<span id="cb46-357"><a href="#cb46-357" aria-hidden="true" tabindex="-1"></a>and we can repeat the posterior checking from before:</span>
+<span id="cb46-358"><a href="#cb46-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-361"><a href="#cb46-361" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-362"><a href="#cb46-362" aria-hidden="true" tabindex="-1"></a>spp_yrep_draws <span class="ot">&lt;-</span> samp_normal_dist_rng_spp<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"yrep"</span>))</span>
+<span id="cb46-363"><a href="#cb46-363" aria-hidden="true" tabindex="-1"></a>spp_draws_matrix <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_matrix</span>(spp_yrep_draws)</span>
+<span id="cb46-364"><a href="#cb46-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-365"><a href="#cb46-365" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> list_bill_dep<span class="sc">$</span>measurements,</span>
+<span id="cb46-366"><a href="#cb46-366" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(spp_draws_matrix, <span class="dv">50</span>))</span>
+<span id="cb46-367"><a href="#cb46-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-368"><a href="#cb46-368" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-369"><a href="#cb46-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-370"><a href="#cb46-370" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb46-370"><a href="#cb46-370" aria-hidden="true" tabindex="-1"></a>The predicted distribution is now much more like the real data</span>
 <span id="cb46-371"><a href="#cb46-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-372"><a href="#cb46-372" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visualizing species -- using `tidybayes`</span></span>
+<span id="cb46-372"><a href="#cb46-372" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb46-373"><a href="#cb46-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-374"><a href="#cb46-374" aria-hidden="true" tabindex="-1"></a>We can also make figures for each individual species. </span>
-<span id="cb46-375"><a href="#cb46-375" aria-hidden="true" tabindex="-1"></a>Here we will move away from using <span class="in">`bayesplot`</span> and try to visualize our posterior using the handy functions in the <span class="in">`tidybayes`</span> package <span class="co">[</span><span class="ot">add a link</span><span class="co">]</span>{.aside}</span>
-<span id="cb46-376"><a href="#cb46-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-379"><a href="#cb46-379" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-380"><a href="#cb46-380" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb46-381"><a href="#cb46-381" aria-hidden="true" tabindex="-1"></a>spp_draws_df <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(spp_yrep_draws)</span>
-<span id="cb46-382"><a href="#cb46-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-383"><a href="#cb46-383" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">gather_draws</span>(samp_normal_dist_rng_spp,</span>
-<span id="cb46-384"><a href="#cb46-384" aria-hidden="true" tabindex="-1"></a>                        yrep[row_id], </span>
-<span id="cb46-385"><a href="#cb46-385" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ndraws =</span> <span class="dv">50</span>)</span>
-<span id="cb46-386"><a href="#cb46-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-387"><a href="#cb46-387" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="sc">|&gt;</span> </span>
-<span id="cb46-388"><a href="#cb46-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> penguins_nobillNA<span class="sc">$</span>species[row_id]) <span class="sc">|&gt;</span> </span>
-<span id="cb46-389"><a href="#cb46-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">colour =</span> species)) <span class="sc">+</span> </span>
-<span id="cb46-390"><a href="#cb46-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">group =</span> .iteration), <span class="at">alpha =</span> .<span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb46-391"><a href="#cb46-391" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species) <span class="sc">+</span> </span>
-<span id="cb46-392"><a href="#cb46-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm),</span>
-<span id="cb46-393"><a href="#cb46-393" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> penguins_nobillNA,</span>
-<span id="cb46-394"><a href="#cb46-394" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
-<span id="cb46-395"><a href="#cb46-395" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
-<span id="cb46-396"><a href="#cb46-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-397"><a href="#cb46-397" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-374"><a href="#cb46-374" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visualizing species -- using `tidybayes`</span></span>
+<span id="cb46-375"><a href="#cb46-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-376"><a href="#cb46-376" aria-hidden="true" tabindex="-1"></a>We can also make figures for each individual species. </span>
+<span id="cb46-377"><a href="#cb46-377" aria-hidden="true" tabindex="-1"></a>Here we will move away from using <span class="in">`bayesplot`</span> and try to visualize our posterior using the handy functions in the <span class="in">`tidybayes`</span> package <span class="co">[</span><span class="ot">add a link</span><span class="co">]</span>{.aside}</span>
+<span id="cb46-378"><a href="#cb46-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-381"><a href="#cb46-381" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb46-382"><a href="#cb46-382" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb46-383"><a href="#cb46-383" aria-hidden="true" tabindex="-1"></a>spp_draws_df <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_df</span>(spp_yrep_draws)</span>
+<span id="cb46-384"><a href="#cb46-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-385"><a href="#cb46-385" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">gather_draws</span>(samp_normal_dist_rng_spp,</span>
+<span id="cb46-386"><a href="#cb46-386" aria-hidden="true" tabindex="-1"></a>                        yrep[row_id], </span>
+<span id="cb46-387"><a href="#cb46-387" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ndraws =</span> <span class="dv">50</span>)</span>
+<span id="cb46-388"><a href="#cb46-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-389"><a href="#cb46-389" aria-hidden="true" tabindex="-1"></a>normal_dist_post_samp <span class="sc">|&gt;</span> </span>
+<span id="cb46-390"><a href="#cb46-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> penguins_nobillNA<span class="sc">$</span>species[row_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb46-391"><a href="#cb46-391" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">colour =</span> species)) <span class="sc">+</span> </span>
+<span id="cb46-392"><a href="#cb46-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">group =</span> .iteration), <span class="at">alpha =</span> .<span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb46-393"><a href="#cb46-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species) <span class="sc">+</span> </span>
+<span id="cb46-394"><a href="#cb46-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm),</span>
+<span id="cb46-395"><a href="#cb46-395" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> penguins_nobillNA,</span>
+<span id="cb46-396"><a href="#cb46-396" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb46-397"><a href="#cb46-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>)</span>
 <span id="cb46-398"><a href="#cb46-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-399"><a href="#cb46-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-400"><a href="#cb46-400" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercises</span></span>
+<span id="cb46-399"><a href="#cb46-399" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb46-400"><a href="#cb46-400" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-401"><a href="#cb46-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-402"><a href="#cb46-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-403"><a href="#cb46-403" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
-<span id="cb46-404"><a href="#cb46-404" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)</span>
-<span id="cb46-405"><a href="#cb46-405" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>use bayesplot to examine the fit of body size to these data. </span>
-<span id="cb46-406"><a href="#cb46-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-407"><a href="#cb46-407" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
-<span id="cb46-408"><a href="#cb46-408" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>generate some random groups of your own, with known means. How well does the model fit these data</span>
-<span id="cb46-409"><a href="#cb46-409" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The present model is fixed for exactly 3 groups. how would you change it for any number of groups?</span>
-<span id="cb46-410"><a href="#cb46-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-411"><a href="#cb46-411" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
-<span id="cb46-412"><a href="#cb46-412" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the function <span class="in">`tidybayes::compose_data`</span> is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of <span class="in">`tidybayes::compose_data`</span>?</span>
-<span id="cb46-413"><a href="#cb46-413" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>As you can see, the model assumes the same sigma for all species. what if you relax this? </span>
-<span id="cb46-414"><a href="#cb46-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-415"><a href="#cb46-415" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optional! </span></span>
-<span id="cb46-416"><a href="#cb46-416" aria-hidden="true" tabindex="-1"></a>Try this on your own data! </span>
+<span id="cb46-402"><a href="#cb46-402" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercises</span></span>
+<span id="cb46-403"><a href="#cb46-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-404"><a href="#cb46-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-405"><a href="#cb46-405" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
+<span id="cb46-406"><a href="#cb46-406" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)</span>
+<span id="cb46-407"><a href="#cb46-407" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>use bayesplot to examine the fit of body size to these data. </span>
+<span id="cb46-408"><a href="#cb46-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-409"><a href="#cb46-409" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
+<span id="cb46-410"><a href="#cb46-410" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>generate some random groups of your own, with known means. How well does the model fit these data</span>
+<span id="cb46-411"><a href="#cb46-411" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The present model is fixed for exactly 3 groups. how would you change it for any number of groups?</span>
+<span id="cb46-412"><a href="#cb46-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-413"><a href="#cb46-413" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
+<span id="cb46-414"><a href="#cb46-414" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the function <span class="in">`tidybayes::compose_data`</span> is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of <span class="in">`tidybayes::compose_data`</span>?</span>
+<span id="cb46-415"><a href="#cb46-415" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>As you can see, the model assumes the same sigma for all species. what if you relax this? </span>
+<span id="cb46-416"><a href="#cb46-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-417"><a href="#cb46-417" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optional! </span></span>
+<span id="cb46-418"><a href="#cb46-418" aria-hidden="true" tabindex="-1"></a>Try this on your own data! </span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
