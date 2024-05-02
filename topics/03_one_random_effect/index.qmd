@@ -9,6 +9,8 @@ comments:
 format:
   html:
     code-tools: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -126,7 +128,8 @@ penguin_pred_obs |>
 ```
 
 :::{.callout-tip}
-run the above code a few times! if you want, try different prior values.
+### EXERCISE
+Run the above code a few times! if you want, try different prior values.
 :::
 
 ### Write it in Stan
@@ -159,10 +162,40 @@ fixed_groups_samples <- fixed_groups$sample(
 ### Plot predictions to evaluate results
 
 
+Let's begin by plotting the averages for each group.
+
 ```{r}
-## bayesplot
+fixed_groups_samples |> 
+  gather_rvars(group_averages[group_id]) |> 
+  mutate(sp_island = names(group_numbers)[group_id]) |> 
+  ggplot(aes(y = sp_island, dist = .value)) + 
+  stat_pointinterval() + 
+  geom_jitter(data = penguin_mass_island,
+              aes(y = sp_island,
+                  x = mass_kg,
+                  colour = sp_island), 
+              pch = 21, inherit.aes = FALSE,
+              alpha = 0.8, height = 0.1, width = 0) + 
+  scale_colour_brewer(palette = "Dark2")
 ```
 
+
+Some things to notice about the code above: 
+
+* I'm using my named vector `group_numbers` to re-create the column `sp_island`. This is my technique for making sure I always use the correct label, but you can do this any way you want.
+* We use `tidybayes::stat_pointinterval()` to summarize the posterior distribution.
+* we're adding points from the original data (`penguin_mass_island`) with `geom_jitter()`. We're adding noise vertically to make the visualization better, but not adding any horizontal noise.
+
+:::{.callout-tip}
+### EXERCISE: plot posterior predictions of _observations_
+
+Repeat the exercise above using the value of `one_obs_per_group`. 
+Why are the results different? What additional error is included in these predictions?
+
+:::
+
+:::{.callout-note collapse="true"}
+### SOLUTION
 
 ```{r}
 fixed_groups_samples |> 
@@ -171,19 +204,44 @@ fixed_groups_samples |>
   ggplot(aes(y = sp_island,
              dist = .value,
              colour = sp_island)) + 
-  stat_pointinterval() + 
-  geom_point(aes(y = sp_island,
-             x = mass_kg,
-             colour = sp_island), 
-             inherit.aes = FALSE,
-             alpha = .2, data = penguin_groupid)
+  stat_pointinterval(colour = "black") + 
+  geom_jitter(
+    aes(y = sp_island,
+        x = mass_kg,
+        colour = sp_island), 
+    inherit.aes = FALSE,
+    alpha = .2, data = penguin_groupid, height = .2, width = 0) + 
+  scale_colour_brewer(palette = "Dark2")
 
 ```
 
+:::
+
 ### Make it hierarchical
 
-TK make them side by side
+:::{.column-screen}
 
+::::{.columns}
+
+::: {.column width="2.5%"}
+:::
+
+::: {.column width="45%"}
+$$
+\begin{align}
+\text{Body mass}_i &\sim \text{Normal}(\mu_i, \sigma_{\text{obs}}) \\
+\mu_i &= \bar\beta + \beta_{\text{group}[i]} \\
+\bar\beta &\sim \text{Normal}(5, 2) \\
+\beta_{\text{group}} &\sim \text{Normal}(0, 1) \\
+\sigma_{\text{obs}} &\sim \text{Exponential}(.5)
+\end{align}
+$$
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="45%"}
 $$
 \begin{align}
 \text{Body mass}_i &\sim \text{Normal}(\mu_i, \sigma_{\text{obs}}) \\
@@ -194,6 +252,17 @@ $$
 \sigma_{\text{sp}} &\sim \text{Exponential}(1)
 \end{align}
 $$
+```
+:::
+
+::: {.column width="2.5%"}
+:::
+
+::::
+
+:::
+
+
 
 
 ```{r}

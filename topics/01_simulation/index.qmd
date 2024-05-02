@@ -48,7 +48,9 @@ A quick note about notation for models like these:
 
 * We use a subscript $i$ to indicate the "label" for each observation in our dataset. You can think of this as the row number of the data spreadsheet, and imagine sliding your finger down the column of measurements, modelling each value in turn.
 * Usually we'll use more general language, such as $y_i$. But for this simple example I wanted to make things as explicit as possible. 
-* Notice the symbol $\sim$. This is read as "distributed as", and indicates the probability distribution from which the values might come.  When the values we're talking about are data that we can observe (in this case, counts of birds), we call the distribution the likelihood. When the value is something we can't observe (in this case, the average count $\lambda$) we call the distribution the prior. <aside>Remember that measuring uncertainty with probability is what makes thinking Bayesian. That means we need a probability distribution for everything we can't observe (like an average) or haven't seen yet (like observations)</aside>
+* Notice the symbol $\sim$. This is read as "distributed as", and indicates the probability distribution from which the values might come.  When the values we're talking about are data that we can observe (in this case, counts of birds), we call the distribution the likelihood. When the value is something we can't observe (in this case, the average count $\lambda$) we call the distribution the prior. 
+
+<aside>Remember that measuring uncertainty with probability is what makes thinking Bayesian. That means we need a probability distribution for everything we can't observe (like an average) or haven't seen yet (like observations)</aside>
 
 ::: {.callout-warning}
 We'll be talking about better ways to model count data in a later exercise! For now, I'm using the Uniform distribution for simplicity. It's not usually a very good choice! 
@@ -380,13 +382,13 @@ Second, the `generated quantities` block means something different now. Previous
 
 ## Parameter recovery
 
-:::{.callout-note}
-### Exercise: parameter recovery in Stan
+:::{.callout-tip}
+### EXERCISE: parameter recovery in Stan
 Use the Stan code above to fit the model to our simulated data. Do we recover the parameters?
 :::
 
 :::{.callout-note collapse="true"}
-
+### SOLUTION
 Once again, we connect a dataset to our model with a list:
 
 ```{r}

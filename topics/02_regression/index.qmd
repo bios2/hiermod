@@ -364,6 +364,30 @@ normal_reg_predline |>
 
 ```
 
+#### Using posterior draws individually
+
+The above workflow makes a nice figure, but perhaps it helps to see the individual lines to understand what is happening here. 
+We can get these with another tidybayes function `spread_draws`:
+
+```{r}
+normal_reg_predline_draws <- normal_reg_no_pred |> 
+  tidybayes::spread_draws(slope, intercept, ndraws = 10)
+
+knitr::kable(normal_reg_predline_draws)
+```
+
+```{r}
+normal_reg_predline_draws |> 
+  expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
+  mutate(mu = intercept + slope*x) |> 
+  ggplot(aes(x = x, y = mu, group = .draw)) + 
+  geom_line() + 
+  geom_point(aes(x = bill_length_center, y = bill_depth_mm),
+             inherit.aes = FALSE,
+             data = penguins_no_NA)
+```
+
+
 
 ## Posterior predictions in Stan
 
@@ -397,7 +421,6 @@ bill_norm_reg <- normal_regression$sample(data = data_list,
 ```{r}
 posterior::as_draws_df(bill_norm_reg$draws(variables = "post_bill_dep_obs"))
 ```
-
 
 
 ```{r}
@@ -523,5 +546,5 @@ bill_posterior |>
 
 ## Exercise! 
 
-show how the $\sigma$ is different between these two models
+Show how the $\sigma$ is different between these two models     
 
