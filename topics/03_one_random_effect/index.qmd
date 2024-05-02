@@ -83,7 +83,7 @@ $$
 \end{align}
 $$
 
-### Simulate to understand this model
+### Simulate to understand this model {#sec-fixed-simulation}
 
 Here's a little trick to get group indexes (numbers) from a character vector:
 
@@ -219,12 +219,7 @@ fixed_groups_samples |>
 
 ### Make it hierarchical
 
-
-The Stan code is here: 
-
-```{r}
-hierarchical_groups <- cmdstan_model(stan_file = "topics/03_one_random_effect/hierarchical_groups.stan")
-```
+#### Math
 
 
 :::{.column-screen}
@@ -271,6 +266,48 @@ $$
 ::::
 
 :::
+
+#### Simulation of a hierarchical model
+
+:::{.callout-tip}
+### EXERCISE 
+Simulate from the model above. Base your approach on the [code for simulation the non-hierarchical version](@sec-fixed-simulation). 
+Remember to simulate one additional number: the standard deviation of group differences
+:::
+
+:::{.callout-note collapse="true"}
+### SOLUTION
+```{r}
+ngroup <- length(group_numbers)
+overall_mean <- rnorm(1, mean = 5, sd = 2)
+sigma_group <- rexp(1, .1)
+group_diffs <- rnorm(n = ngroup, mean = 0, sd = sigma_group)
+sigma_obs <- rexp(1, .5)
+
+penguin_pred_obs <- penguin_groupid |> 
+  mutate(fake_mass_avg = overall_mean + group_diffs[group_id],
+         fake_mass_obs = rnorm(length(fake_mass_avg), 
+                               mean = fake_mass_avg, 
+                               sd = sigma_obs))
+
+penguin_pred_obs |> 
+  ggplot(aes(y = sp_island,
+             x = fake_mass_obs,
+             colour = sp_island)) + 
+  geom_jitter(alpha = 0.8, height = 0.1, width = 0) + 
+  scale_color_brewer(palette = "Dark2")
+
+```
+:::
+
+#### Stan
+
+
+Below I'm comparing the two Stan programs side-by-side. Compare them to the models above! 
+
+```{r}
+hierarchical_groups <- cmdstan_model(stan_file = "topics/03_one_random_effect/hierarchical_groups.stan")
+```
 
 :::{.column-screen}
 
@@ -362,9 +399,49 @@ hierarchical_groups_samples |>
 1. The posterior for both models includes a predicted `fake_obs` for EVERY observation. This opens the possibility of using `bayesplot` to make predictions. Look back at the code from Day 1 and create a posterior predictive check for both models. (e.g. using `ppc_dens_overlay`)
 1. We could perhaps have used `sex` as a grouping factor, but `sex` has missing values in it! Why is this a problem for this kind of model? What would it take to address that? (Discussion only; missing values are unfortunately outside the class scope!)
 
-## Poisson random intercepts: Mite abundance
+## Observation-level random effects: Mite abundance
 
-**How does mite abundance vary among sites?**
+### What is the question? 
+
+Let's write a model to answer the question:  
+
+**How does the total abundance of the mite community change as water content increases?**  
+
+### Express this in Math
+
+Here's a partially complete model for species richness over time
+
+$$
+\begin{align}
+\text{S}_i &\sim \text{Poisson}(e^a) \\
+a &= \bar\beta + \beta_{\text{water}} \cdot \text{water}_i \\
+\bar\beta &\sim \text{Normal}(?, ?) \\
+\beta_{\text{water}} &\sim \text{Normal}(?, ?) \\
+\end{align}
+$$
+
+:::{.callout-tip}
+### EXERCISE 
+Simulate from this model, and look at your simulations to decide on a reasonable prior for the data.
+:::
+
+:::{.callout-note collapse="true"}
+### SOLUTION
+```{r}
+n <- 30
+water <- seq(from = -5, to = 5, length.out = n)
+
+b0 <- rnorm(1, mean = log(17), sd = .3)
+b1 <- rnorm(1, mean = 0, sd = .2)
+
+S <- rpois(n, lambda = exp(b0 + b1*water))
+plot(water, S)
+```
+:::
+
+### Data preparation & visualization
+
+First we need to load and prepare the data:
 
 ```{r}
 data(mite, package = "vegan")
@@ -379,90 +456,14 @@ mite_data_long <- mite |>
                names_to = "spp", values_to = "abd")
 ```
 
-```{r}
-#| fig-cap: Abundance of each species at every site in the mite dataset. Points are species abundances, grouped on the row for that site.
-mite_data_long |> 
-  mutate(site_id = forcats::fct_reorder(site_id, abd)) |> 
-  ggplot(aes(y = site_id, x = abd)) +
-  geom_point() + 
-  coord_cartesian(xlim = c(0,100)) + 
-  stat_summary(fun = median, col = "red", geom = "point")
-```
 
-
-### Exercise: write the model in the same notation as the original
-
-Let's model the counts of species abundances, using a random effect for each site. Write the model that corresponds to this!
-
-### Trying it with a Normal distribution:
-
-It's actually possible to run the previous model on this one.
-let's set up the data and try:
-```{r}
-species_numbers <- with(mite_data_long,
-     setNames(seq_along(unique(spp)), unique(spp)))
-
-mite_data_groupID <- mutate(mite_data_long,
-                            group_id = species_numbers[spp])
-
-mite_list <- with(mite_data_groupID,
-                  list(
-                    N = length(abd),
-                    y = abd,
-                    Ngroup = dplyr::n_distinct(spp),
-                    group_id = group_id
-                  ))
-
-normal_samples <- hierarchical_groups$sample(data = mite_list, refresh = 0, parallel_chains = 4)
-```
-
-This is interesting, but it would probably be better to fit this model with something meant for counts! With this comes the need to include a log link function. Fortunately, Stan makes all this possible with just a few small changes:
-
-### Exercise: translate it into Stan
-
-Modify the program `hierarchical_groups.stan` to work for poisson data. Some things to keep in mind: 
-
-* `data {}` block: remember that the Poisson distribution needs integers and set up the data inputs accordinly.
-* `parameters {}` block: think about which parameters the poisson does NOT need. 
-* `model {}` block: remember to remove any unneeded parameters from the likelihood (the model of the data), and their priors too.
-* replace `normal` with `poisson_log`. Note that this evaluates its argument on the log scale. That is, it works like a typical GLM done in R. We can keep priors the same as in the last model, though we may decide to change their values.
-* `generated quantities {}` block: replace `normal_rng()` with `poisson_log_rng()` -- _where necessary_ -- and delete unused parameters.
-* again, remember that the Poisson needs to be making integers. For example, replace `vector[Ngroup]` with `array[Ngroup] int `
-
-```{r include=FALSE, eval=FALSE}
-phg <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_hier_groups.stan")
-
-phg_samples <- phg$sample(data = mite_list, refresh = 20, parallel_chains = 2, chains = 2)
-
-phg_samples |> 
-  gather_rvars(one_obs_per_group[i]) |> 
-  mutate(spp = names(species_numbers)[i],
-         spp = forcats::fct_reorder(spp, .value, median)) |> 
-  ggplot(aes(y = spp, dist = .value)) + 
-  stat_pointinterval() + 
-  geom_point(aes(y = spp, x = m),
-             data = mite_data_groupID |> 
-               group_by(spp) |> 
-               summarize(m = mean(abd)),
-             inherit.aes = FALSE, col = "red")
-```
-
-### Exercises
-
-* Try modifying the program again, this time adding a predictor: water content. What happens to `sigma_grp` in this example?
-
-## Observation-level random effects: Mite species richness
-
-**What is the species richness of mites in a single sample?**
-
-**How does mite species richness change as water content increases?**
-
-First let's transform the mite dataset into a dataframe of species richness per site. We'll also standardize the water content while we're at it:
+First let's transform the mite dataset into a dataframe of species richness per site. 
+We'll also standardize the water content while we're at it:
 
 ```{r}
 mite_species_richness <- mite_data_long |> 
   group_by(site_id, WatrCont) |> 
-  summarize(S = sum(abd > 0)) |>
+  summarize(S = sum(abd)) |>
   ungroup() |> 
   mutate(water_c = (WatrCont - mean(WatrCont))/100)
 
@@ -482,15 +483,113 @@ mite_species_richness |>
   geom_point()
 ```
 
-### Exercises
+### Write the model in Stan and estimate it
 
-1. The mean species richness is about 15 species. Simulate from a poisson distribution with this mean. Does it look like the figure above?
-1. Use Rstudio to make a new Stan file. This model is set up to estimate a normal distribution. Modify it so that it works for a Poisson instead, and fit it to the species richness data.
-1. Validate that model with a figure of your choosing. Does it work well?
-1. Add a random effect for every site in the dataset. This is called an **observation-level random effect** and can be a very convenient way to work with overdispersion.
-1. Try modifying the Poisson model above to include a predictor. Write this model out in math first! 
-1. Use this model to draw a expected (and/or a prediction) line through the second figure above.
-1. Another great way to model overdispersion is via the [Negative Binomial](https://en.wikipedia.org/wiki/Negative_binomial_distribution) distribution. Look at the Stan documentation for [neg_binomial_2_log](https://mc-stan.org/docs/functions-reference/neg-binom-2-log.html) and adapt your model to use it (don't forget to drop the random effect when you do!).
+```{r}
+poisson_regression <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_regression.stan")
+```
+
+```{r}
+
+water_for_pred <- seq(from = -3, to = 4.5, length.out = 15)
+
+abd_data_list <- list(N = length(mite_species_richness$S),
+              water = mite_species_richness$water_c,
+              y = mite_species_richness$S,
+              Npred = 15,
+              water_pred = water_for_pred)
+
+poisson_regression_sample <- poisson_regression$sample(
+  data = abd_data_list,
+  refresh = 0)
+```
+
+### Plot the model to see if it fits well
+
+```{r}
+#| layout-ncol: 2
+poisson_regression_sample |> 
+  tidybayes::gather_rvars(line_obs[i]) |> 
+  mutate(water = water_for_pred) |> 
+  ggplot(aes(x = water, dist = .value)) + 
+  stat_lineribbon() + 
+  geom_point(aes(x = water_c, y = S), data = mite_species_richness, inherit.aes = FALSE)
+
+fake_obs_S <- poisson_regression_sample$draws(variables = "fake_obs")
+fake_obs_S_matrix <- posterior::as_draws_matrix(fake_obs_S)
+
+bayesplot::ppc_dens_overlay(y = mite_species_richness$S,
+                            yrep = head(fake_obs_S_matrix, 50))
+```
+
+
+:::{.callout-tip
+### EXERCISE
+1) Add a random effect for _every individual observation_ in the model. Begin by writing the mathematical notation for this new model! 
+
+2) fit the model and re-create the two figures above. What do you notice? 
+
+* Which model is more trustworthy?
+* look at the slope in the new model. Is it different?
+:::
+
+:::{.callout-note collapse="true"}
+### SOLUTION
+
+
+#### Mathematical notation
+
+$$
+\begin{align}
+\text{S}_i &\sim \text{Poisson}(e^a) \\
+a &= \bar\beta + \beta_{\text{water}} \cdot \text{water}_i + \text{site}_i\\
+\bar\beta &\sim \text{Normal}(?, ?) \\
+\beta_{\text{water}} &\sim \text{Normal}(?, ?) \\
+\text{site} &\sim \text{Normal}(?, \sigma) \\
+\sigma &\sim \text{Exponential}(?)
+\end{align}
+$$
+
+#### Stan code 
+
+
+```{r}
+poisson_regression_overdisp <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_regression_overdisp.stan")
+
+poisson_regression_overdisp_sample <- poisson_regression_overdisp$sample(
+  data = abd_data_list, refresh = 0)
+```
+
+
+```{r}
+#| layout-ncol: 2
+#| 
+fake_obs_S <- poisson_regression_overdisp_sample$draws(variables = "fake_obs")
+fake_obs_S_matrix <- posterior::as_draws_matrix(fake_obs_S)
+
+bayesplot::ppc_dens_overlay(y = mite_species_richness$S,
+                            yrep = head(fake_obs_S_matrix, 50))
+
+poisson_regression_overdisp_sample |> 
+  tidybayes::gather_rvars(line_obs[i]) |> 
+  mutate(water = water_for_pred) |> 
+  ggplot(aes(x = water, dist = .value)) + 
+  stat_lineribbon() + 
+  geom_point(aes(x = water_c, y = S), data = mite_species_richness, inherit.aes = FALSE)
+```
+
+:::
+
+
+
+:::{.callout-note}
+Another great way to model overdispersion is via the [Negative Binomial](https://en.wikipedia.org/wiki/Negative_binomial_distribution) distribution. Look at the Stan documentation for [neg_binomial_2_log](https://mc-stan.org/docs/functions-reference/neg-binom-2-log.html) and adapt your model to use it (don't forget to drop the random effect when you do!).
+:::
+
+:::{.callout-warning}
+The code below is EXTRA material showing other examples you might be interested in! 
+:::
+
 
 ## Bernoulli presence-absence data: Mite occurrance.
 
@@ -502,6 +601,23 @@ Let's begin by drawing a classic picture: a species by site matrix!
 
 ```{r}
 #| fig-cap: A species x site matrix for the mite data. 
+
+species_numbers <- with(mite_data_long,
+                        setNames(seq_along(unique(spp)), unique(spp)))
+
+mite_data_groupID <- mutate(mite_data_long,
+                            group_id = species_numbers[spp])
+
+ 
+mite_list <- with(mite_data_groupID,
+                  list(
+                    N = length(abd),
+                    y = abd,
+                    Ngroup = dplyr::n_distinct(spp),
+                    group_id = group_id
+                  ))
+
+
 mite_long_pa <- mite_data_groupID |> 
   mutate(pa = as.numeric(abd > 0))
 
@@ -579,6 +695,88 @@ mite_occ_prob |>
 1. How could you assess this model fit to data? What kind of figure would be most interesting?
 1. The probability of a species occurring across all sites is given by `b_avg + b_spp`. How does that compare to the fraction of sites at which any species was observed?
 1. The expected species richness of each site is given by `b_avg + b_site`. How does that compare to the observed species richness?
+
+
+
+## Poisson random intercepts: Mite abundance
+
+**How does mite abundance vary among sites?**
+
+```{r}
+#| fig-cap: Abundance of each species at every site in the mite dataset. Points are species abundances, grouped on the row for that site.
+mite_data_long |> 
+  mutate(site_id = forcats::fct_reorder(site_id, abd)) |> 
+  ggplot(aes(y = site_id, x = abd)) +
+  geom_point() + 
+  coord_cartesian(xlim = c(0,100)) + 
+  stat_summary(fun = median, col = "red", geom = "point")
+```
+
+:::{.callout-tip}
+### write the model in the same notation as the original
+
+Let's model the counts of species abundances, using a random effect for each site. Write the model that corresponds to this!
+
+:::
+
+
+### Trying it with a Normal distribution:
+
+It's actually possible to run the previous model on this one.
+let's set up the data and try:
+```{r}
+species_numbers <- with(mite_data_long,
+     setNames(seq_along(unique(spp)), unique(spp)))
+
+mite_data_groupID <- mutate(mite_data_long,
+                            group_id = species_numbers[spp])
+
+mite_list <- with(mite_data_groupID,
+                  list(
+                    N = length(abd),
+                    y = abd,
+                    Ngroup = dplyr::n_distinct(spp),
+                    group_id = group_id
+                  ))
+
+normal_samples <- hierarchical_groups$sample(data = mite_list, refresh = 0, parallel_chains = 4)
+```
+
+This is interesting, but it would probably be better to fit this model with something meant for counts! With this comes the need to include a log link function. Fortunately, Stan makes all this possible with just a few small changes:
+
+### Exercise: translate it into Stan
+
+Modify the program `hierarchical_groups.stan` to work for poisson data. Some things to keep in mind: 
+
+* `data {}` block: remember that the Poisson distribution needs integers and set up the data inputs accordinly.
+* `parameters {}` block: think about which parameters the poisson does NOT need. 
+* `model {}` block: remember to remove any unneeded parameters from the likelihood (the model of the data), and their priors too.
+* replace `normal` with `poisson_log`. Note that this evaluates its argument on the log scale. That is, it works like a typical GLM done in R. We can keep priors the same as in the last model, though we may decide to change their values.
+* `generated quantities {}` block: replace `normal_rng()` with `poisson_log_rng()` -- _where necessary_ -- and delete unused parameters.
+* again, remember that the Poisson needs to be making integers. For example, replace `vector[Ngroup]` with `array[Ngroup] int `
+
+```{r include=FALSE, eval=FALSE}
+phg <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_hier_groups.stan")
+
+phg_samples <- phg$sample(data = mite_list, refresh = 20, parallel_chains = 2, chains = 2)
+
+phg_samples |> 
+  gather_rvars(one_obs_per_group[i]) |> 
+  mutate(spp = names(species_numbers)[i],
+         spp = forcats::fct_reorder(spp, .value, median)) |> 
+  ggplot(aes(y = spp, dist = .value)) + 
+  stat_pointinterval() + 
+  geom_point(aes(y = spp, x = m),
+             data = mite_data_groupID |> 
+               group_by(spp) |> 
+               summarize(m = mean(abd)),
+             inherit.aes = FALSE, col = "red")
+```
+
+### Exercises
+
+* Try modifying the program again, this time adding a predictor: water content. What happens to `sigma_grp` in this example?
+
 
 
 ## Extra stuff

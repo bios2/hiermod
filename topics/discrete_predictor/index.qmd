@@ -144,6 +144,8 @@ for (r in 1:nsamples){
                    sd = subset_draws[r, "sigma"])
 }
 
+
+
 bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
                             yrep = yrep)
 
