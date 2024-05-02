@@ -15,9 +15,10 @@ parameters {
   real<lower=0> sigma;
 }
 model {
-  bill_dep ~ normal(intercept[spp_id] + slope * bill_len, sigma);
   intercept ~ normal(17, 2);
   slope ~ normal(0, 1);
+  sigma ~ exponential(.7);
+  bill_dep ~ normal(intercept[spp_id] + slope * bill_len, sigma);
 }
 generated quantities {
   vector[npost] post_bill_dep_obs;

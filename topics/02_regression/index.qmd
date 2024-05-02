@@ -344,7 +344,7 @@ Next we combine these posteriors with a vector of observations to make a posteri
 ```{r}
 
 normal_reg_predline <- normal_reg_no_pred |> 
-  tidybayes::spread_rvars(slope, intercept, sigma) |> 
+  tidybayes::spread_rvars(slope, intercept) |> 
   expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
   mutate(mu = intercept + slope*x)
 
