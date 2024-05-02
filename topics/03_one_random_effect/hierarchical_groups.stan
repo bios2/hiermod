@@ -18,17 +18,18 @@ model {
   sigma_grp ~ exponential(1);
 }
 generated quantities {
-  vector[N] fake_obs;
   
-  for (i in 1:N) {
-    fake_obs[i] = normal_rng(b_avg + b_group[group_id[i]], sigma_obs);
+  vector[Ngroup] group_averages;
+  
+  for (k in 1:Ngroup){
+    group_averages[k] = b_avg + b_group[k];
   }
   
   // predict making one new observation per group
   vector[Ngroup] one_obs_per_group;
   
   for (k in 1:Ngroup) {
-    one_obs_per_group[k] = normal_rng(b_avg + b_group[k], sigma_obs);
+    one_obs_per_group[k] = normal_rng(group_averages[k], sigma_obs);
   }
   
   // difference for a new group

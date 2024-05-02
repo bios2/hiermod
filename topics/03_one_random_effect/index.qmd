@@ -219,6 +219,14 @@ fixed_groups_samples |>
 
 ### Make it hierarchical
 
+
+The Stan code is here: 
+
+```{r}
+hierarchical_groups <- cmdstan_model(stan_file = "topics/03_one_random_effect/hierarchical_groups.stan")
+```
+
+
 :::{.column-screen}
 
 ::::{.columns}
@@ -239,23 +247,62 @@ $$
 :::
 
 ::: {.column width="5%"}
+
 :::
 
 ::: {.column width="45%"}
 $$
 \begin{align}
 \text{Body mass}_i &\sim \text{Normal}(\mu_i, \sigma_{\text{obs}}) \\
-\mu_i &= \bar\beta + \beta_{\text{species}[i]} \\
+\mu_i &= \bar\beta + \beta_{\text{group}[i]} \\
 \bar\beta &\sim \text{Normal}(5, 2) \\
-\beta_{\text{species}} &\sim \text{Normal}(0, \sigma_{\text{sp}}) \\
+\beta_{\text{group}} &\sim \text{Normal}(0, \sigma_{\text{sp}}) \\
 \sigma_{\text{obs}} &\sim \text{Exponential}(.5) \\
 \sigma_{\text{sp}} &\sim \text{Exponential}(1)
 \end{align}
 $$
-```
+
 :::
 
 ::: {.column width="2.5%"}
+
+:::
+
+::::
+
+:::
+
+:::{.column-screen}
+
+::::{.columns}
+
+::: {.column width="2.5%"}
+:::
+
+::: {.column width="45%"}
+```{r}
+#| class-output: stan
+fixed_groups
+```
+
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="45%"}
+
+```{r}
+#| class-output: stan
+hierarchical_groups
+```
+
+
+:::
+
+::: {.column width="2.5%"}
+
 :::
 
 ::::
@@ -263,14 +310,6 @@ $$
 :::
 
 
-
-
-```{r}
-#| class-output: stan
-hierarchical_groups <- cmdstan_model(stan_file = "topics/03_one_random_effect/hierarchical_groups.stan")
-
-hierarchical_groups
-```
 
 ```{r}
 hierarchical_groups_samples <- hierarchical_groups$sample(
@@ -490,9 +529,6 @@ $$
 \end{align}
 $$
 
-```{=html}
- <iframe id="example1" src="https://aammd.shinyapps.io/study_shiny_modules/?_ga=2.251710607.740679894.1683719385-420118587.1683719385" style="border: none; width: 100%; height: 720px" frameborder="0"></iframe>
-```
 
 ```{r eval=FALSE, include = FALSE}
 brms::brm(pa ~ 1 + site_id + (1 | spp), family = "bernoulli", data= mite_long_pa)
