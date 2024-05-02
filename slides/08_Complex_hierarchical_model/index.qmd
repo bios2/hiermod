@@ -362,10 +362,10 @@ This model assumes there is a hierarchy that varies independently among the leve
 ::: {style="font-size: 0.65em"}
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f}+\mathbf{z}\mathbf{b}_{1f},\sigma^2\mathbf{I})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol\beta_0+\boldsymbol\beta_1\mathbf{x}+\mathbf{b}_{0f}+\mathbf{b}_{1f}\mathbf{z},\sigma^2\mathbf{I})$$
 or 
 
-$$y_i = b_{0f[i]}+b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
+$$y_i = \beta_0 + \beta_1x_i+b_{0f[i]}+b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
 :::
 
 . . .
@@ -386,6 +386,11 @@ $$\begin{bmatrix}
                                 \end{bmatrix}
                                 \right)$$
 :::
+
+::: {style="font-size: 0.65em"}
+**Note** : In this formulation $\mathbf{x}=\mathbf{z}$. Similarly, $x_i=z_i$.
+:::
+
 
 ## Uncorrelated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
@@ -499,30 +504,30 @@ From this point on, we will look at more complex covariance structures where the
 
 . . .
 
-::: {style="font-size: 0.9em"}
+::: {style="font-size: 0.8em"}
 `lme4` notation : `y ~ x + (x | g)` or `y ~ 1 + x + (1 + x | g)`
 :::
 
 . . .
 
-::: {style="font-size: 0.9em"}
+::: {style="font-size: 0.8em"}
 This model assumes the hierarchy between the intercept and the slope is correlated.
 :::
 
 . . .
 
-::: {style="font-size: 0.9em"}
+::: {style="font-size: 0.8em"}
 Mathematically, it can be translated to 
 
-$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{b}_{0f} +\mathbf{z}\mathbf{b}_{1f},\mathbf{\Sigma})$$
+$$\mathbf{y} \sim \mathcal{MVN}(\boldsymbol\beta_0 + \boldsymbol\beta_1\mathbf{x}+\mathbf{b}_{0f} +\mathbf{b}_{1f}\mathbf{z},\mathbf{\Sigma})$$
 or 
 
-$$y_i = b_{0f[i]} + b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
+$$y_i = \beta_0 + \beta_1x+b_{0f[i]} + b_{1f[i]}z_i + \varepsilon \quad\forall\quad i = 1\dots n$$
 :::
 
 . . .
 
-::: {style="font-size: 0.9em"}
+::: {style="font-size: 0.8em"}
 In this model
 
 $$\begin{bmatrix}
@@ -538,6 +543,10 @@ $$\begin{bmatrix}
                         \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} & \sigma^2_{b_1f}
                       \end{bmatrix}
                 \right)$$
+:::
+
+::: {style="font-size: 0.8em"}
+**Note** : In this formulation $\mathbf{x}=\mathbf{z}$. Similarly, $x_i=z_i$.
 :::
 
 
@@ -732,11 +741,11 @@ During these ichthyology courses, fish are sampled, measured and tag in all 15 l
 
 . . .
 
-Your superviser thinks that Pumpkinseed growth is influenced by water temperature and knows that, because of the area and depth of lakes (which are also known for all these lakes), the different lakes have different average temperature.
+Your superviser thinks that Pumpkinseed growth is influenced by water temperature, which has also been sampled every time fish were measured.
 
 . . .
 
-After 30 years of data, 123 fish have been sampled during 17 consecutive year. 
+After 30 years of data gathering, 123 fish have been sampled during 17 consecutive years. 
 
 ## Pumpkinseed growth example {style="font-size: 0.9em"}
 
@@ -744,7 +753,7 @@ After 30 years of data, 123 fish have been sampled during 17 consecutive year.
 
 . . .
 
-Does the growth of Pumpkinseed is influenced by water temperature? 
+Is the growth of Pumpkinseed influenced by water temperature? 
 
 ![](https://www.i2symbol.com/pictures/emojis/8/f/9/7/8f979936097f887c9b3a9d1b58ddbe0f_384.png){fig-align="center" width=20%}
 
