@@ -395,6 +395,12 @@ bill_norm_reg <- normal_regression$sample(data = data_list,
 ```
 
 ```{r}
+posterior::as_draws_df(bill_norm_reg$draws(variables = "post_bill_dep_obs"))
+```
+
+
+
+```{r}
 #| layout-ncol: 2
 library(tidyverse)
 

@@ -15,6 +15,21 @@ format:
     background-transition: fade
 ---
 
+## Hierarchical models
+
+. . . 
+
+With a hierarchical model, our interest lies not in finding a single value for a parameter of interest but rather to estimate the ***distribution*** of a parameter of interest and, specifically, the [variance]{style="color: blue"} of this distribution. 
+
+. . . 
+
+If we want to estimate the variance of a distribution, we need to gather some samples from this distribution. 
+
+. . . 
+
+In the context of a hierarchical model, the "samples" are the levels of a factor, which will be used to estimate the variance of the distribution. 
+
+
 ## "Simple" hierarchical model
 
 . . . 
@@ -28,7 +43,6 @@ Futhermore, for most of this lecture, we will focus on models with a Gaussian er
 . . . 
 
 When we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model.
-
 
 
 ## The "`|`"
@@ -52,6 +66,28 @@ But do you know what the underlying mathematical structure of the model you buil
 ::: {style="font-size: 0.8em"}
 Let's look at different `lme4` models to learn about some basic (and not so basic!) hierarchical models.
 :::
+
+## A bit of notation
+
+::: {style="font-size: 0.8em"}
+Mathematically, the basic structure of a hierarchical model is
+::: 
+
+::: {style="font-size: 0.8em"}
+$$\mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b} + \boldsymbol{\varepsilon}$$
+::: 
+::: {style="font-size: 0.8em"}
+where
+::: 
+
+::: {style="font-size: 0.8em"}
+- $\mathbf{y}$ : Vector of response variable
+- $\mathbf{X}$ : Matrix of explanatory variables on which **no** hierarchies are accounted for
+- $\mathbf{Z}$ : Matrix of explanatory variables on which hierarchies are accounted for
+- $\boldsymbol{\beta}$ : parameter estimated without a hierarchy
+- $\mathbf{b}$ : parameter estimated with a hierarchy
+- $\boldsymbol{\varepsilon}$ : a vector that follows a Gaussian distribution such that ${\cal N}(0, \sigma^2)$
+::: 
 
 ## A bit of notation
 

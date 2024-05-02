@@ -338,6 +338,28 @@ Guillaume Blanchet – Andrew MacDonald
 
   <p class="date">2024-05-01</p>
 </section>
+<section id="hierarchical-model-structure-so-far" class="slide level2">
+<h2>Hierarchical model structure so far</h2>
+<div style="font-size: 0.8em">
+<p>Mathematically, the basic structure of a hierarchical model is</p>
+</div>
+<div style="font-size: 0.8em">
+<p><span class="math display">\[\mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b} + \boldsymbol{\varepsilon}\]</span></p>
+</div>
+<div style="font-size: 0.8em">
+<p>where</p>
+</div>
+<div style="font-size: 0.8em">
+<ul>
+<li><span class="math inline">\(\mathbf{y}\)</span> : Vector of response variable</li>
+<li><span class="math inline">\(\mathbf{X}\)</span> : Matrix of explanatory variables on which <strong>no</strong> hierarchies are accounted for</li>
+<li><span class="math inline">\(\mathbf{Z}\)</span> : Matrix of explanatory variables on which hierarchies are accounted for</li>
+<li><span class="math inline">\(\boldsymbol{\beta}\)</span> : parameter estimated without a hierarchy</li>
+<li><span class="math inline">\(\mathbf{b}\)</span> : parameter estimated with a hierarchy</li>
+<li><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> : a vector that follows a Gaussian distribution such that <span class="math inline">\({\cal N}(0, \sigma^2)\)</span></li>
+</ul>
+</div>
+</section>
 <section id="complex-hierarchical-model" class="slide level2">
 <h2>“Complex” hierarchical model</h2>
 <p>By “complex” we refer to hierarchical models for which more than one parameters are accounted for in a parameter hierarchy.</p>

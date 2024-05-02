@@ -338,6 +338,18 @@ Guillaume Blanchet – Andrew MacDonald
 
   <p class="date">2024-05-01</p>
 </section>
+<section id="hierarchical-models" class="slide level2">
+<h2>Hierarchical models</h2>
+<div class="fragment">
+<p>With a hierarchical model, our interest lies not in finding a single value for a parameter of interest but rather to estimate the <strong><em>distribution</em></strong> of a parameter of interest and, specifically, the <span style="color: blue">variance</span> of this distribution.</p>
+</div>
+<div class="fragment">
+<p>If we want to estimate the variance of a distribution, we need to gather some samples from this distribution.</p>
+</div>
+<div class="fragment">
+<p>In the context of a hierarchical model, the “samples” are the levels of a factor, which will be used to estimate the variance of the distribution.</p>
+</div>
+</section>
 <section id="simple-hierarchical-model" class="slide level2">
 <h2>“Simple” hierarchical model</h2>
 <div class="fragment">
@@ -374,6 +386,28 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </section>
 <section id="a-bit-of-notation" class="slide level2">
+<h2>A bit of notation</h2>
+<div style="font-size: 0.8em">
+<p>Mathematically, the basic structure of a hierarchical model is</p>
+</div>
+<div style="font-size: 0.8em">
+<p><span class="math display">\[\mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \mathbf{Z}\mathbf{b} + \boldsymbol{\varepsilon}\]</span></p>
+</div>
+<div style="font-size: 0.8em">
+<p>where</p>
+</div>
+<div style="font-size: 0.8em">
+<ul>
+<li><span class="math inline">\(\mathbf{y}\)</span> : Vector of response variable</li>
+<li><span class="math inline">\(\mathbf{X}\)</span> : Matrix of explanatory variables on which <strong>no</strong> hierarchies are accounted for</li>
+<li><span class="math inline">\(\mathbf{Z}\)</span> : Matrix of explanatory variables on which hierarchies are accounted for</li>
+<li><span class="math inline">\(\boldsymbol{\beta}\)</span> : parameter estimated without a hierarchy</li>
+<li><span class="math inline">\(\mathbf{b}\)</span> : parameter estimated with a hierarchy</li>
+<li><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> : a vector that follows a Gaussian distribution such that <span class="math inline">\({\cal N}(0, \sigma^2)\)</span></li>
+</ul>
+</div>
+</section>
+<section id="a-bit-of-notation-1" class="slide level2">
 <h2>A bit of notation</h2>
 <div class="fragment">
 <div style="font-size: 0.9em">
