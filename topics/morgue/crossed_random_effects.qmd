@@ -1,0 +1,227 @@
+---
+title: "Difference of normals is normal"
+author: "Andrew MacDonald"
+description: |
+  Calculating something like growth with measurement error.
+date: 3 May 2024
+editor: source
+categories: [probability, likelihood]
+knitr:
+  opts_chunk: 
+    warning: false
+    message: false
+    eval: false
+---
+
+
+
+
+Taken from the single-random-effect exercise! 
+
+uses two random effects though
+
+
+## Bernoulli presence-absence data: Mite occurrance.
+
+**Which mite species are found in which site?**
+
+Let's begin by drawing a classic picture: a species by site matrix!
+
+### Visualizing 
+
+```{r}
+#| fig-cap: A species x site matrix for the mite data. 
+
+species_numbers <- with(mite_data_long,
+                        setNames(seq_along(unique(spp)), unique(spp)))
+
+mite_data_groupID <- mutate(mite_data_long,
+                            group_id = species_numbers[spp])
+
+ 
+mite_list <- with(mite_data_groupID,
+                  list(
+                    N = length(abd),
+                    y = abd,
+                    Ngroup = dplyr::n_distinct(spp),
+                    group_id = group_id
+                  ))
+
+
+mite_long_pa <- mite_data_groupID |> 
+  mutate(pa = as.numeric(abd > 0))
+
+mite_long_pa |> 
+  mutate(
+    spp = forcats::fct_reorder(spp, pa),
+    site_id = forcats::fct_reorder(site_id, pa),
+    pa = as.character(pa)) |>
+  ggplot(aes(x = site_id, y = spp, fill = pa)) + 
+  geom_tile() + 
+  scale_fill_manual(values = c("1" = "black", "0" = "white")) + 
+  coord_fixed()
+```
+
+### Mathematics
+
+$$
+\begin{align}
+\text{Pr(y = 1)} &\sim \text{Bernoulli}(p) \\
+\text{logit}(p) &= \bar\beta + \beta_{\text{site}[i]} + \beta_{\text{species}[i]} \\
+\bar\beta &\sim N(0,.5) \\
+\beta_{\text{site}} &\sim N(0, .2) \\
+\beta_{\text{species}} &\sim N(0, \sigma_{\text{spp}}) \\
+\sigma_{\text{spp}} &\sim \text{Exponential}(2)
+\end{align}
+$$
+
+
+```{r eval=FALSE, include = FALSE}
+brms::brm(pa ~ 1 + site_id + (1 | spp), family = "bernoulli", data= mite_long_pa)
+```
+
+```{r}
+#| class-output: stan
+bernoulli_spp_site <- cmdstan_model(stan_file = "topics/03_one_random_effect/bernoulli_spp_site.stan")
+
+bernoulli_spp_site
+```
+
+```{r}
+bernoulli_mite_spp <- bernoulli_spp_site$sample(data = list(
+  N = nrow(mite_long_pa),
+  y = mite_long_pa$pa,
+  Nsite = max(as.numeric(mite_long_pa$site_id)),
+  site_id = as.numeric(mite_long_pa$site_id),
+  Nspp = max(mite_long_pa$group_id),
+  spp_id = mite_long_pa$group_id
+),parallel_chains = 2, refresh = 0, chains = 2)
+```
+
+```{r}
+# tidybayes::get_variables(bernoulli_mite_spp)
+```
+
+This model can produce a probability that any species occurs in any plot:
+
+```{r}
+mite_occ_prob_logit <- bernoulli_mite_spp |> 
+  tidybayes::gather_rvars(prob_occurence[spp_id, site_id])
+
+## transform into probabilities
+mite_occ_prob <- mite_occ_prob_logit |> 
+  mutate(prob = posterior::rfun(plogis)(.value))
+
+mite_occ_prob |> 
+  mutate(med_prob = median(prob),
+         spp_id  = forcats::fct_reorder(as.factor(spp_id), med_prob),
+         site_id = forcats::fct_reorder(as.factor(site_id), med_prob)) |> 
+  ggplot(aes(x = spp_id, y = site_id, fill = med_prob)) + 
+  geom_tile()
+```
+
+### Exercises:
+
+1. How could you assess this model fit to data? What kind of figure would be most interesting?
+1. The probability of a species occurring across all sites is given by `b_avg + b_spp`. How does that compare to the fraction of sites at which any species was observed?
+1. The expected species richness of each site is given by `b_avg + b_site`. How does that compare to the observed species richness?
+
+
+
+## Poisson random intercepts: Mite abundance
+
+**How does mite abundance vary among sites?**
+
+```{r}
+#| fig-cap: Abundance of each species at every site in the mite dataset. Points are species abundances, grouped on the row for that site.
+mite_data_long |> 
+  mutate(site_id = forcats::fct_reorder(site_id, abd)) |> 
+  ggplot(aes(y = site_id, x = abd)) +
+  geom_point() + 
+  coord_cartesian(xlim = c(0,100)) + 
+  stat_summary(fun = median, col = "red", geom = "point")
+```
+
+:::{.callout-tip}
+### write the model in the same notation as the original
+
+Let's model the counts of species abundances, using a random effect for each site. Write the model that corresponds to this!
+
+:::
+
+
+### Trying it with a Normal distribution:
+
+It's actually possible to run the previous model on this one.
+let's set up the data and try:
+```{r}
+species_numbers <- with(mite_data_long,
+     setNames(seq_along(unique(spp)), unique(spp)))
+
+mite_data_groupID <- mutate(mite_data_long,
+                            group_id = species_numbers[spp])
+
+mite_list <- with(mite_data_groupID,
+                  list(
+                    N = length(abd),
+                    y = abd,
+                    Ngroup = dplyr::n_distinct(spp),
+                    group_id = group_id
+                  ))
+
+normal_samples <- hierarchical_groups$sample(data = mite_list, refresh = 0, parallel_chains = 4)
+```
+
+This is interesting, but it would probably be better to fit this model with something meant for counts! With this comes the need to include a log link function. Fortunately, Stan makes all this possible with just a few small changes:
+
+### Exercise: translate it into Stan
+
+Modify the program `hierarchical_groups.stan` to work for poisson data. Some things to keep in mind: 
+
+* `data {}` block: remember that the Poisson distribution needs integers and set up the data inputs accordinly.
+* `parameters {}` block: think about which parameters the poisson does NOT need. 
+* `model {}` block: remember to remove any unneeded parameters from the likelihood (the model of the data), and their priors too.
+* replace `normal` with `poisson_log`. Note that this evaluates its argument on the log scale. That is, it works like a typical GLM done in R. We can keep priors the same as in the last model, though we may decide to change their values.
+* `generated quantities {}` block: replace `normal_rng()` with `poisson_log_rng()` -- _where necessary_ -- and delete unused parameters.
+* again, remember that the Poisson needs to be making integers. For example, replace `vector[Ngroup]` with `array[Ngroup] int `
+
+```{r include=FALSE, eval=FALSE}
+phg <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_hier_groups.stan")
+
+phg_samples <- phg$sample(data = mite_list, refresh = 20, parallel_chains = 2, chains = 2)
+
+phg_samples |> 
+  gather_rvars(one_obs_per_group[i]) |> 
+  mutate(spp = names(species_numbers)[i],
+         spp = forcats::fct_reorder(spp, .value, median)) |> 
+  ggplot(aes(y = spp, dist = .value)) + 
+  stat_pointinterval() + 
+  geom_point(aes(y = spp, x = m),
+             data = mite_data_groupID |> 
+               group_by(spp) |> 
+               summarize(m = mean(abd)),
+             inherit.aes = FALSE, col = "red")
+```
+
+### Exercises
+
+* Try modifying the program again, this time adding a predictor: water content. What happens to `sigma_grp` in this example?
+
+
+
+## Extra stuff
+
+Let's use simulations to demonstrate that univariate normal distributions are special cases of multivariate normal distributions:
+
+```{r}
+mysigma <- 3
+nsamp <- 1100
+
+hist(rnorm(nsamp, 0, mysigma))
+
+mySigma <- diag(mysigma, nrow = nsamp)
+
+mv_numbers <- MASS::mvrnorm(1, mu = rep(0, nsamp), Sigma = mySigma)
+hist(mv_numbers)
+```
+
