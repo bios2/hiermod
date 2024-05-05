@@ -1,0 +1,97 @@
+---
+title: "Modelling the mites"
+description: |
+  Working out the mite data example.
+execute:
+  freeze: true
+format:
+  html:
+    code-tools: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+data(mite, package = "vegan")
+data("mite.env", package = "vegan")
+library(tidyverse)
+library(cmdstanr)
+
+# combine data and environment
+mite_data_long <- bind_cols(mite.env, mite) |> 
+  pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
+```
+
+```{r}
+mite_data_long_transformed <- mite_data_long |> 
+  mutate(presabs = as.numeric(abd>0),
+         # center predictors
+         water = (WatrCont - mean(WatrCont)) / 100
+         )
+
+mite_data_long_transformed |> 
+  ggplot(aes(x = water, y = presabs)) + 
+  geom_point() + 
+  stat_smooth(method = "glm", method.args = list(family = "binomial")) + 
+  facet_wrap(~spp)
+```
+
+
+```{r}
+mite_bin <- mite
+mite_bin[mite_bin>0] <- 1
+
+mite_pa_list <- list(
+      Nsites = nrow(mite_bin),
+      S = ncol(mite_bin),
+      x = with(mite.env, (WatrCont - mean(WatrCont))/100),
+      y = as.matrix(mite_bin)
+    )
+```
+
+
+## Modelling pres abs
+
+```{r}
+#| class-output: stan
+all_species_partpooled <- cmdstan_model(
+  stan_file = "topics/05_modelling_mites/all_species_partpooled.stan", 
+  pedantic = TRUE)
+
+all_species_partpooled
+```
+
+
+```{r}
+
+all_species_partpooled_posterior <- 
+  all_species_partpooled$sample(
+    data = mite_pa_list, 
+    refresh = 1000, parallel_chains = 4
+    )
+```
+
+
+## Modelling counts
+
+```{r}
+
+```
+
+
+
+In this tutorial I want to give one example of a model-buildig process with the mite data. 
+
+* data plots, causal model. Does the causal model suggest the need to control for spacE? there might be collider bias or something, it would be interesting to make that point
+* simulated process
+* model incidence, straight to hierarchical
+* model abundance. note thenumber of zeros. in a ppc check
+* calculate the proportion of zeros and plot its densiy, and show the real number of zeros
+* 0-inflated, and the similarity to modelling incidence
+* correlated effect of the two as a function of some latent trait. 
+
+* do we have traits of mites? 
+
+* adding in effects of environmental variables. 
+
+* ARD? 
