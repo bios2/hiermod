@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,6 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -98,6 +105,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
@@ -105,15 +139,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools ms-auto">
-    <a href="https://github.com/bios2/hiermod" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://github.com/bios2/hiermod" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
@@ -174,7 +208,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <section id="slides-from-the-day" class="level2">
 <h2 class="anchored" data-anchor-id="slides-from-the-day">Slides from the day</h2>
@@ -234,7 +270,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="day_1_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="day_1_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <section id="resampling" class="level2">
@@ -279,7 +319,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># make a plot of these predictions</span></span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(predVal, resampModel, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="day_1_files/figure-html/resample_model-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="day_1_files/figure-html/resample_model-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>If we want to find some kind of confidence interval for this line, we can take the quantiles of this resampling:</p>
@@ -295,7 +339,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">predict</span>(lrug_glm, <span class="at">newdata =</span> <span class="fu">list</span>(<span class="at">water =</span> predVal), <span class="at">type =</span> <span class="st">"response"</span>)</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="assets/plot_resampModel-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="assets/plot_resampModel-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can also do this in a tidyverse style, if you are more comfortable with that:</p>
@@ -313,7 +361,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="day_1_files/figure-html/tidyverse_style-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="day_1_files/figure-html/tidyverse_style-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -328,7 +380,7 @@ y &amp;\sim \text{Bernoulli}(p)\\
 \beta &amp;\sim \text{Normal}(0, .5)\\
 \end{align}
 \]</span></p>
-<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">normally we would go through a careful process of checking our priors here. At this time we won’t because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.</span></div></div>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="margin-aside">normally we would go through a careful process of checking our priors here. At this time we won’t because the point here is to show how the bayesian posterior includes uncertainty, not to demonstrate a full Bayes workflow.</span></div></div>
 <p>First we compile the model, then we’ll look at the Stan code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -415,12 +467,16 @@ Total execution time: 0.6 seconds.</code></pre>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="day_1_files/figure-html/sample_and_plot-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="day_1_files/figure-html/sample_and_plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <section id="alternative-parameterization" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="alternative-parameterization">Alternative parameterization</h3>
-<div class="page-columns page-full"><p>Stan contains many functions intended to facilitate writing statistical models. Above, we used the function <code>bernoulli_logit</code> so that we could provide the expression for the average on the logit scale.  Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:</p><div class="no-row-height column-margin column-container"><span class="">This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints – only some values are “allowed”. For example, the only parameter of a Bernoulli distribution is <span class="math inline">\(p\)</span>, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for <span class="math inline">\(p\)</span>.</span></div></div>
+<div class="page-columns page-full"><p>Stan contains many functions intended to facilitate writing statistical models. Above, we used the function <code>bernoulli_logit</code> so that we could provide the expression for the average on the logit scale.  Stan also provides an even more efficient function that we can use; it is especially good when we have more than one predictor variable and a vector of slopes:</p><div class="no-row-height column-margin column-container"><span class="margin-aside">This idea is the core concept of a GLM, or generalized linear model. Statistical distributions have parameters, but for most distributions these have constraints – only some values are “allowed”. For example, the only parameter of a Bernoulli distribution is <span class="math inline">\(p\)</span>, the probability of success. We respect this constraint by using a link function: we write an expression for the average of a distribution that can be any real number, and put it through a link function to get the value for <span class="math inline">\(p\)</span>.</span></div></div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -597,10 +653,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -610,8 +683,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -623,7 +705,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -667,6 +872,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -692,6 +898,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -768,25 +1000,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="fu">### Introduction</span></span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div&gt;</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>&lt;div&gt;</span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
 <span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;iframe width=100% height=500pxaside class="slide-deck" src="slides/Introduction/"&gt;&lt;/iframe&gt;</span></span>
 <span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>&lt;/div&gt;</span>
 <span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="fu">### Template</span></span>
 <span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div&gt;</span></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>&lt;div&gt;</span>
 <span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
 <span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;iframe width=100% height=500pxaside class="slide-deck" src="slides/template/"&gt;&lt;/iframe&gt;</span></span>
 <span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>&lt;/div&gt;</span>
 <span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Content</span></span>
 <span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a></span>
@@ -852,67 +1084,67 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb21-103"><a href="#cb21-103" aria-hidden="true" tabindex="-1"></a>Now, with our model object, we can create the resampling distribution of the model predicitons:</span>
 <span id="cb21-104"><a href="#cb21-104" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-105"><a href="#cb21-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{r resample_model}</span></span>
-<span id="cb21-106"><a href="#cb21-106" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed</span></span>
-<span id="cb21-107"><a href="#cb21-107" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># The answer !</span></span>
+<span id="cb21-106"><a href="#cb21-106" aria-hidden="true" tabindex="-1"></a><span class="in"># Set seed</span></span>
+<span id="cb21-107"><a href="#cb21-107" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(42) # The answer !</span></span>
 <span id="cb21-108"><a href="#cb21-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-109"><a href="#cb21-109" aria-hidden="true" tabindex="-1"></a><span class="co"># a sequence along the range of water values in the data</span></span>
-<span id="cb21-110"><a href="#cb21-110" aria-hidden="true" tabindex="-1"></a>predVal <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(lrug_water<span class="sc">$</span>water),</span>
-<span id="cb21-111"><a href="#cb21-111" aria-hidden="true" tabindex="-1"></a>               <span class="at">to =</span> <span class="fu">max</span>(lrug_water<span class="sc">$</span>water),</span>
-<span id="cb21-112"><a href="#cb21-112" aria-hidden="true" tabindex="-1"></a>               <span class="at">length.out =</span> <span class="dv">30</span>)</span>
+<span id="cb21-109"><a href="#cb21-109" aria-hidden="true" tabindex="-1"></a><span class="in"># a sequence along the range of water values in the data</span></span>
+<span id="cb21-110"><a href="#cb21-110" aria-hidden="true" tabindex="-1"></a><span class="in">predVal &lt;- seq(from = min(lrug_water$water),</span></span>
+<span id="cb21-111"><a href="#cb21-111" aria-hidden="true" tabindex="-1"></a><span class="in">               to = max(lrug_water$water),</span></span>
+<span id="cb21-112"><a href="#cb21-112" aria-hidden="true" tabindex="-1"></a><span class="in">               length.out = 30)</span></span>
 <span id="cb21-113"><a href="#cb21-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-114"><a href="#cb21-114" aria-hidden="true" tabindex="-1"></a>n_resamp <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb21-114"><a href="#cb21-114" aria-hidden="true" tabindex="-1"></a><span class="in">n_resamp &lt;- 500</span></span>
 <span id="cb21-115"><a href="#cb21-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-116"><a href="#cb21-116" aria-hidden="true" tabindex="-1"></a><span class="co"># Result object</span></span>
-<span id="cb21-117"><a href="#cb21-117" aria-hidden="true" tabindex="-1"></a>resampModel <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>,</span>
-<span id="cb21-118"><a href="#cb21-118" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dim =</span> <span class="fu">c</span>(<span class="fu">length</span>(predVal), n_resamp))</span>
+<span id="cb21-116"><a href="#cb21-116" aria-hidden="true" tabindex="-1"></a><span class="in"># Result object</span></span>
+<span id="cb21-117"><a href="#cb21-117" aria-hidden="true" tabindex="-1"></a><span class="in">resampModel &lt;- array(NA_real_,</span></span>
+<span id="cb21-118"><a href="#cb21-118" aria-hidden="true" tabindex="-1"></a><span class="in">                   dim = c(length(predVal), n_resamp))</span></span>
 <span id="cb21-119"><a href="#cb21-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-120"><a href="#cb21-120" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample model parameters and calculate model predictions</span></span>
-<span id="cb21-121"><a href="#cb21-121" aria-hidden="true" tabindex="-1"></a>paramMean <span class="ot">&lt;-</span> <span class="fu">summary</span>(lrug_glm)<span class="sc">$</span>coefficients[,<span class="dv">1</span>]</span>
-<span id="cb21-122"><a href="#cb21-122" aria-hidden="true" tabindex="-1"></a>paramCov <span class="ot">&lt;-</span> <span class="fu">summary</span>(lrug_glm)<span class="sc">$</span>cov.unscaled</span>
+<span id="cb21-120"><a href="#cb21-120" aria-hidden="true" tabindex="-1"></a><span class="in"># Resample model parameters and calculate model predictions</span></span>
+<span id="cb21-121"><a href="#cb21-121" aria-hidden="true" tabindex="-1"></a><span class="in">paramMean &lt;- summary(lrug_glm)$coefficients[,1]</span></span>
+<span id="cb21-122"><a href="#cb21-122" aria-hidden="true" tabindex="-1"></a><span class="in">paramCov &lt;- summary(lrug_glm)$cov.unscaled</span></span>
 <span id="cb21-123"><a href="#cb21-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-124"><a href="#cb21-124" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample model parameters</span></span>
-<span id="cb21-125"><a href="#cb21-125" aria-hidden="true" tabindex="-1"></a>paramSmpl <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(n_resamp, paramMean, paramCov)</span>
+<span id="cb21-124"><a href="#cb21-124" aria-hidden="true" tabindex="-1"></a><span class="in"># Resample model parameters</span></span>
+<span id="cb21-125"><a href="#cb21-125" aria-hidden="true" tabindex="-1"></a><span class="in">paramSmpl &lt;- MASS::mvrnorm(n_resamp, paramMean, paramCov)</span></span>
 <span id="cb21-126"><a href="#cb21-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-127"><a href="#cb21-127" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate model predictions using the resampled model parameters</span></span>
-<span id="cb21-128"><a href="#cb21-128" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_resamp){</span>
-<span id="cb21-129"><a href="#cb21-129" aria-hidden="true" tabindex="-1"></a>  resampModel[,j] <span class="ot">&lt;-</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>)<span class="sc">$</span><span class="fu">linkinv</span>(</span>
-<span id="cb21-130"><a href="#cb21-130" aria-hidden="true" tabindex="-1"></a>    paramSmpl[j,<span class="dv">1</span>] <span class="sc">+</span> paramSmpl[j,<span class="dv">2</span>] <span class="sc">*</span> predVal)</span>
-<span id="cb21-131"><a href="#cb21-131" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-127"><a href="#cb21-127" aria-hidden="true" tabindex="-1"></a><span class="in"># Calculate model predictions using the resampled model parameters</span></span>
+<span id="cb21-128"><a href="#cb21-128" aria-hidden="true" tabindex="-1"></a><span class="in">for(j in 1:n_resamp){</span></span>
+<span id="cb21-129"><a href="#cb21-129" aria-hidden="true" tabindex="-1"></a><span class="in">  resampModel[,j] &lt;- binomial(link = "logit")$linkinv(</span></span>
+<span id="cb21-130"><a href="#cb21-130" aria-hidden="true" tabindex="-1"></a><span class="in">    paramSmpl[j,1] + paramSmpl[j,2] * predVal)</span></span>
+<span id="cb21-131"><a href="#cb21-131" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
 <span id="cb21-132"><a href="#cb21-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-133"><a href="#cb21-133" aria-hidden="true" tabindex="-1"></a><span class="co"># make a plot of these predictions</span></span>
-<span id="cb21-134"><a href="#cb21-134" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(predVal, resampModel, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span>
+<span id="cb21-133"><a href="#cb21-133" aria-hidden="true" tabindex="-1"></a><span class="in"># make a plot of these predictions</span></span>
+<span id="cb21-134"><a href="#cb21-134" aria-hidden="true" tabindex="-1"></a><span class="in">matplot(predVal, resampModel, type = "l", col = "grey", lty = 1)</span></span>
 <span id="cb21-135"><a href="#cb21-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-136"><a href="#cb21-136" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-137"><a href="#cb21-137" aria-hidden="true" tabindex="-1"></a>If we want to find some kind of confidence interval for this line, we can take the quantiles of this resampling:</span>
 <span id="cb21-138"><a href="#cb21-138" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-139"><a href="#cb21-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r plot_resampModel, fig.path = "assets/"}</span></span>
-<span id="cb21-140"><a href="#cb21-140" aria-hidden="true" tabindex="-1"></a>low <span class="ot">&lt;-</span> <span class="fu">apply</span>(resampModel, <span class="dv">1</span>, quantile, <span class="at">probs =</span> .<span class="dv">015</span>)</span>
-<span id="cb21-141"><a href="#cb21-141" aria-hidden="true" tabindex="-1"></a>high <span class="ot">&lt;-</span> <span class="fu">apply</span>(resampModel, <span class="dv">1</span>, quantile, <span class="at">probs =</span> .<span class="dv">985</span>)</span>
+<span id="cb21-140"><a href="#cb21-140" aria-hidden="true" tabindex="-1"></a><span class="in">low &lt;- apply(resampModel, 1, quantile, probs = .015)</span></span>
+<span id="cb21-141"><a href="#cb21-141" aria-hidden="true" tabindex="-1"></a><span class="in">high &lt;- apply(resampModel, 1, quantile, probs = .985)</span></span>
 <span id="cb21-142"><a href="#cb21-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-143"><a href="#cb21-143" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb21-144"><a href="#cb21-144" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(lrug_water, <span class="fu">plot</span>(pa <span class="sc">~</span> water, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="st">"lightblue"</span>))</span>
-<span id="cb21-145"><a href="#cb21-145" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(predVal,<span class="fu">rev</span>(predVal)),</span>
-<span id="cb21-146"><a href="#cb21-146" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(low,<span class="fu">rev</span>(high)), <span class="at">col=</span><span class="st">"thistle"</span>, <span class="at">border=</span><span class="cn">NA</span>)</span>
-<span id="cb21-147"><a href="#cb21-147" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(predVal, </span>
-<span id="cb21-148"><a href="#cb21-148" aria-hidden="true" tabindex="-1"></a>      <span class="fu">predict</span>(lrug_glm, <span class="at">newdata =</span> <span class="fu">list</span>(<span class="at">water =</span> predVal), <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb21-149"><a href="#cb21-149" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb21-143"><a href="#cb21-143" aria-hidden="true" tabindex="-1"></a><span class="in"># plot</span></span>
+<span id="cb21-144"><a href="#cb21-144" aria-hidden="true" tabindex="-1"></a><span class="in">with(lrug_water, plot(pa ~ water, pch = 21, bg = "lightblue"))</span></span>
+<span id="cb21-145"><a href="#cb21-145" aria-hidden="true" tabindex="-1"></a><span class="in">polygon(c(predVal,rev(predVal)),</span></span>
+<span id="cb21-146"><a href="#cb21-146" aria-hidden="true" tabindex="-1"></a><span class="in">        c(low,rev(high)), col="thistle", border=NA)</span></span>
+<span id="cb21-147"><a href="#cb21-147" aria-hidden="true" tabindex="-1"></a><span class="in">lines(predVal, </span></span>
+<span id="cb21-148"><a href="#cb21-148" aria-hidden="true" tabindex="-1"></a><span class="in">      predict(lrug_glm, newdata = list(water = predVal), type = "response")</span></span>
+<span id="cb21-149"><a href="#cb21-149" aria-hidden="true" tabindex="-1"></a><span class="in">      )</span></span>
 <span id="cb21-150"><a href="#cb21-150" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-151"><a href="#cb21-151" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-152"><a href="#cb21-152" aria-hidden="true" tabindex="-1"></a>We can also do this in a tidyverse style, if you are more comfortable with that:</span>
 <span id="cb21-153"><a href="#cb21-153" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-154"><a href="#cb21-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r tidyverse_style}</span></span>
-<span id="cb21-155"><a href="#cb21-155" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(predVal) <span class="sc">|&gt;</span> </span>
-<span id="cb21-156"><a href="#cb21-156" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb21-157"><a href="#cb21-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">intercept =</span> <span class="fu">list</span>(paramSmpl[,<span class="dv">1</span>]),</span>
-<span id="cb21-158"><a href="#cb21-158" aria-hidden="true" tabindex="-1"></a>         <span class="at">slope =</span> <span class="fu">list</span>(paramSmpl[,<span class="dv">2</span>]),</span>
-<span id="cb21-159"><a href="#cb21-159" aria-hidden="true" tabindex="-1"></a>         <span class="at">prediction =</span> <span class="fu">list</span>(intercept <span class="sc">+</span> slope<span class="sc">*</span>predVal),</span>
-<span id="cb21-160"><a href="#cb21-160" aria-hidden="true" tabindex="-1"></a>         <span class="at">prediction_probability =</span> <span class="fu">list</span>(<span class="fu">plogis</span>(prediction)),</span>
-<span id="cb21-161"><a href="#cb21-161" aria-hidden="true" tabindex="-1"></a>         <span class="at">low  =</span> <span class="fu">quantile</span>(prediction_probability, .<span class="dv">015</span>),</span>
-<span id="cb21-162"><a href="#cb21-162" aria-hidden="true" tabindex="-1"></a>         <span class="at">high =</span> <span class="fu">quantile</span>(prediction_probability, .<span class="dv">985</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb21-163"><a href="#cb21-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> predVal, <span class="at">ymin =</span> low, <span class="at">ymax =</span> high)) <span class="sc">+</span> </span>
-<span id="cb21-164"><a href="#cb21-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">fill =</span> <span class="st">"thistle"</span>) <span class="sc">+</span> </span>
-<span id="cb21-165"><a href="#cb21-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb21-166"><a href="#cb21-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb21-155"><a href="#cb21-155" aria-hidden="true" tabindex="-1"></a><span class="in">tibble(predVal) |&gt; </span></span>
+<span id="cb21-156"><a href="#cb21-156" aria-hidden="true" tabindex="-1"></a><span class="in">  rowwise() |&gt; </span></span>
+<span id="cb21-157"><a href="#cb21-157" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(intercept = list(paramSmpl[,1]),</span></span>
+<span id="cb21-158"><a href="#cb21-158" aria-hidden="true" tabindex="-1"></a><span class="in">         slope = list(paramSmpl[,2]),</span></span>
+<span id="cb21-159"><a href="#cb21-159" aria-hidden="true" tabindex="-1"></a><span class="in">         prediction = list(intercept + slope*predVal),</span></span>
+<span id="cb21-160"><a href="#cb21-160" aria-hidden="true" tabindex="-1"></a><span class="in">         prediction_probability = list(plogis(prediction)),</span></span>
+<span id="cb21-161"><a href="#cb21-161" aria-hidden="true" tabindex="-1"></a><span class="in">         low  = quantile(prediction_probability, .015),</span></span>
+<span id="cb21-162"><a href="#cb21-162" aria-hidden="true" tabindex="-1"></a><span class="in">         high = quantile(prediction_probability, .985)) |&gt; </span></span>
+<span id="cb21-163"><a href="#cb21-163" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = predVal, ymin = low, ymax = high)) + </span></span>
+<span id="cb21-164"><a href="#cb21-164" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_ribbon(fill = "thistle") + </span></span>
+<span id="cb21-165"><a href="#cb21-165" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_bw() + </span></span>
+<span id="cb21-166"><a href="#cb21-166" aria-hidden="true" tabindex="-1"></a><span class="in">  ylim(c(0,1))</span></span>
 <span id="cb21-167"><a href="#cb21-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-168"><a href="#cb21-168" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-169"><a href="#cb21-169" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bayesian approach</span></span>
@@ -933,13 +1165,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb21-184"><a href="#cb21-184" aria-hidden="true" tabindex="-1"></a>First we compile the model, then we'll look at the Stan code:</span>
 <span id="cb21-185"><a href="#cb21-185" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-186"><a href="#cb21-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r stan_workflow}</span></span>
-<span id="cb21-187"><a href="#cb21-187" aria-hidden="true" tabindex="-1"></a><span class="co">#| class.output: stan</span></span>
-<span id="cb21-188"><a href="#cb21-188" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb21-189"><a href="#cb21-189" aria-hidden="true" tabindex="-1"></a>logistic_glm_stan <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb21-190"><a href="#cb21-190" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/parameter_resampling/logistic_bern_logit.stan"</span>, </span>
-<span id="cb21-191"><a href="#cb21-191" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-187"><a href="#cb21-187" aria-hidden="true" tabindex="-1"></a><span class="in">#| class.output: stan</span></span>
+<span id="cb21-188"><a href="#cb21-188" aria-hidden="true" tabindex="-1"></a><span class="in">library(cmdstanr)</span></span>
+<span id="cb21-189"><a href="#cb21-189" aria-hidden="true" tabindex="-1"></a><span class="in">logistic_glm_stan &lt;- cmdstan_model(</span></span>
+<span id="cb21-190"><a href="#cb21-190" aria-hidden="true" tabindex="-1"></a><span class="in">  stan_file = "topics/parameter_resampling/logistic_bern_logit.stan", </span></span>
+<span id="cb21-191"><a href="#cb21-191" aria-hidden="true" tabindex="-1"></a><span class="in">  pedantic = TRUE)</span></span>
 <span id="cb21-192"><a href="#cb21-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-193"><a href="#cb21-193" aria-hidden="true" tabindex="-1"></a>logistic_glm_stan</span>
+<span id="cb21-193"><a href="#cb21-193" aria-hidden="true" tabindex="-1"></a><span class="in">logistic_glm_stan</span></span>
 <span id="cb21-194"><a href="#cb21-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-195"><a href="#cb21-195" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-196"><a href="#cb21-196" aria-hidden="true" tabindex="-1"></a>Here we see the same three parts of a Stan model that we have reviewed already:</span>
@@ -963,23 +1195,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb21-214"><a href="#cb21-214" aria-hidden="true" tabindex="-1"></a>Stan expects our data as a list.</span>
 <span id="cb21-215"><a href="#cb21-215" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-216"><a href="#cb21-216" aria-hidden="true" tabindex="-1"></a><span class="in">```{r sample_and_plot}</span></span>
-<span id="cb21-217"><a href="#cb21-217" aria-hidden="true" tabindex="-1"></a>logistic_glm_stan_samples <span class="ot">&lt;-</span> logistic_glm_stan<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb21-218"><a href="#cb21-218" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">nrow</span>(lrug_water),</span>
-<span id="cb21-219"><a href="#cb21-219" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> lrug_water<span class="sc">$</span>pa,</span>
-<span id="cb21-220"><a href="#cb21-220" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> lrug_water<span class="sc">$</span>water),</span>
-<span id="cb21-221"><a href="#cb21-221" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>)</span>
+<span id="cb21-217"><a href="#cb21-217" aria-hidden="true" tabindex="-1"></a><span class="in">logistic_glm_stan_samples &lt;- logistic_glm_stan$sample(</span></span>
+<span id="cb21-218"><a href="#cb21-218" aria-hidden="true" tabindex="-1"></a><span class="in">  data = list(n = nrow(lrug_water),</span></span>
+<span id="cb21-219"><a href="#cb21-219" aria-hidden="true" tabindex="-1"></a><span class="in">              y = lrug_water$pa,</span></span>
+<span id="cb21-220"><a href="#cb21-220" aria-hidden="true" tabindex="-1"></a><span class="in">              x = lrug_water$water),</span></span>
+<span id="cb21-221"><a href="#cb21-221" aria-hidden="true" tabindex="-1"></a><span class="in">  refresh = 0)</span></span>
 <span id="cb21-222"><a href="#cb21-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-223"><a href="#cb21-223" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(lrug_glm)</span>
+<span id="cb21-223"><a href="#cb21-223" aria-hidden="true" tabindex="-1"></a><span class="in">coef(lrug_glm)</span></span>
 <span id="cb21-224"><a href="#cb21-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-225"><a href="#cb21-225" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb21-225"><a href="#cb21-225" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidybayes)</span></span>
 <span id="cb21-226"><a href="#cb21-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-227"><a href="#cb21-227" aria-hidden="true" tabindex="-1"></a><span class="fu">spread_rvars</span>(logistic_glm_stan_samples, intercept, slope[]) <span class="sc">|&gt;</span> </span>
-<span id="cb21-228"><a href="#cb21-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="at">predVal =</span> predVal) <span class="sc">|&gt;</span> </span>
-<span id="cb21-229"><a href="#cb21-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pred =</span> posterior<span class="sc">::</span><span class="fu">rfun</span>(plogis)(predVal <span class="sc">*</span> slope <span class="sc">+</span> intercept)) <span class="sc">|&gt;</span> </span>
-<span id="cb21-230"><a href="#cb21-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> predVal, <span class="at">ydist =</span> pred)) <span class="sc">+</span> </span>
-<span id="cb21-231"><a href="#cb21-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dist_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb21-232"><a href="#cb21-232" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
-<span id="cb21-233"><a href="#cb21-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb21-227"><a href="#cb21-227" aria-hidden="true" tabindex="-1"></a><span class="in">spread_rvars(logistic_glm_stan_samples, intercept, slope[]) |&gt; </span></span>
+<span id="cb21-228"><a href="#cb21-228" aria-hidden="true" tabindex="-1"></a><span class="in">  bind_cols(predVal = predVal) |&gt; </span></span>
+<span id="cb21-229"><a href="#cb21-229" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(pred = posterior::rfun(plogis)(predVal * slope + intercept)) |&gt; </span></span>
+<span id="cb21-230"><a href="#cb21-230" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = predVal, ydist = pred)) + </span></span>
+<span id="cb21-231"><a href="#cb21-231" aria-hidden="true" tabindex="-1"></a><span class="in">  stat_dist_lineribbon() + </span></span>
+<span id="cb21-232"><a href="#cb21-232" aria-hidden="true" tabindex="-1"></a><span class="in">  guides(fill = "none") + </span></span>
+<span id="cb21-233"><a href="#cb21-233" aria-hidden="true" tabindex="-1"></a><span class="in">  ylim(c(0,1))</span></span>
 <span id="cb21-234"><a href="#cb21-234" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-235"><a href="#cb21-235" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb21-236"><a href="#cb21-236" aria-hidden="true" tabindex="-1"></a></span>
@@ -1011,6 +1243,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+
 
 
 

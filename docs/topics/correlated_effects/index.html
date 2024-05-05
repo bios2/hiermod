@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,6 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -103,15 +110,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools ms-auto">
-    <a href="https://github.com/bios2/hiermod" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://github.com/bios2/hiermod" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
@@ -158,7 +165,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>We’ve already looked at univariate models. When we fit the same model to multiple different groups, we don’t expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.</p>
 <p>Hierarchial models represent a way to <em>model</em> this variation, in ways that range from simple to complex.</p>
@@ -208,7 +217,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>some things to notice about this figure:</p>
@@ -251,7 +264,11 @@ Split-Apply-Combine
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span> </span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>As you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.</p>
@@ -261,7 +278,11 @@ Split-Apply-Combine
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Once again, the two parameters of this model represent:</p>
@@ -337,18 +358,18 @@ Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup)
 Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
 Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
 Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
 Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
 Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
+Chain 1 finished in 1.5 seconds.
+Chain 2 finished in 1.5 seconds.
+Chain 3 finished in 1.4 seconds.
 Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
-Chain 2 finished in 1.7 seconds.
-Chain 3 finished in 1.6 seconds.
-Chain 4 finished in 1.6 seconds.
-Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
-Chain 1 finished in 1.9 seconds.
+Chain 4 finished in 1.5 seconds.
 
 All 4 chains finished successfully.
-Mean chain execution time: 1.7 seconds.
-Total execution time: 2.1 seconds.</code></pre>
+Mean chain execution time: 1.5 seconds.
+Total execution time: 1.7 seconds.</code></pre>
 </div>
 </div>
 <p>now let’s try to plot this:</p>
@@ -368,7 +389,11 @@ Total execution time: 2.1 seconds.</code></pre>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>post_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can imitate the original figure by adding the observed data in orange:</p>
@@ -380,7 +405,11 @@ Total execution time: 2.1 seconds.</code></pre>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">pch =</span> <span class="dv">21</span>, </span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"orange"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Plot and compare to frequentist point estimates</p>
@@ -414,28 +443,26 @@ Total execution time: 2.1 seconds.</code></pre>
 <section id="saying-it-another-way-with-matrix-algebra" class="level2">
 <h2 class="anchored" data-anchor-id="saying-it-another-way-with-matrix-algebra">Saying it another way: with matrix algebra</h2>
 <p>First let’s look at how to scale a univariate distribution:</p>
-<div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">300</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(z)</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z<span class="sc">*</span><span class="fl">2.7</span>)</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(z<span class="sc">*</span><span class="fl">2.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<pre><code>[1] 0.9623279</code></pre>
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<pre><code>[1] 0.9802826</code></pre>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<pre><code>[1] 2.598285</code></pre>
-</div>
+<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<pre><code>[1] 2.646763</code></pre>
 </div>
 </div>
 </div>
@@ -449,11 +476,15 @@ Total execution time: 2.1 seconds.</code></pre>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rescaled_zz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(rescaled_zz, <span class="dv">2</span>, sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3745896 7.4239736</code></pre>
+<pre><code>[1] 0.4442898 7.1119074</code></pre>
 </div>
 </div>
 <p>We can apply this approach in Stan to create the SAME model as above:</p>
@@ -667,6 +698,51 @@ Covariance matrices
 <pre><code>Chain 1 </code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
 <pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -700,37 +776,7 @@ Covariance matrices
 <pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 2 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+<pre><code>Chain 2 Exception: bernoulli_logit_lpmf: Logit transformed probability parameter[1] is -nan, but must be not nan! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 27, column 4 to column 36)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
@@ -745,7 +791,67 @@ Covariance matrices
 <pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Chain 3 Exception: bernoulli_logit_lpmf: Logit transformed probability parameter[1] is -nan, but must be not nan! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 27, column 4 to column 36)</code></pre>
+<pre><code>Chain 3 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Chain 3 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
@@ -771,108 +877,109 @@ Covariance matrices
 <div class="cell-output cell-output-stderr">
 <pre><code>Chain 4 </code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 4 Exception: lkj_corr_cholesky_lpdf: Random variable[2] is 0, but must be positive! (in '/tmp/RtmpLDZ6cu/model-f72247c0874.stan', line 33, column 2 to column 42)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Chain 4 </code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Chain 2 finished in 3.4 seconds.
-Chain 3 finished in 4.0 seconds.
-Chain 1 finished in 4.1 seconds.
-Chain 4 finished in 4.3 seconds.
+<pre><code>Chain 2 finished in 3.3 seconds.
+Chain 3 finished in 3.6 seconds.
+Chain 4 finished in 3.6 seconds.
+Chain 1 finished in 3.7 seconds.
 
 All 4 chains finished successfully.
-Mean chain execution time: 4.0 seconds.
-Total execution time: 4.4 seconds.</code></pre>
+Mean chain execution time: 3.6 seconds.
+Total execution time: 3.8 seconds.</code></pre>
 </div>
 </div>
 <p>plot these, reproducing the figure from earlier:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the unpooled numbers</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>unpooled_slopes <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp])</span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="co"># tidybayes::get_variables(all_species_partpooled_diag_posterior)</span></span>
-<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="ot">&lt;-</span> all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
-<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(param <span class="sc">==</span> <span class="dv">2</span>)</span>
-<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(unpooled_slopes,</span>
-<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>          partpooled_slopes,</span>
-<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="st">"spp"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">median</span>(slope), <span class="at">y =</span> <span class="fu">median</span>(beta))) <span class="sc">+</span> </span>
-<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the unpooled numbers</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>unpooled_slopes <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp])</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a><span class="co"># tidybayes::get_variables(all_species_partpooled_diag_posterior)</span></span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="ot">&lt;-</span> all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(param <span class="sc">==</span> <span class="dv">2</span>)</span>
+<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(unpooled_slopes,</span>
+<span id="cb113-12"><a href="#cb113-12" aria-hidden="true" tabindex="-1"></a>          partpooled_slopes,</span>
+<span id="cb113-13"><a href="#cb113-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="st">"spp"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb113-14"><a href="#cb113-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">median</span>(slope), <span class="at">y =</span> <span class="fu">median</span>(beta))) <span class="sc">+</span> </span>
+<span id="cb113-15"><a href="#cb113-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb113-16"><a href="#cb113-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="section" class="level2">
 <h2 class="anchored" data-anchor-id="section"></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>unpooled_params <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp], intercept[spp]) <span class="sc">|&gt;</span> </span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> <span class="fu">median</span>(slope), </span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">intercept =</span> <span class="fu">median</span>(intercept))</span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="fu">median</span>(beta),</span>
-<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">param =</span> <span class="fu">c</span>(<span class="st">"intercept"</span>, <span class="st">"slope"</span>)[param]) <span class="sc">|&gt;</span> </span>
-<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"param"</span>, <span class="at">values_from =</span> beta) <span class="sc">|&gt;</span> </span>
-<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> intercept, <span class="at">y =</span> slope)) <span class="sc">+</span> </span>
-<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> unpooled_params, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>unpooled_params <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp], intercept[spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> <span class="fu">median</span>(slope), </span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">intercept =</span> <span class="fu">median</span>(intercept))</span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="fu">median</span>(beta),</span>
+<span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">param =</span> <span class="fu">c</span>(<span class="st">"intercept"</span>, <span class="st">"slope"</span>)[param]) <span class="sc">|&gt;</span> </span>
+<span id="cb114-12"><a href="#cb114-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"param"</span>, <span class="at">values_from =</span> beta) <span class="sc">|&gt;</span> </span>
+<span id="cb114-13"><a href="#cb114-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> intercept, <span class="at">y =</span> slope)) <span class="sc">+</span> </span>
+<span id="cb114-14"><a href="#cb114-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb114-15"><a href="#cb114-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> unpooled_params, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="correlating-numbers-with-a-cholesky-decomposition-of-a-correlation-matrix." class="level2">
 <h2 class="anchored" data-anchor-id="correlating-numbers-with-a-cholesky-decomposition-of-a-correlation-matrix.">Correlating numbers with a cholesky decomposition of a correlation matrix.</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
-<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            [,1]        [,2]
-[1,]  1.00000000 -0.08092257
-[2,] -0.08092257  1.00000000</code></pre>
+<pre><code>           [,1]       [,2]
+[1,] 1.00000000 0.02183946
+[2,] 0.02183946 1.00000000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-20-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-20-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5570892</code></pre>
+<pre><code>[1] 0.1324028</code></pre>
 </div>
 </div>
 <p>The LKJ prior distribution is a prior over correlation matrices</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rethinking::rlkjcorr(1, 5, .3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rethinking::rlkjcorr(1, 5, .3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -1011,10 +1118,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1024,8 +1148,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1037,7 +1170,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1081,6 +1337,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1106,6 +1363,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1165,349 +1448,454 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb102" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Summarizing many univariate models"</span></span>
-<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
-<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="co">  A secret weapon for when you're building hierarchical models.</span></span>
-<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: true</span></span>
-<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb102-11"><a href="#cb102-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-12"><a href="#cb102-12" aria-hidden="true" tabindex="-1"></a>We've already looked at univariate models. When we fit the same model to multiple different groups, we don't expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.</span>
-<span id="cb102-13"><a href="#cb102-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-14"><a href="#cb102-14" aria-hidden="true" tabindex="-1"></a>Hierarchial models represent a way to *model* this variation, in ways that range from simple to complex.</span>
-<span id="cb102-15"><a href="#cb102-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-16"><a href="#cb102-16" aria-hidden="true" tabindex="-1"></a>Before we dive in with hierarchical structure, let's build a bridge between these two approaches.</span>
-<span id="cb102-17"><a href="#cb102-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-18"><a href="#cb102-18" aria-hidden="true" tabindex="-1"></a>This is useful to help us understand what a hierarchical model does.</span>
-<span id="cb102-19"><a href="#cb102-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-20"><a href="#cb102-20" aria-hidden="true" tabindex="-1"></a>However it is also useful from a strict model-building perspective -- so useful that <span class="co">[</span><span class="ot">Andrew Gelman calls it a "Secret Weapon"</span><span class="co">](https://statmodeling.stat.columbia.edu/2005/03/07/the_secret_weap/)</span></span>
-<span id="cb102-21"><a href="#cb102-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-24"><a href="#cb102-24" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-25"><a href="#cb102-25" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mite, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
-<span id="cb102-26"><a href="#cb102-26" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite.env"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
-<span id="cb102-27"><a href="#cb102-27" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb102-28"><a href="#cb102-28" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb102-29"><a href="#cb102-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-30"><a href="#cb102-30" aria-hidden="true" tabindex="-1"></a><span class="co"># combine data and environment</span></span>
-<span id="cb102-31"><a href="#cb102-31" aria-hidden="true" tabindex="-1"></a>mite_data_long <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(mite.env, mite) <span class="sc">|&gt;</span> </span>
-<span id="cb102-32"><a href="#cb102-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Brachy<span class="sc">:</span>Trimalc2, <span class="at">names_to =</span> <span class="st">"spp"</span>, <span class="at">values_to =</span> <span class="st">"abd"</span>)</span>
-<span id="cb102-33"><a href="#cb102-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-34"><a href="#cb102-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-35"><a href="#cb102-35" aria-hidden="true" tabindex="-1"></a>To keep things simple and univariate, let's consider only water:</span>
-<span id="cb102-36"><a href="#cb102-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-37"><a href="#cb102-37" aria-hidden="true" tabindex="-1"></a>First, a quick word about centering and scaling a predictor variable:</span>
-<span id="cb102-38"><a href="#cb102-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-39"><a href="#cb102-39" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>I center the predictor by subtracting the mean. This changes the *intercept* of my linear predictor. it becomes the mean log-odds of occurrance when the water content is average</span>
-<span id="cb102-40"><a href="#cb102-40" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>I divide water content by 100. The dataset has units of **grams per Litre** of water (see <span class="in">`?vegan::mite.env`</span> for more details). This is fine, but I don't think mites are able to sense differences as precise as a millimeter of water either way. by dividing by 10 I transform this into centilitres, which is more informative.</span>
-<span id="cb102-41"><a href="#cb102-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-44"><a href="#cb102-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-45"><a href="#cb102-45" aria-hidden="true" tabindex="-1"></a>mite_data_long_transformed <span class="ot">&lt;-</span> mite_data_long <span class="sc">|&gt;</span> </span>
-<span id="cb102-46"><a href="#cb102-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">presabs =</span> <span class="fu">as.numeric</span>(abd<span class="sc">&gt;</span><span class="dv">0</span>),</span>
-<span id="cb102-47"><a href="#cb102-47" aria-hidden="true" tabindex="-1"></a>         <span class="co"># center predictors</span></span>
-<span id="cb102-48"><a href="#cb102-48" aria-hidden="true" tabindex="-1"></a>         <span class="at">water =</span> (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont)) <span class="sc">/</span> <span class="dv">100</span></span>
-<span id="cb102-49"><a href="#cb102-49" aria-hidden="true" tabindex="-1"></a>         )</span>
-<span id="cb102-50"><a href="#cb102-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-51"><a href="#cb102-51" aria-hidden="true" tabindex="-1"></a>mite_data_long_transformed <span class="sc">|&gt;</span> </span>
-<span id="cb102-52"><a href="#cb102-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs)) <span class="sc">+</span> </span>
-<span id="cb102-53"><a href="#cb102-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb102-54"><a href="#cb102-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"glm"</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
-<span id="cb102-55"><a href="#cb102-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>spp)</span>
-<span id="cb102-56"><a href="#cb102-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-57"><a href="#cb102-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-58"><a href="#cb102-58" aria-hidden="true" tabindex="-1"></a>some things to notice about this figure:</span>
-<span id="cb102-59"><a href="#cb102-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-60"><a href="#cb102-60" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>the x-axis scale has been transformed from "grams per litre" to "centilitres away from average</span>
-<span id="cb102-61"><a href="#cb102-61" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>there is a ton of variation in how different species respond to water!</span>
-<span id="cb102-62"><a href="#cb102-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-65"><a href="#cb102-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-66"><a href="#cb102-66" aria-hidden="true" tabindex="-1"></a>mite_many_glms <span class="ot">&lt;-</span> mite_data_long_transformed <span class="sc">|&gt;</span> </span>
-<span id="cb102-67"><a href="#cb102-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest_by</span>(spp) <span class="sc">|&gt;</span> </span>
-<span id="cb102-68"><a href="#cb102-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">logistic_regressions =</span> <span class="fu">list</span>(</span>
-<span id="cb102-69"><a href="#cb102-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">glm</span>(presabs <span class="sc">~</span> water,</span>
-<span id="cb102-70"><a href="#cb102-70" aria-hidden="true" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
-<span id="cb102-71"><a href="#cb102-71" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> data))) <span class="sc">|&gt;</span> </span>
-<span id="cb102-72"><a href="#cb102-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">coefs =</span> <span class="fu">list</span>(broom<span class="sc">::</span><span class="fu">tidy</span>(logistic_regressions)))</span>
-<span id="cb102-73"><a href="#cb102-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-74"><a href="#cb102-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-75"><a href="#cb102-75" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb102-76"><a href="#cb102-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## Split-Apply-Combine</span></span>
-<span id="cb102-77"><a href="#cb102-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-78"><a href="#cb102-78" aria-hidden="true" tabindex="-1"></a>To explore this kind of thinking, we are going to use an approach sometimes called <span class="co">[</span><span class="ot">"split-apply-combine"</span><span class="co">](https://vita.had.co.nz/papers/plyr.pdf)</span></span>
-<span id="cb102-79"><a href="#cb102-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-80"><a href="#cb102-80" aria-hidden="true" tabindex="-1"></a>There are many possible ways to do this in practice. We are using a technique here from the tidyverse, which you can <span class="co">[</span><span class="ot">read more about</span><span class="co">](https://dplyr.tidyverse.org/articles/rowwise.html)</span>.</span>
-<span id="cb102-81"><a href="#cb102-81" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb102-82"><a href="#cb102-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-85"><a href="#cb102-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-86"><a href="#cb102-86" aria-hidden="true" tabindex="-1"></a>mite_many_glm_coefs <span class="ot">&lt;-</span> mite_many_glms <span class="sc">|&gt;</span> </span>
-<span id="cb102-87"><a href="#cb102-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data, <span class="sc">-</span>logistic_regressions) <span class="sc">|&gt;</span> </span>
-<span id="cb102-88"><a href="#cb102-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(coefs)</span>
-<span id="cb102-89"><a href="#cb102-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-90"><a href="#cb102-90" aria-hidden="true" tabindex="-1"></a>mite_many_glm_coefs <span class="sc">|&gt;</span> </span>
-<span id="cb102-91"><a href="#cb102-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate, <span class="at">y =</span> spp,</span>
-<span id="cb102-92"><a href="#cb102-92" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmin =</span> estimate <span class="sc">-</span> std.error,</span>
-<span id="cb102-93"><a href="#cb102-93" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmax =</span> estimate <span class="sc">+</span> std.error)) <span class="sc">+</span> </span>
-<span id="cb102-94"><a href="#cb102-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span> </span>
-<span id="cb102-95"><a href="#cb102-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span>
-<span id="cb102-96"><a href="#cb102-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-97"><a href="#cb102-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-98"><a href="#cb102-98" aria-hidden="true" tabindex="-1"></a>As you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.</span>
-<span id="cb102-99"><a href="#cb102-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-102"><a href="#cb102-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-103"><a href="#cb102-103" aria-hidden="true" tabindex="-1"></a>mite_many_glm_coefs <span class="sc">|&gt;</span> </span>
-<span id="cb102-104"><a href="#cb102-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> </span>
-<span id="cb102-105"><a href="#cb102-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
-<span id="cb102-106"><a href="#cb102-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span>
-<span id="cb102-107"><a href="#cb102-107" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-108"><a href="#cb102-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-109"><a href="#cb102-109" aria-hidden="true" tabindex="-1"></a>Once again, the two parameters of this model represent:</span>
-<span id="cb102-110"><a href="#cb102-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-111"><a href="#cb102-111" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*Intercept* The probability (in log-odds) of a species being present at the average water concentration. some species are common, others are rare.</span>
-<span id="cb102-112"><a href="#cb102-112" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*water* this is the change in probability (in log-odds) as water increases by one centilitre per litre of substrate.</span>
-<span id="cb102-113"><a href="#cb102-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-114"><a href="#cb102-114" aria-hidden="true" tabindex="-1"></a><span class="fu">## Say it in Stan</span></span>
-<span id="cb102-115"><a href="#cb102-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-116"><a href="#cb102-116" aria-hidden="true" tabindex="-1"></a>The above tidyverse approach is very appealing and intuitive, but we can also do the same procedure in Stan.</span>
-<span id="cb102-117"><a href="#cb102-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-120"><a href="#cb102-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-121"><a href="#cb102-121" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb102-122"><a href="#cb102-122" aria-hidden="true" tabindex="-1"></a>all_species_unpooled <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb102-123"><a href="#cb102-123" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_unpooled.stan"</span>, </span>
-<span id="cb102-124"><a href="#cb102-124" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb102-125"><a href="#cb102-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-126"><a href="#cb102-126" aria-hidden="true" tabindex="-1"></a>all_species_unpooled</span>
-<span id="cb102-127"><a href="#cb102-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-128"><a href="#cb102-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-129"><a href="#cb102-129" aria-hidden="true" tabindex="-1"></a>Let's fit this model by passing in the data:</span>
-<span id="cb102-130"><a href="#cb102-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-133"><a href="#cb102-133" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-134"><a href="#cb102-134" aria-hidden="true" tabindex="-1"></a>mite_bin <span class="ot">&lt;-</span> mite</span>
-<span id="cb102-135"><a href="#cb102-135" aria-hidden="true" tabindex="-1"></a>mite_bin[mite_bin<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb102-136"><a href="#cb102-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-137"><a href="#cb102-137" aria-hidden="true" tabindex="-1"></a>mite_pa_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb102-138"><a href="#cb102-138" aria-hidden="true" tabindex="-1"></a>      <span class="at">Nsites =</span> <span class="fu">nrow</span>(mite_bin),</span>
-<span id="cb102-139"><a href="#cb102-139" aria-hidden="true" tabindex="-1"></a>      <span class="at">S =</span> <span class="fu">ncol</span>(mite_bin),</span>
-<span id="cb102-140"><a href="#cb102-140" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">with</span>(mite.env, (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont))<span class="sc">/</span><span class="dv">100</span>),</span>
-<span id="cb102-141"><a href="#cb102-141" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fu">as.matrix</span>(mite_bin)</span>
-<span id="cb102-142"><a href="#cb102-142" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb102-143"><a href="#cb102-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-144"><a href="#cb102-144" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_posterior <span class="ot">&lt;-</span> </span>
-<span id="cb102-145"><a href="#cb102-145" aria-hidden="true" tabindex="-1"></a>  all_species_unpooled<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb102-146"><a href="#cb102-146" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> mite_pa_list, </span>
-<span id="cb102-147"><a href="#cb102-147" aria-hidden="true" tabindex="-1"></a>    <span class="at">refresh =</span> <span class="dv">1000</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span></span>
-<span id="cb102-148"><a href="#cb102-148" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb102-149"><a href="#cb102-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-150"><a href="#cb102-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-151"><a href="#cb102-151" aria-hidden="true" tabindex="-1"></a>now let's try to plot this:</span>
-<span id="cb102-152"><a href="#cb102-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-155"><a href="#cb102-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-156"><a href="#cb102-156" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb102-157"><a href="#cb102-157" aria-hidden="true" tabindex="-1"></a><span class="co"># start by looking at the names of variables</span></span>
-<span id="cb102-158"><a href="#cb102-158" aria-hidden="true" tabindex="-1"></a><span class="co"># get_variables(all_species_unpooled_posterior)</span></span>
-<span id="cb102-159"><a href="#cb102-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-160"><a href="#cb102-160" aria-hidden="true" tabindex="-1"></a>post_pred <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(all_species_unpooled_posterior, </span>
-<span id="cb102-161"><a href="#cb102-161" aria-hidden="true" tabindex="-1"></a>             intercept[spp_id], slope[spp_id]) <span class="sc">|&gt;</span> </span>
-<span id="cb102-162"><a href="#cb102-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_grid</span>(<span class="at">water =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">4</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">10</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb102-163"><a href="#cb102-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prob =</span> posterior<span class="sc">::</span><span class="fu">rfun</span>(plogis)(intercept <span class="sc">+</span> slope<span class="sc">*</span>water),</span>
-<span id="cb102-164"><a href="#cb102-164" aria-hidden="true" tabindex="-1"></a>         <span class="at">spp =</span> <span class="fu">colnames</span>(mite_bin)[spp_id]) <span class="sc">|&gt;</span> </span>
-<span id="cb102-165"><a href="#cb102-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">dist =</span> prob)) <span class="sc">+</span> </span>
-<span id="cb102-166"><a href="#cb102-166" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb102-167"><a href="#cb102-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>spp) <span class="sc">+</span> </span>
-<span id="cb102-168"><a href="#cb102-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Greens"</span>)</span>
-<span id="cb102-169"><a href="#cb102-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-170"><a href="#cb102-170" aria-hidden="true" tabindex="-1"></a>post_pred</span>
-<span id="cb102-171"><a href="#cb102-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-172"><a href="#cb102-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-173"><a href="#cb102-173" aria-hidden="true" tabindex="-1"></a>We can imitate the original figure by adding the observed data in orange:</span>
-<span id="cb102-174"><a href="#cb102-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-177"><a href="#cb102-177" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-178"><a href="#cb102-178" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb102-179"><a href="#cb102-179" aria-hidden="true" tabindex="-1"></a>post_pred <span class="sc">+</span> </span>
-<span id="cb102-180"><a href="#cb102-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs), </span>
-<span id="cb102-181"><a href="#cb102-181" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb102-182"><a href="#cb102-182" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> mite_data_long_transformed,</span>
-<span id="cb102-183"><a href="#cb102-183" aria-hidden="true" tabindex="-1"></a>             <span class="at">pch =</span> <span class="dv">21</span>, </span>
-<span id="cb102-184"><a href="#cb102-184" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"orange"</span>)</span>
-<span id="cb102-185"><a href="#cb102-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-186"><a href="#cb102-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-187"><a href="#cb102-187" aria-hidden="true" tabindex="-1"></a>Plot and compare to frequentist point estimates</span>
-<span id="cb102-188"><a href="#cb102-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-191"><a href="#cb102-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-192"><a href="#cb102-192" aria-hidden="true" tabindex="-1"></a>long_rvars <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">gather_rvars</span>(</span>
-<span id="cb102-193"><a href="#cb102-193" aria-hidden="true" tabindex="-1"></a>  all_species_unpooled_posterior, </span>
-<span id="cb102-194"><a href="#cb102-194" aria-hidden="true" tabindex="-1"></a>             intercept[spp_id], slope[spp_id]) </span>
-<span id="cb102-195"><a href="#cb102-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-196"><a href="#cb102-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-197"><a href="#cb102-197" aria-hidden="true" tabindex="-1"></a>mite_many_glm_coefs <span class="sc">|&gt;</span> </span>
-<span id="cb102-198"><a href="#cb102-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(spp, term, estimate)</span>
-<span id="cb102-199"><a href="#cb102-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-200"><a href="#cb102-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-201"><a href="#cb102-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-202"><a href="#cb102-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Saying it another way: with matrix algebra</span></span>
-<span id="cb102-203"><a href="#cb102-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-204"><a href="#cb102-204" aria-hidden="true" tabindex="-1"></a>First let's look at how to scale a univariate distribution:</span>
-<span id="cb102-205"><a href="#cb102-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-208"><a href="#cb102-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-209"><a href="#cb102-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb102-210"><a href="#cb102-210" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">300</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb102-211"><a href="#cb102-211" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z)</span>
-<span id="cb102-212"><a href="#cb102-212" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(z)</span>
-<span id="cb102-213"><a href="#cb102-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-214"><a href="#cb102-214" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z<span class="sc">*</span><span class="fl">2.7</span>)</span>
-<span id="cb102-215"><a href="#cb102-215" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(z<span class="sc">*</span><span class="fl">2.7</span>)</span>
-<span id="cb102-216"><a href="#cb102-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-217"><a href="#cb102-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-218"><a href="#cb102-218" aria-hidden="true" tabindex="-1"></a>you can also scale two things at once with a diagonal matrix:</span>
-<span id="cb102-219"><a href="#cb102-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-222"><a href="#cb102-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-223"><a href="#cb102-223" aria-hidden="true" tabindex="-1"></a>two_sds <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">c</span>(.<span class="dv">4</span>, <span class="dv">7</span>))</span>
-<span id="cb102-224"><a href="#cb102-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-225"><a href="#cb102-225" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">200</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb102-226"><a href="#cb102-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-227"><a href="#cb102-227" aria-hidden="true" tabindex="-1"></a>rescaled_zz <span class="ot">&lt;-</span> zz <span class="sc">%*%</span> two_sds</span>
-<span id="cb102-228"><a href="#cb102-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-229"><a href="#cb102-229" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rescaled_zz)</span>
-<span id="cb102-230"><a href="#cb102-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-231"><a href="#cb102-231" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(rescaled_zz, <span class="dv">2</span>, sd)</span>
-<span id="cb102-232"><a href="#cb102-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-233"><a href="#cb102-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-234"><a href="#cb102-234" aria-hidden="true" tabindex="-1"></a>We can apply this approach in Stan to create the SAME model as above:</span>
-<span id="cb102-235"><a href="#cb102-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-238"><a href="#cb102-238" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-239"><a href="#cb102-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb102-240"><a href="#cb102-240" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_diag <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb102-241"><a href="#cb102-241" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_unpooled_diag.stan"</span>, </span>
-<span id="cb102-242"><a href="#cb102-242" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb102-243"><a href="#cb102-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-244"><a href="#cb102-244" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_diag</span>
-<span id="cb102-245"><a href="#cb102-245" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-246"><a href="#cb102-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-249"><a href="#cb102-249" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-250"><a href="#cb102-250" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_diag_sample <span class="ot">&lt;-</span> all_species_unpooled_diag<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb102-251"><a href="#cb102-251" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> mite_pa_list, </span>
-<span id="cb102-252"><a href="#cb102-252" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">1000</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span></span>
-<span id="cb102-253"><a href="#cb102-253" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb102-254"><a href="#cb102-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-255"><a href="#cb102-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-256"><a href="#cb102-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-257"><a href="#cb102-257" aria-hidden="true" tabindex="-1"></a><span class="fu">## Making it hierarchical</span></span>
-<span id="cb102-258"><a href="#cb102-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-261"><a href="#cb102-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-262"><a href="#cb102-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb102-263"><a href="#cb102-263" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb102-264"><a href="#cb102-264" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_partpooled_diag.stan"</span>, </span>
-<span id="cb102-265"><a href="#cb102-265" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb102-266"><a href="#cb102-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-267"><a href="#cb102-267" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag</span>
-<span id="cb102-268"><a href="#cb102-268" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-269"><a href="#cb102-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-270"><a href="#cb102-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-271"><a href="#cb102-271" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb102-272"><a href="#cb102-272" aria-hidden="true" tabindex="-1"></a><span class="fu">## Covariance matrices</span></span>
-<span id="cb102-273"><a href="#cb102-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-274"><a href="#cb102-274" aria-hidden="true" tabindex="-1"></a>If you've fit a lot of hierarchical models you may know that usually, slopes and intercepts are modelled as correlated. In this course, we've decided to stop here, but the material below is available for anyone who wants </span>
-<span id="cb102-275"><a href="#cb102-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-276"><a href="#cb102-276" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb102-277"><a href="#cb102-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-278"><a href="#cb102-278" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modelling COvariation</span></span>
-<span id="cb102-279"><a href="#cb102-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-282"><a href="#cb102-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-283"><a href="#cb102-283" aria-hidden="true" tabindex="-1"></a><span class="co">#| class.output: stan</span></span>
-<span id="cb102-284"><a href="#cb102-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-285"><a href="#cb102-285" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb102-286"><a href="#cb102-286" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_partpooled_diag_corr.stan"</span>, </span>
-<span id="cb102-287"><a href="#cb102-287" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb102-288"><a href="#cb102-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-289"><a href="#cb102-289" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr</span>
-<span id="cb102-290"><a href="#cb102-290" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-291"><a href="#cb102-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-294"><a href="#cb102-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-295"><a href="#cb102-295" aria-hidden="true" tabindex="-1"></a>mite_data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb102-296"><a href="#cb102-296" aria-hidden="true" tabindex="-1"></a>  <span class="at">Nsites =</span> <span class="fu">nrow</span>(mite_bin),</span>
-<span id="cb102-297"><a href="#cb102-297" aria-hidden="true" tabindex="-1"></a>  <span class="at">S =</span> <span class="fu">ncol</span>(mite_bin),</span>
-<span id="cb102-298"><a href="#cb102-298" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">cbind</span>(<span class="dv">1</span>, <span class="fu">with</span>(mite.env, (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont))<span class="sc">/</span><span class="dv">100</span>)),</span>
-<span id="cb102-299"><a href="#cb102-299" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">as.matrix</span>(mite_bin))</span>
-<span id="cb102-300"><a href="#cb102-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-301"><a href="#cb102-301" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="ot">&lt;-</span> </span>
-<span id="cb102-302"><a href="#cb102-302" aria-hidden="true" tabindex="-1"></a>  all_species_partpooled_diag_corr<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb102-303"><a href="#cb102-303" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> mite_data_list,</span>
-<span id="cb102-304"><a href="#cb102-304" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span>
-<span id="cb102-305"><a href="#cb102-305" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-306"><a href="#cb102-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-307"><a href="#cb102-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-308"><a href="#cb102-308" aria-hidden="true" tabindex="-1"></a>plot these, reproducing the figure from earlier:</span>
-<span id="cb102-309"><a href="#cb102-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-312"><a href="#cb102-312" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-313"><a href="#cb102-313" aria-hidden="true" tabindex="-1"></a><span class="co"># get the unpooled numbers</span></span>
-<span id="cb102-314"><a href="#cb102-314" aria-hidden="true" tabindex="-1"></a>unpooled_slopes <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb102-315"><a href="#cb102-315" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp])</span>
-<span id="cb102-316"><a href="#cb102-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-317"><a href="#cb102-317" aria-hidden="true" tabindex="-1"></a><span class="co"># tidybayes::get_variables(all_species_partpooled_diag_posterior)</span></span>
-<span id="cb102-318"><a href="#cb102-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-319"><a href="#cb102-319" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="ot">&lt;-</span> all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb102-320"><a href="#cb102-320" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
-<span id="cb102-321"><a href="#cb102-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(param <span class="sc">==</span> <span class="dv">2</span>)</span>
-<span id="cb102-322"><a href="#cb102-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-323"><a href="#cb102-323" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(unpooled_slopes,</span>
-<span id="cb102-324"><a href="#cb102-324" aria-hidden="true" tabindex="-1"></a>          partpooled_slopes,</span>
-<span id="cb102-325"><a href="#cb102-325" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="st">"spp"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb102-326"><a href="#cb102-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">median</span>(slope), <span class="at">y =</span> <span class="fu">median</span>(beta))) <span class="sc">+</span> </span>
-<span id="cb102-327"><a href="#cb102-327" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb102-328"><a href="#cb102-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span>
-<span id="cb102-329"><a href="#cb102-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-330"><a href="#cb102-330" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-331"><a href="#cb102-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-332"><a href="#cb102-332" aria-hidden="true" tabindex="-1"></a><span class="fu">## </span></span>
-<span id="cb102-333"><a href="#cb102-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-336"><a href="#cb102-336" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-337"><a href="#cb102-337" aria-hidden="true" tabindex="-1"></a>unpooled_params <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb102-338"><a href="#cb102-338" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp], intercept[spp]) <span class="sc">|&gt;</span> </span>
-<span id="cb102-339"><a href="#cb102-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> <span class="fu">median</span>(slope), </span>
-<span id="cb102-340"><a href="#cb102-340" aria-hidden="true" tabindex="-1"></a>         <span class="at">intercept =</span> <span class="fu">median</span>(intercept))</span>
-<span id="cb102-341"><a href="#cb102-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-342"><a href="#cb102-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-343"><a href="#cb102-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-344"><a href="#cb102-344" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
-<span id="cb102-345"><a href="#cb102-345" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
-<span id="cb102-346"><a href="#cb102-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="fu">median</span>(beta),</span>
-<span id="cb102-347"><a href="#cb102-347" aria-hidden="true" tabindex="-1"></a>         <span class="at">param =</span> <span class="fu">c</span>(<span class="st">"intercept"</span>, <span class="st">"slope"</span>)[param]) <span class="sc">|&gt;</span> </span>
-<span id="cb102-348"><a href="#cb102-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"param"</span>, <span class="at">values_from =</span> beta) <span class="sc">|&gt;</span> </span>
-<span id="cb102-349"><a href="#cb102-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> intercept, <span class="at">y =</span> slope)) <span class="sc">+</span> </span>
-<span id="cb102-350"><a href="#cb102-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb102-351"><a href="#cb102-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> unpooled_params, <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb102-352"><a href="#cb102-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-353"><a href="#cb102-353" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-354"><a href="#cb102-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-355"><a href="#cb102-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-356"><a href="#cb102-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-357"><a href="#cb102-357" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlating numbers with a cholesky decomposition of a correlation matrix.</span></span>
-<span id="cb102-358"><a href="#cb102-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-361"><a href="#cb102-361" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-362"><a href="#cb102-362" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb102-363"><a href="#cb102-363" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
-<span id="cb102-364"><a href="#cb102-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-365"><a href="#cb102-365" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb102-366"><a href="#cb102-366" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span>
-<span id="cb102-367"><a href="#cb102-367" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span>
-<span id="cb102-368"><a href="#cb102-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-369"><a href="#cb102-369" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
-<span id="cb102-370"><a href="#cb102-370" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span>
-<span id="cb102-371"><a href="#cb102-371" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span>
-<span id="cb102-372"><a href="#cb102-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-373"><a href="#cb102-373" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-374"><a href="#cb102-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-375"><a href="#cb102-375" aria-hidden="true" tabindex="-1"></a>The LKJ prior distribution is a prior over correlation matrices</span>
-<span id="cb102-376"><a href="#cb102-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-379"><a href="#cb102-379" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb102-380"><a href="#cb102-380" aria-hidden="true" tabindex="-1"></a><span class="co"># rethinking::rlkjcorr(1, 5, .3)</span></span>
-<span id="cb102-381"><a href="#cb102-381" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb102-382"><a href="#cb102-382" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb122" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Summarizing many univariate models"</span></span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="co">  A secret weapon for when you're building hierarchical models.</span></span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: true</span></span>
+<span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb122-9"><a href="#cb122-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb122-10"><a href="#cb122-10" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb122-11"><a href="#cb122-11" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: console</span></span>
+<span id="cb122-12"><a href="#cb122-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb122-13"><a href="#cb122-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-14"><a href="#cb122-14" aria-hidden="true" tabindex="-1"></a>We've already looked at univariate models. When we fit the same model to multiple different groups, we don't expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.</span>
+<span id="cb122-15"><a href="#cb122-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-16"><a href="#cb122-16" aria-hidden="true" tabindex="-1"></a>Hierarchial models represent a way to *model* this variation, in ways that range from simple to complex.</span>
+<span id="cb122-17"><a href="#cb122-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-18"><a href="#cb122-18" aria-hidden="true" tabindex="-1"></a>Before we dive in with hierarchical structure, let's build a bridge between these two approaches.</span>
+<span id="cb122-19"><a href="#cb122-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-20"><a href="#cb122-20" aria-hidden="true" tabindex="-1"></a>This is useful to help us understand what a hierarchical model does.</span>
+<span id="cb122-21"><a href="#cb122-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-22"><a href="#cb122-22" aria-hidden="true" tabindex="-1"></a>However it is also useful from a strict model-building perspective -- so useful that <span class="co">[</span><span class="ot">Andrew Gelman calls it a "Secret Weapon"</span><span class="co">](https://statmodeling.stat.columbia.edu/2005/03/07/the_secret_weap/)</span></span>
+<span id="cb122-23"><a href="#cb122-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-26"><a href="#cb122-26" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-27"><a href="#cb122-27" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mite, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
+<span id="cb122-28"><a href="#cb122-28" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite.env"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
+<span id="cb122-29"><a href="#cb122-29" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb122-30"><a href="#cb122-30" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb122-31"><a href="#cb122-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-32"><a href="#cb122-32" aria-hidden="true" tabindex="-1"></a><span class="co"># combine data and environment</span></span>
+<span id="cb122-33"><a href="#cb122-33" aria-hidden="true" tabindex="-1"></a>mite_data_long <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(mite.env, mite) <span class="sc">|&gt;</span> </span>
+<span id="cb122-34"><a href="#cb122-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Brachy<span class="sc">:</span>Trimalc2, <span class="at">names_to =</span> <span class="st">"spp"</span>, <span class="at">values_to =</span> <span class="st">"abd"</span>)</span>
+<span id="cb122-35"><a href="#cb122-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-36"><a href="#cb122-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-37"><a href="#cb122-37" aria-hidden="true" tabindex="-1"></a>To keep things simple and univariate, let's consider only water:</span>
+<span id="cb122-38"><a href="#cb122-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-39"><a href="#cb122-39" aria-hidden="true" tabindex="-1"></a>First, a quick word about centering and scaling a predictor variable:</span>
+<span id="cb122-40"><a href="#cb122-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-41"><a href="#cb122-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>I center the predictor by subtracting the mean. This changes the *intercept* of my linear predictor. it becomes the mean log-odds of occurrance when the water content is average</span>
+<span id="cb122-42"><a href="#cb122-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>I divide water content by 100. The dataset has units of **grams per Litre** of water (see <span class="in">`?vegan::mite.env`</span> for more details). This is fine, but I don't think mites are able to sense differences as precise as a millimeter of water either way. by dividing by 10 I transform this into centilitres, which is more informative.</span>
+<span id="cb122-43"><a href="#cb122-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-46"><a href="#cb122-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-47"><a href="#cb122-47" aria-hidden="true" tabindex="-1"></a>mite_data_long_transformed <span class="ot">&lt;-</span> mite_data_long <span class="sc">|&gt;</span> </span>
+<span id="cb122-48"><a href="#cb122-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">presabs =</span> <span class="fu">as.numeric</span>(abd<span class="sc">&gt;</span><span class="dv">0</span>),</span>
+<span id="cb122-49"><a href="#cb122-49" aria-hidden="true" tabindex="-1"></a>         <span class="co"># center predictors</span></span>
+<span id="cb122-50"><a href="#cb122-50" aria-hidden="true" tabindex="-1"></a>         <span class="at">water =</span> (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont)) <span class="sc">/</span> <span class="dv">100</span></span>
+<span id="cb122-51"><a href="#cb122-51" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb122-52"><a href="#cb122-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-53"><a href="#cb122-53" aria-hidden="true" tabindex="-1"></a>mite_data_long_transformed <span class="sc">|&gt;</span> </span>
+<span id="cb122-54"><a href="#cb122-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs)) <span class="sc">+</span> </span>
+<span id="cb122-55"><a href="#cb122-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb122-56"><a href="#cb122-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"glm"</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
+<span id="cb122-57"><a href="#cb122-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>spp)</span>
+<span id="cb122-58"><a href="#cb122-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-59"><a href="#cb122-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-60"><a href="#cb122-60" aria-hidden="true" tabindex="-1"></a>some things to notice about this figure:</span>
+<span id="cb122-61"><a href="#cb122-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-62"><a href="#cb122-62" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>the x-axis scale has been transformed from "grams per litre" to "centilitres away from average</span>
+<span id="cb122-63"><a href="#cb122-63" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>there is a ton of variation in how different species respond to water!</span>
+<span id="cb122-64"><a href="#cb122-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-67"><a href="#cb122-67" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-68"><a href="#cb122-68" aria-hidden="true" tabindex="-1"></a>mite_many_glms <span class="ot">&lt;-</span> mite_data_long_transformed <span class="sc">|&gt;</span> </span>
+<span id="cb122-69"><a href="#cb122-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest_by</span>(spp) <span class="sc">|&gt;</span> </span>
+<span id="cb122-70"><a href="#cb122-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">logistic_regressions =</span> <span class="fu">list</span>(</span>
+<span id="cb122-71"><a href="#cb122-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">glm</span>(presabs <span class="sc">~</span> water,</span>
+<span id="cb122-72"><a href="#cb122-72" aria-hidden="true" tabindex="-1"></a>        <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
+<span id="cb122-73"><a href="#cb122-73" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> data))) <span class="sc">|&gt;</span> </span>
+<span id="cb122-74"><a href="#cb122-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">coefs =</span> <span class="fu">list</span>(broom<span class="sc">::</span><span class="fu">tidy</span>(logistic_regressions)))</span>
+<span id="cb122-75"><a href="#cb122-75" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-76"><a href="#cb122-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-77"><a href="#cb122-77" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb122-78"><a href="#cb122-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## Split-Apply-Combine</span></span>
+<span id="cb122-79"><a href="#cb122-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-80"><a href="#cb122-80" aria-hidden="true" tabindex="-1"></a>To explore this kind of thinking, we are going to use an approach sometimes called <span class="co">[</span><span class="ot">"split-apply-combine"</span><span class="co">](https://vita.had.co.nz/papers/plyr.pdf)</span></span>
+<span id="cb122-81"><a href="#cb122-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-82"><a href="#cb122-82" aria-hidden="true" tabindex="-1"></a>There are many possible ways to do this in practice. We are using a technique here from the tidyverse, which you can <span class="co">[</span><span class="ot">read more about</span><span class="co">](https://dplyr.tidyverse.org/articles/rowwise.html)</span>.</span>
+<span id="cb122-83"><a href="#cb122-83" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb122-84"><a href="#cb122-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-87"><a href="#cb122-87" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-88"><a href="#cb122-88" aria-hidden="true" tabindex="-1"></a>mite_many_glm_coefs <span class="ot">&lt;-</span> mite_many_glms <span class="sc">|&gt;</span> </span>
+<span id="cb122-89"><a href="#cb122-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data, <span class="sc">-</span>logistic_regressions) <span class="sc">|&gt;</span> </span>
+<span id="cb122-90"><a href="#cb122-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(coefs)</span>
+<span id="cb122-91"><a href="#cb122-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-92"><a href="#cb122-92" aria-hidden="true" tabindex="-1"></a>mite_many_glm_coefs <span class="sc">|&gt;</span> </span>
+<span id="cb122-93"><a href="#cb122-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate, <span class="at">y =</span> spp,</span>
+<span id="cb122-94"><a href="#cb122-94" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmin =</span> estimate <span class="sc">-</span> std.error,</span>
+<span id="cb122-95"><a href="#cb122-95" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmax =</span> estimate <span class="sc">+</span> std.error)) <span class="sc">+</span> </span>
+<span id="cb122-96"><a href="#cb122-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span> </span>
+<span id="cb122-97"><a href="#cb122-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span>
+<span id="cb122-98"><a href="#cb122-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-99"><a href="#cb122-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-100"><a href="#cb122-100" aria-hidden="true" tabindex="-1"></a>As you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.</span>
+<span id="cb122-101"><a href="#cb122-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-104"><a href="#cb122-104" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-105"><a href="#cb122-105" aria-hidden="true" tabindex="-1"></a>mite_many_glm_coefs <span class="sc">|&gt;</span> </span>
+<span id="cb122-106"><a href="#cb122-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> </span>
+<span id="cb122-107"><a href="#cb122-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb122-108"><a href="#cb122-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term, <span class="at">scales =</span> <span class="st">"free"</span>)</span>
+<span id="cb122-109"><a href="#cb122-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-110"><a href="#cb122-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-111"><a href="#cb122-111" aria-hidden="true" tabindex="-1"></a>Once again, the two parameters of this model represent:</span>
+<span id="cb122-112"><a href="#cb122-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-113"><a href="#cb122-113" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*Intercept* The probability (in log-odds) of a species being present at the average water concentration. some species are common, others are rare.</span>
+<span id="cb122-114"><a href="#cb122-114" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*water* this is the change in probability (in log-odds) as water increases by one centilitre per litre of substrate.</span>
+<span id="cb122-115"><a href="#cb122-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-116"><a href="#cb122-116" aria-hidden="true" tabindex="-1"></a><span class="fu">## Say it in Stan</span></span>
+<span id="cb122-117"><a href="#cb122-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-118"><a href="#cb122-118" aria-hidden="true" tabindex="-1"></a>The above tidyverse approach is very appealing and intuitive, but we can also do the same procedure in Stan.</span>
+<span id="cb122-119"><a href="#cb122-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-122"><a href="#cb122-122" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-123"><a href="#cb122-123" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb122-124"><a href="#cb122-124" aria-hidden="true" tabindex="-1"></a>all_species_unpooled <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb122-125"><a href="#cb122-125" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_unpooled.stan"</span>, </span>
+<span id="cb122-126"><a href="#cb122-126" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-127"><a href="#cb122-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-128"><a href="#cb122-128" aria-hidden="true" tabindex="-1"></a>all_species_unpooled</span>
+<span id="cb122-129"><a href="#cb122-129" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-130"><a href="#cb122-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-131"><a href="#cb122-131" aria-hidden="true" tabindex="-1"></a>Let's fit this model by passing in the data:</span>
+<span id="cb122-132"><a href="#cb122-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-135"><a href="#cb122-135" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-136"><a href="#cb122-136" aria-hidden="true" tabindex="-1"></a>mite_bin <span class="ot">&lt;-</span> mite</span>
+<span id="cb122-137"><a href="#cb122-137" aria-hidden="true" tabindex="-1"></a>mite_bin[mite_bin<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb122-138"><a href="#cb122-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-139"><a href="#cb122-139" aria-hidden="true" tabindex="-1"></a>mite_pa_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb122-140"><a href="#cb122-140" aria-hidden="true" tabindex="-1"></a>      <span class="at">Nsites =</span> <span class="fu">nrow</span>(mite_bin),</span>
+<span id="cb122-141"><a href="#cb122-141" aria-hidden="true" tabindex="-1"></a>      <span class="at">S =</span> <span class="fu">ncol</span>(mite_bin),</span>
+<span id="cb122-142"><a href="#cb122-142" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">with</span>(mite.env, (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont))<span class="sc">/</span><span class="dv">100</span>),</span>
+<span id="cb122-143"><a href="#cb122-143" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fu">as.matrix</span>(mite_bin)</span>
+<span id="cb122-144"><a href="#cb122-144" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb122-145"><a href="#cb122-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-146"><a href="#cb122-146" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_posterior <span class="ot">&lt;-</span> </span>
+<span id="cb122-147"><a href="#cb122-147" aria-hidden="true" tabindex="-1"></a>  all_species_unpooled<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb122-148"><a href="#cb122-148" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> mite_pa_list, </span>
+<span id="cb122-149"><a href="#cb122-149" aria-hidden="true" tabindex="-1"></a>    <span class="at">refresh =</span> <span class="dv">1000</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span></span>
+<span id="cb122-150"><a href="#cb122-150" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb122-151"><a href="#cb122-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-152"><a href="#cb122-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-153"><a href="#cb122-153" aria-hidden="true" tabindex="-1"></a>now let's try to plot this:</span>
+<span id="cb122-154"><a href="#cb122-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-157"><a href="#cb122-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-158"><a href="#cb122-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb122-159"><a href="#cb122-159" aria-hidden="true" tabindex="-1"></a><span class="co"># start by looking at the names of variables</span></span>
+<span id="cb122-160"><a href="#cb122-160" aria-hidden="true" tabindex="-1"></a><span class="co"># get_variables(all_species_unpooled_posterior)</span></span>
+<span id="cb122-161"><a href="#cb122-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-162"><a href="#cb122-162" aria-hidden="true" tabindex="-1"></a>post_pred <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(all_species_unpooled_posterior, </span>
+<span id="cb122-163"><a href="#cb122-163" aria-hidden="true" tabindex="-1"></a>             intercept[spp_id], slope[spp_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-164"><a href="#cb122-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_grid</span>(<span class="at">water =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">4</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">10</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb122-165"><a href="#cb122-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prob =</span> posterior<span class="sc">::</span><span class="fu">rfun</span>(plogis)(intercept <span class="sc">+</span> slope<span class="sc">*</span>water),</span>
+<span id="cb122-166"><a href="#cb122-166" aria-hidden="true" tabindex="-1"></a>         <span class="at">spp =</span> <span class="fu">colnames</span>(mite_bin)[spp_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-167"><a href="#cb122-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">dist =</span> prob)) <span class="sc">+</span> </span>
+<span id="cb122-168"><a href="#cb122-168" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb122-169"><a href="#cb122-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>spp) <span class="sc">+</span> </span>
+<span id="cb122-170"><a href="#cb122-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Greens"</span>)</span>
+<span id="cb122-171"><a href="#cb122-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-172"><a href="#cb122-172" aria-hidden="true" tabindex="-1"></a>post_pred</span>
+<span id="cb122-173"><a href="#cb122-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-174"><a href="#cb122-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-175"><a href="#cb122-175" aria-hidden="true" tabindex="-1"></a>We can imitate the original figure by adding the observed data in orange:</span>
+<span id="cb122-176"><a href="#cb122-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-179"><a href="#cb122-179" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-180"><a href="#cb122-180" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb122-181"><a href="#cb122-181" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb122-182"><a href="#cb122-182" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 7</span></span>
+<span id="cb122-183"><a href="#cb122-183" aria-hidden="true" tabindex="-1"></a>post_pred <span class="sc">+</span> </span>
+<span id="cb122-184"><a href="#cb122-184" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs), </span>
+<span id="cb122-185"><a href="#cb122-185" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb122-186"><a href="#cb122-186" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> mite_data_long_transformed,</span>
+<span id="cb122-187"><a href="#cb122-187" aria-hidden="true" tabindex="-1"></a>             <span class="at">pch =</span> <span class="dv">21</span>, </span>
+<span id="cb122-188"><a href="#cb122-188" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"orange"</span>)</span>
+<span id="cb122-189"><a href="#cb122-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-190"><a href="#cb122-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-191"><a href="#cb122-191" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
+<span id="cb122-192"><a href="#cb122-192" aria-hidden="true" tabindex="-1"></a><span class="fu">### EXERCISE</span></span>
+<span id="cb122-193"><a href="#cb122-193" aria-hidden="true" tabindex="-1"></a>1) Add hierarchy to both the slope AND the intercept of this model. </span>
+<span id="cb122-194"><a href="#cb122-194" aria-hidden="true" tabindex="-1"></a>Do not try to model them as correlated: the <span class="in">`lmer`</span> syntax would be <span class="in">`y ~ 1 + water + (1 | species) + (0 + water | species)`</span>  </span>
+<span id="cb122-195"><a href="#cb122-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-196"><a href="#cb122-196" aria-hidden="true" tabindex="-1"></a>2) Make a plot of the slope coefficients from both models, with and without hierarchy. </span>
+<span id="cb122-197"><a href="#cb122-197" aria-hidden="true" tabindex="-1"></a>Are they the same? How are they different?</span>
+<span id="cb122-198"><a href="#cb122-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-199"><a href="#cb122-199" aria-hidden="true" tabindex="-1"></a>2) Make a posterior prediction of species richness in these communities.</span>
+<span id="cb122-200"><a href="#cb122-200" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb122-201"><a href="#cb122-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-202"><a href="#cb122-202" aria-hidden="true" tabindex="-1"></a>:::{.callout-note collapse="true"}</span>
+<span id="cb122-203"><a href="#cb122-203" aria-hidden="true" tabindex="-1"></a><span class="fu">### SOLUTION</span></span>
+<span id="cb122-204"><a href="#cb122-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-205"><a href="#cb122-205" aria-hidden="true" tabindex="-1"></a>First we rewrite the Stan model from above, replacing the standard deviations with parameters. We do this for the priors on the intercepts and slopes _separately_.</span>
+<span id="cb122-206"><a href="#cb122-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-209"><a href="#cb122-209" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-210"><a href="#cb122-210" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb122-211"><a href="#cb122-211" aria-hidden="true" tabindex="-1"></a>all_species_partpooled <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb122-212"><a href="#cb122-212" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_partpooled.stan"</span>, </span>
+<span id="cb122-213"><a href="#cb122-213" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-214"><a href="#cb122-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-215"><a href="#cb122-215" aria-hidden="true" tabindex="-1"></a>all_species_partpooled</span>
+<span id="cb122-216"><a href="#cb122-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-217"><a href="#cb122-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-218"><a href="#cb122-218" aria-hidden="true" tabindex="-1"></a>Sample the model</span>
+<span id="cb122-219"><a href="#cb122-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-222"><a href="#cb122-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-223"><a href="#cb122-223" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_posterior <span class="ot">&lt;-</span> </span>
+<span id="cb122-224"><a href="#cb122-224" aria-hidden="true" tabindex="-1"></a>  all_species_partpooled<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb122-225"><a href="#cb122-225" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> mite_pa_list, </span>
+<span id="cb122-226"><a href="#cb122-226" aria-hidden="true" tabindex="-1"></a>    <span class="at">refresh =</span> <span class="dv">1000</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span></span>
+<span id="cb122-227"><a href="#cb122-227" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb122-228"><a href="#cb122-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-229"><a href="#cb122-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-230"><a href="#cb122-230" aria-hidden="true" tabindex="-1"></a>Plot posterior predictions of trendlines, just as before:</span>
+<span id="cb122-231"><a href="#cb122-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-234"><a href="#cb122-234" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-235"><a href="#cb122-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 9</span></span>
+<span id="cb122-236"><a href="#cb122-236" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 7</span></span>
+<span id="cb122-237"><a href="#cb122-237" aria-hidden="true" tabindex="-1"></a>post_pred_partpooled <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(all_species_partpooled_posterior, </span>
+<span id="cb122-238"><a href="#cb122-238" aria-hidden="true" tabindex="-1"></a>             intercept[spp_id], slope[spp_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-239"><a href="#cb122-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_grid</span>(<span class="at">water =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">4</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">10</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb122-240"><a href="#cb122-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prob =</span> posterior<span class="sc">::</span><span class="fu">rfun</span>(plogis)(intercept <span class="sc">+</span> slope<span class="sc">*</span>water),</span>
+<span id="cb122-241"><a href="#cb122-241" aria-hidden="true" tabindex="-1"></a>         <span class="at">spp =</span> <span class="fu">colnames</span>(mite_bin)[spp_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-242"><a href="#cb122-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">dist =</span> prob)) <span class="sc">+</span> </span>
+<span id="cb122-243"><a href="#cb122-243" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb122-244"><a href="#cb122-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>spp) <span class="sc">+</span> </span>
+<span id="cb122-245"><a href="#cb122-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Reds"</span>) <span class="sc">+</span></span>
+<span id="cb122-246"><a href="#cb122-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs), </span>
+<span id="cb122-247"><a href="#cb122-247" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb122-248"><a href="#cb122-248" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> mite_data_long_transformed,</span>
+<span id="cb122-249"><a href="#cb122-249" aria-hidden="true" tabindex="-1"></a>             <span class="at">pch =</span> <span class="dv">21</span>, </span>
+<span id="cb122-250"><a href="#cb122-250" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"blue"</span>)</span>
+<span id="cb122-251"><a href="#cb122-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-252"><a href="#cb122-252" aria-hidden="true" tabindex="-1"></a>post_pred_partpooled</span>
+<span id="cb122-253"><a href="#cb122-253" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-254"><a href="#cb122-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-255"><a href="#cb122-255" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Comparing slope estimates of both models</span></span>
+<span id="cb122-256"><a href="#cb122-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-257"><a href="#cb122-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-258"><a href="#cb122-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-261"><a href="#cb122-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-262"><a href="#cb122-262" aria-hidden="true" tabindex="-1"></a>unpooled_slopes <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(all_species_unpooled_posterior, </span>
+<span id="cb122-263"><a href="#cb122-263" aria-hidden="true" tabindex="-1"></a>              slope[spp_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-264"><a href="#cb122-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"non-hierarchical"</span>)</span>
+<span id="cb122-265"><a href="#cb122-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-266"><a href="#cb122-266" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(all_species_partpooled_posterior, </span>
+<span id="cb122-267"><a href="#cb122-267" aria-hidden="true" tabindex="-1"></a>              slope[spp_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-268"><a href="#cb122-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">"hierarchical"</span>)</span>
+<span id="cb122-269"><a href="#cb122-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-270"><a href="#cb122-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-271"><a href="#cb122-271" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="sc">|&gt;</span> </span>
+<span id="cb122-272"><a href="#cb122-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(unpooled_slopes) <span class="sc">|&gt;</span> </span>
+<span id="cb122-273"><a href="#cb122-273" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="fu">colnames</span>(mite_bin)[spp_id],</span>
+<span id="cb122-274"><a href="#cb122-274" aria-hidden="true" tabindex="-1"></a>         <span class="at">med_slope =</span> <span class="fu">median</span>(slope),</span>
+<span id="cb122-275"><a href="#cb122-275" aria-hidden="true" tabindex="-1"></a>         <span class="at">species =</span> forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(species, med_slope)) <span class="sc">|&gt;</span> </span>
+<span id="cb122-276"><a href="#cb122-276" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">dist =</span> slope, <span class="at">colour =</span> type)) <span class="sc">+</span> </span>
+<span id="cb122-277"><a href="#cb122-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">5</span>)) <span class="sc">+</span> </span>
+<span id="cb122-278"><a href="#cb122-278" aria-hidden="true" tabindex="-1"></a>  <span class="co"># facet_wrap(~type)</span></span>
+<span id="cb122-279"><a href="#cb122-279" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span>
+<span id="cb122-280"><a href="#cb122-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-281"><a href="#cb122-281" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-282"><a href="#cb122-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-283"><a href="#cb122-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-284"><a href="#cb122-284" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Posterior distribution of species richness</span></span>
+<span id="cb122-285"><a href="#cb122-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-288"><a href="#cb122-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-289"><a href="#cb122-289" aria-hidden="true" tabindex="-1"></a>tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(all_species_partpooled_posterior, </span>
+<span id="cb122-290"><a href="#cb122-290" aria-hidden="true" tabindex="-1"></a>             intercept[spp_id], slope[spp_id], <span class="at">ndraws =</span> <span class="dv">700</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb122-291"><a href="#cb122-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_grid</span>(<span class="at">water =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">8</span>, <span class="at">to =</span> <span class="dv">6</span>, <span class="at">length.out =</span> <span class="dv">10</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb122-292"><a href="#cb122-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prob =</span> <span class="fu">plogis</span>(intercept <span class="sc">+</span> slope<span class="sc">*</span>water),</span>
+<span id="cb122-293"><a href="#cb122-293" aria-hidden="true" tabindex="-1"></a>         <span class="at">spp =</span> <span class="fu">colnames</span>(mite_bin)[spp_id]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-294"><a href="#cb122-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest_by</span>(water, .draw) <span class="sc">|&gt;</span> </span>
+<span id="cb122-295"><a href="#cb122-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">S =</span> <span class="fu">sum</span>(data<span class="sc">$</span>prob)) <span class="sc">|&gt;</span> </span>
+<span id="cb122-296"><a href="#cb122-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data) <span class="sc">|&gt;</span> <span class="fu">unnest</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb122-297"><a href="#cb122-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> S)) <span class="sc">+</span> </span>
+<span id="cb122-298"><a href="#cb122-298" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb122-299"><a href="#cb122-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Blues"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb122-300"><a href="#cb122-300" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-301"><a href="#cb122-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-302"><a href="#cb122-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-303"><a href="#cb122-303" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb122-304"><a href="#cb122-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-305"><a href="#cb122-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-306"><a href="#cb122-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-307"><a href="#cb122-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-308"><a href="#cb122-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-309"><a href="#cb122-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-310"><a href="#cb122-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-311"><a href="#cb122-311" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb122-312"><a href="#cb122-312" aria-hidden="true" tabindex="-1"></a><span class="fu">## Covariance matrices</span></span>
+<span id="cb122-313"><a href="#cb122-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-314"><a href="#cb122-314" aria-hidden="true" tabindex="-1"></a>If you've fit a lot of hierarchical models you may know that usually, slopes and intercepts are modelled as correlated. In this course, we've decided to stop here, but the material below is available for anyone who wants. Fist I show how to rewrite the fixed-effect model above.</span>
+<span id="cb122-315"><a href="#cb122-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-316"><a href="#cb122-316" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb122-317"><a href="#cb122-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-318"><a href="#cb122-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-319"><a href="#cb122-319" aria-hidden="true" tabindex="-1"></a><span class="fu">## Saying it another way: with matrix algebra</span></span>
+<span id="cb122-320"><a href="#cb122-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-321"><a href="#cb122-321" aria-hidden="true" tabindex="-1"></a>First let's look at how to scale a univariate distribution:</span>
+<span id="cb122-322"><a href="#cb122-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-325"><a href="#cb122-325" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-326"><a href="#cb122-326" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb122-327"><a href="#cb122-327" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">300</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb122-328"><a href="#cb122-328" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z)</span>
+<span id="cb122-329"><a href="#cb122-329" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(z)</span>
+<span id="cb122-330"><a href="#cb122-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-331"><a href="#cb122-331" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(z<span class="sc">*</span><span class="fl">2.7</span>)</span>
+<span id="cb122-332"><a href="#cb122-332" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(z<span class="sc">*</span><span class="fl">2.7</span>)</span>
+<span id="cb122-333"><a href="#cb122-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-334"><a href="#cb122-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-335"><a href="#cb122-335" aria-hidden="true" tabindex="-1"></a>you can also scale two things at once with a diagonal matrix:</span>
+<span id="cb122-336"><a href="#cb122-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-339"><a href="#cb122-339" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-340"><a href="#cb122-340" aria-hidden="true" tabindex="-1"></a>two_sds <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">c</span>(.<span class="dv">4</span>, <span class="dv">7</span>))</span>
+<span id="cb122-341"><a href="#cb122-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-342"><a href="#cb122-342" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">200</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb122-343"><a href="#cb122-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-344"><a href="#cb122-344" aria-hidden="true" tabindex="-1"></a>rescaled_zz <span class="ot">&lt;-</span> zz <span class="sc">%*%</span> two_sds</span>
+<span id="cb122-345"><a href="#cb122-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-346"><a href="#cb122-346" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rescaled_zz)</span>
+<span id="cb122-347"><a href="#cb122-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-348"><a href="#cb122-348" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(rescaled_zz, <span class="dv">2</span>, sd)</span>
+<span id="cb122-349"><a href="#cb122-349" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-350"><a href="#cb122-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-351"><a href="#cb122-351" aria-hidden="true" tabindex="-1"></a>We can apply this approach in Stan to create the SAME model as above:</span>
+<span id="cb122-352"><a href="#cb122-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-355"><a href="#cb122-355" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-356"><a href="#cb122-356" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb122-357"><a href="#cb122-357" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_diag <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb122-358"><a href="#cb122-358" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_unpooled_diag.stan"</span>, </span>
+<span id="cb122-359"><a href="#cb122-359" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-360"><a href="#cb122-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-361"><a href="#cb122-361" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_diag</span>
+<span id="cb122-362"><a href="#cb122-362" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-363"><a href="#cb122-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-366"><a href="#cb122-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-367"><a href="#cb122-367" aria-hidden="true" tabindex="-1"></a>all_species_unpooled_diag_sample <span class="ot">&lt;-</span> all_species_unpooled_diag<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb122-368"><a href="#cb122-368" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> mite_pa_list, </span>
+<span id="cb122-369"><a href="#cb122-369" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">1000</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span></span>
+<span id="cb122-370"><a href="#cb122-370" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb122-371"><a href="#cb122-371" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-372"><a href="#cb122-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-373"><a href="#cb122-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-374"><a href="#cb122-374" aria-hidden="true" tabindex="-1"></a><span class="fu">## Making it hierarchical</span></span>
+<span id="cb122-375"><a href="#cb122-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-378"><a href="#cb122-378" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-379"><a href="#cb122-379" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb122-380"><a href="#cb122-380" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb122-381"><a href="#cb122-381" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_partpooled_diag.stan"</span>, </span>
+<span id="cb122-382"><a href="#cb122-382" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-383"><a href="#cb122-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-384"><a href="#cb122-384" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag</span>
+<span id="cb122-385"><a href="#cb122-385" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-386"><a href="#cb122-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-387"><a href="#cb122-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-388"><a href="#cb122-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-389"><a href="#cb122-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-390"><a href="#cb122-390" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modelling COvariation</span></span>
+<span id="cb122-391"><a href="#cb122-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-394"><a href="#cb122-394" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-395"><a href="#cb122-395" aria-hidden="true" tabindex="-1"></a><span class="co">#| class.output: stan</span></span>
+<span id="cb122-396"><a href="#cb122-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-397"><a href="#cb122-397" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb122-398"><a href="#cb122-398" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/correlated_effects/all_species_partpooled_diag_corr.stan"</span>, </span>
+<span id="cb122-399"><a href="#cb122-399" aria-hidden="true" tabindex="-1"></a>  <span class="at">pedantic =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-400"><a href="#cb122-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-401"><a href="#cb122-401" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr</span>
+<span id="cb122-402"><a href="#cb122-402" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-403"><a href="#cb122-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-406"><a href="#cb122-406" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-407"><a href="#cb122-407" aria-hidden="true" tabindex="-1"></a>mite_data_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb122-408"><a href="#cb122-408" aria-hidden="true" tabindex="-1"></a>  <span class="at">Nsites =</span> <span class="fu">nrow</span>(mite_bin),</span>
+<span id="cb122-409"><a href="#cb122-409" aria-hidden="true" tabindex="-1"></a>  <span class="at">S =</span> <span class="fu">ncol</span>(mite_bin),</span>
+<span id="cb122-410"><a href="#cb122-410" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">cbind</span>(<span class="dv">1</span>, <span class="fu">with</span>(mite.env, (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont))<span class="sc">/</span><span class="dv">100</span>)),</span>
+<span id="cb122-411"><a href="#cb122-411" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">as.matrix</span>(mite_bin))</span>
+<span id="cb122-412"><a href="#cb122-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-413"><a href="#cb122-413" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="ot">&lt;-</span> </span>
+<span id="cb122-414"><a href="#cb122-414" aria-hidden="true" tabindex="-1"></a>  all_species_partpooled_diag_corr<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb122-415"><a href="#cb122-415" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> mite_data_list,</span>
+<span id="cb122-416"><a href="#cb122-416" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span>)</span>
+<span id="cb122-417"><a href="#cb122-417" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-418"><a href="#cb122-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-419"><a href="#cb122-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-420"><a href="#cb122-420" aria-hidden="true" tabindex="-1"></a>plot these, reproducing the figure from earlier:</span>
+<span id="cb122-421"><a href="#cb122-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-424"><a href="#cb122-424" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-425"><a href="#cb122-425" aria-hidden="true" tabindex="-1"></a><span class="co"># get the unpooled numbers</span></span>
+<span id="cb122-426"><a href="#cb122-426" aria-hidden="true" tabindex="-1"></a>unpooled_slopes <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb122-427"><a href="#cb122-427" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp])</span>
+<span id="cb122-428"><a href="#cb122-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-429"><a href="#cb122-429" aria-hidden="true" tabindex="-1"></a><span class="co"># tidybayes::get_variables(all_species_partpooled_diag_posterior)</span></span>
+<span id="cb122-430"><a href="#cb122-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-431"><a href="#cb122-431" aria-hidden="true" tabindex="-1"></a>partpooled_slopes <span class="ot">&lt;-</span> all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb122-432"><a href="#cb122-432" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-433"><a href="#cb122-433" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(param <span class="sc">==</span> <span class="dv">2</span>)</span>
+<span id="cb122-434"><a href="#cb122-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-435"><a href="#cb122-435" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(unpooled_slopes,</span>
+<span id="cb122-436"><a href="#cb122-436" aria-hidden="true" tabindex="-1"></a>          partpooled_slopes,</span>
+<span id="cb122-437"><a href="#cb122-437" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="st">"spp"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb122-438"><a href="#cb122-438" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">median</span>(slope), <span class="at">y =</span> <span class="fu">median</span>(beta))) <span class="sc">+</span> </span>
+<span id="cb122-439"><a href="#cb122-439" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb122-440"><a href="#cb122-440" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span>
+<span id="cb122-441"><a href="#cb122-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-442"><a href="#cb122-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-443"><a href="#cb122-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-444"><a href="#cb122-444" aria-hidden="true" tabindex="-1"></a><span class="fu">## </span></span>
+<span id="cb122-445"><a href="#cb122-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-448"><a href="#cb122-448" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-449"><a href="#cb122-449" aria-hidden="true" tabindex="-1"></a>unpooled_params <span class="ot">&lt;-</span> all_species_unpooled_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb122-450"><a href="#cb122-450" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(slope[spp], intercept[spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-451"><a href="#cb122-451" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> <span class="fu">median</span>(slope), </span>
+<span id="cb122-452"><a href="#cb122-452" aria-hidden="true" tabindex="-1"></a>         <span class="at">intercept =</span> <span class="fu">median</span>(intercept))</span>
+<span id="cb122-453"><a href="#cb122-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-454"><a href="#cb122-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-455"><a href="#cb122-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-456"><a href="#cb122-456" aria-hidden="true" tabindex="-1"></a>all_species_partpooled_diag_corr_posterior <span class="sc">|&gt;</span> </span>
+<span id="cb122-457"><a href="#cb122-457" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(beta[param, spp]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-458"><a href="#cb122-458" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="fu">median</span>(beta),</span>
+<span id="cb122-459"><a href="#cb122-459" aria-hidden="true" tabindex="-1"></a>         <span class="at">param =</span> <span class="fu">c</span>(<span class="st">"intercept"</span>, <span class="st">"slope"</span>)[param]) <span class="sc">|&gt;</span> </span>
+<span id="cb122-460"><a href="#cb122-460" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"param"</span>, <span class="at">values_from =</span> beta) <span class="sc">|&gt;</span> </span>
+<span id="cb122-461"><a href="#cb122-461" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> intercept, <span class="at">y =</span> slope)) <span class="sc">+</span> </span>
+<span id="cb122-462"><a href="#cb122-462" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb122-463"><a href="#cb122-463" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> unpooled_params, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb122-464"><a href="#cb122-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-465"><a href="#cb122-465" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-466"><a href="#cb122-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-467"><a href="#cb122-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-468"><a href="#cb122-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-469"><a href="#cb122-469" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlating numbers with a cholesky decomposition of a correlation matrix.</span></span>
+<span id="cb122-470"><a href="#cb122-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-473"><a href="#cb122-473" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-474"><a href="#cb122-474" aria-hidden="true" tabindex="-1"></a>eg <span class="ot">&lt;-</span> rethinking<span class="sc">::</span><span class="fu">rlkjcorr</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb122-475"><a href="#cb122-475" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">chol</span>(eg)</span>
+<span id="cb122-476"><a href="#cb122-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-477"><a href="#cb122-477" aria-hidden="true" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">rnorm</span>(<span class="dv">2000</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb122-478"><a href="#cb122-478" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(zz)</span>
+<span id="cb122-479"><a href="#cb122-479" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(zz)</span>
+<span id="cb122-480"><a href="#cb122-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-481"><a href="#cb122-481" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">t</span>(cc) <span class="sc">%*%</span> <span class="fu">t</span>(zz)</span>
+<span id="cb122-482"><a href="#cb122-482" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">t</span>(rr))</span>
+<span id="cb122-483"><a href="#cb122-483" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">t</span>(rr))[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb122-484"><a href="#cb122-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-485"><a href="#cb122-485" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-486"><a href="#cb122-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-487"><a href="#cb122-487" aria-hidden="true" tabindex="-1"></a>The LKJ prior distribution is a prior over correlation matrices</span>
+<span id="cb122-488"><a href="#cb122-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-491"><a href="#cb122-491" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-492"><a href="#cb122-492" aria-hidden="true" tabindex="-1"></a><span class="co"># rethinking::rlkjcorr(1, 5, .3)</span></span>
+<span id="cb122-493"><a href="#cb122-493" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb122-494"><a href="#cb122-494" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+
 
 
 

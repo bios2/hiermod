@@ -8,7 +8,7 @@
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.4.553">
 
   <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
   <meta name="dcterms.date" content="2024-04-29">
@@ -32,7 +32,7 @@
     }
     /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -99,6 +99,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -241,7 +242,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -454,7 +456,7 @@ Guillaume Blanchet – Andrew MacDonald
 <p>Sampling was carried out in June 1989 on the partially floating vegetation mat surrounding a lake, from the forest border to the free water by Daniel Borcard.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://distinctions.umontreal.ca/fileadmin/prix-distinctions/images/individus/borcard-daniel.jpg" style="width:25.0%"></p>
+<p><img data-src="https://distinctions.umontreal.ca/fileadmin/prix-distinctions/images/individus/borcard-daniel.jpg" class="quarto-figure quarto-figure-center" style="width:25.0%"></p>
 </figure>
 </div>
 </div>
@@ -465,7 +467,7 @@ Guillaume Blanchet – Andrew MacDonald
 <p>Oribatid mites are small (usually ranging in size from 0.2 to 1.4 mm) invertebrates that are part of the <strong>Arachnida</strong> class (so they have 8 legs).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="../img/Oribatid.jpg"></p>
+<p><img data-src="../img/Oribatid.jpg" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
 </div>
@@ -477,31 +479,31 @@ Guillaume Blanchet – Andrew MacDonald
 <h2>Sites coordinates</h2>
 <p><code>mite.xy</code></p>
 
-<img data-src="../img/oribatid_xy.jpg" style="width:105.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="../img/oribatid_xy.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:105.0%"></section>
 <section id="vegetation-cover" class="slide level2">
 <h2>Vegetation cover</h2>
 <p><code>mite.env</code></p>
 
-<img data-src="../img/oribatid_veg_cover.jpg" style="width:105.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="../img/oribatid_veg_cover.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:105.0%"></section>
 <section id="microtopography-and-shrub-cover" class="slide level2">
 <h2>Microtopography and shrub cover</h2>
 <p><code>mite.env</code></p>
 
-<img data-src="../img/oribatid_microtopo_shrub.jpg" style="width:105.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="../img/oribatid_microtopo_shrub.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:105.0%"></section>
 <section id="substrate-density-and-water-content" class="slide level2">
 <h2>Substrate density and water content</h2>
 <p><code>mite.env</code></p>
 
-<img data-src="../img/oribatid_subdens_water.jpg" style="width:105.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="../img/oribatid_subdens_water.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:105.0%"></section>
 <section id="getting-the-data" class="slide level2">
 <h2>Getting the data</h2>
 <div style="font-size: 1.5em">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">data</span>(mite)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">data</span>(mite.env)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">View</span>(mite)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">View</span>(mite.env)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(vegan)</span>
+<span id="cb1-2"><a></a><span class="fu">data</span>(mite)</span>
+<span id="cb1-3"><a></a><span class="fu">data</span>(mite.env)</span>
+<span id="cb1-4"><a></a><span class="fu">View</span>(mite)</span>
+<span id="cb1-5"><a></a><span class="fu">View</span>(mite.env)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -533,18 +535,20 @@ Guillaume Blanchet – Andrew MacDonald
 <h2>There’s lots more!</h2>
 <div style="font-size: 1.5em">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">View</span>(penguins)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">View</span>(penguins_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb2-2"><a></a><span class="fu">View</span>(penguins)</span>
+<span id="cb2-3"><a></a><span class="fu">View</span>(penguins_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>and also see the official site: <a href="https://allisonhorst.github.io/palmerpenguins/">https://allisonhorst.github.io/palmerpenguins/</a></p>
 
-
-<img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<div class="quarto-auto-generated-content">
+<p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
+<div class="footer footer-default">
 
 </div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-gorman2014" class="csl-entry" role="listitem">
 Gorman, Kristen B., Tony D. Williams, and William R. Fraser. 2014. <span>“Ecological Sexual Dimorphism and Environmental Variability Within a Community of Antarctic Penguins (Genus Pygoscelis).”</span> <em>PLOS ONE</em> 9 (3): e90081. <a href="https://doi.org/10.1371/journal.pone.0090081">https://doi.org/10.1371/journal.pone.0090081</a>.
 </div>
@@ -579,7 +583,6 @@ Horst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. <em>Pal
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -878,10 +881,27 @@ Horst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. <em>Pal
         // clear code selection
         e.clearSelection();
       });
-      function tippyHover(el, contentFn) {
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -891,8 +911,17 @@ Horst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. <em>Pal
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -906,7 +935,11 @@ Horst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. <em>Pal
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {

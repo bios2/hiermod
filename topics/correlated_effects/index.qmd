@@ -7,6 +7,8 @@ execute:
 format:
   html:
     code-tools: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 We've already looked at univariate models. When we fit the same model to multiple different groups, we don't expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.
@@ -158,6 +160,8 @@ We can imitate the original figure by adding the observed data in orange:
 
 ```{r}
 #| warning: false
+#| fig-height: 9
+#| fig-width: 7
 post_pred + 
   geom_point(aes(x = water, y = presabs), 
              inherit.aes = FALSE, 
@@ -166,18 +170,124 @@ post_pred +
              fill = "orange")
 ```
 
-Plot and compare to frequentist point estimates
+:::{.callout-tip}
+### EXERCISE
+1) Add hierarchy to both the slope AND the intercept of this model. 
+Do not try to model them as correlated: the `lmer` syntax would be `y ~ 1 + water + (1 | species) + (0 + water | species)`  
+
+2) Make a plot of the slope coefficients from both models, with and without hierarchy. 
+Are they the same? How are they different?
+
+2) Make a posterior prediction of species richness in these communities.
+:::
+
+:::{.callout-note collapse="true"}
+### SOLUTION
+
+First we rewrite the Stan model from above, replacing the standard deviations with parameters. We do this for the priors on the intercepts and slopes _separately_.
 
 ```{r}
-long_rvars <- tidybayes::gather_rvars(
-  all_species_unpooled_posterior, 
-             intercept[spp_id], slope[spp_id]) 
+#| class-output: stan
+all_species_partpooled <- cmdstan_model(
+  stan_file = "topics/correlated_effects/all_species_partpooled.stan", 
+  pedantic = TRUE)
+
+all_species_partpooled
+```
+
+Sample the model
+
+```{r}
+
+all_species_partpooled_posterior <- 
+  all_species_partpooled$sample(
+    data = mite_pa_list, 
+    refresh = 1000, parallel_chains = 4
+    )
+```
+
+Plot posterior predictions of trendlines, just as before:
+
+```{r}
+#| fig-height: 9
+#| fig-width: 7
+post_pred_partpooled <- tidybayes::spread_rvars(all_species_partpooled_posterior, 
+             intercept[spp_id], slope[spp_id]) |> 
+  expand_grid(water = seq(from = -4, to = 4, length.out = 10)) |> 
+  mutate(prob = posterior::rfun(plogis)(intercept + slope*water),
+         spp = colnames(mite_bin)[spp_id]) |> 
+  ggplot(aes(x = water, dist = prob)) + 
+  tidybayes::stat_lineribbon() + 
+  facet_wrap(~spp) + 
+  scale_fill_brewer(palette = "Reds") +
+  geom_point(aes(x = water, y = presabs), 
+             inherit.aes = FALSE, 
+             data = mite_data_long_transformed,
+             pch = 21, 
+             fill = "blue")
+
+post_pred_partpooled
+```
+
+#### Comparing slope estimates of both models
 
 
-mite_many_glm_coefs |> 
-  select(spp, term, estimate)
+
+```{r}
+unpooled_slopes <- tidybayes::spread_rvars(all_species_unpooled_posterior, 
+              slope[spp_id]) |> 
+  mutate(type = "non-hierarchical")
+
+partpooled_slopes <- tidybayes::spread_rvars(all_species_partpooled_posterior, 
+              slope[spp_id]) |> 
+  mutate(type = "hierarchical")
+
+
+partpooled_slopes |> 
+  bind_rows(unpooled_slopes) |> 
+  mutate(species = colnames(mite_bin)[spp_id],
+         med_slope = median(slope),
+         species = forcats::fct_reorder(species, med_slope)) |> 
+  ggplot(aes(x = species, dist = slope, colour = type)) + 
+  stat_pointinterval(position = position_dodge(width = .5)) + 
+  # facet_wrap(~type)
+  NULL
 
 ```
+
+
+#### Posterior distribution of species richness
+
+```{r}
+tidybayes::spread_draws(all_species_partpooled_posterior, 
+             intercept[spp_id], slope[spp_id], ndraws = 700) |> 
+  expand_grid(water = seq(from = -8, to = 6, length.out = 10)) |> 
+  mutate(prob = plogis(intercept + slope*water),
+         spp = colnames(mite_bin)[spp_id]) |> 
+  nest_by(water, .draw) |> 
+  mutate(S = sum(data$prob)) |> 
+  select(-data) |> unnest() |> 
+  ggplot(aes(x = water, y = S)) + 
+  tidybayes::stat_lineribbon() + 
+  scale_fill_brewer(palette = "Blues", direction = -1)
+```
+
+
+:::
+
+
+
+
+
+
+
+:::{.callout-warning}
+## Covariance matrices
+
+If you've fit a lot of hierarchical models you may know that usually, slopes and intercepts are modelled as correlated. In this course, we've decided to stop here, but the material below is available for anyone who wants. Fist I show how to rewrite the fixed-effect model above.
+
+:::
+
 
 ## Saying it another way: with matrix algebra
 
@@ -238,12 +348,7 @@ all_species_partpooled_diag
 ```
 
 
-:::{.callout-note}
-## Covariance matrices
 
-If you've fit a lot of hierarchical models you may know that usually, slopes and intercepts are modelled as correlated. In this course, we've decided to stop here, but the material below is available for anyone who wants 
-
-:::
 
 ## Modelling COvariation
 

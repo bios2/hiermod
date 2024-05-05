@@ -12,6 +12,10 @@ parameters {
   // parameters are now VECTORS
   vector[S] intercept;
   vector[S] slope;
+  real<lower=0> sigma_intercept;
+  real<lower=0> sigma_slope;
+  real avg_intercept;
+  real avg_slope;
 }
 model {
   for (s in 1:S){
@@ -19,7 +23,12 @@ model {
   }
   // priors don't change because Stan is vectorized:
   // every element of the vector gets the same prior
-  intercept ~ normal(0, 3);
-  slope ~ normal(0, 3);
+  intercept ~ normal(avg_intercept, sigma_intercept);
+  slope ~ normal(avg_slope, sigma_slope);
+  avg_intercept ~ normal(0, 1);
+  avg_slope ~ normal(0, 1);
+  sigma_intercept ~ exponential(5);
+  sigma_slope ~ exponential(5);
+  
 }
 
