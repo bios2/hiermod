@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Smooth lines in fancy colours.">
 
-<title>Modèles hiérarchiques pour les sciences de la vie - Gaussian Processes in Stan</title>
+<title>Gaussian Processes in Stan – Modèles hiérarchiques pour les sciences de la vie</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,15 +95,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -106,15 +145,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools ms-auto">
-    <a href="https://github.com/bios2/hiermod" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://github.com/bios2/hiermod" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
@@ -169,7 +208,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -278,7 +319,7 @@ Goals of this lesson
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Probability of occurrance of one mite species, as a fuction of water content of the soil</figcaption>
+<figcaption>Probability of occurrance of one mite species, as a fuction of water content of the soil</figcaption>
 </figure>
 </div>
 </div>
@@ -299,7 +340,7 @@ Goals of this lesson
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Presence-absence data for mite species “PWIL”, at the spatial location of each point.</figcaption>
+<figcaption>Presence-absence data for mite species “PWIL”, at the spatial location of each point.</figcaption>
 </figure>
 </div>
 </div>
@@ -419,7 +460,11 @@ a &amp;\sim \mathsf{Normal}(0, .2) \\
 <pre><code>Joining with `by = join_by(i)`</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -525,7 +570,11 @@ Tip
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">height =</span> .<span class="dv">01</span>, <span class="at">width =</span> <span class="dv">0</span>,</span>
 <span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> pwil_spatial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"topics/04_gp/pwil_water.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -559,7 +608,11 @@ Tip
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -578,7 +631,11 @@ Tip
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Other than a change in the <code>data {}</code> block, the Stan code is unchanged!</p>
@@ -688,7 +745,11 @@ CAUTION: Slow
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Pr(y=1)"</span>) <span class="sc">+</span> </span>
 <span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("topics/04_gp/pwil_spatial.png")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -740,18 +801,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -783,7 +833,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -835,10 +907,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -848,8 +937,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -861,7 +959,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -905,6 +1126,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -930,6 +1152,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1042,26 +1290,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r reorganize-mites-again}</span></span>
-<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a><span class="co"># combine data and environment</span></span>
-<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a>mite_data_long <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(mite.env, mite) <span class="sc">|&gt;</span> </span>
-<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">plot_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(WatrCont)) <span class="sc">|&gt;</span> </span>
-<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Brachy<span class="sc">:</span>Trimalc2, <span class="at">names_to =</span> <span class="st">"spp"</span>, <span class="at">values_to =</span> <span class="st">"abd"</span>)</span>
+<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a><span class="in"># combine data and environment</span></span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long &lt;- bind_cols(mite.env, mite) |&gt; </span></span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(plot_id = 1:length(WatrCont)) |&gt; </span></span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a><span class="in">  pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")</span></span>
 <span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a>mite_data_long_transformed <span class="ot">&lt;-</span> mite_data_long <span class="sc">|&gt;</span> </span>
-<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">presabs =</span> <span class="fu">as.numeric</span>(abd<span class="sc">&gt;</span><span class="dv">0</span>),</span>
-<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a>         <span class="co"># center predictors</span></span>
-<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a>         <span class="at">water =</span> (WatrCont <span class="sc">-</span> <span class="fu">mean</span>(WatrCont)) <span class="sc">/</span> <span class="dv">100</span></span>
-<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long_transformed &lt;- mite_data_long |&gt; </span></span>
+<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(presabs = as.numeric(abd&gt;0),</span></span>
+<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a><span class="in">         # center predictors</span></span>
+<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a><span class="in">         water = (WatrCont - mean(WatrCont)) / 100</span></span>
+<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a><span class="in">         )</span></span>
 <span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a><span class="co"># pick a species that has about 50/50 chance </span></span>
+<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a><span class="in"># pick a species that has about 50/50 chance </span></span>
 <span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a>mite_data_long_transformed <span class="sc">|&gt;</span></span>
-<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(spp) <span class="sc">|&gt;</span></span>
-<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">freq =</span> <span class="fu">mean</span>(presabs)) <span class="sc">|&gt;</span></span>
-<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq <span class="sc">&gt;</span> .<span class="dv">4</span> <span class="sc">&amp;</span> freq <span class="sc">&lt;</span> .<span class="dv">6</span>)</span>
+<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long_transformed |&gt;</span></span>
+<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(spp) |&gt;</span></span>
+<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(freq = mean(presabs)) |&gt;</span></span>
+<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(freq &gt; .4 &amp; freq &lt; .6)</span></span>
 <span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a><span class="do">## how about: PWIL </span></span>
+<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a><span class="in">## how about: PWIL </span></span>
 <span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a>Let's choose just one species as an example. </span>
@@ -1150,14 +1398,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb34-167"><a href="#cb34-167" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-168"><a href="#cb34-168" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-169"><a href="#cb34-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb34-170"><a href="#cb34-170" aria-hidden="true" tabindex="-1"></a>gp_example_sim_samples <span class="ot">&lt;-</span> gp_example_sim<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> <span class="fu">list</span>(</span>
-<span id="cb34-171"><a href="#cb34-171" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> <span class="dv">20</span>,</span>
-<span id="cb34-172"><a href="#cb34-172" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">20</span>)),</span>
-<span id="cb34-173"><a href="#cb34-173" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">200</span>, <span class="at">chains =</span> <span class="dv">1</span>, <span class="at">iter_sampling =</span> <span class="dv">200</span></span>
-<span id="cb34-174"><a href="#cb34-174" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-170"><a href="#cb34-170" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_sim_samples &lt;- gp_example_sim$sample(data = list(</span></span>
+<span id="cb34-171"><a href="#cb34-171" aria-hidden="true" tabindex="-1"></a><span class="in">  N = 20,</span></span>
+<span id="cb34-172"><a href="#cb34-172" aria-hidden="true" tabindex="-1"></a><span class="in">  x = seq(from = -3, to = 5, length.out = 20)),</span></span>
+<span id="cb34-173"><a href="#cb34-173" aria-hidden="true" tabindex="-1"></a><span class="in">  refresh = 200, chains = 1, iter_sampling = 200</span></span>
+<span id="cb34-174"><a href="#cb34-174" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
 <span id="cb34-175"><a href="#cb34-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-176"><a href="#cb34-176" aria-hidden="true" tabindex="-1"></a>gp_example_sim_samples<span class="sc">$</span><span class="fu">save_object</span>(</span>
-<span id="cb34-177"><a href="#cb34-177" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"topics/04_gp/gp_example_sim_samples"</span>)</span>
+<span id="cb34-176"><a href="#cb34-176" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_sim_samples$save_object(</span></span>
+<span id="cb34-177"><a href="#cb34-177" aria-hidden="true" tabindex="-1"></a><span class="in">  file = "topics/04_gp/gp_example_sim_samples")</span></span>
 <span id="cb34-178"><a href="#cb34-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-179"><a href="#cb34-179" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-182"><a href="#cb34-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -1189,18 +1437,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb34-210"><a href="#cb34-210" aria-hidden="true" tabindex="-1"></a>We need to generate data for making predictions! I'll create a new vector of observations called <span class="in">`new_x`</span> that cover the range of the <span class="in">`water`</span> variable in our dataset.</span>
 <span id="cb34-211"><a href="#cb34-211" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-212"><a href="#cb34-212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
-<span id="cb34-213"><a href="#cb34-213" aria-hidden="true" tabindex="-1"></a><span class="co"># sample N values on the range of x</span></span>
-<span id="cb34-214"><a href="#cb34-214" aria-hidden="true" tabindex="-1"></a>new_x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">15</span>)</span>
+<span id="cb34-213"><a href="#cb34-213" aria-hidden="true" tabindex="-1"></a><span class="in"># sample N values on the range of x</span></span>
+<span id="cb34-214"><a href="#cb34-214" aria-hidden="true" tabindex="-1"></a><span class="in">new_x &lt;- seq(from = -3, to = 5, length.out = 15)</span></span>
 <span id="cb34-215"><a href="#cb34-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-216"><a href="#cb34-216" aria-hidden="true" tabindex="-1"></a><span class="co"># put them on the dataframe</span></span>
-<span id="cb34-217"><a href="#cb34-217" aria-hidden="true" tabindex="-1"></a>gp_example_samp <span class="ot">&lt;-</span> gp_example_pred<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb34-218"><a href="#cb34-218" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs) <span class="sc">+</span> <span class="fu">length</span>(new_x),</span>
-<span id="cb34-219"><a href="#cb34-219" aria-hidden="true" tabindex="-1"></a>              <span class="at">Nobs =</span> <span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs),</span>
-<span id="cb34-220"><a href="#cb34-220" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> <span class="fu">c</span>(pwil_spatial<span class="sc">$</span>water, new_x),</span>
-<span id="cb34-221"><a href="#cb34-221" aria-hidden="true" tabindex="-1"></a>              <span class="at">z =</span> pwil_spatial<span class="sc">$</span>presabs),</span>
-<span id="cb34-222"><a href="#cb34-222" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>, <span class="at">refresh =</span> <span class="dv">1000</span>)</span>
+<span id="cb34-216"><a href="#cb34-216" aria-hidden="true" tabindex="-1"></a><span class="in"># put them on the dataframe</span></span>
+<span id="cb34-217"><a href="#cb34-217" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp &lt;- gp_example_pred$sample(</span></span>
+<span id="cb34-218"><a href="#cb34-218" aria-hidden="true" tabindex="-1"></a><span class="in">  data = list(N = length(pwil_spatial$presabs) + length(new_x),</span></span>
+<span id="cb34-219"><a href="#cb34-219" aria-hidden="true" tabindex="-1"></a><span class="in">              Nobs = length(pwil_spatial$presabs),</span></span>
+<span id="cb34-220"><a href="#cb34-220" aria-hidden="true" tabindex="-1"></a><span class="in">              x = c(pwil_spatial$water, new_x),</span></span>
+<span id="cb34-221"><a href="#cb34-221" aria-hidden="true" tabindex="-1"></a><span class="in">              z = pwil_spatial$presabs),</span></span>
+<span id="cb34-222"><a href="#cb34-222" aria-hidden="true" tabindex="-1"></a><span class="in">  chains = 2, parallel_chains = 2, refresh = 1000)</span></span>
 <span id="cb34-223"><a href="#cb34-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-224"><a href="#cb34-224" aria-hidden="true" tabindex="-1"></a>gp_example_samp<span class="sc">$</span><span class="fu">save_object</span>(<span class="st">"topics/04_gp/gp_example_samp_pwil.rds"</span>)</span>
+<span id="cb34-224"><a href="#cb34-224" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp$save_object("topics/04_gp/gp_example_samp_pwil.rds")</span></span>
 <span id="cb34-225"><a href="#cb34-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-226"><a href="#cb34-226" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-227"><a href="#cb34-227" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
@@ -1209,29 +1457,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb34-230"><a href="#cb34-230" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-231"><a href="#cb34-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=TRUE}</span></span>
 <span id="cb34-232"><a href="#cb34-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-233"><a href="#cb34-233" aria-hidden="true" tabindex="-1"></a><span class="co"># sample N values on the range of x</span></span>
-<span id="cb34-234"><a href="#cb34-234" aria-hidden="true" tabindex="-1"></a>new_x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">15</span>)</span>
+<span id="cb34-233"><a href="#cb34-233" aria-hidden="true" tabindex="-1"></a><span class="in"># sample N values on the range of x</span></span>
+<span id="cb34-234"><a href="#cb34-234" aria-hidden="true" tabindex="-1"></a><span class="in">new_x &lt;- seq(from = -3, to = 5, length.out = 15)</span></span>
 <span id="cb34-235"><a href="#cb34-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-236"><a href="#cb34-236" aria-hidden="true" tabindex="-1"></a>gp_example_samp_pwil <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(</span>
-<span id="cb34-237"><a href="#cb34-237" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topics/04_gp/gp_example_samp_pwil.rds"</span>)</span>
+<span id="cb34-236"><a href="#cb34-236" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp_pwil &lt;- read_rds(</span></span>
+<span id="cb34-237"><a href="#cb34-237" aria-hidden="true" tabindex="-1"></a><span class="in">  "topics/04_gp/gp_example_samp_pwil.rds")</span></span>
 <span id="cb34-238"><a href="#cb34-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-239"><a href="#cb34-239" aria-hidden="true" tabindex="-1"></a>water_prediction_points <span class="ot">&lt;-</span> gp_example_samp_pwil <span class="sc">|&gt;</span> </span>
-<span id="cb34-240"><a href="#cb34-240" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">gather_rvars</span>(f[rownum]) <span class="sc">|&gt;</span> </span>
-<span id="cb34-241"><a href="#cb34-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs)))</span>
+<span id="cb34-239"><a href="#cb34-239" aria-hidden="true" tabindex="-1"></a><span class="in">water_prediction_points &lt;- gp_example_samp_pwil |&gt; </span></span>
+<span id="cb34-240"><a href="#cb34-240" aria-hidden="true" tabindex="-1"></a><span class="in">  tidybayes::gather_rvars(f[rownum]) |&gt; </span></span>
+<span id="cb34-241"><a href="#cb34-241" aria-hidden="true" tabindex="-1"></a><span class="in">  slice(-(1:length(pwil_spatial$presabs)))</span></span>
 <span id="cb34-242"><a href="#cb34-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-243"><a href="#cb34-243" aria-hidden="true" tabindex="-1"></a>water_prediction_points <span class="sc">|&gt;</span> </span>
-<span id="cb34-244"><a href="#cb34-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">water =</span> new_x,</span>
-<span id="cb34-245"><a href="#cb34-245" aria-hidden="true" tabindex="-1"></a>         <span class="at">presabs =</span> posterior<span class="sc">::</span><span class="fu">rfun</span>(plogis)(.value)) <span class="sc">|&gt;</span> </span>
-<span id="cb34-246"><a href="#cb34-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">dist =</span> presabs)) <span class="sc">+</span> </span>
-<span id="cb34-247"><a href="#cb34-247" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb34-248"><a href="#cb34-248" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_fill_viridis_d(option = "rocket") + </span></span>
-<span id="cb34-249"><a href="#cb34-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Reds"</span>, <span class="at">direction  =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb34-250"><a href="#cb34-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs), </span>
-<span id="cb34-251"><a href="#cb34-251" aria-hidden="true" tabindex="-1"></a>              <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb34-252"><a href="#cb34-252" aria-hidden="true" tabindex="-1"></a>              <span class="at">height =</span> .<span class="dv">01</span>, <span class="at">width =</span> <span class="dv">0</span>,</span>
-<span id="cb34-253"><a href="#cb34-253" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> pwil_spatial)</span>
+<span id="cb34-243"><a href="#cb34-243" aria-hidden="true" tabindex="-1"></a><span class="in">water_prediction_points |&gt; </span></span>
+<span id="cb34-244"><a href="#cb34-244" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(water = new_x,</span></span>
+<span id="cb34-245"><a href="#cb34-245" aria-hidden="true" tabindex="-1"></a><span class="in">         presabs = posterior::rfun(plogis)(.value)) |&gt; </span></span>
+<span id="cb34-246"><a href="#cb34-246" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = water, dist = presabs)) + </span></span>
+<span id="cb34-247"><a href="#cb34-247" aria-hidden="true" tabindex="-1"></a><span class="in">  tidybayes::stat_lineribbon() + </span></span>
+<span id="cb34-248"><a href="#cb34-248" aria-hidden="true" tabindex="-1"></a><span class="in">  # scale_fill_viridis_d(option = "rocket") + </span></span>
+<span id="cb34-249"><a href="#cb34-249" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_fill_brewer(palette = "Reds", direction  = -1) + </span></span>
+<span id="cb34-250"><a href="#cb34-250" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_jitter(aes(x = water, y = presabs), </span></span>
+<span id="cb34-251"><a href="#cb34-251" aria-hidden="true" tabindex="-1"></a><span class="in">              inherit.aes = FALSE, </span></span>
+<span id="cb34-252"><a href="#cb34-252" aria-hidden="true" tabindex="-1"></a><span class="in">              height = .01, width = 0,</span></span>
+<span id="cb34-253"><a href="#cb34-253" aria-hidden="true" tabindex="-1"></a><span class="in">              data = pwil_spatial)</span></span>
 <span id="cb34-254"><a href="#cb34-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-255"><a href="#cb34-255" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"topics/04_gp/pwil_water.png"</span>)</span>
+<span id="cb34-255"><a href="#cb34-255" aria-hidden="true" tabindex="-1"></a><span class="in">ggsave("topics/04_gp/pwil_water.png")</span></span>
 <span id="cb34-256"><a href="#cb34-256" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-257"><a href="#cb34-257" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-258"><a href="#cb34-258" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ![](topics/04_gp/pwil_water.png) --&gt;</span></span>
@@ -1300,16 +1548,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb34-327"><a href="#cb34-327" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-328"><a href="#cb34-328" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
 <span id="cb34-329"><a href="#cb34-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-330"><a href="#cb34-330" aria-hidden="true" tabindex="-1"></a><span class="do">## sample the model</span></span>
-<span id="cb34-331"><a href="#cb34-331" aria-hidden="true" tabindex="-1"></a>gp_example_2D_samp <span class="ot">&lt;-</span> gp_example_pred_2D<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb34-332"><a href="#cb34-332" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs) <span class="sc">+</span> <span class="fu">nrow</span>(grid_points),</span>
-<span id="cb34-333"><a href="#cb34-333" aria-hidden="true" tabindex="-1"></a>              <span class="at">Nobs =</span> <span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs),</span>
-<span id="cb34-334"><a href="#cb34-334" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> <span class="fu">bind_rows</span>(pwil_spatial[<span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)], grid_points),</span>
-<span id="cb34-335"><a href="#cb34-335" aria-hidden="true" tabindex="-1"></a>              <span class="at">z =</span> pwil_spatial<span class="sc">$</span>presabs),</span>
-<span id="cb34-336"><a href="#cb34-336" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>, <span class="at">refresh =</span> <span class="dv">1000</span>)</span>
+<span id="cb34-330"><a href="#cb34-330" aria-hidden="true" tabindex="-1"></a><span class="in">## sample the model</span></span>
+<span id="cb34-331"><a href="#cb34-331" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_2D_samp &lt;- gp_example_pred_2D$sample(</span></span>
+<span id="cb34-332"><a href="#cb34-332" aria-hidden="true" tabindex="-1"></a><span class="in">  data = list(N = length(pwil_spatial$presabs) + nrow(grid_points),</span></span>
+<span id="cb34-333"><a href="#cb34-333" aria-hidden="true" tabindex="-1"></a><span class="in">              Nobs = length(pwil_spatial$presabs),</span></span>
+<span id="cb34-334"><a href="#cb34-334" aria-hidden="true" tabindex="-1"></a><span class="in">              x = bind_rows(pwil_spatial[c("x", "y")], grid_points),</span></span>
+<span id="cb34-335"><a href="#cb34-335" aria-hidden="true" tabindex="-1"></a><span class="in">              z = pwil_spatial$presabs),</span></span>
+<span id="cb34-336"><a href="#cb34-336" aria-hidden="true" tabindex="-1"></a><span class="in">  chains = 2, parallel_chains = 2, refresh = 1000)</span></span>
 <span id="cb34-337"><a href="#cb34-337" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-338"><a href="#cb34-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-339"><a href="#cb34-339" aria-hidden="true" tabindex="-1"></a>gp_example_2D_samp<span class="sc">$</span><span class="fu">save_object</span>(<span class="st">"topics/04_gp/gp_example_2D_samp_pwil.rds"</span>)</span>
+<span id="cb34-339"><a href="#cb34-339" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_2D_samp$save_object("topics/04_gp/gp_example_2D_samp_pwil.rds")</span></span>
 <span id="cb34-340"><a href="#cb34-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-341"><a href="#cb34-341" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-344"><a href="#cb34-344" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -1350,9 +1598,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb34-379"><a href="#cb34-379" aria-hidden="true" tabindex="-1"></a>Add water to the model. Does the spatial effect disappear, increase, or stay kind of the same?</span>
 <span id="cb34-380"><a href="#cb34-380" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-381"><a href="#cb34-381" aria-hidden="true" tabindex="-1"></a>Next step: try to model water curve for more than one species. Would it be possible to make the species rho parameters hierarchical?</span>
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+
 
 
 

@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Repeating yesterday’s exercise, with the programming language Stan.">
 
-<title>Modèles hiérarchiques pour les sciences de la vie - Introduction to Stan and simulation</title>
+<title>Introduction to Stan and simulation – Modèles hiérarchiques pour les sciences de la vie</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,14 +95,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -105,15 +139,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools ms-auto">
-    <a href="https://github.com/bios2/hiermod" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://github.com/bios2/hiermod" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
@@ -173,7 +207,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -281,7 +317,7 @@ Warning
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Histogram of simulated counts of birds</figcaption>
+<figcaption>Histogram of simulated counts of birds</figcaption>
 </figure>
 </div>
 </div>
@@ -336,7 +372,7 @@ SOLUTION
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Twelve different simulations of a possible bird dataset. Do all of these seem plausible?</figcaption>
+<figcaption>Twelve different simulations of a possible bird dataset. Do all of these seem plausible?</figcaption>
 </figure>
 </div>
 </div>
@@ -488,7 +524,7 @@ Total execution time: 0.5 seconds.</code></pre>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">25</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">.chain</th>
@@ -694,7 +730,7 @@ Total execution time: 0.5 seconds.</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Prior simulations of bird counts. Green bars are the mean for a particular simulation, and orange histograms show the distribution of observations around this mean.</figcaption>
+<figcaption>Prior simulations of bird counts. Green bars are the mean for a particular simulation, and orange histograms show the distribution of observations around this mean.</figcaption>
 </figure>
 </div>
 </div>
@@ -934,7 +970,7 @@ Visualize everything!
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">posterior distribution for <code>avg_birds_per_person</code>. The orange line is the true parameter value, which we simulated in R.</figcaption>
+<figcaption>posterior distribution for <code>avg_birds_per_person</code>. The orange line is the true parameter value, which we simulated in R.</figcaption>
 </figure>
 </div>
 </div>
@@ -950,7 +986,11 @@ Visualize everything!
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> bird_count,</span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(bird_count_draws_matrix, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -959,7 +999,6 @@ Visualize everything!
 <h3 class="anchored" data-anchor-id="tidybayes-again">tidybayes again</h3>
 <p>As we see above, <code>bayesplot</code> offers many out-of-the-box figures. Sometimes however, you’ll want to control exactly what your figures look like, and for this <code>tidybayes</code> is an excellent tool.</p>
 <p>Let’s use the flexibility of <code>tidybayes</code> to show how the prior and posterior differ between our two models</p>
-<div>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>tidybayes<span class="sc">::</span><span class="fu">gather_rvars</span>(poisson_sim_stan,</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>                        avg_birds_per_person) <span class="sc">|&gt;</span> </span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">"avg_birds_per_person"</span>, <span class="at">dist =</span> .value)) <span class="sc">+</span> </span>
@@ -971,14 +1010,13 @@ Visualize everything!
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_halfeye</span>() <span class="sc">+</span> </span>
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Posterior"</span>) <span class="sc">+</span> </span>
 <span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">60</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-19-2.png" class="img-fluid" width="672"></p>
-</div>
 </div>
 </div>
 </div>
@@ -1068,18 +1106,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1111,7 +1138,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -1163,10 +1212,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1176,8 +1242,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1189,7 +1264,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1233,6 +1431,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1258,6 +1457,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1331,8 +1556,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE}</span></span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="in">library(cmdstanr)</span></span>
 <span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
@@ -1369,7 +1594,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb39-50"><a href="#cb39-50" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Usually we'll use more general language, such as $y_i$. But for this simple example I wanted to make things as explicit as possible. </span>
 <span id="cb39-51"><a href="#cb39-51" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Notice the symbol $\sim$. This is read as "distributed as", and indicates the probability distribution from which the values might come.  When the values we're talking about are data that we can observe (in this case, counts of birds), we call the distribution the likelihood. When the value is something we can't observe (in this case, the average count $\lambda$) we call the distribution the prior. </span>
 <span id="cb39-52"><a href="#cb39-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-53"><a href="#cb39-53" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;aside&gt;</span>Remember that measuring uncertainty with probability is what makes thinking Bayesian. That means we need a probability distribution for everything we can't observe (like an average) or haven't seen yet (like observations)<span class="kw">&lt;/aside&gt;</span></span>
+<span id="cb39-53"><a href="#cb39-53" aria-hidden="true" tabindex="-1"></a>&lt;aside&gt;Remember that measuring uncertainty with probability is what makes thinking Bayesian. That means we need a probability distribution for everything we can't observe (like an average) or haven't seen yet (like observations)&lt;/aside&gt;</span>
 <span id="cb39-54"><a href="#cb39-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-55"><a href="#cb39-55" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
 <span id="cb39-56"><a href="#cb39-56" aria-hidden="true" tabindex="-1"></a>We'll be talking about better ways to model count data in a later exercise! For now, I'm using the Uniform distribution for simplicity. It's not usually a very good choice! </span>
@@ -1402,10 +1627,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb39-83"><a href="#cb39-83" aria-hidden="true" tabindex="-1"></a>let's simulate from a Poisson distribution:</span>
 <span id="cb39-84"><a href="#cb39-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-85"><a href="#cb39-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, collapse=TRUE}</span></span>
-<span id="cb39-86"><a href="#cb39-86" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525600</span>)</span>
-<span id="cb39-87"><a href="#cb39-87" aria-hidden="true" tabindex="-1"></a>n_people <span class="ot">&lt;-</span> <span class="dv">21</span></span>
-<span id="cb39-88"><a href="#cb39-88" aria-hidden="true" tabindex="-1"></a>avg_birds_per_person <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">30</span>)</span>
-<span id="cb39-89"><a href="#cb39-89" aria-hidden="true" tabindex="-1"></a>bird_count <span class="ot">&lt;-</span> <span class="fu">rpois</span>(n_people, <span class="at">lambda =</span> avg_birds_per_person)</span>
+<span id="cb39-86"><a href="#cb39-86" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(525600)</span></span>
+<span id="cb39-87"><a href="#cb39-87" aria-hidden="true" tabindex="-1"></a><span class="in">n_people &lt;- 21</span></span>
+<span id="cb39-88"><a href="#cb39-88" aria-hidden="true" tabindex="-1"></a><span class="in">avg_birds_per_person &lt;- runif(1, min = 0, max = 30)</span></span>
+<span id="cb39-89"><a href="#cb39-89" aria-hidden="true" tabindex="-1"></a><span class="in">bird_count &lt;- rpois(n_people, lambda = avg_birds_per_person)</span></span>
 <span id="cb39-90"><a href="#cb39-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb39-91"><a href="#cb39-91" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-92"><a href="#cb39-92" aria-hidden="true" tabindex="-1"></a>Some things to note in the code above: </span>
@@ -1786,7 +2011,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb39-501"><a href="#cb39-501" aria-hidden="true" tabindex="-1"></a><span class="fu">### Shinystan</span></span>
 <span id="cb39-502"><a href="#cb39-502" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-503"><a href="#cb39-503" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb39-504"><a href="#cb39-504" aria-hidden="true" tabindex="-1"></a>shinystan<span class="sc">::</span><span class="fu">launch_shinystan</span>(poisson_model_samp)</span>
+<span id="cb39-504"><a href="#cb39-504" aria-hidden="true" tabindex="-1"></a><span class="in">shinystan::launch_shinystan(poisson_model_samp)</span></span>
 <span id="cb39-505"><a href="#cb39-505" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb39-506"><a href="#cb39-506" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-507"><a href="#cb39-507" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
@@ -1813,9 +2038,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb39-528"><a href="#cb39-528" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb39-529"><a href="#cb39-529" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-530"><a href="#cb39-530" aria-hidden="true" tabindex="-1"></a>This lets us calculate the posterior distribution directly. See the equation <span class="co">[</span><span class="ot">on Wikipedia</span><span class="co">](https://en.wikipedia.org/wiki/Poisson_distribution#Bayesian_inference)</span> and calculate the posterior for our bird data.</span>
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+
 
 
 
