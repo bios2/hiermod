@@ -12,30 +12,52 @@ format:
 ---
 
 
-To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit! 
+To warm up for this class we will conduct a brief exercise. This exercise serves a few purposes. 
+
+1. It will help us to think about data generating processes. 
+2. It will introduce us to some of the bestiary of statistical distributions that have been invented. 
+3. It will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. 
+
+Most importantly, it will help us to get to know each other a bit! 
 
 ## Group Exercise
+<aside>What makes things the "same" from the point of view of this exercise? Please take some time with your group to talk about what we mean by the word "same"!</aside>
 
-<aside>Please take some time with your group to talk about what we mean by the word "same" in this sentence! What makes things the "same" from the point of view of this exercise.</aside>
+Separate yourselves into groups. The groups should be at least 2 people. _Suggestion_ pair with people you've only just met.
 
-1. Separate yourselves into groups. The groups should be at least 2 people. _Suggestion_ pair with people you've only just met.
-1. Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the **SAME** thing.   Here are some ideas to get you started:
-    * How long can someone hop on one foot 
-    * amount of change in everyone's pockets
-    * how many birds can you hear in 2 minutes
-1. *Hypothesize* What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.  
-2. *Simulate*. create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with `d` and `r` respectively, e.g. `dnorm()` and `rnorm`. Simulate about as many number as you hope to collect. There's a quick example below.  
-3. *Collect* after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.  
-1. *Visualize and fit* Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn't match, why might that be? For this step you have a couple of choices: 
-    * compare histoger
-    * `hist()` or `geom_hist`
-    * `fitdistr`
-    * `optim`
-    * `Stan` (we'll do this one tomorrow!)
-1. *Discuss* We'll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!
+Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure rooughly 30 times in the next 90 minutes. Your measurements should be of the **SAME** thing. Here are some ideas to get you started:
+    
+- How long can someone hop on one foot ?
+- Amount of change in everyone's pockets ?
+- How many birds can you hear in 2 minutes ?
 
+### Hypothesize
 
-## Evening exercises
+What statiscal distribution might describe the observations you are sampling/measuring? What are its property? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.  
 
-Make sure you have a working computer set-up to fit the kinds of models that we are working on in this class. 
-If you want to follow along, we'll be using [Stan](https://mc-stan.org/), and specfically the `cmdstanr` interface. You can follow [this vignette](https://mc-stan.org/cmdstanr/articles/cmdstanr.html) to install `cmdstan`; to confirm that everything works, run the examples in the section [running MCMC](https://mc-stan.org/cmdstanr/articles/cmdstanr.html#running-mcmc)
+### Simulate
+
+create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: 
+  
+- Density function (starting with `d`)
+- Random generation function (starting with `r`).
+
+For example, `dnorm()` and `rnorm`. 
+Simulate about as many number as you hope to collect. There's a quick example below.  
+
+### Collect
+
+After you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take roughly 1 hour.  
+
+### Visualize and fit
+
+Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn't match, why might that be? For this step you have a couple of choices: 
+- Compare histograms :
+  - `hist()` (base R) or `geom_hist` (ggplot2 R package)
+- `fitdistr` (MASS R package)
+- `optim` (base R) 
+    - `Stan` (we'll do this one tomorrow!)
+
+### Discuss
+
+We'll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!

@@ -133,8 +133,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#group-exercise" id="toc-group-exercise" class="nav-link active" data-scroll-target="#group-exercise">Group Exercise</a></li>
-  <li><a href="#evening-exercises" id="toc-evening-exercises" class="nav-link" data-scroll-target="#evening-exercises">Evening exercises</a></li>
+  <li><a href="#group-exercise" id="toc-group-exercise" class="nav-link active" data-scroll-target="#group-exercise">Group Exercise</a>
+  <ul class="collapse">
+  <li><a href="#hypothesize" id="toc-hypothesize" class="nav-link" data-scroll-target="#hypothesize">Hypothesize</a></li>
+  <li><a href="#simulate" id="toc-simulate" class="nav-link" data-scroll-target="#simulate">Simulate</a></li>
+  <li><a href="#collect" id="toc-collect" class="nav-link" data-scroll-target="#collect">Collect</a></li>
+  <li><a href="#visualize-and-fit" id="toc-visualize-and-fit" class="nav-link" data-scroll-target="#visualize-and-fit">Visualize and fit</a></li>
+  <li><a href="#discuss" id="toc-discuss" class="nav-link" data-scroll-target="#discuss">Discuss</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -165,44 +171,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit!</p>
+<p>To warm up for this class we will conduct a brief exercise. This exercise serves a few purposes.</p>
+<ol type="1">
+<li>It will help us to think about data generating processes.</li>
+<li>It will introduce us to some of the bestiary of statistical distributions that have been invented.</li>
+<li>It will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation.</li>
+</ol>
+<p>Most importantly, it will help us to get to know each other a bit!</p>
 <section id="group-exercise" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="group-exercise">Group Exercise</h2>
 <aside>
-Please take some time with your group to talk about what we mean by the word “same” in this sentence! What makes things the “same” from the point of view of this exercise.
+What makes things the “same” from the point of view of this exercise? Please take some time with your group to talk about what we mean by the word “same”!
 </aside>
-<ol type="1">
-<li>Separate yourselves into groups. The groups should be at least 2 people. <em>Suggestion</em> pair with people you’ve only just met.</li>
-<li>Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the <strong>SAME</strong> thing. Here are some ideas to get you started:
+<p>Separate yourselves into groups. The groups should be at least 2 people. <em>Suggestion</em> pair with people you’ve only just met.</p>
+<p>Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure rooughly 30 times in the next 90 minutes. Your measurements should be of the <strong>SAME</strong> thing. Here are some ideas to get you started:</p>
 <ul>
-<li>How long can someone hop on one foot</li>
-<li>amount of change in everyone’s pockets</li>
-<li>how many birds can you hear in 2 minutes</li>
-</ul></li>
-<li><em>Hypothesize</em> What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you’re going to measure.<br>
-</li>
-<li><em>Simulate</em>. create a simulation of the data you’re about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with <code>d</code> and <code>r</code> respectively, e.g.&nbsp;<code>dnorm()</code> and <code>rnorm</code>. Simulate about as many number as you hope to collect. There’s a quick example below.<br>
-</li>
-<li><em>Collect</em> after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.<br>
-</li>
-<li><em>Visualize and fit</em> Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn’t match, why might that be? For this step you have a couple of choices:
-<ul>
-<li>compare histoger</li>
-<li><code>hist()</code> or <code>geom_hist</code></li>
-<li><code>fitdistr</code></li>
-<li><code>optim</code></li>
-<li><code>Stan</code> (we’ll do this one tomorrow!)</li>
-</ul></li>
-<li><em>Discuss</em> We’ll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!</li>
-</ol>
+<li>How long can someone hop on one foot ?</li>
+<li>Amount of change in everyone’s pockets ?</li>
+<li>How many birds can you hear in 2 minutes ?</li>
+</ul>
+<section id="hypothesize" class="level3">
+<h3 class="anchored" data-anchor-id="hypothesize">Hypothesize</h3>
+<p>What statiscal distribution might describe the observations you are sampling/measuring? What are its property? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you’re going to measure.</p>
 </section>
-<section id="evening-exercises" class="level2">
-<h2 class="anchored" data-anchor-id="evening-exercises">Evening exercises</h2>
-<p>Make sure you have a working computer set-up to fit the kinds of models that we are working on in this class. If you want to follow along, we’ll be using <a href="https://mc-stan.org/">Stan</a>, and specfically the <code>cmdstanr</code> interface. You can follow <a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html">this vignette</a> to install <code>cmdstan</code>; to confirm that everything works, run the examples in the section <a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html#running-mcmc">running MCMC</a></p>
+<section id="simulate" class="level3">
+<h3 class="anchored" data-anchor-id="simulate">Simulate</h3>
+<p>create a simulation of the data you’re about to collect. Every statistical distribution has four functions in R, and here you can use two of them:</p>
+<ul>
+<li>Density function (starting with <code>d</code>)</li>
+<li>Random generation function (starting with <code>r</code>).</li>
+</ul>
+<p>For example, <code>dnorm()</code> and <code>rnorm</code>. Simulate about as many number as you hope to collect. There’s a quick example below.</p>
+</section>
+<section id="collect" class="level3">
+<h3 class="anchored" data-anchor-id="collect">Collect</h3>
+<p>After you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take roughly 1 hour.</p>
+</section>
+<section id="visualize-and-fit" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-and-fit">Visualize and fit</h3>
+<p>Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn’t match, why might that be? For this step you have a couple of choices: - Compare histograms : - <code>hist()</code> (base R) or <code>geom_hist</code> (ggplot2 R package) - <code>fitdistr</code> (MASS R package) - <code>optim</code> (base R) - <code>Stan</code> (we’ll do this one tomorrow!)</p>
+</section>
+<section id="discuss" class="level3">
+<h3 class="anchored" data-anchor-id="discuss">Discuss</h3>
+<p>We’ll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!</p>
 
 
 <!-- -->
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -691,33 +707,55 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit! </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>To warm up for this class we will conduct a brief exercise. This exercise serves a few purposes. </span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Group Exercise</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>&lt;aside&gt;Please take some time with your group to talk about what we mean by the word "same" in this sentence! What makes things the "same" from the point of view of this exercise.&lt;/aside&gt;</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>It will help us to think about data generating processes. </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>It will introduce us to some of the bestiary of statistical distributions that have been invented. </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>It will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. </span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Separate yourselves into groups. The groups should be at least 2 people. _Suggestion_ pair with people you've only just met.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the **SAME** thing.   Here are some ideas to get you started:</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>How long can someone hop on one foot </span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>amount of change in everyone's pockets</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>how many birds can you hear in 2 minutes</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>*Hypothesize* What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.  </span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>*Simulate*. create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with <span class="in">`d`</span> and <span class="in">`r`</span> respectively, e.g. <span class="in">`dnorm()`</span> and <span class="in">`rnorm`</span>. Simulate about as many number as you hope to collect. There's a quick example below.  </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>*Collect* after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.  </span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>*Visualize and fit* Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn't match, why might that be? For this step you have a couple of choices: </span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>compare histoger</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span><span class="in">`hist()`</span> or <span class="in">`geom_hist`</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span><span class="in">`fitdistr`</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span><span class="in">`optim`</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span><span class="in">`Stan`</span> (we'll do this one tomorrow!)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>*Discuss* We'll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>Most importantly, it will help us to get to know each other a bit! </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Group Exercise</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>&lt;aside&gt;What makes things the "same" from the point of view of this exercise? Please take some time with your group to talk about what we mean by the word "same"!&lt;/aside&gt;</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Separate yourselves into groups. The groups should be at least 2 people. _Suggestion_ pair with people you've only just met.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Each group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure rooughly 30 times in the next 90 minutes. Your measurements should be of the **SAME** thing. Here are some ideas to get you started:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How long can someone hop on one foot ?</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Amount of change in everyone's pockets ?</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How many birds can you hear in 2 minutes ?</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">### Hypothesize</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>What statiscal distribution might describe the observations you are sampling/measuring? What are its property? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.  </span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Evening exercises</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### Simulate</span></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Make sure you have a working computer set-up to fit the kinds of models that we are working on in this class. </span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>If you want to follow along, we'll be using <span class="co">[</span><span class="ot">Stan</span><span class="co">](https://mc-stan.org/)</span>, and specfically the <span class="in">`cmdstanr`</span> interface. You can follow <span class="co">[</span><span class="ot">this vignette</span><span class="co">](https://mc-stan.org/cmdstanr/articles/cmdstanr.html)</span> to install <span class="in">`cmdstan`</span>; to confirm that everything works, run the examples in the section <span class="co">[</span><span class="ot">running MCMC</span><span class="co">](https://mc-stan.org/cmdstanr/articles/cmdstanr.html#running-mcmc)</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Density function (starting with <span class="in">`d`</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Random generation function (starting with <span class="in">`r`</span>).</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>For example, <span class="in">`dnorm()`</span> and <span class="in">`rnorm`</span>. </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>Simulate about as many number as you hope to collect. There's a quick example below.  </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">### Collect</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>After you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take roughly 1 hour.  </span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visualize and fit</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn't match, why might that be? For this step you have a couple of choices: </span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compare histograms :</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span><span class="in">`hist()`</span> (base R) or <span class="in">`geom_hist`</span> (ggplot2 R package)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`fitdistr`</span> (MASS R package)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`optim`</span> (base R) </span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span><span class="in">`Stan`</span> (we'll do this one tomorrow!)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### Discuss</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>We'll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
