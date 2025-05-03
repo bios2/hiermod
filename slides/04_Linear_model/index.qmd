@@ -4,7 +4,7 @@ title-slide-attributes:
   data-background-image: ../img/bg.jpg
   data-background-size: full
 author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2024-04-30"
+date: "2025-05-06"
 execute:
   echo: true
 format: 
@@ -120,7 +120,7 @@ abline(a = yintercept,
 
 ## Regression parameters
 
-Generally, we focused on the most commonly assessed regression parameters of the simple linear model, the **slope** and the **intercept**, but there is another one that is very important to consider, especially for this course.
+Generally, the **slope** and the **intercept** are the regression parameters we focus on when studying the simple linear model, but there is another one that is very important to consider, especially for this course.
 
 . . .
 
@@ -163,7 +163,7 @@ In words, it means that the error in a simple linear regression follows a Gaussi
 . . .
 
 ::: {style="font-size: 0.75em"}
-For most the course, we will play with the variance parameter $\sigma^2$ in a bunch of different ways. 
+For most of the course, we will play with the variance parameter $\sigma^2$ in a bunch of different ways. 
 :::
 
 . . .
@@ -332,7 +332,7 @@ $$
 . . . 
 
 ::: {style="font-size: 0.85em"}
-Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in general.
+Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, technically, matrix algebra is quite practical to use in this context and especially for this course.
 :::
 
 . . .
@@ -614,7 +614,7 @@ $$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$ where $\sigma^2$ is an estimated v
 
 . . .
 
-which means that the error linear regression follows a Gaussian distribution with an estimateed variance.
+which means that the error in a linear regression follows a Gaussian distribution with an estimated variance.
 
 . . .
 
@@ -625,7 +625,7 @@ $$\mathbf{y} \sim \mathcal{N}(\mathbf{X}\boldsymbol{\beta}, \sigma^2)$$ where $\
 
 . . .
 
-To go around this problem, *generalized* linear models (GLMs) have been proposed. In essence, GLMs use *link functions* to adapt models for them to be used on non-Gaussian data.
+If for some reason we do not want our model to have a Gaussian error, *generalized* linear models (GLMs) have been proposed. In essence, GLMs use *link functions* to adapt models for them to be used on non-Gaussian data.
 
 . . .
 

@@ -38,15 +38,15 @@
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model",
     "href": "slides/04_Linear_model/index.html#basic-regression-model",
     "title": "Linear models",
-    "section": "",
-    "text": "Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\n\n. . .\n\nIn its simplest form, a regression model is usually presented as\n\n. . .\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n. . .\n\nIt is known as a simple linear model, where :\n\n. . .\n\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\n. . .\n\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\n. . .\n\n\\(\\beta_0\\) is the model intercept\n\n. . .\n\n\\(\\beta_1\\) is the model slope\n\n. . .\n\n\\(\\varepsilon\\) is the error term"
+    "section": "Basic regression model",
+    "text": "Basic regression model\n\nHierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\n\n\n\nIn its simplest form, a regression model is usually presented as\n\n\n\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n\n\nIt is known as a simple linear model, where :\n\n\n\n\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\n\n\n\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\n\n\n\n\\(\\beta_0\\) is the model intercept\n\n\n\n\n\\(\\beta_1\\) is the model slope\n\n\n\n\n\\(\\varepsilon\\) is the error term"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model-1",
     "href": "slides/04_Linear_model/index.html#basic-regression-model-1",
     "title": "Linear models",
     "section": "Basic regression model",
-    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily.\n. . .\nFor example if we are interested in knowing how a newly discovered plant species (Bidonia exemplaris) reacts to humidity, we can relate the biomass of B. exemplaris sampled at 100 sites with the soil humidity content and readily visual the data and the trend."
+    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily.\n\nFor example if we are interested in knowing how a newly discovered plant species (Bidonia exemplaris) reacts to humidity, we can relate the biomass of B. exemplaris sampled at 100 sites with the soil humidity content and readily visual the data and the trend."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model-2",
@@ -60,35 +60,35 @@
     "href": "slides/04_Linear_model/index.html#regression-parameters",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nGenerally, we focused on the most commonly assessed regression parameters of the simple linear model, the slope and the intercept, but there is another one that is very important to consider, especially for this course.\n. . .\nAny ideas which one it is ?"
+    "text": "Regression parameters\nGenerally, the slope and the intercept are the regression parameters we focus on when studying the simple linear model, but there is another one that is very important to consider, especially for this course.\n\nAny ideas which one it is ?"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-1",
     "href": "slides/04_Linear_model/index.html#regression-parameters-1",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n. . .\n\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\n. . .\n\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]\n\n\nwhere \\(\\sigma^2\\) is an estimated variance.\n\n. . .\n\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\n\n. . .\n\nFor most the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\n\n. . .\n\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
+    "text": "Regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n\n\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\n\n\n\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]\n\n\nwhere \\(\\sigma^2\\) is an estimated variance.\n\n\n\n\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\n\n\n\n\nFor most of the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\n\n\n\n\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-2",
     "href": "slides/04_Linear_model/index.html#regression-parameters-2",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nA first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as \\[\ny \\sim \\mathcal{N}(\\beta_0 + \\beta_1 x_{i}, \\sigma^2)\n\\]\n. . .\nAs we will see later in this course, this writting style will become particularly useful."
+    "text": "Regression parameters\nA first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as \\[\ny \\sim \\mathcal{N}(\\beta_0 + \\beta_1 x_{i}, \\sigma^2)\n\\]\n\nAs we will see later in this course, this writting style will become particularly useful."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-3",
     "href": "slides/04_Linear_model/index.html#regression-parameters-3",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\n\n. . .\n\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)\n\n. . ."
+    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\n\n\n\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-4",
     "href": "slides/04_Linear_model/index.html#regression-parameters-4",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n. . .\n\n# Regression model\nregBexemplaris &lt;- lm(b.exemplaris ~ humidity)\nregIchicktighii &lt;- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris &lt;- summary(regBexemplaris)\nsummaryRegIchicktighii &lt;- summary(regIchicktighii)"
+    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n\n\n# Regression model\nregBexemplaris &lt;- lm(b.exemplaris ~ humidity)\nregIchicktighii &lt;- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris &lt;- summary(regBexemplaris)\nsummaryRegIchicktighii &lt;- summary(regIchicktighii)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-5",
@@ -102,14 +102,14 @@
     "href": "slides/04_Linear_model/index.html#limits-of-the-simple-linear-regression",
     "title": "Linear models",
     "section": "Limits of the simple linear regression",
-    "text": "Limits of the simple linear regression\nThere are two major pitfalls of the simple linear model for problems in the life sciences\n. . .\n\nOne explanatory is almost never enough to approach biological questions nowadays.\n\n. . .\n\nThe simple linear model assumes that the error follows a Gaussian distribution."
+    "text": "Limits of the simple linear regression\nThere are two major pitfalls of the simple linear model for problems in the life sciences\n\n\nOne explanatory is almost never enough to approach biological questions nowadays.\n\n\n\n\nThe simple linear model assumes that the error follows a Gaussian distribution."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#multiple-linear-regression",
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\n\n. . .\n\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n. . .\n\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in general.\n\n. . .\n\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
+    "text": "Multiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\n\n\n\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n\n\n\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, technically, matrix algebra is quite practical to use in this context and especially for this course.\n\n\n\n\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#a-general-way-to-write-matrices",
@@ -158,7 +158,7 @@
     "href": "slides/04_Linear_model/index.html#identity-matrix",
     "title": "Linear models",
     "section": "Identity matrix",
-    "text": "Identity matrix\nThe identity matrix is a square matrix where all values of its diagonal are 0 except the diagonal values which are all 1s.\n\n\\[\n\\mathbf{I}=\\begin{bmatrix}\n                1 & 0 & 0\\\\\n                0 & 1 & 0\\\\\n                0 & 0 & 1\\\\\n        \\end{bmatrix}\n\\]\n\n. . .\n\nThe identity matrix is important because\n\\[\\mathbf{A} \\cdot \\mathbf{I}_n = \\mathbf{A}\\] or\n\\[\\mathbf{I}_m \\cdot \\mathbf{A} = \\mathbf{A}\\]"
+    "text": "Identity matrix\nThe identity matrix is a square matrix where all values of its diagonal are 0 except the diagonal values which are all 1s.\n\n\\[\n\\mathbf{I}=\\begin{bmatrix}\n                1 & 0 & 0\\\\\n                0 & 1 & 0\\\\\n                0 & 0 & 1\\\\\n        \\end{bmatrix}\n\\]\n\n\n\nThe identity matrix is important because\n\\[\\mathbf{A} \\cdot \\mathbf{I}_n = \\mathbf{A}\\] or\n\\[\\mathbf{I}_m \\cdot \\mathbf{A} = \\mathbf{A}\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#diagonal-matrix",
@@ -172,42 +172,42 @@
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression-1",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\n. . .\nIn this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the \\(\\beta\\)s) can depend on other other data and parameters.\n. . .\nAs we saw earlier, a classic way to write multiple linear regression is\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n. . .\nHowever, we can rewrite this using matrix notation has\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]"
+    "text": "Multiple linear regression\n\nIn this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the \\(\\beta\\)s) can depend on other other data and parameters.\n\n\nAs we saw earlier, a classic way to write multiple linear regression is\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n\nHowever, we can rewrite this using matrix notation has\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#multiple-linear-regression-2",
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression-2",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\nMatrix notation\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]\nUsing the matrix notation, we assume that\n. . .\n\n\n\\(\\mathbf{y}\\) is a vector of length \\(n\\) (samples)\n\n\n. . .\n\n\n\\(\\mathbf{X}\\) is a matrix with \\(n\\) samples (rows) and representing \\(p\\) explanatory variables (columns)\n\n\n. . .\n\n\n\\(\\boldsymbol{\\beta}\\) is a vector of \\(p\\) regression coefficients\n\n\n. . .\n\n\n\\(\\boldsymbol{\\varepsilon}\\) is a vector of residuals of length \\(n\\)"
+    "text": "Multiple linear regression\nMatrix notation\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]\nUsing the matrix notation, we assume that\n\n\n\n\\(\\mathbf{y}\\) is a vector of length \\(n\\) (samples)\n\n\n\n\n\n\n\\(\\mathbf{X}\\) is a matrix with \\(n\\) samples (rows) and representing \\(p\\) explanatory variables (columns)\n\n\n\n\n\n\n\\(\\boldsymbol{\\beta}\\) is a vector of \\(p\\) regression coefficients\n\n\n\n\n\n\n\\(\\boldsymbol{\\varepsilon}\\) is a vector of residuals of length \\(n\\)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#error-in-linear-models",
     "href": "slides/04_Linear_model/index.html#error-in-linear-models",
     "title": "Linear models",
     "section": "Error in linear models",
-    "text": "Error in linear models\nAs previously mentioned, in (simple and multiple!) linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\n. . .\nwhich means that the error linear regression follows a Gaussian distribution with an estimateed variance.\n. . .\nNote The model can be written using matrix notation as\n\\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{X}\\boldsymbol{\\beta}, \\sigma^2)\\] where \\(\\sigma^2\\)"
+    "text": "Error in linear models\nAs previously mentioned, in (simple and multiple!) linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\n\nwhich means that the error in a linear regression follows a Gaussian distribution with an estimated variance.\n\n\nNote The model can be written using matrix notation as\n\\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{X}\\boldsymbol{\\beta}, \\sigma^2)\\] where \\(\\sigma^2\\)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\n. . .\nTo go around this problem, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\n. . .\nMathematically, the generic way to write generalized linear model is\n\\[\n\\widehat{y}_i = g^{-1}(\\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip})\n\\]\n. . .\nor in matrix notation\n\\[\n\\widehat{\\mathbf{y}} = g^{-1}(\\mathbf{X}\\boldsymbol{\\beta})\n\\]\nwhere \\(g\\) is the link function and \\(g^{-1}\\) the inverse link function."
+    "text": "Generalized linear models\n\nIf for some reason we do not want our model to have a Gaussian error, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\n\n\nMathematically, the generic way to write generalized linear model is\n\\[\n\\widehat{y}_i = g^{-1}(\\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip})\n\\]\n\n\nor in matrix notation\n\\[\n\\widehat{\\mathbf{y}} = g^{-1}(\\mathbf{X}\\boldsymbol{\\beta})\n\\]\nwhere \\(g\\) is the link function and \\(g^{-1}\\) the inverse link function."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models-1",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models-1",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\nLink functions\n\nThere are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.\n\n. . .\n\nArguably the most common link function in ecology is\n\n. . .\nlogit link function\n\nIt is commonly used for modelling binary (0-1) data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\frac{\\widehat{\\mathbf{y}}}{1 - \\widehat{\\mathbf{y}}}\\right)\n\\]\n\n. . .\n\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\frac{\\exp(\\mathbf{X}\\boldsymbol{\\beta})}{1 + \\exp(\\mathbf{X}\\boldsymbol{\\beta})} = \\frac{1}{1 + \\exp(-\\mathbf{X}\\boldsymbol{\\beta})}\n\\]"
+    "text": "Generalized linear models\nLink functions\n\nThere are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.\n\n\n\nArguably the most common link function in ecology is\n\n\n\nlogit link function\n\nIt is commonly used for modelling binary (0-1) data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\frac{\\widehat{\\mathbf{y}}}{1 - \\widehat{\\mathbf{y}}}\\right)\n\\]\n\n\n\n\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\frac{\\exp(\\mathbf{X}\\boldsymbol{\\beta})}{1 + \\exp(\\mathbf{X}\\boldsymbol{\\beta})} = \\frac{1}{1 + \\exp(-\\mathbf{X}\\boldsymbol{\\beta})}\n\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models-2",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models-2",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\nLink functions\nAnother commonly used link function is\n. . .\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\]\n. . .\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
+    "text": "Generalized linear models\nLink functions\nAnother commonly used link function is\n\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\]\n\n\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
   },
   {
     "objectID": "slides/template/index.html#un-beau-titre",
