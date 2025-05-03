@@ -4,7 +4,7 @@ title-slide-attributes:
   data-background-image: ../img/bg.jpg
   data-background-size: full
 author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2024-04-29"
+date: "2025-05-06"
 execute:
   echo: true
 format: 
@@ -113,7 +113,7 @@ $$\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P
 . . .
 
 ::: {style="font-size: 0.75em"}
-The **prior probability** informes us about the probability of the model being true *before* the current data is considered
+The **prior probability** informes us about the probability of the model being true *before* considering any available data
 :::
 . . .
 
@@ -253,13 +253,13 @@ As I hinted earlier, there are a number of ways to estimate the parameters of a 
 . . .
 
 :::{style="font-size: 0.75em;"}
-The goal of this course is **not** to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.
+The goal of this course is **not** to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how MCMC and HMC work.
 :::
 
 ## Markov Chain Monte Carlo (MCMC)
 
 :::{style="font-size: 0.75em;"}
-Historically, the developments of MCMC have been intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.
+Historically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made during the Los Alamos projects.
 
 To explain what is an MCMC, let's imagine that we are interested in understanding how the mallard (*Anas platyrhynchos*) grows from hatchling to adult.
 :::
@@ -284,7 +284,7 @@ y <- rnorm(length(x), 100 + x * 13.6, sd = 100)
 plot(x,y,
      bty ="L",
      las = 1,
-     xlab = "Days",
+     xlab = "Days since birth",
      ylab = "Weight (g)",
      pch = 19, 
      col = " blue",
@@ -368,11 +368,11 @@ In doing so, we are not focusing on finding the 'best' parameter values. Rather,
 
 . . .
 
-When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.
+When using an MCMC, we are interested in sampling distributions to estimate the parameters of the model.
 
 . . . 
 
-Since we do not know what the "true" characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is. 
+Technically, MCMC and HMC rely on different approaches to assess the structure of the distributions. 
 
 ## Markov Chain Monte Carlo (MCMC)
 
@@ -400,7 +400,7 @@ In MCMC and HMC, a lot of iterations need to be carried out to assess the distri
 Here is a rough procedure to follow:
 
 1. Perform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes
-2. Decide on a number of steps to run to obtain a result in a reasonable amount of time
+2. Decide on a number of steps to use to obtain a result in a reasonable amount of time
 3. Run the algorithm again !
 4. Study the chain visually
 :::
