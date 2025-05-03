@@ -393,6 +393,12 @@ install.packages(c("vegan",
                    "palmerpenguins",
                    "tidybayes",
                    "tidyverse",
-                   "posterior",
-                   "rstan"))
+                   "posterior"))
+
+# Run the next line if you already have rstan installed
+# remove.packages(c("StanHeaders", "rstan"))
+
+install.packages("rstan", repos = c('https://stan-dev.r-universe.dev', getOption("repos")))
+
+example(stan_model, package = "rstan", run.dontrun = TRUE)
 ```
