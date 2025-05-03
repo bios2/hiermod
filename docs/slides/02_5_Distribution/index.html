@@ -1,276 +1,427 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
-<meta name="dcterms.date" content="2024-04-29">
-
-<title>Probability Distribution – Modèles hiérarchiques pour les sciences de la vie</title>
-<style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-  vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-</style>
-
-
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<html lang="en"><head>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.57">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
+  <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
+  <meta name="dcterms.date" content="2024-04-29">
+  <title>Modèles hiérarchiques pour les sciences de la vie – Probability Distribution</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
   }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
-<link rel="stylesheet" href="../../styles.css">
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
 </head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
 
-<body class="nav-fixed">
+<section id="title-slide" data-background-image="../img/bg.jpg" data-background-size="full" class="quarto-title-block center">
+  <h1 class="title">Probability Distribution</h1>
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Modèles hiérarchiques pour les sciences de la vie</span>
-    </a>
-  </div>
-        <div class="quarto-navbar-tools tools-end">
-    <a href="https://github.com/bios2/hiermod" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Guillaume Blanchet – Andrew MacDonald 
 </div>
-          <div id="quarto-search" class="" title="Search"></div>
-      </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#probabilities" id="toc-probabilities" class="nav-link active" data-scroll-target="#probabilities">Probabilities</a></li>
-  <li><a href="#a-bit-of-history" id="toc-a-bit-of-history" class="nav-link" data-scroll-target="#a-bit-of-history">A bit of history</a></li>
-  <li><a href="#a-bit-of-history-1" id="toc-a-bit-of-history-1" class="nav-link" data-scroll-target="#a-bit-of-history-1">A bit of history</a></li>
-  <li><a href="#the-basics-of-probabilities" id="toc-the-basics-of-probabilities" class="nav-link" data-scroll-target="#the-basics-of-probabilities">The basics of probabilities</a></li>
-  <li><a href="#the-basics-of-probabilities-1" id="toc-the-basics-of-probabilities-1" class="nav-link" data-scroll-target="#the-basics-of-probabilities-1">The basics of probabilities</a></li>
-  <li><a href="#probabilities-and-events" id="toc-probabilities-and-events" class="nav-link" data-scroll-target="#probabilities-and-events">Probabilities and events</a></li>
-  <li><a href="#probabilities-and-events-1" id="toc-probabilities-and-events-1" class="nav-link" data-scroll-target="#probabilities-and-events-1">Probabilities and events</a></li>
-  <li><a href="#probabilities-and-events-2" id="toc-probabilities-and-events-2" class="nav-link" data-scroll-target="#probabilities-and-events-2">Probabilities and events</a></li>
-  <li><a href="#independent" id="toc-independent" class="nav-link" data-scroll-target="#independent">Independent !?</a></li>
-  <li><a href="#bernoulli-distribution" id="toc-bernoulli-distribution" class="nav-link" data-scroll-target="#bernoulli-distribution">Bernoulli distribution</a></li>
-  <li><a href="#bernoulli-distribution-1" id="toc-bernoulli-distribution-1" class="nav-link" data-scroll-target="#bernoulli-distribution-1">Bernoulli distribution</a></li>
-  <li><a href="#bernoulli-distribution-2" id="toc-bernoulli-distribution-2" class="nav-link" data-scroll-target="#bernoulli-distribution-2">Bernoulli distribution</a></li>
-  <li><a href="#moment-interlude" id="toc-moment-interlude" class="nav-link" data-scroll-target="#moment-interlude">Moment interlude</a></li>
-  <li><a href="#moments-of-the-bernoulli-distribution" id="toc-moments-of-the-bernoulli-distribution" class="nav-link" data-scroll-target="#moments-of-the-bernoulli-distribution">Moments of the Bernoulli distribution</a></li>
-  <li><a href="#moments-of-the-bernoulli-distribution-1" id="toc-moments-of-the-bernoulli-distribution-1" class="nav-link" data-scroll-target="#moments-of-the-bernoulli-distribution-1">Moments of the Bernoulli distribution</a></li>
-  <li><a href="#moments-of-the-bernoulli-distribution-2" id="toc-moments-of-the-bernoulli-distribution-2" class="nav-link" data-scroll-target="#moments-of-the-bernoulli-distribution-2">Moments of the Bernoulli distribution</a></li>
-  <li><a href="#lets-make-it-more-complicated" id="toc-lets-make-it-more-complicated" class="nav-link" data-scroll-target="#lets-make-it-more-complicated">Let’s make it more complicated</a></li>
-  <li><a href="#binomial-distribution" id="toc-binomial-distribution" class="nav-link" data-scroll-target="#binomial-distribution">Binomial distribution</a></li>
-  <li><a href="#binomial-distribution-1" id="toc-binomial-distribution-1" class="nav-link" data-scroll-target="#binomial-distribution-1">Binomial distribution</a></li>
-  <li><a href="#mathematical-technicalities-interlude" id="toc-mathematical-technicalities-interlude" class="nav-link" data-scroll-target="#mathematical-technicalities-interlude">Mathematical technicalities interlude</a></li>
-  <li><a href="#moment-of-the-binomial-distribution" id="toc-moment-of-the-binomial-distribution" class="nav-link" data-scroll-target="#moment-of-the-binomial-distribution">Moment of the binomial distribution</a></li>
-  <li><a href="#moment-of-the-binomial-distribution-1" id="toc-moment-of-the-binomial-distribution-1" class="nav-link" data-scroll-target="#moment-of-the-binomial-distribution-1">Moment of the binomial distribution</a></li>
-  <li><a href="#moments-of-the-binomial-distribution" id="toc-moments-of-the-binomial-distribution" class="nav-link" data-scroll-target="#moments-of-the-binomial-distribution">Moments of the binomial distribution</a></li>
-  <li><a href="#binomial-distribution-2" id="toc-binomial-distribution-2" class="nav-link" data-scroll-target="#binomial-distribution-2">Binomial distribution</a></li>
-  <li><a href="#jia-xian-triangle" id="toc-jia-xian-triangle" class="nav-link" data-scroll-target="#jia-xian-triangle">Jia Xian triangle</a></li>
-  <li><a href="#pascals-triangle" id="toc-pascals-triangle" class="nav-link" data-scroll-target="#pascals-triangle">Pascal’s triangle</a></li>
-  <li><a href="#pascals-triangle-1" id="toc-pascals-triangle-1" class="nav-link" data-scroll-target="#pascals-triangle-1">Pascal’s triangle</a></li>
-  <li><a href="#pascals-triangle-2" id="toc-pascals-triangle-2" class="nav-link" data-scroll-target="#pascals-triangle-2">Pascal’s triangle</a></li>
-  <li><a href="#pascals-triangle-3" id="toc-pascals-triangle-3" class="nav-link" data-scroll-target="#pascals-triangle-3">Pascal’s triangle</a></li>
-  <li><a href="#pascals-triangle-4" id="toc-pascals-triangle-4" class="nav-link" data-scroll-target="#pascals-triangle-4">Pascal’s triangle</a></li>
-  <li><a href="#pascals-triangle-5" id="toc-pascals-triangle-5" class="nav-link" data-scroll-target="#pascals-triangle-5">Pascal’s triangle</a></li>
-  <li><a href="#pascals-triangle-6" id="toc-pascals-triangle-6" class="nav-link" data-scroll-target="#pascals-triangle-6">Pascal’s triangle</a></li>
-  <li><a href="#binomial-and-gaussian-distribution" id="toc-binomial-and-gaussian-distribution" class="nav-link" data-scroll-target="#binomial-and-gaussian-distribution">Binomial and Gaussian distribution</a></li>
-  <li><a href="#gaussian-normal-distribution" id="toc-gaussian-normal-distribution" class="nav-link" data-scroll-target="#gaussian-normal-distribution">Gaussian (Normal) distribution</a></li>
-  <li><a href="#gaussian-normal-distribution-1" id="toc-gaussian-normal-distribution-1" class="nav-link" data-scroll-target="#gaussian-normal-distribution-1">Gaussian (Normal) distribution</a></li>
-  <li><a href="#gaussian-normal-distribution-2" id="toc-gaussian-normal-distribution-2" class="nav-link" data-scroll-target="#gaussian-normal-distribution-2">Gaussian (Normal) distribution</a></li>
-  <li><a href="#moment-of-the-gaussian-distribution" id="toc-moment-of-the-gaussian-distribution" class="nav-link" data-scroll-target="#moment-of-the-gaussian-distribution">Moment of the Gaussian distribution</a></li>
-  <li><a href="#moment-of-the-gaussian-distribution-1" id="toc-moment-of-the-gaussian-distribution-1" class="nav-link" data-scroll-target="#moment-of-the-gaussian-distribution-1">Moment of the Gaussian distribution</a></li>
-  <li><a href="#general-properties-of-distributions" id="toc-general-properties-of-distributions" class="nav-link" data-scroll-target="#general-properties-of-distributions">General properties of distributions</a></li>
-  <li><a href="#rnorm" id="toc-rnorm" class="nav-link" data-scroll-target="#rnorm"><code>rnorm</code></a></li>
-  <li><a href="#rnorm40-mean-4-sd-2" id="toc-rnorm40-mean-4-sd-2" class="nav-link" data-scroll-target="#rnorm40-mean-4-sd-2"><code>rnorm(40, mean = 4, sd = 2)</code></a></li>
-  <li><a href="#dnorm" id="toc-dnorm" class="nav-link" data-scroll-target="#dnorm"><code>dnorm</code></a></li>
-  <li><a href="#dnorm6-mean-4-sd-2" id="toc-dnorm6-mean-4-sd-2" class="nav-link" data-scroll-target="#dnorm6-mean-4-sd-2"><code>dnorm(6, mean = 4, sd = 2)</code></a></li>
-  <li><a href="#qnorm" id="toc-qnorm" class="nav-link" data-scroll-target="#qnorm"><code>qnorm</code></a></li>
-  <li><a href="#qnorm0.25-mean4-sd2" id="toc-qnorm0.25-mean4-sd2" class="nav-link" data-scroll-target="#qnorm0.25-mean4-sd2"><code>qnorm(0.25, mean=4, sd=2)</code></a></li>
-  <li><a href="#pnorm" id="toc-pnorm" class="nav-link" data-scroll-target="#pnorm"><code>pnorm</code></a></li>
-  <li><a href="#pnorm-1" id="toc-pnorm-1" class="nav-link" data-scroll-target="#pnorm-1"><code>pnorm</code></a></li>
-  <li><a href="#pnorm6-mean-4-sd-2" id="toc-pnorm6-mean-4-sd-2" class="nav-link" data-scroll-target="#pnorm6-mean-4-sd-2"><code>pnorm(6, mean = 4, sd = 2)</code></a></li>
-  <li><a href="#binomial-and-bernoulli-distribution" id="toc-binomial-and-bernoulli-distribution" class="nav-link" data-scroll-target="#binomial-and-bernoulli-distribution">Binomial and Bernoulli distribution</a></li>
-  <li><a href="#binomial-distribution-3" id="toc-binomial-distribution-3" class="nav-link" data-scroll-target="#binomial-distribution-3">Binomial distribution</a></li>
-  <li><a href="#bernoulli-distribution-3" id="toc-bernoulli-distribution-3" class="nav-link" data-scroll-target="#bernoulli-distribution-3">Bernoulli distribution</a></li>
-  <li><a href="#bernoulli-distribution-4" id="toc-bernoulli-distribution-4" class="nav-link" data-scroll-target="#bernoulli-distribution-4">Bernoulli distribution</a></li>
-  <li><a href="#other-distributions" id="toc-other-distributions" class="nav-link" data-scroll-target="#other-distributions">Other distributions</a></li>
-  </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
-    </div>
-<!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Probability Distribution</h1>
+</div>
 </div>
 
-
-
-<div class="quarto-title-meta">
-
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Guillaume Blanchet – Andrew MacDonald </p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">April 29, 2024</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="probabilities" class="level2">
-<h2 class="anchored" data-anchor-id="probabilities">Probabilities</h2>
+  <p class="date">2024-04-29</p>
+</section>
+<section id="probabilities" class="slide level2">
+<h2>Probabilities</h2>
 <p>To understand <strong>distributions</strong>, we first need to have a basic understanding of <em>probabilities</em>.</p>
 </section>
-<section id="a-bit-of-history" class="level2">
-<h2 class="anchored" data-anchor-id="a-bit-of-history">A bit of history</h2>
+<section id="a-bit-of-history" class="slide level2">
+<h2>A bit of history</h2>
 <div style="font-size: 0.8em">
 <p>Unlike many other fields of science, the first contributors in the study of probability were not scholars, they were gamblers !</p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p>For example, the emperor Claudius (10 BC – 54 AD), who was an avid gambler (he had a carriage built to allow him and his party to gamble while travelling) wrote a treatise on randomness and probability.</p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Claudius_crop.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:20.0%"></p>
+<figure>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/7/71/Claudius_crop.jpg" class="quarto-figure quarto-figure-center" style="width:20.0%"></p>
 </figure>
 </div>
 </div>
@@ -278,80 +429,79 @@ window.Quarto = {
 <div style="font-size: 0.5em">
 <p><a href="https://www.jstor.org/stable/25102412">Lanciani (1892) Gambling and Cheating in Ancient Rome. <em>The North American Review</em> 155:97-105</a></p>
 </div>
+</div>
 </section>
-<section id="a-bit-of-history-1" class="level2">
-<h2 class="anchored" data-anchor-id="a-bit-of-history-1">A bit of history</h2>
+<section id="a-bit-of-history-1" class="slide level2">
+<h2>A bit of history</h2>
 <div style="font-size: 0.85em">
 <p>If you want a fun book to read about probabilities, its history and the difficulty of working with probabilities, I strongly recommend</p>
 </div>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://upload.wikimedia.org/wikipedia/en/3/35/The_Drunkard%27s_Walk.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:30.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="the-basics-of-probabilities" class="level2">
-<h2 class="anchored" data-anchor-id="the-basics-of-probabilities">The basics of probabilities</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/en/3/35/The_Drunkard%27s_Walk.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:30.0%"></section>
+<section id="the-basics-of-probabilities" class="slide level2">
+<h2>The basics of probabilities</h2>
 <p>A probability <span style="color: red;"><strong>ALWAYS</strong></span> ranges between 0 and 1</p>
-<p>. . .</p>
+<div class="fragment">
 <p>A probability of <span style="font-size: 1.5em">0</span> means that an event is impossible</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p><em>Example</em>: The probability that a dog and a cat naturally reproduce is <span style="font-size: 1.5em">0</span></p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>A probability of <span style="font-size: 1.5em">1</span> means that an event is certain</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p><em>Example</em>: The probability that you are in this summer school as we speak is <span style="font-size: 1.5em">1</span></p>
 </div>
+</div>
 </section>
-<section id="the-basics-of-probabilities-1" class="level2">
-<h2 class="anchored" data-anchor-id="the-basics-of-probabilities-1">The basics of probabilities</h2>
+<section id="the-basics-of-probabilities-1" class="slide level2">
+<h2>The basics of probabilities</h2>
 <p><strong>Notation</strong></p>
 <div style="font-size: 0.7em">
 <p>A classic way to write the probability of an event is to use the notation <span class="math inline">\(P\)</span>.</p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div style="font-size: 0.7em">
 <p>The probability that it rains as you walk outside after the lecture is written as</p>
-<p><span class="math display">\[P(r)\]</span> where <span class="math inline">\(r\)</span> is the event you are interested in. Here, <span class="math inline">\(r\)</span> is whether it rains as you walk outside after the lecture today</p>
+<p><span class="math display">\[P(r)\]</span> where <span class="math inline">\(r\)</span> is the event you are interested in. Here, <span class="math inline">\(r\)</span> is a rain as you walk outside after the lecture today</p>
+</div>
 </div>
 </section>
-<section id="probabilities-and-events" class="level2">
-<h2 class="anchored" data-anchor-id="probabilities-and-events">Probabilities and events</h2>
+<section id="probabilities-and-events" class="slide level2">
+<h2>Probabilities and events</h2>
 <div style="font-size: 0.7em">
 <p>When dealing with discrete (countable) events, it is very practical to know the number of events that can occur.</p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p>In the simplest case, we can either measure the probability of an event to occur or not.</p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
@@ -361,26 +511,28 @@ window.Quarto = {
 <p><span class="math display">\[P(r)\]</span> and the probability that it does not rain would be written as</p>
 <p><span class="math display">\[1 - P(r)\]</span></p>
 </div>
+</div>
 </section>
-<section id="probabilities-and-events-1" class="level2">
-<h2 class="anchored" data-anchor-id="probabilities-and-events-1">Probabilities and events</h2>
+<section id="probabilities-and-events-1" class="slide level2">
+<h2>Probabilities and events</h2>
 <div style="font-size: 0.7em">
 <p>Usually, these basic notions of probabilities are presented using coin flipping. When a coin is flip, it is usually assumed that</p>
 <p><span class="math display">\[P(r)=0.5\]</span></p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p>However, in probability theory, P(r) can have any value ranging between 0 and 1.</p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
@@ -388,39 +540,42 @@ window.Quarto = {
 <div style="font-size: 0.7em">
 <p>What do you think is the probability that it will rain at the end of the lecture?</p>
 </div>
+</div>
 </section>
-<section id="probabilities-and-events-2" class="level2">
-<h2 class="anchored" data-anchor-id="probabilities-and-events-2">Probabilities and events</h2>
+<section id="probabilities-and-events-2" class="slide level2">
+<h2>Probabilities and events</h2>
 <p>At this point we can note that when we add the probabilites of all possible events, the sum will always be 1</p>
-<p>. . .</p>
+<div class="fragment">
 <p><strong><em>Example</em></strong></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <p><span class="math display">\[P(r) + (1-P(r)) = 1\]</span></p>
-<p>. . .</p>
-<p>This is true only if the events are independent from each other</p>
-</section>
-<section id="independent" class="level2">
-<h2 class="anchored" data-anchor-id="independent">Independent !?</h2>
-<div style="font-size: 0.7em">
-<p>Events that are <em>independent</em> from each other means that the if an event occurs it is in no way related to the occurrence of another event.</p>
 </div>
-<p>. . .</p>
+<div class="fragment">
+<p>This is true only if the events are independent from each other</p>
+</div>
+</section>
+<section id="independent" class="slide level2">
+<h2>Independent !?</h2>
+<div style="font-size: 0.7em">
+<p>Events that are <em>independent</em> from each other means that if an event occurs it is in no way related to the occurrence of another event.</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><strong><em>Example</em></strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
@@ -428,36 +583,32 @@ window.Quarto = {
 <div style="font-size: 0.7em">
 <p>If we assume that weather events like a rainy day are independent from one another, it means that if it rains today it is unrelated to the weather of yesterday or tomorrow.</p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><strong>Note</strong> : This can be a good or a bad or dangerous assumption to make depending on the problem you are working on.</p>
 </div>
+</div>
 </section>
-<section id="bernoulli-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="bernoulli-distribution">Bernoulli distribution</h2>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Jakob_Bernoulli.jpg/800px-Jakob_Bernoulli.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="r-stack">
+<section id="bernoulli-distribution" class="slide level2">
+<h2>Bernoulli distribution</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Jakob_Bernoulli.jpg/800px-Jakob_Bernoulli.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:40.0%"><div class="r-stack">
 <p>Jacob Bernoulli (1655 - 1705)</p>
 </div>
 </section>
-<section id="bernoulli-distribution-1" class="level2">
-<h2 class="anchored" data-anchor-id="bernoulli-distribution-1">Bernoulli distribution</h2>
+<section id="bernoulli-distribution-1" class="slide level2">
+<h2>Bernoulli distribution</h2>
 <p>The probability distribution (or probability mass function) of the Bernoulli distribution defines the probability of an event to occur given that there is only one other event that can occur (e.g.&nbsp;rain or no rain)</p>
-<p>. . .</p>
+<div class="fragment">
 <p>Classically, we will give a value of 1 to one event (no rain) and 0 to the other (rain).</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>From a mathematical perspective, it does not matter which event is given a 1 (or a 0). However, often it is common practice to choose how we give values based on the interpretation we make of the results.</p>
+</div>
 </section>
-<section id="bernoulli-distribution-2" class="level2">
-<h2 class="anchored" data-anchor-id="bernoulli-distribution-2">Bernoulli distribution</h2>
+<section id="bernoulli-distribution-2" class="slide level2">
+<h2>Bernoulli distribution</h2>
 <p>Mathematically, the probability mass function of the Bernoulli distribution can be written as</p>
 <p><span class="math display">\[\begin{align*}
 p \quad &amp; \text{if} \quad x =1\\
@@ -465,12 +616,13 @@ p \quad &amp; \text{if} \quad x =1\\
 \end{align*}\]</span></p>
 <p>where <span class="math inline">\(p\)</span> is a shorthand for <span class="math inline">\(P(x)\)</span> and <span class="math inline">\(x\)</span> is one of two events.</p>
 </section>
-<section id="moment-interlude" class="level2">
-<h2 class="anchored" data-anchor-id="moment-interlude">Moment interlude</h2>
+<section id="moment-interlude" class="slide level2">
+<h2>Moment interlude</h2>
 <p>Using probability distributions is practical because from them we can derive general information characterizing the each distribution.</p>
-<p>. . .</p>
+<div class="fragment">
 <p>These characteristics are know as <span style="color: blue;">moments</span> of a distribution… And you know them :</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <ul>
 <li>Mean</li>
 <li>Variance</li>
@@ -478,9 +630,10 @@ p \quad &amp; \text{if} \quad x =1\\
 <li>Kurtosis</li>
 <li>…</li>
 </ul>
+</div>
 </section>
-<section id="moments-of-the-bernoulli-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="moments-of-the-bernoulli-distribution">Moments of the Bernoulli distribution</h2>
+<section id="moments-of-the-bernoulli-distribution" class="slide level2">
+<h2>Moments of the Bernoulli distribution</h2>
 <div style="font-size: 0.8em">
 <p>For the sake of conciseness, in this course, we will discuss only the first two moments of distributions.</p>
 <p><strong>Mean</strong></p>
@@ -489,8 +642,8 @@ p \quad &amp; \text{if} \quad x =1\\
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
@@ -498,16 +651,16 @@ p \quad &amp; \text{if} \quad x =1\\
 <p>If the probability that it rains is <span class="math inline">\(p=0.14\)</span> in any given day, it means that, on average in a week (7 days) we should expect it will rain 1 day.</p>
 </div>
 </section>
-<section id="moments-of-the-bernoulli-distribution-1" class="level2">
-<h2 class="anchored" data-anchor-id="moments-of-the-bernoulli-distribution-1">Moments of the Bernoulli distribution</h2>
+<section id="moments-of-the-bernoulli-distribution-1" class="slide level2">
+<h2>Moments of the Bernoulli distribution</h2>
 <div style="font-size: 0.8em">
 <p><strong>Variance</strong></p>
 <p><span class="math display">\[p(1-p)\]</span> <strong><em>Example</em></strong></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
@@ -516,33 +669,38 @@ p \quad &amp; \text{if} \quad x =1\\
 <p><span class="math display">\[p(1-p)=0.5\times(1-0.5)=0.25\quad\text{and}\quad \sqrt{0.25} = 0.5\]</span></p>
 </div>
 </section>
-<section id="moments-of-the-bernoulli-distribution-2" class="level2">
-<h2 class="anchored" data-anchor-id="moments-of-the-bernoulli-distribution-2">Moments of the Bernoulli distribution</h2>
+<section id="moments-of-the-bernoulli-distribution-2" class="slide level2">
+<h2>Moments of the Bernoulli distribution</h2>
 <p>If you want to go deeper down and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution</p>
 <p><a href="https://en.wikipedia.org/wiki/Bernoulli_distribution" class="uri">https://en.wikipedia.org/wiki/Bernoulli_distribution</a></p>
 </section>
-<section id="lets-make-it-more-complicated" class="level2">
-<h2 class="anchored" data-anchor-id="lets-make-it-more-complicated">Let’s make it more complicated</h2>
+<section id="lets-make-it-more-complicated" class="slide level2">
+<h2>Let’s make it more complicated</h2>
 <p>So far, we focused on a situation where the two events to consider either occur or not.</p>
-<p>. . .</p>
-<p>There are many problems were interest lies in studying the likeliness of an event occurring over a known number of independent trials.</p>
-<p>. . .</p>
+<div class="fragment">
+<p>There are many problems where interest lies in studying the likeliness of an event occurring over a known number of independent trials.</p>
+</div>
+<div class="fragment">
 <p><strong><em>Example</em></strong></p>
 <p>How many rainy day will there be during the five days of our summer school ?</p>
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid" style="width:15.0%"> <img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid" style="width:15.0%"> <img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid" style="width:15.0%"></p>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"> <img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"> <img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" style="width:15.0%"></p>
+</div>
 </section>
-<section id="binomial-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-distribution">Binomial distribution</h2>
+<section id="binomial-distribution" class="slide level2">
+<h2>Binomial distribution</h2>
 <p>Put differently, the binomial distribution is designed to approach questions where we are interested in finding the number of success (e.g.&nbsp;it rains !) out of a known set of independent trials (e.g.&nbsp;the five days of the summer school).</p>
-<p>. . .</p>
+<div class="fragment">
 <p>The binomial distribution is a generalisation of the Bernoulli distribution</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>It is a common distribution used when sampling is done with replacement</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>Let’s take a look at the math of the Binomial distribution</p>
+</div>
 </section>
-<section id="binomial-distribution-1" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-distribution-1">Binomial distribution</h2>
+<section id="binomial-distribution-1" class="slide level2">
+<h2>Binomial distribution</h2>
 <p><strong>Probability mass function</strong></p>
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}\]</span></p>
 <p>where</p>
@@ -553,38 +711,41 @@ p \quad &amp; \text{if} \quad x =1\\
 </ul>
 <p>Note that <span class="math inline">\(n \ge k\)</span></p>
 </section>
-<section id="mathematical-technicalities-interlude" class="level2">
-<h2 class="anchored" data-anchor-id="mathematical-technicalities-interlude">Mathematical technicalities interlude</h2>
+<section id="mathematical-technicalities-interlude" class="slide level2">
+<h2>Mathematical technicalities interlude</h2>
 <div style="font-size: 0.8em">
 <p><span class="math display">\[\binom{n}{k}\]</span></p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p><span class="math display">\[\frac{n!}{k!(n-k)!}\]</span></p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p><span class="math display">\[\frac{n\times(n-1)\times(n-2)\times\dots\times 2\times 1}{(k\times(k-1)\times(k-2)\times\dots\times 2\times 1)(n-k)\times(n-k-1)\times(n-k-2)\times\dots\times 2\times 1}\]</span></p>
 </div>
+</div>
 </section>
-<section id="moment-of-the-binomial-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="moment-of-the-binomial-distribution">Moment of the binomial distribution</h2>
+<section id="moment-of-the-binomial-distribution" class="slide level2">
+<h2>Moment of the binomial distribution</h2>
 <div style="font-size: 0.75em">
 <p>Again, for conciseness, we will focus on the first moment (mean) and second moment (variance) of the binomial distribution.</p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.75em">
 <p><strong>Mean</strong> <span class="math display">\[np\]</span></p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.75em">
 <p><strong>Example</strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
@@ -593,22 +754,23 @@ p \quad &amp; \text{if} \quad x =1\\
 <p>If the probability that it rains is <span class="math inline">\(p=0.14\)</span> in any given day of the 5 days of the summer school, it means that on average we expect it will rain 0.7 days of the summer school (so 1 or no days)</p>
 <p><span class="math display">\[np = 5 \times 0.14 = 0.7\]</span></p>
 </div>
+</div>
 </section>
-<section id="moment-of-the-binomial-distribution-1" class="level2">
-<h2 class="anchored" data-anchor-id="moment-of-the-binomial-distribution-1">Moment of the binomial distribution</h2>
+<section id="moment-of-the-binomial-distribution-1" class="slide level2">
+<h2>Moment of the binomial distribution</h2>
 <div style="font-size: 0.75em">
 <p><strong>Variance</strong></p>
 <p><span class="math display">\[np(1-p)\]</span></p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.75em">
 <p><strong>Example</strong></p>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:15.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/telegram/386/cloud-with-rain_1f327-fe0f.webp" class="quarto-figure quarto-figure-center" style="width:15.0%"></p>
 </figure>
 </div>
 </div>
@@ -617,64 +779,57 @@ p \quad &amp; \text{if} \quad x =1\\
 <p>If the probability that it rains is <span class="math inline">\(p=0.5\)</span> in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is</p>
 <p><span class="math display">\[np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229\]</span></p>
 </div>
+</div>
 </section>
-<section id="moments-of-the-binomial-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="moments-of-the-binomial-distribution">Moments of the binomial distribution</h2>
+<section id="moments-of-the-binomial-distribution" class="slide level2">
+<h2>Moments of the binomial distribution</h2>
 <p>If you want to learn more about the other moments of the binomial distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the binomial distribution</p>
 <p><a href="https://en.wikipedia.org/wiki/binomial_distribution" class="uri">https://en.wikipedia.org/wiki/binomial_distribution</a></p>
 </section>
-<section id="binomial-distribution-2" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-distribution-2">Binomial distribution</h2>
+<section id="binomial-distribution-2" class="slide level2">
+<h2>Binomial distribution</h2>
 <p>The binomial distribution is related to many other probability distribution</p>
-<p>. . .</p>
+<div class="fragment">
 <ul>
 <li>Bernoulli distribution (as we have seen)</li>
 </ul>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <ul>
 <li>Poisson distribution (when there are an infinite number of trials while <span class="math inline">\(np\)</span> converge to a finite value)</li>
 </ul>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <ul>
 <li>Normal distribution…</li>
 </ul>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:20.0%"></p>
+<figure>
+<p><img data-src="https://www.i2symbol.com/pictures/emojis/6/b/8/f/6b8f4b33b349292e182a03813323165e_384.png" class="quarto-figure quarto-figure-center" style="width:20.0%"></p>
 </figure>
 </div>
-</section>
-<section id="jia-xian-triangle" class="level2">
-<h2 class="anchored" data-anchor-id="jia-xian-triangle">Jia Xian triangle</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Yanghui_triangle.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
 </div>
 </section>
-<section id="pascals-triangle" class="level2">
-<h2 class="anchored" data-anchor-id="pascals-triangle">Pascal’s triangle</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/6/66/TrianguloPascal.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-</section>
-<section id="pascals-triangle-1" class="level2">
-<h2 class="anchored" data-anchor-id="pascals-triangle-1">Pascal’s triangle</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
-</figure>
-</div>
-</section>
-<section id="pascals-triangle-2" class="level2">
-<h2 class="anchored" data-anchor-id="pascals-triangle-2">Pascal’s triangle</h2>
+<section id="jia-xian-triangle" class="slide level2">
+<h2>Jia Xian triangle</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Yanghui_triangle.gif" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="pascals-triangle" class="slide level2">
+<h2>Pascal’s triangle</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/6/66/TrianguloPascal.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="pascals-triangle-1" class="slide level2">
+<h2>Pascal’s triangle</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:50.0%"></section>
+<section id="pascals-triangle-2" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <div style="font-size: 0.7em">
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><strong>If</strong> <span class="math inline">\(n = 3\)</span></p>
 <p><em>When</em> <span class="math inline">\(k=0\)</span></p>
@@ -682,126 +837,120 @@ p \quad &amp; \text{if} \quad x =1\\
 <div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{0}\times0.5^0 \times (1-0.5)^{(3-0)}=0.125\]</span></p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><em>When</em> <span class="math inline">\(k=1\)</span></p>
 </div>
 <div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{1}\times0.5^1 \times (1-0.5)^{(3-1)}=0.375\]</span></p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><em>When</em> <span class="math inline">\(k=2\)</span></p>
 </div>
 <div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{2}\times0.5^1 \times (1-0.5)^{(3-2)}=0.375\]</span></p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div style="font-size: 0.7em">
 <p><em>When</em> <span class="math inline">\(k=3\)</span></p>
 </div>
 <div style="font-size: 0.525em">
 <p><span class="math display">\[\binom{n}{k}p^k(1-p)^{n-k}=\binom{3}{3}\times0.5^1 \times (1-0.5)^{(3-3)}=0.125\]</span></p>
 </div>
+</div>
 </section>
-<section id="pascals-triangle-3" class="level2">
-<h2 class="anchored" data-anchor-id="pascals-triangle-3">Pascal’s triangle</h2>
+<section id="pascals-triangle-3" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If</strong> <span class="math inline">\(n = 3\)</span></p>
-<p>. . .</p>
+<div class="fragment">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="pascals-triangle-4" class="level2">
-<h2 class="anchored" data-anchor-id="pascals-triangle-4">Pascal’s triangle</h2>
+<section id="pascals-triangle-4" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If</strong> <span class="math inline">\(n = 10\)</span></p>
-<p>. . .</p>
+<div class="fragment">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="pascals-triangle-5" class="level2">
-<h2 class="anchored" data-anchor-id="pascals-triangle-5">Pascal’s triangle</h2>
+<section id="pascals-triangle-5" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If</strong> <span class="math inline">\(n = 50\)</span></p>
-<p>. . .</p>
+<div class="fragment">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="pascals-triangle-6" class="level2">
-<h2 class="anchored" data-anchor-id="pascals-triangle-6">Pascal’s triangle</h2>
+<section id="pascals-triangle-6" class="slide level2">
+<h2>Pascal’s triangle</h2>
 <p>The Pascal’s triangle is directly related to the binomial distribution with <span class="math inline">\(p=0.5\)</span>.</p>
 <p><strong>If</strong> <span class="math inline">\(n = 200\)</span></p>
-<p>. . .</p>
+<div class="fragment">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="binomial-and-gaussian-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-and-gaussian-distribution">Binomial and Gaussian distribution</h2>
+<section id="binomial-and-gaussian-distribution" class="slide level2">
+<h2>Binomial and Gaussian distribution</h2>
 <p>If the number trials (<span class="math inline">\(n\)</span>) is large enough, it approximate to a Gaussian distribution</p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="gaussian-normal-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="gaussian-normal-distribution">Gaussian (Normal) distribution</h2>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Carl_Friedrich_Gauss_1840_by_Jensen.jpg/804px-Carl_Friedrich_Gauss_1840_by_Jensen.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:35.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="r-stack">
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="gaussian-normal-distribution" class="slide level2">
+<h2>Gaussian (Normal) distribution</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Carl_Friedrich_Gauss_1840_by_Jensen.jpg/804px-Carl_Friedrich_Gauss_1840_by_Jensen.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:35.0%"><div class="r-stack">
 <p>Carl Friedrich Gauss (1777-1855)</p>
 </div>
 </section>
-<section id="gaussian-normal-distribution-1" class="level2">
-<h2 class="anchored" data-anchor-id="gaussian-normal-distribution-1">Gaussian (Normal) distribution</h2>
+<section id="gaussian-normal-distribution-1" class="slide level2">
+<h2>Gaussian (Normal) distribution</h2>
 <p>Unlike the binomial distribution, the Gaussian distribution is a continuous distribution</p>
-<p>. . .</p>
+<div class="fragment">
 <p>It is the a very common distribution that is underlying many random natural phenomenon and it is the basis of statistical theory</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>Let’s take a look at the mathematical formulation of the Gaussian distribution</p>
+</div>
 </section>
-<section id="gaussian-normal-distribution-2" class="level2">
-<h2 class="anchored" data-anchor-id="gaussian-normal-distribution-2">Gaussian (Normal) distribution</h2>
+<section id="gaussian-normal-distribution-2" class="slide level2">
+<h2>Gaussian (Normal) distribution</h2>
 <p><strong>Probability density function</strong></p>
 <p><span class="math display">\[\frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}\]</span></p>
 <p>where</p>
@@ -811,36 +960,28 @@ p \quad &amp; \text{if} \quad x =1\\
 <li><span class="math inline">\(\sigma\)</span> : The standard deviation of the distribution</li>
 </ul>
 </section>
-<section id="moment-of-the-gaussian-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="moment-of-the-gaussian-distribution">Moment of the Gaussian distribution</h2>
+<section id="moment-of-the-gaussian-distribution" class="slide level2">
+<h2>Moment of the Gaussian distribution</h2>
 <p><strong>Mean</strong></p>
 <p><span class="math display">\[\mu\]</span></p>
 <p><strong><em>Example</em></strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
-</figure>
-</div>
-<div style="font-size: 0.8em">
-<p>Let’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a mean of <span class="math inline">\(\mu\)</span>. We will look at this in more details in the practical exercices later today.</p>
+
+<img data-src="https://images1.wikia.nocookie.net/__cb20130304122244/angrybirdsfanon/images/f/f0/Angry_Bird_red.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div style="font-size: 0.8em">
+<p>Let’s say we measure the length of the right wing of individual of this species of (angry) bird, it is expected that the wing length will follow a Gaussian distribution with a mean of <span class="math inline">\(\mu\)</span>. We will look at this in more details in the practical exercices later today.</p>
 </div>
 </section>
-<section id="moment-of-the-gaussian-distribution-1" class="level2">
-<h2 class="anchored" data-anchor-id="moment-of-the-gaussian-distribution-1">Moment of the Gaussian distribution</h2>
+<section id="moment-of-the-gaussian-distribution-1" class="slide level2">
+<h2>Moment of the Gaussian distribution</h2>
 <p><strong>Variance</strong></p>
 <p><span class="math display">\[\sigma^2\]</span></p>
 <p><strong><em>Example</em></strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.lesaffaires.com/uploads/images/normal/eb7bfc01b807ccc40a87b4fc539966d5.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
-</figure>
-</div>
-<div style="font-size: 0.8em">
-<p>Let’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a variance of <span class="math inline">\(\sigma^2\)</span>. We will look at this in more details in the practical exercices later today.</p>
+
+<img data-src="https://images1.wikia.nocookie.net/__cb20130304122244/angrybirdsfanon/images/f/f0/Angry_Bird_red.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><div style="font-size: 0.8em">
+<p>Let’s say we measure the length of the right wing of individual of this species of (angry) bird, it is expected that the wing length will follow a Gaussian distribution with a variance of <span class="math inline">\(\sigma^2\)</span>. We will look at this in more details in the practical exercices later today.</p>
 </div>
 </section>
-<section id="general-properties-of-distributions" class="level2">
-<h2 class="anchored" data-anchor-id="general-properties-of-distributions">General properties of distributions</h2>
+<section id="general-properties-of-distributions" class="slide level2">
+<h2>General properties of distributions</h2>
 <p>In R, there are 4 functions associated to every distribution. As an example, for the Gaussian distribution, they are</p>
 <ul>
 <li><code>rnorm</code></li>
@@ -848,166 +989,135 @@ p \quad &amp; \text{if} \quad x =1\\
 <li><code>pnorm</code></li>
 <li><code>qnorm</code></li>
 </ul>
-<p>. . .</p>
+<div class="fragment">
 <p>Knowing what these functions do will be very useful for this course</p>
+</div>
 </section>
-<section id="rnorm" class="level2">
-<h2 class="anchored" data-anchor-id="rnorm"><code>rnorm</code></h2>
+<section id="rnorm" class="slide level2">
+<h2><code>rnorm</code></h2>
 <div style="font-size: 0.8em">
 <p>The <code>r</code> in <code>rnorm</code> is for <span style="color: blue;">random</span></p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p>This function allows us to randomly sample directly from the distribution of interest.</p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p><strong>Example</strong></p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:8.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="quarto-figure quarto-figure-center" style="width:8.0%"></p>
 </figure>
 </div>
 <div style="font-size: 0.8em">
-<p>Let’s assume that we look at the historical record and gather the minimum temperature measured on today’s date for the past 40 years. This data can be assumed to be a random sample of 40 temperature measurements with an average of <span class="math inline">\(4^{\circ}C\)</span> and a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>. We can simulate these values as follow</p>
+<p>Let’s assume that we look at the historical record and gather the minimum temperature measured on today’s date for the past 40 years here in Jouvence. Let’s assume that the random sample of 40 temperature measurements has an average of <span class="math inline">\(4^{\circ}C\)</span> and a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>. We can simulate these values as follow</p>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="rnorm40-mean-4-sd-2" class="level2">
-<h2 class="anchored" data-anchor-id="rnorm40-mean-4-sd-2"><code>rnorm(40, mean = 4, sd = 2)</code></h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">rnorm</span>(<span class="dv">40</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
-<section id="dnorm" class="level2">
-<h2 class="anchored" data-anchor-id="dnorm"><code>dnorm</code></h2>
+<section id="rnorm40-mean-4-sd-2" class="slide level2">
+<h2><code>rnorm(40, mean = 4, sd = 2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<section id="dnorm" class="slide level2">
+<h2><code>dnorm</code></h2>
 <div style="font-size: 0.8em">
 <p>The <code>d</code> in <code>dnorm</code> is for <span style="color: blue;">density</span></p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p>This function gives the height of the distribution for a chosen value.</p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p><strong>Example</strong></p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:8.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="quarto-figure quarto-figure-center" style="width:8.0%"></p>
 </figure>
 </div>
 <div style="font-size: 0.8em">
 <p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, we can calculate that the likeliness that a temperature of <span class="math inline">\(6^{\circ}C\)</span> to occur is</p>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">dnorm</span>(<span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1209854</code></pre>
 </div>
 </div>
-</section>
-<section id="dnorm6-mean-4-sd-2" class="level2">
-<h2 class="anchored" data-anchor-id="dnorm6-mean-4-sd-2"><code>dnorm(6, mean = 4, sd = 2)</code></h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
 </div>
 </section>
-<section id="qnorm" class="level2">
-<h2 class="anchored" data-anchor-id="qnorm"><code>qnorm</code></h2>
+<section id="dnorm6-mean-4-sd-2" class="slide level2">
+<h2><code>dnorm(6, mean = 4, sd = 2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
+<section id="qnorm" class="slide level2">
+<h2><code>qnorm</code></h2>
 <div style="font-size: 0.8em">
 <p>The <code>q</code> in <code>qnorm</code> is for <span style="color: blue;">quantile</span></p>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div style="font-size: 0.8em">
 <p>This function gives the value of the distribution given a certain density</p>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p><strong>Example</strong></p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:8.0%"></p>
+<figure>
+<p><img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="quarto-figure quarto-figure-center" style="width:8.0%"></p>
 </figure>
 </div>
 <div style="font-size: 0.8em">
-<p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, <code>qnorm</code> allows us to calculate the temperature expected to be obtained at the lowest quartile (1/4). It is calculate as</p>
+<p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, <code>qnorm</code> allows us to calculate the temperature expected to be obtained in the lowest quartile (1/4). It is calculate as</p>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.25</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">qnorm</span>(<span class="fl">0.25</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.65102</code></pre>
 </div>
 </div>
-</section>
-<section id="qnorm0.25-mean4-sd2" class="level2">
-<h2 class="anchored" data-anchor-id="qnorm0.25-mean4-sd2"><code>qnorm(0.25, mean=4, sd=2)</code></h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
 </div>
 </section>
-<section id="pnorm" class="level2">
-<h2 class="anchored" data-anchor-id="pnorm"><code>pnorm</code></h2>
+<section id="qnorm0.25-mean4-sd2" class="slide level2">
+<h2><code>qnorm(0.25, mean=4, sd=2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<section id="pnorm" class="slide level2">
+<h2><code>pnorm</code></h2>
 <p>The <code>p</code> in <code>pnorm</code> is for <span style="color: blue;">probability distribution function</span></p>
-<p>. . .</p>
+<div class="fragment">
 <p>This function gives the integral (area under the curve) up to a specified value.</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>This is particularly useful because it informs us about the probability that an event is likely to occur (of course assuming a it follows a normal distribution).</p>
+</div>
 </section>
-<section id="pnorm-1" class="level2">
-<h2 class="anchored" data-anchor-id="pnorm-1"><code>pnorm</code></h2>
+<section id="pnorm-1" class="slide level2">
+<h2><code>pnorm</code></h2>
 <p><strong>Example</strong></p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:5.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, <code>pnorm</code> will tell us that the probability to have a temperature lower or equal to <span class="math inline">\(6^{\circ}C\)</span>. This is calculated as</p>
+
+<img data-src="https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png" class="quarto-figure quarto-figure-center r-stretch" style="width:5.0%"><p>If we assume that the average temperature at this time of the year is <span class="math inline">\(4^{\circ}C\)</span> with a standard deviation of <span class="math inline">\(2^{\circ}C\)</span>, <code>pnorm</code> will tell us that the probability to have a temperature lower or equal to <span class="math inline">\(6^{\circ}C\)</span>. This is calculated as</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">pnorm</span>(<span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">4</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.8413447</code></pre>
 </div>
 </div>
 </section>
-<section id="pnorm6-mean-4-sd-2" class="level2">
-<h2 class="anchored" data-anchor-id="pnorm6-mean-4-sd-2"><code>pnorm(6, mean = 4, sd = 2)</code></h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-revealjs/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="binomial-and-bernoulli-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-and-bernoulli-distribution">Binomial and Bernoulli distribution</h2>
+<section id="pnorm6-mean-4-sd-2" class="slide level2">
+<h2><code>pnorm(6, mean = 4, sd = 2)</code></h2>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
+<section id="binomial-and-bernoulli-distribution" class="slide level2">
+<h2>Binomial and Bernoulli distribution</h2>
 <p>As I mentionned previsouly, these function are available in base R for a large number of distributions.</p>
 </section>
-<section id="binomial-distribution-3" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-distribution-3">Binomial distribution</h2>
+<section id="binomial-distribution-3" class="slide level2">
+<h2>Binomial distribution</h2>
 <ul>
 <li><code>rbinom</code></li>
 <li><code>dbinom</code></li>
@@ -1015,23 +1125,19 @@ p \quad &amp; \text{if} \quad x =1\\
 <li><code>pbinom</code></li>
 </ul>
 </section>
-<section id="bernoulli-distribution-3" class="level2">
-<h2 class="anchored" data-anchor-id="bernoulli-distribution-3">Bernoulli distribution</h2>
-<p>However, sometimes we must know a little bit of theory (as I have show today) to use the right function.</p>
+<section id="bernoulli-distribution-3" class="slide level2">
+<h2>Bernoulli distribution</h2>
+<p>However, sometimes we must know a little bit of theory (as I have shown today) to use the right function.</p>
 <ul>
 <li><code>rbinom</code></li>
 <li><code>dbinom</code></li>
 <li><code>qbinom</code></li>
 <li><code>pbinom</code></li>
 </ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:20.0%"></p>
-</figure>
-</div>
-</section>
-<section id="bernoulli-distribution-4" class="level2">
-<h2 class="anchored" data-anchor-id="bernoulli-distribution-4">Bernoulli distribution</h2>
+
+<img data-src="https://www.i2symbol.com/pictures/emojis/c/6/0/e/c60e666a9af7bcd1a7b887437b3520c3_384.png" class="quarto-figure quarto-figure-center r-stretch" style="width:20.0%"></section>
+<section id="bernoulli-distribution-4" class="slide level2">
+<h2>Bernoulli distribution</h2>
 <ul>
 <li><code>rbinom</code></li>
 <li><code>dbinom</code></li>
@@ -1040,483 +1146,463 @@ p \quad &amp; \text{if} \quad x =1\\
 </ul>
 <p>With <code>size = 1</code></p>
 </section>
-<section id="other-distributions" class="level2">
-<h2 class="anchored" data-anchor-id="other-distributions">Other distributions</h2>
+<section id="other-distributions" class="slide level2">
+<h2>Other distributions</h2>
 <p>Statisticians and biologists have been very, very (!!) creative in proposing new probability distribution for specific problems</p>
-<p>. . .</p>
-<p>If you want to learn about the diversity of distribution that is out there, take a look at :</p>
+<div class="fragment">
+<p>If you want to learn about the diversity of distributions that are out there, take a look at :</p>
 <p><a href="https://en.wikipedia.org/wiki/List_of_probability_distributions" class="uri">https://en.wikipedia.org/wiki/List_of_probability_distributions</a></p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>Many of them have been implemented in R, either in base R or specialized packages</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>If you want to know if you favourite distribution has been implemented in R take a look at</p>
 <p><a href="https://cran.r-project.org/web/views/Distributions.html" class="uri">https://cran.r-project.org/web/views/Distributions.html</a></p>
 
+<div class="quarto-auto-generated-content">
+<p><img src="../img/UdeS_logo_h_rgbHR.png" class="slide-logo"></p>
+<div class="footer footer-default">
 
+</div>
+</div>
+</div>
 </section>
+    </div>
+  </div>
 
-</main> <!-- /main -->
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
 
-<script>
-  // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-  // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-  // slide changes (different for each slide format).
-  (function () {
-    // dispatch for htmlwidgets
-    function fireSlideEnter() {
-      const event = window.document.createEvent("Event");
-      event.initEvent("slideenter", true, true);
-      window.document.dispatchEvent(event);
-    }
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
-    function fireSlideChanged(previousSlide, currentSlide) {
-      fireSlideEnter();
+  <script>
 
-      // dispatch for shiny
-      if (window.jQuery) {
-        if (previousSlide) {
-          window.jQuery(previousSlide).trigger("hidden");
-        }
-        if (currentSlide) {
-          window.jQuery(currentSlide).trigger("shown");
-        }
-      }
-    }
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
 
-    // hookup for slidy
-    if (window.w3c_slidy) {
-      window.w3c_slidy.add_observer(function (slide_num) {
-        // slide_num starts at position 1
-        fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
       });
-    }
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
 
-  })();
-</script>
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
-<script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
         }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
       }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
       });
-    }
-  }
-});
-</script>
-</div> <!-- /content -->
-
-
-
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
 
 </body></html>
