@@ -4,7 +4,7 @@ title-slide-attributes:
   data-background-image: ../img/bg.jpg
   data-background-size: full
 author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2024-05-01"
+date: "2025-05-07"
 execute:
   echo: true
 format: 
@@ -50,7 +50,7 @@ When we will have done this, it will be reasonably straight forward to move to n
 . . . 
 
 ::: {style="font-size: 0.8em"}
-Most of you have probably already used the packages `lme4` or `brms` to build hierarchical models and so you have used the `|` to include a hierachy in your model.
+Most of you have probably already used the packages `lme4`, `brms` or `glmmTMB` to build hierarchical models and so you have used the `|` to include a hierarchy in your model.
 :::
 
 . . . 
@@ -296,7 +296,7 @@ Mathematically speaking, what are the differences between having a hierarchy on 
 Actually, if we return to the way $\mathbf{b}$ is defined we see that in both case it is defined as 
 
 $$\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)$$
-with the sole difference that $\mathbf{b}$ is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.
+with the sole difference is that $\mathbf{b}$ is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.
 
 . . .
 
@@ -839,7 +839,7 @@ Although these different models are mathematically quite similar, they approach 
 
 . . . 
 
-A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.
+A comparison of the different figures caricaturizing how each model works should give a good insight of what each model can do.
 
 . . . 
 

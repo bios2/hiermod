@@ -570,22 +570,22 @@
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchical-models",
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchical-models",
     "title": "‘Simple’ hierarchical models",
-    "section": "",
-    "text": ". . .\nWith a hierarchical model, our interest lies not in finding a single value for a parameter of interest but rather to estimate the distribution of a parameter of interest and, specifically, the variance of this distribution.\n. . .\nIf we want to estimate the variance of a distribution, we need to gather some samples from this distribution.\n. . .\nIn the context of a hierarchical model, the “samples” are the levels of a factor, which will be used to estimate the variance of the distribution."
+    "section": "Hierarchical models",
+    "text": "Hierarchical models\n\nWith a hierarchical model, our interest lies not in finding a single value for a parameter of interest but rather to estimate the distribution of a parameter of interest and, specifically, the variance of this distribution.\n\n\nIf we want to estimate the variance of a distribution, we need to gather some samples from this distribution.\n\n\nIn the context of a hierarchical model, the “samples” are the levels of a factor, which will be used to estimate the variance of the distribution."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
     "href": "slides/06_Simple_hierarchical_model/index.html#simple-hierarchical-model",
     "title": "‘Simple’ hierarchical models",
     "section": "“Simple” hierarchical model",
-    "text": "“Simple” hierarchical model\n. . .\nHere, we use the term “simple” in a rather loose way to discuss hierarchical models where the hierarchy is on one parameter without any constrains, whether they are spatial, temporal, phylogenetic or others.\n. . .\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\n. . .\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
+    "text": "“Simple” hierarchical model\n\nHere, we use the term “simple” in a rather loose way to discuss hierarchical models where the hierarchy is on one parameter without any constrains, whether they are spatial, temporal, phylogenetic or others.\n\n\nFuthermore, for most of this lecture, we will focus on models with a Gaussian error term to develop the underlying theory.\n\n\nWhen we will have done this, it will be reasonably straight forward to move to non-Gaussian hierarchical model."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#the",
     "href": "slides/06_Simple_hierarchical_model/index.html#the",
     "title": "‘Simple’ hierarchical models",
     "section": "The “|”",
-    "text": "The “|”\n. . .\n\nMost of you have probably already used the packages lme4 or brms to build hierarchical models and so you have used the | to include a hierachy in your model.\n\n. . .\n\nBut do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?\n\n\n\n\n\n\n. . .\n\nLet’s look at different lme4 models to learn about some basic (and not so basic!) hierarchical models."
+    "text": "The “|”\n\n\nMost of you have probably already used the packages lme4, brms or glmmTMB to build hierarchical models and so you have used the | to include a hierarchy in your model.\n\n\n\n\nBut do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?\n\n\n\n\n\n\n\n\n\nLet’s look at different lme4 models to learn about some basic (and not so basic!) hierarchical models."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation",
@@ -599,14 +599,14 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation-1",
     "title": "‘Simple’ hierarchical models",
     "section": "A bit of notation",
-    "text": "A bit of notation\n. . .\n\nBefore we get into writing math, we need to define a bit of notation in addition of the one we have used so far.\n\n. . .\n\nSpecifically, when defining a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.\nWe will use square brackets to define the sample.\n\n. . .\nExample\n\n\\[\\mathbf{Z}_{f[i]}\\] This means that, within \\(\\mathbf{Z}\\), we focus on the \\(i^{\\text{th}}\\) sample within factor \\(f\\).\n\n. . .\n\nNote The \\(i^{\\text{th}}\\) sample of factor \\(f\\) maybe associated to any level of factor \\(f\\)."
+    "text": "A bit of notation\n\n\nBefore we get into writing math, we need to define a bit of notation in addition of the one we have used so far.\n\n\n\n\nSpecifically, when defining a hierarchy in a model, it is common to do this using at least one factor. Mathematically, we will define the different level of a factor in a model by a subscript.\nWe will use square brackets to define the sample.\n\n\n\nExample\n\n\\[\\mathbf{Z}_{f[i]}\\] This means that, within \\(\\mathbf{Z}\\), we focus on the \\(i^{\\text{th}}\\) sample within factor \\(f\\).\n\n\n\n\nNote The \\(i^{\\text{th}}\\) sample of factor \\(f\\) maybe associated to any level of factor \\(f\\)."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept",
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the intercept",
-    "text": "Hierarchy on the intercept\n. . .\n\nlme4 notation used y ~ (1 | f) or y ~ 1 + (1 | f)\n\n. . .\n\nThis model assumes there is a hierarchy solely on the intercept.\n\n. . .\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n. . .\n\nor\n\\[y_i = b_{{f[i]}} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n. . .\n\nwhere\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\]"
+    "text": "Hierarchy on the intercept\n\n\nlme4 notation used y ~ (1 | f) or y ~ 1 + (1 | f)\n\n\n\n\nThis model assumes there is a hierarchy solely on the intercept.\n\n\n\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n\n\n\nor\n\\[y_i = b_{{f[i]}} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\n\nwhere\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercept-1",
@@ -620,7 +620,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slope",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the slope",
-    "text": "Hierarchy on the slope\n\nlme4 notation : y ~ 1 + (x | f)\n\n. . .\n\nThis model assumes there is a hierarchy on the parameter associated to variable x.\n\n. . .\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\beta_0 + \\mathbf{z}\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n. . .\n\nor\n\\[y_i = \\beta_0 + b_{f[i]}z_i + \\varepsilon \\quad\\forall\\quad i = 1\\dots n\\]\n\n. . .\n\nwhere\n\\(\\mathbf{z}\\) is an explanatory variable, \\(z_i\\) the \\(i^{\\text{th}}\\) sample of \\(\\mathbf{z}\\) and\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\]"
+    "text": "Hierarchy on the slope\n\nlme4 notation : y ~ 1 + (x | f)\n\n\n\nThis model assumes there is a hierarchy on the parameter associated to variable x.\n\n\n\n\nMathematically, it can be translated to\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\beta_0 + \\mathbf{z}\\mathbf{b}_{f},\\sigma^2\\mathbf{I})\\]\n\n\n\n\nor\n\\[y_i = \\beta_0 + b_{f[i]}z_i + \\varepsilon \\quad\\forall\\quad i = 1\\dots n\\]\n\n\n\n\nwhere\n\\(\\mathbf{z}\\) is an explanatory variable, \\(z_i\\) the \\(i^{\\text{th}}\\) sample of \\(\\mathbf{z}\\) and\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\]"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes",
@@ -634,98 +634,98 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on intercept and slope",
-    "text": "Hierarchy on intercept and slope\n. . .\nMathematically speaking, what are the differences between having a hierarchy on the intercept and a hierarchy on the slope ? Any idea ?"
+    "text": "Hierarchy on intercept and slope\n\nMathematically speaking, what are the differences between having a hierarchy on the intercept and a hierarchy on the slope ? Any idea ?"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope-1",
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope-1",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on intercept and slope",
-    "text": "Hierarchy on intercept and slope\nAnswer : Very little !\n. . .\nActually, if we return to the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] with the sole difference that \\(\\mathbf{b}\\) is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\n. . .\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable."
+    "text": "Hierarchy on intercept and slope\nAnswer : Very little !\n\nActually, if we return to the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] with the sole difference is that \\(\\mathbf{b}\\) is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\n\n\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\n. . .\nA common question that often gets asked is :\n. . .\n“How many level is enough ?”\n. . .\nThis is a simple questions that sadly does not have a simple answer."
+    "text": "How many levels ?\n\nA common question that often gets asked is :\n\n\n“How many level is enough ?”\n\n\nThis is a simple questions that sadly does not have a simple answer."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-1",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-1",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nIn these types of models we are interested in estimating the variance parameter \\(\\sigma^2_f\\) in\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] to get the best estimation of \\(\\mathbf{b}\\).\n. . .\nSo, another way to ask this question is: “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”\n. . .\nHowever, in the context of how we defined hierarchical models, a sample is a single level of a factor."
+    "text": "How many levels ?\nIn these types of models we are interested in estimating the variance parameter \\(\\sigma^2_f\\) in\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] to get the best estimation of \\(\\mathbf{b}\\).\n\nSo, another way to ask this question is: “What is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?”\n\n\nHowever, in the context of how we defined hierarchical models, a sample is a single level of a factor."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-2",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-2",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\n. . .\n\nIs 3 enough ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.234"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\n\nIs 3 enough ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.234"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-3",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-3",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\n\nMaybe 5 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.12"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nMaybe 5 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.12"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-4",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-4",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\n\nOr 10 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.174"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 10 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.174"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-5",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-5",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\n\nOr 50 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.331"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 50 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.331"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-6",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-6",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\n\nOr 100 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.271"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 100 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.271"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-7",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-7",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\n\nOr 1000 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.251"
+    "text": "How many levels ?\nWhat is the minimum number of samples needed to properly estimate the variance of a Gaussian distribution?\nOr 1000 ?\n\n\n\n\n\n\n\n\n\n\n\n\nTrue variance : 0.25\nEstimated variance : 0.251"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-8",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-8",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nThere is a consensus among researchers working intimately with hierarchical models that when the interest is to properly estimate the variance parameter \\(\\sigma^2\\), 5 or 6 levels is the extreme minimum.\n. . .\n\nIn the book Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects, James S. Hodges (2016) makes this very thoughtful statement :\n\n“Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc.”"
+    "text": "How many levels ?\nThere is a consensus among researchers working intimately with hierarchical models that when the interest is to properly estimate the variance parameter \\(\\sigma^2\\), 5 or 6 levels is the extreme minimum.\n\n\nIn the book Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects, James S. Hodges (2016) makes this very thoughtful statement :\n\n“Treating factors with small numbers of levels as random will in the best case lead to very small and/or imprecise estimates of random effects; in the worst case it will lead to various numerical difficulties such as lack of convergence, zero variance estimates, etc.”"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-9",
     "href": "slides/06_Simple_hierarchical_model/index.html#how-many-levels-9",
     "title": "‘Simple’ hierarchical models",
     "section": "How many levels ?",
-    "text": "How many levels ?\nSo, what to do if the number of level is not high enough for your comfort ?\n. . .\nYou can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.\n. . .\nHow does this translate mathematically with what we have seen so far ?"
+    "text": "How many levels ?\nSo, what to do if the number of level is not high enough for your comfort ?\n\nYou can still use the hierarchy in your model but focus on the mean of the levels instead of the variance.\n\n\nHow does this translate mathematically with what we have seen so far ?"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean",
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the intercept’s mean",
-    "text": "Hierarchy on the intercept’s mean\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_{f[i]} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n. . .\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n. . .\n\nThis means that all samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\).\n\n. . .\n\nBy developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance."
+    "text": "Hierarchy on the intercept’s mean\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_{f[i]} + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n\n\n\nThis means that all samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\).\n\n\n\n\nBy developping our model this way, we focus on estimating the mean of groups in the hierarchy instead of only the variance."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-1",
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-1",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the intercept’s mean",
-    "text": "Hierarchy on the intercept’s mean\nLet’s take a deeper look at \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n. . .\nWhen we study this way of sampling \\(\\boldsymbol{\\beta}_{f}\\), although our interest is more on \\(\\mu_{f}\\), we also have to acount for the variance term \\(\\sigma^2_{f}\\).\n. . .\nNote: This is essentially the same thing as a one-way analysis of variance."
+    "text": "Hierarchy on the intercept’s mean\nLet’s take a deeper look at \\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\nWhen we study this way of sampling \\(\\boldsymbol{\\beta}_{f}\\), although our interest is more on \\(\\mu_{f}\\), we also have to acount for the variance term \\(\\sigma^2_{f}\\).\n\n\nNote: This is essentially the same thing as a one-way analysis of variance."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-intercepts-mean-2",
@@ -739,7 +739,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on the slope’s mean",
-    "text": "Hierarchy on the slope’s mean\n. . .\n\nDevelopping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.\n\n. . .\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_0+\\mathbf{X}\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_0 + \\beta_{f[i]}x_i + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n. . .\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n. . .\n\nThis means that all the samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\)\nBy developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance."
+    "text": "Hierarchy on the slope’s mean\n\n\nDevelopping a hierarchy on the slope’s mean translate mathematically in a very similar way as it does for the intercept.\n\n\n\n\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\boldsymbol{\\beta}_0+\\mathbf{X}\\boldsymbol{\\beta}_{f},\\sigma_\\mathbf{y}^2\\mathbf{I})\\] or\n\\[y_i = \\beta_0 + \\beta_{f[i]}x_i + \\varepsilon \\quad \\forall\\quad i = 1\\dots n\\]\n\n\n\n\nIn this model, we assume that \\(\\boldsymbol{\\beta}_{f}\\) is distributed as\n\\[\\boldsymbol{\\beta}_{f} \\sim \\mathcal{N}(\\mu_{f}, \\sigma^2_{f})\\]\n\n\n\n\nThis means that all the samples among the levels of factor \\(f\\) are used to estimate \\(\\boldsymbol{\\beta}_{f}\\)\nBy developping our model this way, we focus on estimating the average slope for each group in the hierarchy instead of only the variance."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-the-slopes-mean-1",
@@ -753,14 +753,14 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#tracking-the-estimated-parameters",
     "title": "‘Simple’ hierarchical models",
     "section": "Tracking the estimated parameters",
-    "text": "Tracking the estimated parameters\n. . .\n\nAs can be seen, it is important in hierarchical models to track the different parameters that are estimated to ensure we can make proper inferences with our model.\n\n. . .\n\nHowever, we need to be careful because the notation used can play tricks on us. This is especially true when using matrix notation.\n\n. . .\n\nFor example, in\n\\[\\mathbf{b}_{f}\\sim \\mathcal{MVN}(\\mathbf{0}, \\mathbf{\\Sigma})\\] the number of levels are not explicitly defined and it is not clear if \\(\\mathbf{\\Sigma}\\) includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not.\n\n. . .\n\nIn any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using."
+    "text": "Tracking the estimated parameters\n\n\nAs can be seen, it is important in hierarchical models to track the different parameters that are estimated to ensure we can make proper inferences with our model.\n\n\n\n\nHowever, we need to be careful because the notation used can play tricks on us. This is especially true when using matrix notation.\n\n\n\n\nFor example, in\n\\[\\mathbf{b}_{f}\\sim \\mathcal{MVN}(\\mathbf{0}, \\mathbf{\\Sigma})\\] the number of levels are not explicitly defined and it is not clear if \\(\\mathbf{\\Sigma}\\) includes the same variance value on the diagonal or different ones and whether the off diagonal elements are 0 or not.\n\n\n\n\nIn any case, make sure to keep track of the estimated parameters so that you can better understand the limits of the model you are building and using."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#choosing-the-right-model",
     "href": "slides/06_Simple_hierarchical_model/index.html#choosing-the-right-model",
     "title": "‘Simple’ hierarchical models",
     "section": "Choosing the right model",
-    "text": "Choosing the right model\n. . .\nAlthough these different models are mathematically quite similar, they approach very different biological questions.\n. . .\nA comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.\n. . .\nIt is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward."
+    "text": "Choosing the right model\n\nAlthough these different models are mathematically quite similar, they approach very different biological questions.\n\n\nA comparison of the different figures caricaturizing how each model works should give a good insight of what each model can do.\n\n\nIt is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward."
   },
   {
     "objectID": "slides/00_Introduction/index.html#internet",
