@@ -13,7 +13,8 @@ format:
 
 ```{r, message=FALSE}
 library(tidyverse)
-library(cmdstanr)
+library(rstan)
+rstan_options("auto_write" = TRUE)
 ```
 
 :::{.callout-tip}
@@ -64,7 +65,7 @@ There are at least three reasons why this is a good idea:
 1.  **Understand your priors.**. For most interesting models in ecology, you will not be able to pick good numbers for your prior parameters just by thinking hard. Should the prior on annual tree growth be $\text{Normal}(2, 1)$ ? Or should the standard deviation be bigger? Smaller? As we'll see, simulation will demystify the process. 
 1. **Validate your model.** Bayesian models are great because they can create datasets by simulation. This suggests a very minimum requirement we might have for a statistical model: use known parameters and a model to generate data, then fit that same model to the very data it generated, and see if we get back something close to those known parameter values.
 1. **Test your understanding.** Perhaps most importantly, simulation helps you to test your own intuition.  If you can simulate data from your model, then you really understand it!
-If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's experience anyway] that a biologist will fail to learn something by simulating a dataset.
+If you can't, then you don't know quite how it works yet. It's rare^[in Andrew's experience anyway!] that a biologist will fail to learn something by simulating a dataset.
 
 ## Simple exercise in simulation
 
@@ -125,8 +126,6 @@ Try to make many different simulations (say, 12 simulations). This represents 12
 ```{r}
 #| fig-cap: Twelve different simulations of a possible bird dataset. Do all of these seem plausible? 
 
-library(tidyverse)
-
 set.seed(525600)
 
 simulate_some_birds <- function() {
@@ -169,16 +168,23 @@ And then translate it into Stan:
 
 ```{r}
 #| class-output: stan
-poisson_simulation <- cmdstan_model(
-  stan_file = "topics/01_simulation/poisson_simulation.stan")
+poisson_simulation <- rstan::stan_model(
+  file = "topics/01_simulation/poisson_simulation.stan", 
+  model_name = "poisson_simulation",
+  save_dso = TRUE
+  )
 
 poisson_simulation
 ```
 
 What you see just above is not R, but is the first Stan program we will see in this course. 
-Stan code is written in a text file, which you then bring into R with the function `cmdstan_model` as shown above. 
-This does more than read the program, it compiles the code into a computer program. 
+Stan code is written in a text file, which I've read in here just to display it for you.  
+
 When you sample the model, as we'll do later, Stan samples the posterior distribution using Hamiltonian Monte Carlo.
+
+Before we run it, let's look at the parts of a Stan model:
+
+### Parts of a Stan model
 
 This Stan program has two parts. Each part is separated with curly braces, `{}`. The are they `data` block and the `generated quantities` block:
 
@@ -235,11 +241,11 @@ poisson_simulation_datalist <- list(
   n_people = 21
 )
 
-poisson_sim_stan <- poisson_simulation$sample(
+poisson_simulation_samp <- rstan::sampling(poisson_simulation,
   data = poisson_simulation_datalist, 
   refresh = 0,
   # usually not necessary -- this model has no parameters 
-  fixed_param = TRUE)
+  algorithm = "Fixed_param")
 
 ```
 
@@ -248,12 +254,12 @@ Each time the model samples, it draws a new value for the unobserved average (`a
 
 Let's pull out just a few of these datasets and visualize them.
 
-We'll use a wonderful package called [`tidybayes`](http://mjskay.github.io/tidybayes/) to easily extract posterior draws from `cmdstan` objects. 
+We'll use a wonderful package called [`tidybayes`](http://mjskay.github.io/tidybayes/) to easily extract posterior draws from `stanfit` objects. 
 
 
 ```{r}
 library(tidybayes)
-pois_sim <- tidybayes::spread_draws(poisson_sim_stan, 
+pois_sim <- tidybayes::spread_draws(poisson_simulation_samp, 
                                     avg_birds_per_person,
                                     bird_count[],
                                     ndraws = 20,
@@ -267,7 +273,7 @@ Let's see what we get from tidybayes by looking at the first few rows.
 ```{r}
 pois_sim |> 
   as.data.frame() |> 
-  head(25) |> 
+  head(9) |> 
   knitr::kable()
 ```
 
@@ -320,8 +326,9 @@ We will be doing a lot of Stan models this week, and we will begin by replicatin
 
 ```{r}
 #| class-output: stan
-poisson_model <- cmdstan_model(
-  stan_file = "topics/01_simulation/poisson_model.stan")
+poisson_model <- rstan::stan_model(
+  file = "topics/01_simulation/poisson_model.stan",
+  model_name = "poisson_model")
 
 poisson_model
 ```
@@ -395,10 +402,11 @@ Once again, we connect a dataset to our model with a list:
 bird_data_list <- list(bird_count_observed = bird_count,
                        n_people = length(bird_count))
 
-poisson_model_samp <- poisson_model$sample(data  = bird_data_list,
-                                           refresh = 0)
+poisson_model_samp <- rstan::sampling(poisson_model, 
+                                      data  = bird_data_list,
+                                      refresh = 0)
 
-poisson_model_samp$summary()
+summary(poisson_model_samp)$summary
 ```
 
 :::
@@ -417,10 +425,7 @@ Another essential package for working with posterior samples is called [`bayespl
 ```{r}
 #| fig-cap: posterior distribution for `avg_birds_per_person`. The orange line is the true parameter value, which we simulated in R.
 
-## Extract draws from the model object
-poisson_model_draws <- poisson_model_samp$draws()
-
-bayesplot::mcmc_areas(poisson_model_draws, pars = "avg_birds_per_person") + 
+bayesplot::mcmc_areas(poisson_model_samp, pars = "avg_birds_per_person") + 
   geom_vline(xintercept = avg_birds_per_person, col = "orange", lwd = 2)
 ```
 
@@ -431,11 +436,9 @@ Bayesian models MAKE data, which suggests a clear way to validate our models: as
 The process involves a bit of fiddling around in R to get the simulated data, but then `bayesplot` does all the work: 
 
 ```{r}
-bird_count_draws <- poisson_model_samp$draws(variables = "bird_count")
-bird_count_draws_matrix <- posterior::as_draws_matrix(bird_count_draws)
-
+bird_count_draws <- rstan::extract(poisson_model_samp, pars = "bird_count")
 bayesplot::ppc_dens_overlay(y = bird_count,
-                            yrep = head(bird_count_draws_matrix, 50))
+                            yrep = head(bird_count_draws$bird_count, 50))
 ```
 
 
@@ -448,7 +451,7 @@ Let's use the flexibility of `tidybayes` to show how the prior and posterior dif
 ```{r}
 #| layout-ncol: 2
 
-tidybayes::gather_rvars(poisson_sim_stan,
+tidybayes::gather_rvars(poisson_simulation_samp,
                         avg_birds_per_person) |> 
   ggplot(aes(y = "avg_birds_per_person", dist = .value)) + 
   tidybayes::stat_halfeye() + 
