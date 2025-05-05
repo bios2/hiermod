@@ -2103,8 +2103,8 @@
     "objectID": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far",
     "href": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far",
     "title": "Gaussian process",
-    "section": "",
-    "text": ". . .\nAn already (very !) general formulation\n\nSo far, we have built hierarchical models that can be integrated into the following framework.\n\n. . .\n\n\\[(\\mathbf{y}|\\mathbf{X},\\mathbf{Z}, \\boldsymbol{\\beta}, \\mathbf{b}, \\sigma_\\mathbf{y}^2)\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma_\\mathbf{y}^2\\mathbf{I})\\]\n\n. . .\n\nwhere\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\]\n\n. . .\n\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma_\\mathbf{y}^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is designed matrix of “explanatory” variables with \\(n\\) rows (samples) and \\(q\\) columns\n\\(\\mu\\) is a vector defining the average importance of hierarchical parameters\n\\(\\mathbf{\\Sigma}\\) is a matrix defining the covariance structure of hierarchical parameters"
+    "section": "Hierarchical models so far",
+    "text": "Hierarchical models so far\n\nAn already (very !) general formulation\n\nSo far, we have built hierarchical models that can be integrated into the following framework.\n\n\n\n\n\\[(\\mathbf{y}|\\mathbf{X},\\mathbf{Z}, \\boldsymbol{\\beta}, \\mathbf{b}, \\sigma_\\mathbf{y}^2)\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma_\\mathbf{y}^2\\mathbf{I})\\]\n\n\n\n\nwhere\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\]\n\n\n\n\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma_\\mathbf{y}^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is designed matrix of “explanatory” variables with \\(n\\) rows (samples) and \\(q\\) columns\n\\(\\mu\\) is a vector defining the average importance of hierarchical parameters\n\\(\\mathbf{\\Sigma}\\) is a matrix defining the covariance structure of hierarchical parameters"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far-1",
@@ -2118,28 +2118,28 @@
     "href": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models",
     "title": "Gaussian process",
     "section": "Even more complex hierarchical models!?",
-    "text": "Even more complex hierarchical models!?\nSo far we have seen many (!) versions of hierarchical models, which got increasingly more complex in their structure.\n. . .\nLet’s continue on that slippery slope…\n. . .\nWould you know how to constraint (spatially, temporally, phylogenetically, etc.) such a model ?"
+    "text": "Even more complex hierarchical models!?\nSo far we have seen many (!) types of hierarchical models, which got increasingly more complex in their structure.\n\nLet’s continue on that slippery slope…\n\n\nWould you know how to constraint (spatially, temporally, phylogenetically, etc.) such a model ?"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-1",
     "href": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-1",
     "title": "Gaussian process",
     "section": "Even more complex hierarchical models!",
-    "text": "Even more complex hierarchical models!\nIf we get back to a model that has a single hierarchy on the intercept such that\n\\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{b},\\sigma^2)\\]\n. . .\nwhere\n\\[\\mathbf{b} \\sim \\mathcal{N}(\\mu, \\sigma^2)\\]\n. . .\nIf we want to account for a constraint on the previously presented model we can rewrite the equation fo \\(\\mathbf{b}\\) as\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n. . .\nwhere\n\n\\(f(d)\\) is a function of a distance matrix"
+    "text": "Even more complex hierarchical models!\nIf we get back to a model that has a single hierarchy on the intercept such that\n\\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{b},\\sigma^2)\\]\n\nwhere\n\\[\\mathbf{b} \\sim \\mathcal{N}(\\mu, \\sigma^2).\\]\n\n\nIf we want to account for a constraint on the previously presented model, we can rewrite the equation fo \\(\\mathbf{b}\\) as\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n\n\nwhere\n\n\\(f(d)\\) is a function of a distance matrix"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-2",
     "href": "slides/09_Gaussian_process/index.html#even-more-complex-hierarchical-models-2",
     "title": "Gaussian process",
     "section": "Even more complex hierarchical models!",
-    "text": "Even more complex hierarchical models!\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n. . .\nWhat this equation means conceptually is that the variance associated to \\(\\mathbf{b}\\) is not a constant, it changes based on distance (across space, time, phylogeny, etc.). This is known as a Gaussian process."
+    "text": "Even more complex hierarchical models!\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n\nWhat this equation means conceptually is that the variance associated to \\(\\mathbf{b}\\) is not a constant, it changes based on distance (across space, time, phylogeny, etc.). This is known as a Gaussian process."
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-bit-of-history",
     "href": "slides/09_Gaussian_process/index.html#a-bit-of-history",
     "title": "Gaussian process",
     "section": "A bit of history",
-    "text": "A bit of history\n. . .\nIn statistics, Gaussian processes have a unique history. The development of this type of model is closely linked to the estimation of mineral deposits.\n. . .\nSpatial Gaussian processes are also called geostatistical models, where the prefix geo refers to geology, not geography, as one may be led to believe.\n. . .\nAs mining engineers are at the root of the development of Gaussian processes, the language associated with this type of model is influenced by this field."
+    "text": "A bit of history\n\nIn statistics, Gaussian processes have a unique history. The development of this type of model is closely linked to the estimation of mineral deposits.\n\n\nSpatial Gaussian processes are also called geostatistical models, where the prefix geo refers to geology, not geography, as one may be led to believe.\n\n\nAs mining engineers are at the root of the development of Gaussian processes, the language associated with this type of model is influenced by this field."
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-bit-of-history-1",
@@ -2153,21 +2153,21 @@
     "href": "slides/09_Gaussian_process/index.html#assumption-with-gaussian-processes",
     "title": "Gaussian process",
     "section": "Assumption with Gaussian processes",
-    "text": "Assumption with Gaussian processes\n. . .\nIn general, when defining a Gaussian process, we make the following assumptions:\n. . .\n\nThe closer two sites are, the more similar they are.\n\n. . .\n\nAfter a certain distance, it is no longer necessary to consider that a site influences another site.\n\n. . .\nNote The distance of influence of a site on another can be different depending on what is being studied, where it is being studied and when it is being studied"
+    "text": "Assumption with Gaussian processes\n\nIn general, when defining a Gaussian process, we make the following assumptions:\n\n\n\nThe closer two samples are, the more similar they are.\n\n\n\n\nAfter a certain distance, it is no longer necessary to consider that a sample influences another.\n\n\n\nNote The distance of influence of a sample on another can be different depending on what is being studied, where it is being studied and when it is being studied"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd",
     "href": "slides/09_Gaussian_process/index.html#fd",
     "title": "Gaussian process",
     "section": "\\(f(d)\\)",
-    "text": "\\(f(d)\\)\n. . .\nSo, what does \\(f(d)\\) looks like exactly ?\n. . .\nIn theory, \\(f(d)\\) can be anything…\n. . .\nHowever, in practice, there are particularities of the functions that are defined by the assumptions we impose on our model.\n. . .\nAs such, here is a classic structure these variance function take"
+    "text": "\\(f(d)\\)\n\nSo, what does \\(f(d)\\) looks like exactly ?\n\n\nIn theory, \\(f(d)\\) can be anything…\n\n\nHowever, in practice, there are particularities of the functions that are defined by the assumptions we impose on our model.\n\n\nAs such, here is a classic structure these variance function take"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary",
     "href": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - A bit of vocabulary",
-    "text": "\\(f(d)\\) - A bit of vocabulary\n. . .\nNugget effect"
+    "text": "\\(f(d)\\) - A bit of vocabulary\n\nNugget effect"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary-1",
@@ -2188,7 +2188,7 @@
     "href": "slides/09_Gaussian_process/index.html#fd---types-of-functions",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - types of functions",
-    "text": "\\(f(d)\\) - types of functions\n. . .\nMany functions have been proposed have this general shape\n. . .\nIn this lecture, we will use the exponential function\n\\[C_0 + C_1 \\left(1-e^{-d/a}\\right)\\]\n. . .\nwhere\n\n\\(C_0\\) is the nugget effect\n\n. . .\n\n\\(C_1\\) is the sill\n\n. . .\n\n\\(d\\) is the distance\n\n. . .\n\n\\(a\\) is the range"
+    "text": "\\(f(d)\\) - types of functions\n\nMany functions that have been proposed have this general shape\n\n\nIn this lecture, we will use the exponential function\n\\[C_0 + C_1 \\left(1-e^{-d/a}\\right)\\]\n\n\nwhere\n\n\\(C_0\\) is the nugget effect\n\n\n\n\n\\(C_1\\) is the sill\n\n\n\n\n\\(d\\) is the distance\n\n\n\n\n\\(a\\) is the range"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#exponential-function",
@@ -2202,7 +2202,7 @@
     "href": "slides/09_Gaussian_process/index.html#an-illustrative-example",
     "title": "Gaussian process",
     "section": "An illustrative example",
-    "text": "An illustrative example\n. . .\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n. . .\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n. . .\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.\n\n. . .\n\nThey move well in an urban setting and are not affected by the level of urbanisation"
+    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-typical-member-of-the-species",
@@ -2216,35 +2216,35 @@
     "href": "slides/09_Gaussian_process/index.html#distribution-of-s.-oviparus-in-montréal",
     "title": "Gaussian process",
     "section": "Distribution of S. oviparus in Montréal",
-    "text": "Distribution of S. oviparus in Montréal\n. . .\nIn 2015, a survey was carried out to find Sylvilagus oviparus in Montréal’s park. Here are the data . . .\n\n\n\n\n\n\n\n\n\n\nWithin the censused park\n\nBlue parks : observed\nPink parks : not observed"
+    "text": "Distribution of S. oviparus in Montréal\n\nIn 2015, a survey was carried out to find Sylvilagus oviparus in Montréal’s park. Here are the data . . .\n\n\n\n\n\n\n\n\n\n\nWithin the censused park\n\nBlue parks : observed\nPink parks : not observed"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#model",
     "href": "slides/09_Gaussian_process/index.html#model",
     "title": "Gaussian process",
     "section": "Model",
-    "text": "Model\n. . .\nSince we have presence-absence data\n\\[P(y = 1) = \\frac{\\exp(b)}{1 - \\exp(b)}\\]\n. . .\nwhere \\[b \\sim{\\cal N}\\left(0, C_0 +C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\]"
+    "text": "Model\n\nSince we have presence-absence data\n\\[P(y = 1) = \\frac{\\exp(b)}{1 - \\exp(b)}\\]\n\n\nwhere \\[b \\sim{\\cal N}\\left(0, C_0 +C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\]"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fitting-the-model",
     "href": "slides/09_Gaussian_process/index.html#fitting-the-model",
     "title": "Gaussian process",
     "section": "Fitting the model",
-    "text": "Fitting the model\nIf we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like\n\n\n\n\n\n\n\n\n\n. . .\nWhat can we learn from this model ?"
+    "text": "Fitting the model\nIf we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like\n\n\nWhat can we learn from this model ?"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#kringing",
     "href": "slides/09_Gaussian_process/index.html#kringing",
     "title": "Gaussian process",
     "section": "Kringing",
-    "text": "Kringing\nIf we want to interpolate across the region of interest, this is known as kriging.\n. . .\nSimple kriging\nSo far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function.\n. . .\nIn a linear regression perspective, this means that\n\\[\\mathbf{y}\\sim\\mathcal{N}(0, f(d))\\]"
+    "text": "Kringing\nIf we want to interpolate across the region of interest, this is known as kriging.\n\nSimple kriging\nSo far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function.\n\n\nIn a linear regression perspective, this means that\n\\[\\mathbf{y}\\sim\\mathcal{N}(0, f(d))\\]"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#kringing-1",
     "href": "slides/09_Gaussian_process/index.html#kringing-1",
     "title": "Gaussian process",
     "section": "Kringing",
-    "text": "Kringing\n\nOrdinary kriging\n\nIf we want to account for an intercept in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0, f(d))\\]\nThis is known as ordinary kriging.\n. . .\n\nUniversal kriging\n\nIf we want to account for one or more explanatory variables in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0 + \\mathbf{X}\\beta, f(d))\\] This is known as Universal kriging."
+    "text": "Kringing\n\nOrdinary kriging\n\nIf we want to account for an intercept in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0, f(d))\\]\nThis is known as ordinary kriging.\n\n\nUniversal kriging\n\nIf we want to account for one or more explanatory variables in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0 + \\mathbf{X}\\beta, f(d))\\] This is known as Universal kriging."
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#prediction-map",
