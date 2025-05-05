@@ -4,7 +4,7 @@ title-slide-attributes:
   data-background-image: ../img/bg.jpg
   data-background-size: full
 author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2024-05-02"
+date: "2025-05-08"
 execute:
   echo: true
 format: 
@@ -73,7 +73,7 @@ $$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$
 
 ## Even more complex hierarchical models!? {style="font-size: 0.9em;"}
 
-So far we have seen many (!) versions of hierarchical models, which got increasingly more complex in their structure.
+So far we have seen many (!) types of hierarchical models, which got increasingly more complex in their structure.
 
 . . .
 
@@ -95,11 +95,11 @@ $$\mathbf{y} \sim \mathcal{N}(\mathbf{b},\sigma^2)$$
 
 where
 
-$$\mathbf{b} \sim \mathcal{N}(\mu, \sigma^2)$$
+$$\mathbf{b} \sim \mathcal{N}(\mu, \sigma^2).$$
 
 . . . 
 
-If we want to account for a constraint on the previously presented model we can rewrite the equation fo $\mathbf{b}$ as 
+If we want to account for a constraint on the previously presented model, we can rewrite the equation fo $\mathbf{b}$ as 
 
 $$\mathbf{b} \sim \mathcal{N}\left(\mu, f(d)\right)$$
 
@@ -163,16 +163,16 @@ In general, when defining a Gaussian process, we make the following assumptions:
 
 . . .
 
-- The closer two sites are, the more similar they are.
+- The closer two samples are, the more similar they are.
 
 . . .
 
-- After a certain distance, it is no longer necessary to consider that a site influences another site.
+- After a certain distance, it is no longer necessary to consider that a sample influences another.
 
 . . .
 
 
-**Note** The distance of influence of a site on another can be different depending on what is being studied, where it is being studied and when it is being studied
+**Note** The distance of influence of a sample on another can be different depending on what is being studied, where it is being studied and when it is being studied
 
 ## $f(d)$
 
