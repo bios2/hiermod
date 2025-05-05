@@ -9,6 +9,8 @@ comments:
 format:
   html:
     code-tools: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -292,6 +294,45 @@ grid_points |>
 ```
 
 Other than a change in the `data {}` block, the Stan code is unchanged! 
+
+
+### Prior predictive simulations
+
+```{r}
+#| class-output: stan
+gp_example_2D_prior <- cmdstan_model(
+  stan_file = "topics/04_gp/gp_example_2D_prior.stan")
+
+gp_example_2D_prior
+```
+
+
+```{r}
+gp_example_2D_prior_samp <- gp_example_2D_prior$sample(
+  data = list(N = nrow(grid_points),
+              x = grid_points),
+  chains = 2, parallel_chains = 2, refresh = 1000)
+```
+### visualize the prior
+
+```{r}
+  ## extract the predictors
+gp_example_2D_prior_samp |> 
+  tidybayes::spread_draws(f[rownum], a, ndraws = 6) |> 
+  mutate(rownum = as.character(rownum)) |> 
+  left_join(grid_points |> 
+  tibble::rownames_to_column("rownum"), by = join_by(rownum)) |> 
+  mutate(presabs = plogis(f + a)) |> 
+  ggplot(aes(x = x, y = y, fill = presabs)) + 
+  geom_tile()+
+  scale_fill_viridis_c(option = "rocket") + 
+  coord_fixed()+
+  theme_minimal() + 
+  labs(fill = "Pr(y=1)") + 
+  facet_wrap(~.draw) +
+  NULL 
+```
+
 
 :::{.callout-warning}
 ## CAUTION: Slow

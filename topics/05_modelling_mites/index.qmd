@@ -4,11 +4,13 @@ description: |
   Working out the mite data example.
 execute:
   freeze: true
+  eval: false
 format:
   html:
     code-tools: true
 editor_options: 
   chunk_output_type: console
+draft: true
 ---
 
 ```{r}
@@ -19,14 +21,36 @@ library(cmdstanr)
 
 # combine data and environment
 mite_data_long <- bind_cols(mite.env, mite) |> 
+  tibble::rownames_to_column(var= "site_id") |> 
+  mutate(site_id = parse_number(site_id)) |> 
   pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
-```
 
-```{r}
+
 mite_data_long_transformed <- mite_data_long |> 
   mutate(presabs = as.numeric(abd>0),
          # center predictors
          water = (WatrCont - mean(WatrCont)) / 100
+         )
+
+# pick a species that has about 50/50 chance 
+
+mite_data_long_transformed |>
+  group_by(spp) |>
+  summarize(freq = mean(presabs)) |>
+  filter(freq > .4 & freq < .6)
+
+```
+
+```{r}
+
+spp_nvec <- unique(mite_data_long_transformed$spp) |> 
+  {\(x) set_names(seq_along(x), x)}()
+
+mite_data_long_transformed <- mite_data_long |> 
+  mutate(presabs = as.numeric(abd>0),
+         # center predictors
+         water = (WatrCont - mean(WatrCont)) / 100,
+         spp_id = spp_nvec[mite_data_long_transformed$spp]
          )
 
 mite_data_long_transformed |> 
@@ -36,17 +60,24 @@ mite_data_long_transformed |>
   facet_wrap(~spp)
 ```
 
-
 ```{r}
 mite_bin <- mite
 mite_bin[mite_bin>0] <- 1
 
-mite_pa_list <- list(
-      Nsites = nrow(mite_bin),
-      S = ncol(mite_bin),
-      x = with(mite.env, (WatrCont - mean(WatrCont))/100),
-      y = as.matrix(mite_bin)
+
+make_data_list <- function(df){
+  mite_pa_list <- 
+    with(df, 
+         list(
+           Nsites = max(site_id),
+           Nspp = max(spp_id),
+           site_id = site_id,
+           spp_id = spp_id,
+           x = water,
+           y = as.numeric(abd>0)
+         )
     )
+}
 ```
 
 
@@ -54,28 +85,104 @@ mite_pa_list <- list(
 
 ```{r}
 #| class-output: stan
-all_species_partpooled <- cmdstan_model(
-  stan_file = "topics/05_modelling_mites/all_species_partpooled.stan", 
+presabs_all_spp <- cmdstan_model(
+  stan_file = "topics/05_modelling_mites/presabs_all_spp.stan", 
   pedantic = TRUE)
 
-all_species_partpooled
+presabs_all_spp
 ```
 
 
 ```{r}
 
-all_species_partpooled_posterior <- 
-  all_species_partpooled$sample(
+presabs_all_spp_posterior <- 
+  presabs_all_spp$sample(
     data = mite_pa_list, 
     refresh = 1000, parallel_chains = 4
     )
 ```
 
-
-## Modelling counts
+### Sampling posterior predictive with `gq`
 
 ```{r}
 
+```
+
+
+
+## Modelling counts
+
+
+```{r}
+#| class-output: stan
+count_all_spp <- cmdstan_model(
+  stan_file = "topics/05_modelling_mites/count_all_spp.stan", 
+  pedantic = TRUE)
+
+count_all_spp
+```
+
+
+Convert to LONG format all the outputs
+
+```{r}
+mite_abd_list <- make_data_list(mite_data_long_transformed)
+
+count_all_spp_post <- count_all_spp$sample(
+    data = mite_abd_list, 
+    refresh = 200, parallel_chains = 4
+    )
+```
+
+
+### PPC using gq
+
+Make predictions with the poisson model using a separate gq block
+
+```{r}
+#| class-output: stan
+count_all_spp_gq <- cmdstan_model(
+  stan_file = "topics/05_modelling_mites/count_all_spp_gq.stan", 
+  pedantic = TRUE)
+
+count_all_spp_gq
+```
+
+```{r}
+count_all_spp_gq_post <- count_all_spp_gq$generate_quantities(count_all_spp_post, data = mite_abd_list)
+```
+
+
+```{r}
+yrep_mat <- count_all_spp_gq_post$draws(variables = "yrep") |> 
+  posterior::as_draws_matrix()
+
+bayesplot::ppc_dens_overlay(mite_data_long$abd, yrep_mat |> head(50)) + 
+  coord_cartesian(xlim = c(0, 20))
+```
+
+
+Does that mean that the probability of getting 1 or higher (ie not zero) from the poisson distribution, will give us a good line for presence-absence?
+
+```{r}
+#| class-output: stan
+count_all_spp_line_gq <- cmdstan_model(
+  stan_file = "topics/05_modelling_mites/count_all_spp_line_gq.stan", 
+  pedantic = TRUE)
+
+count_all_spp_line_gq
+```
+
+make a new data list with expand.grid
+
+```{r}
+new_list <- tibble(water = modelr::seq_range(mite_data_long_transformed$water, n = 10), 
+         site_id = 1:10) |> 
+  expand_grid(spp_id = unique(mite_data_long_transformed$spp_id), abd = 0) |> 
+  make_data_list()
+
+
+count_all_spp_line_gq$generate_quantities(count_all_spp_post, data = new_list)
 ```
 
 

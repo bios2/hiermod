@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="A secret weapon for when you’re building hierarchical models.">
 
-<title>Modèles hiérarchiques pour les sciences de la vie - Summarizing many univariate models</title>
+<title>Summarizing many univariate models – Modèles hiérarchiques pour les sciences de la vie</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -1023,18 +1023,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1066,7 +1055,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -1125,7 +1136,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1892,7 +1903,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb122-492"><a href="#cb122-492" aria-hidden="true" tabindex="-1"></a><span class="co"># rethinking::rlkjcorr(1, 5, .3)</span></span>
 <span id="cb122-493"><a href="#cb122-493" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb122-494"><a href="#cb122-494" aria-hidden="true" tabindex="-1"></a></span>
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb122-495"><a href="#cb122-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-496"><a href="#cb122-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-499"><a href="#cb122-499" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb122-500"><a href="#cb122-500" aria-hidden="true" tabindex="-1"></a><span class="co"># correlation between both parts (pres-abs and also the mean of the count) comes from a BETA distribution (not a scaled beta). so it is always positive, because we assume that an animal which is very common when found is also found in many sites. </span></span>
+<span id="cb122-501"><a href="#cb122-501" aria-hidden="true" tabindex="-1"></a><span class="co"># Is there a known relationship between incidence and abundance? surely. That could be an excellent step 2, to show that .</span></span>
+<span id="cb122-502"><a href="#cb122-502" aria-hidden="true" tabindex="-1"></a><span class="co"># Actually it seems like its a bit of a controversy! https://en.wikipedia.org/wiki/Occupancy%E2%80%93abundance_relationship</span></span>
+<span id="cb122-503"><a href="#cb122-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-504"><a href="#cb122-504" aria-hidden="true" tabindex="-1"></a><span class="co"># can a GP output a vector of values? how exactly. And if so, could output a pair of species coefs for both the logit (present) and count (poisson) model. </span></span>
+<span id="cb122-505"><a href="#cb122-505" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

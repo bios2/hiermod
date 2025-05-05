@@ -445,3 +445,12 @@ The LKJ prior distribution is a prior over correlation matrices
 ```
 
 
+
+```{r}
+# correlation between both parts (pres-abs and also the mean of the count) comes from a BETA distribution (not a scaled beta). so it is always positive, because we assume that an animal which is very common when found is also found in many sites. 
+# Is there a known relationship between incidence and abundance? surely. That could be an excellent step 2, to show that .
+# Actually it seems like its a bit of a controversy! https://en.wikipedia.org/wiki/Occupancy%E2%80%93abundance_relationship
+
+# can a GP output a vector of values? how exactly. And if so, could output a pair of species coefs for both the logit (present) and count (poisson) model. 
+```
+
