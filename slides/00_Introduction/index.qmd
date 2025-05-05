@@ -4,7 +4,7 @@ title-slide-attributes:
   data-background-image: ../img/bg.jpg
   data-background-size: full
 author: "F. Guillaume Blanchet -- Andrew MacDonald"
-date: "2024-04-29"
+date: "2025-05-05"
 execute:
   echo: true
 format: 
@@ -27,7 +27,32 @@ format:
 
 ## Dos and don'ts at Jouvence
 
-Kim will give us a quick explanation about this
+. . . 
+
+Be respectful of the environment
+
+. . . 
+
+Meals will be served at La Petite Auberge
+
+. . . 
+
+You cannot consume your own beverages inside the main buildings. However, it will be permitted to bring your own drinks in certain outdoor areas, including around the fire pit in the evening.
+
+. . . 
+
+Glass containers are not allowed
+
+. . . 
+
+It is forbidden to smoke cannabis on site
+
+. . . 
+
+More details can be found in this **[Google Doc](https://docs.google.com/document/d/1i3rknFQdna6hMcS9J6c3EdD35Ol5EbPbTfidIHN8lc8/edit?tab=t.0)**. 
+
+. . . 
+
 
 ## Course material
 
@@ -39,7 +64,7 @@ On it, you will find the slides but also practical examples.
 
 . . . 
 
-You will also find the course syllabus (in French)
+You will also find the course syllabus
 
 . . .
 
@@ -78,12 +103,15 @@ So, if you get involved, ask questions, try, work... you will pass.
 
 - Introduction to Stan
 
+. . .
+
 :::{style="color: red;font-size: 0.9em"}
 We will ***not*** give an introduction to any programming language (e.g. R, Python, Julia). 
 
 We assume you know one and are conformtable using it... We are more comfortable in R, but can work with many other languages (but please no Fortran !)
 :::
 
+. . .
 
 ## What we want to do during this course
 
@@ -107,6 +135,7 @@ We assume you know one and are conformtable using it... We are more comfortable 
 - Model with multiple hierarchical levels
 - Hierarchical model with constraints
 - Gaussian process
+- Phylogenetic hierarchical models
 
 ## What we want to do during this course
 
@@ -289,6 +318,24 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/a/aa/You
 Fisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. *Transactions of the Royal Society of Edinburgh*, **52** 399--433.
 :::
 
+
+## Good reference
+
+```{r echo=FALSE, out.width="30%", fig.align='center'}
+knitr::include_graphics("https://images.tandf.co.uk/common/jackets/crclarge/978042902/9780429029608.jpg")
+```
+
+A good portion of this course material is based on this book.
+
+
+## Great technical references
+
+```{r echo=FALSE, out.width="30%", fig.align='center'}
+knitr::include_graphics("https://www.booktopia.com.au/covers/big/9780521867061/5512/data-analysis-using-regression-and-multilevel-hierarchical-models.jpg")
+```
+
+Everything is there but it can gets technical !
+
 ## Implementation
 
 . . .
@@ -327,24 +374,6 @@ This is because the underlying model implemented in the software package may act
 
 Instead we will implement our own models from scratch using [Stan]{style="color: red;"}.
 
-## Good reference
-
-```{r echo=FALSE, out.width="30%", fig.align='center'}
-knitr::include_graphics("https://images.tandf.co.uk/common/jackets/crclarge/978042902/9780429029608.jpg")
-```
-
-A good portion of this course material is based on this book.
-
-
-## Great technical references
-
-```{r echo=FALSE, out.width="30%", fig.align='center'}
-knitr::include_graphics("https://www.booktopia.com.au/covers/big/9780521867061/5512/data-analysis-using-regression-and-multilevel-hierarchical-models.jpg")
-```
-
-Everything is there but it can gets technical !
-
-
 ## R and Stan
 
 All of the practical aspect of the course will be done with R and Stan.
@@ -366,10 +395,10 @@ install.packages(c("vegan",
                    "tidyverse",
                    "posterior"))
 
-# cmdstanr - One last important package
-install.packages("cmdstanr",
-                 repos = c("https://mc-stan.org/r-packages/",
-                           getOption("repos")))
-cmdstanr::check_cmdstan_toolchain()
-cmdstanr::install_cmdstan(cores = 2) # If necessary
+# Run the next line if you already have rstan installed
+# remove.packages(c("StanHeaders", "rstan"))
+
+install.packages("rstan", repos = c('https://stan-dev.r-universe.dev', getOption("repos")))
+
+example(stan_model, package = "rstan", run.dontrun = TRUE)
 ```

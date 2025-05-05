@@ -99,9 +99,6 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#day-1-introduction-data-simulation-discrete-models" id="toc-day-1-introduction-data-simulation-discrete-models" class="nav-link active" data-scroll-target="#day-1-introduction-data-simulation-discrete-models">Day 1: Introduction, data simulation, discrete models</a></li>
-  <li><a href="#day-2-intro-to-stan-and-regression" id="toc-day-2-intro-to-stan-and-regression" class="nav-link" data-scroll-target="#day-2-intro-to-stan-and-regression">DAY 2: Intro to Stan and Regression</a></li>
-  <li><a href="#day-3-hierarchical-models" id="toc-day-3-hierarchical-models" class="nav-link" data-scroll-target="#day-3-hierarchical-models">Day 3: Hierarchical models</a></li>
-  <li><a href="#day-4-constrained-models-gaussian-processes" id="toc-day-4-constrained-models-gaussian-processes" class="nav-link" data-scroll-target="#day-4-constrained-models-gaussian-processes">Day 4: Constrained models: Gaussian processes</a></li>
   </ul>
 </nav>
     </div>
@@ -150,7 +147,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -160,71 +157,72 @@ Monday night Stan installation session!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You’re free to proceed in this course using any modelling software you like. We will be using Stan, so if you want to follow along you’ll need to have it installed also! To do so, follow the steps <a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html#compiling-a-model">in this vignette</a>. Make sure you can run the example (up to “Running MCMC”)</p>
-<p>Please note that if you want help installing it, Andrew and Guillaume will be available on <strong>Monday evening</strong>. From Tuesday onwards we won’t have time to pause to fix installation issues!</p>
+<p>To use Stan in R, the <code>rstan</code> R package is needed. To install it, follow the steps <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">in this vignette</a>. Make sure you can run the example in the <strong>Verifying Installation</strong></p>
+<p>If you have not yet managed to install Stan and <code>rstan</code>, Andrew and Guillaume will be available on <strong>Monday evening</strong>. From Tuesday onwards we won’t have time to pause to fix installation issues!</p>
 </div>
 </div>
-</section>
-<section id="day-2-intro-to-stan-and-regression" class="level2">
-<h2 class="anchored" data-anchor-id="day-2-intro-to-stan-and-regression">DAY 2: Intro to Stan and Regression</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<section id="slides-1" class="level3">
-<h3 class="anchored" data-anchor-id="slides-1">Slides</h3>
-<ul>
-<li><a href="slides/02_Bayesian">Bayesian and MCMC</a></li>
-<li><a href="slides/03_Stan">Stan and HMC</a></li>
-<li><a href="slides/04_Linear_model">Linear models</a></li>
-</ul>
-</section>
-</div><div class="column" style="width:50%;">
-<section id="exercises" class="level3">
-<h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
-<ul>
-<li><a href="topics/01_simulation">Simulation and model fitting in Stan</a></li>
-<li><a href="topics/discrete_predictor">Discrete predictors</a></li>
-<li><a href="topics/02_regression">Linear regression</a></li>
-</ul>
-</section>
-</div>
-</div>
-</section>
-<section id="day-3-hierarchical-models" class="level2">
-<h2 class="anchored" data-anchor-id="day-3-hierarchical-models">Day 3: Hierarchical models</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<section id="slides-2" class="level3">
-<h3 class="anchored" data-anchor-id="slides-2">Slides</h3>
-<ul>
-<li><a href="slides/06_Simple_hierarchical_model">Simple hierarchical models</a></li>
-<li><a href="slides/08_Complex_hierarchical_model">Complex hierarchical models</a></li>
-</ul>
-</section>
-</div><div class="column" style="width:50%;">
-<section id="exercises-1" class="level3">
-<h3 class="anchored" data-anchor-id="exercises-1">Exercises</h3>
-<ul>
-<li><a href="topics/intercept_only">Intercept-Only Model (and tidybayes discussion)</a></li>
-<li><a href="topics/03_one_random_effect">Hierarchy on the intercept</a></li>
-<li><a href="topics/correlated_effects">Hierarchy on the slope</a></li>
-</ul>
-</section>
-</div>
-</div>
-</section>
-<section id="day-4-constrained-models-gaussian-processes" class="level2">
-<h2 class="anchored" data-anchor-id="day-4-constrained-models-gaussian-processes">Day 4: Constrained models: Gaussian processes</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li><a href="slides/09_Gaussian_process">Slides</a></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<ul>
-<li><a href="topics/04_gp">A Practical demonstration in Stan</a></li>
-</ul>
-</div>
-</div>
+<!--
+
+## DAY 2: Intro to Stan and Regression
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Slides
+* [Bayesian and MCMC](slides/02_Bayesian)
+* [Stan and HMC](slides/03_Stan)
+* [Linear models](slides/04_Linear_model)
+
+:::
+
+::: {.column width="50%"}
+### Exercises
+* [Simulation and model fitting in Stan](topics/01_simulation)
+* [Discrete predictors](topics/discrete_predictor)
+* [Linear regression](topics/02_regression)
+
+:::
+
+::::
+
+## Day 3: Hierarchical models
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Slides
+* [Simple hierarchical models](slides/06_Simple_hierarchical_model)
+* [Complex hierarchical models](slides/08_Complex_hierarchical_model)
+
+:::
+
+::: {.column width="50%"}
+### Exercises
+
+* [Intercept-Only Model (and tidybayes discussion)](topics/intercept_only)
+* [Hierarchy on the intercept](topics/03_one_random_effect)
+* [Hierarchy on the slope](topics/correlated_effects)
+
+:::
+
+::::
+
+## Day 4: Constrained models: Gaussian processes
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+* [Slides](slides/09_Gaussian_process)
+
+:::
+
+::: {.column width="50%"}
+* [A Practical demonstration in Stan](topics/04_gp)
+:::
+
+::::
+-->
 
 
 </section>

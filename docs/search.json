@@ -11,28 +11,7 @@
     "href": "index.html#day-1-introduction-data-simulation-discrete-models",
     "title": "Course contents",
     "section": "Day 1: Introduction, data simulation, discrete models",
-    "text": "Day 1: Introduction, data simulation, discrete models\nCourse Syllabus\n\n\n\nSlides\n\nIntroduction to the course and location\nData we’ll be using\nProbability Distributions\n\n\n\n\nExercises – data simulation & discrete models\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nMonday night Stan installation session!\n\n\n\nYou’re free to proceed in this course using any modelling software you like. We will be using Stan, so if you want to follow along you’ll need to have it installed also! To do so, follow the steps in this vignette. Make sure you can run the example (up to “Running MCMC”)\nPlease note that if you want help installing it, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
-  },
-  {
-    "objectID": "index.html#day-2-intro-to-stan-and-regression",
-    "href": "index.html#day-2-intro-to-stan-and-regression",
-    "title": "Course contents",
-    "section": "DAY 2: Intro to Stan and Regression",
-    "text": "DAY 2: Intro to Stan and Regression\n\n\n\nSlides\n\nBayesian and MCMC\nStan and HMC\nLinear models\n\n\n\n\nExercises\n\nSimulation and model fitting in Stan\nDiscrete predictors\nLinear regression"
-  },
-  {
-    "objectID": "index.html#day-3-hierarchical-models",
-    "href": "index.html#day-3-hierarchical-models",
-    "title": "Course contents",
-    "section": "Day 3: Hierarchical models",
-    "text": "Day 3: Hierarchical models\n\n\n\nSlides\n\nSimple hierarchical models\nComplex hierarchical models\n\n\n\n\nExercises\n\nIntercept-Only Model (and tidybayes discussion)\nHierarchy on the intercept\nHierarchy on the slope"
-  },
-  {
-    "objectID": "index.html#day-4-constrained-models-gaussian-processes",
-    "href": "index.html#day-4-constrained-models-gaussian-processes",
-    "title": "Course contents",
-    "section": "Day 4: Constrained models: Gaussian processes",
-    "text": "Day 4: Constrained models: Gaussian processes\n\n\n\nSlides\n\n\n\nA Practical demonstration in Stan"
+    "text": "Day 1: Introduction, data simulation, discrete models\nCourse Syllabus\n\n\n\nSlides\n\nIntroduction to the course and location\nData we’ll be using\nProbability Distributions\n\n\n\n\nExercises – data simulation & discrete models\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nMonday night Stan installation session!\n\n\n\nTo use Stan in R, the rstan R package is needed. To install it, follow the steps in this vignette. Make sure you can run the example in the Verifying Installation\nIf you have not yet managed to install Stan and rstan, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model",
@@ -60,14 +39,14 @@
     "href": "slides/04_Linear_model/index.html#regression-parameters",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nGenerally, we focused on the most commonly assessed regression parameters of the simple linear model, the slope and the intercept, but there is another one that is very important to consider, especially for this course.\n\nAny ideas which one it is ?"
+    "text": "Regression parameters\nGenerally, the slope and the intercept are the regression parameters we focus on when studying the simple linear model, but there is another one that is very important to consider, especially for this course.\n\nAny ideas which one it is ?"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-1",
     "href": "slides/04_Linear_model/index.html#regression-parameters-1",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n\n\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\n\n\n\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]\n\n\nwhere \\(\\sigma^2\\) is an estimated variance.\n\n\n\n\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\n\n\n\n\nFor most the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\n\n\n\n\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
+    "text": "Regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n\n\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\n\n\n\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]\n\n\nwhere \\(\\sigma^2\\) is an estimated variance.\n\n\n\n\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\n\n\n\n\nFor most of the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\n\n\n\n\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-2",
@@ -109,7 +88,7 @@
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\n\n\n\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n\n\n\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in general.\n\n\n\n\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
+    "text": "Multiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\n\n\n\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n\n\n\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, technically, matrix algebra is quite practical to use in this context and especially for this course.\n\n\n\n\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#a-general-way-to-write-matrices",
@@ -186,14 +165,14 @@
     "href": "slides/04_Linear_model/index.html#error-in-linear-models",
     "title": "Linear models",
     "section": "Error in linear models",
-    "text": "Error in linear models\nAs previously mentioned, in (simple and multiple!) linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\n\nwhich means that the error linear regression follows a Gaussian distribution with an estimateed variance.\n\n\nNote The model can be written using matrix notation as\n\\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{X}\\boldsymbol{\\beta}, \\sigma^2)\\] where \\(\\sigma^2\\)"
+    "text": "Error in linear models\nAs previously mentioned, in (simple and multiple!) linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\] where \\(\\sigma^2\\) is an estimated variance\n\nwhich means that the error in a linear regression follows a Gaussian distribution with an estimated variance.\n\n\nNote The model can be written using matrix notation as\n\\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{X}\\boldsymbol{\\beta}, \\sigma^2)\\] where \\(\\sigma^2\\)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\n\nTo go around this problem, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\n\n\nMathematically, the generic way to write generalized linear model is\n\\[\n\\widehat{y}_i = g^{-1}(\\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip})\n\\]\n\n\nor in matrix notation\n\\[\n\\widehat{\\mathbf{y}} = g^{-1}(\\mathbf{X}\\boldsymbol{\\beta})\n\\]\nwhere \\(g\\) is the link function and \\(g^{-1}\\) the inverse link function."
+    "text": "Generalized linear models\n\nIf for some reason we do not want our model to have a Gaussian error, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\n\n\nMathematically, the generic way to write generalized linear model is\n\\[\n\\widehat{y}_i = g^{-1}(\\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip})\n\\]\n\n\nor in matrix notation\n\\[\n\\widehat{\\mathbf{y}} = g^{-1}(\\mathbf{X}\\boldsymbol{\\beta})\n\\]\nwhere \\(g\\) is the link function and \\(g^{-1}\\) the inverse link function."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models-1",
@@ -361,7 +340,7 @@
     "href": "slides/02_Bayesian/index.html#a-few-words-about-the-prior",
     "title": "Bayesian modelling",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\n\nDefinition of prior probability\n\n\n\nThe prior probability informes us about the probability of the model being true before the current data is considered\n\n\n\nTypes of priors\n\n\n“Uninformative”\n\nThese priors are meant to bring very little information about the model\n\n\n\nInformative\n\nThese priors bring information about the model that is available"
+    "text": "A few words about the prior\n\nDefinition of prior probability\n\n\n\nThe prior probability informes us about the probability of the model being true before considering any available data\n\n\n\nTypes of priors\n\n\n“Uninformative”\n\nThese priors are meant to bring very little information about the model\n\n\n\nInformative\n\nThese priors bring information about the model that is available"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-1",
@@ -382,14 +361,14 @@
     "href": "slides/02_Bayesian/index.html#estimating-bayesian-model",
     "title": "Bayesian modelling",
     "section": "Estimating Bayesian model",
-    "text": "Estimating Bayesian model\n\n\nAs I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan\n\n\n\nTypical reasons to favour MCMC\n\n\n\n\nIt is flexible\nIt can be applied to complex models such as models with multiple levels of hierarchy\n\n\n\n\nWhy should we learn about MCMC ?\n\n\n\nThe goal of this course is not to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC."
+    "text": "Estimating Bayesian model\n\n\nAs I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan\n\n\n\nTypical reasons to favour MCMC\n\n\n\n\nIt is flexible\nIt can be applied to complex models such as models with multiple levels of hierarchy\n\n\n\n\nWhy should we learn about MCMC ?\n\n\n\nThe goal of this course is not to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how MCMC and HMC work."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\n\nHistorically, the developments of MCMC have been intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.\nTo explain what is an MCMC, let’s imagine that we are interested in understanding how the mallard (Anas platyrhynchos) grows from hatchling to adult."
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nHistorically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made during the Los Alamos projects.\nTo explain what is an MCMC, let’s imagine that we are interested in understanding how the mallard (Anas platyrhynchos) grows from hatchling to adult."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-1",
@@ -417,7 +396,7 @@
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-4",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\n\nWhen using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.\n\n\nSince we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is."
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nWhen using an MCMC, we are interested in sampling distributions to estimate the parameters of the model.\n\n\nTechnically, MCMC and HMC rely on different approaches to assess the structure of the distributions."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-5",
@@ -438,7 +417,7 @@
     "href": "slides/02_Bayesian/index.html#sampling-the-parameters",
     "title": "Bayesian modelling",
     "section": "Sampling the parameters",
-    "text": "Sampling the parameters\n\n\nIn MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough ?\n\n\n\n\nHere is a rough procedure to follow:\n\nPerform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes\nDecide on a number of steps to run to obtain a result in a reasonable amount of time\nRun the algorithm again !\nStudy the chain visually"
+    "text": "Sampling the parameters\n\n\nIn MCMC and HMC, a lot of iterations need to be carried out to assess the distribution of parameters. But how many is enough ?\n\n\n\n\nHere is a rough procedure to follow:\n\nPerform a pilot run with a reduced number of iterations (e.g. 10) and measure the time it takes\nDecide on a number of steps to use to obtain a result in a reasonable amount of time\nRun the algorithm again !\nStudy the chain visually"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#studying-convergence",
@@ -585,7 +564,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#the",
     "title": "‘Simple’ hierarchical models",
     "section": "The “|”",
-    "text": "The “|”\n\n\nMost of you have probably already used the packages lme4 or brms to build hierarchical models and so you have used the | to include a hierachy in your model.\n\n\n\n\nBut do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?\n\n\n\n\n\n\n\n\n\nLet’s look at different lme4 models to learn about some basic (and not so basic!) hierarchical models."
+    "text": "The “|”\n\n\nMost of you have probably already used the packages lme4, brms or glmmTMB to build hierarchical models and so you have used the | to include a hierarchy in your model.\n\n\n\n\nBut do you know what the underlying mathematical structure of the model you built look like ? Does it really answer the question you were asking ?\n\n\n\n\n\n\n\n\n\nLet’s look at different lme4 models to learn about some basic (and not so basic!) hierarchical models."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#a-bit-of-notation",
@@ -641,7 +620,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#hierarchy-on-intercept-and-slope-1",
     "title": "‘Simple’ hierarchical models",
     "section": "Hierarchy on intercept and slope",
-    "text": "Hierarchy on intercept and slope\nAnswer : Very little !\n\nActually, if we return to the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] with the sole difference that \\(\\mathbf{b}\\) is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\n\n\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable."
+    "text": "Hierarchy on intercept and slope\nAnswer : Very little !\n\nActually, if we return to the way \\(\\mathbf{b}\\) is defined we see that in both case it is defined as\n\\[\\mathbf{b}_f \\sim \\mathcal{N}(\\mu_f, \\sigma^2_f)\\] with the sole difference is that \\(\\mathbf{b}\\) is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.\n\n\nWell… Actually… When a hierarchy is applied on the intercept it is technically associated to a constant explanatory variable."
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#how-many-levels",
@@ -760,7 +739,7 @@
     "href": "slides/06_Simple_hierarchical_model/index.html#choosing-the-right-model",
     "title": "‘Simple’ hierarchical models",
     "section": "Choosing the right model",
-    "text": "Choosing the right model\n\nAlthough these different models are mathematically quite similar, they approach very different biological questions.\n\n\nA comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.\n\n\nIt is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward."
+    "text": "Choosing the right model\n\nAlthough these different models are mathematically quite similar, they approach very different biological questions.\n\n\nA comparison of the different figures caricaturizing how each model works should give a good insight of what each model can do.\n\n\nIt is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward."
   },
   {
     "objectID": "slides/00_Introduction/index.html#internet",
@@ -774,14 +753,14 @@
     "href": "slides/00_Introduction/index.html#dos-and-donts-at-jouvence",
     "title": "Introduction",
     "section": "Dos and don’ts at Jouvence",
-    "text": "Dos and don’ts at Jouvence\nKim will give us a quick explanation about this"
+    "text": "Dos and don’ts at Jouvence\n\nBe respectful of the environment\n\n\nMeals will be served at La Petite Auberge\n\n\nYou cannot consume your own beverages inside the main buildings. However, it will be permitted to bring your own drinks in certain outdoor areas, including around the fire pit in the evening.\n\n\nGlass containers are not allowed\n\n\nIt is forbidden to smoke cannabis on site\n\n\nMore details can be found in this Google Doc."
   },
   {
     "objectID": "slides/00_Introduction/index.html#course-material",
     "href": "slides/00_Introduction/index.html#course-material",
     "title": "Introduction",
     "section": "Course material",
-    "text": "Course material\nWebsite : https://bios2.github.io/hiermod/\n\nOn it, you will find the slides but also practical examples.\n\n\nYou will also find the course syllabus (in French)\n\n\nHere is a brief overview of the course"
+    "text": "Course material\nWebsite : https://bios2.github.io/hiermod/\n\nOn it, you will find the slides but also practical examples.\n\n\nYou will also find the course syllabus\n\n\nHere is a brief overview of the course"
   },
   {
     "objectID": "slides/00_Introduction/index.html#statistiques-avancées-en-sciences-de-la-vie-bio709bio809",
@@ -802,7 +781,7 @@
     "href": "slides/00_Introduction/index.html#what-we-want-to-do-during-this-course-1",
     "title": "Introduction",
     "section": "What we want to do during this course",
-    "text": "What we want to do during this course\nStatistical computing\n\nIntroduction to Stan\n\n\nWe will not give an introduction to any programming language (e.g. R, Python, Julia).\nWe assume you know one and are conformtable using it… We are more comfortable in R, but can work with many other languages (but please no Fortran !)"
+    "text": "What we want to do during this course\nStatistical computing\n\nIntroduction to Stan\n\n\n\nWe will not give an introduction to any programming language (e.g. R, Python, Julia).\nWe assume you know one and are conformtable using it… We are more comfortable in R, but can work with many other languages (but please no Fortran !)"
   },
   {
     "objectID": "slides/00_Introduction/index.html#what-we-want-to-do-during-this-course-2",
@@ -816,7 +795,7 @@
     "href": "slides/00_Introduction/index.html#what-we-want-to-do-during-this-course-3",
     "title": "Introduction",
     "section": "What we want to do during this course",
-    "text": "What we want to do during this course\nComplexe hierarchical regression models\n\nModel with multiple hierarchical terms\nModel with multiple hierarchical levels\nHierarchical model with constraints\nGaussian process"
+    "text": "What we want to do during this course\nComplexe hierarchical regression models\n\nModel with multiple hierarchical terms\nModel with multiple hierarchical levels\nHierarchical model with constraints\nGaussian process\nPhylogenetic hierarchical models"
   },
   {
     "objectID": "slides/00_Introduction/index.html#what-we-want-to-do-during-this-course-4",
@@ -882,20 +861,6 @@
     "text": "A bit of history\n\nBecause of the different name used for hierarchial models, the history of this subfield of statistics is a little murky, but we know that a few important figures in statistics dabbed into this field, most notably\n\n\n\n\n\n\n\n\n\n\n\n\nFisher R.A. (1919). The Correlation between Relatives on the Supposition of Mendelian Inheritance. Transactions of the Royal Society of Edinburgh, 52 399–433."
   },
   {
-    "objectID": "slides/00_Introduction/index.html#implementation",
-    "href": "slides/00_Introduction/index.html#implementation",
-    "title": "Introduction",
-    "section": "Implementation",
-    "text": "Implementation\n\n\nHierarchical models have been implemented in many software packages,\n\n\n\n\nin R\n\nlme4, brms, nlme, glmmTMB, MCMCglmm, …\n\n\n\n\n\nin SAS\n\nMIXED, HPMIXED, GLMMIX, …\n\n\n\n\n\nin Julia\n\nMixedModels.jl\n\n…"
-  },
-  {
-    "objectID": "slides/00_Introduction/index.html#implementation-1",
-    "href": "slides/00_Introduction/index.html#implementation-1",
-    "title": "Introduction",
-    "section": "Implementation",
-    "text": "Implementation\nWhat we will use\n\nWe will not use any of these software packages because under specific circumstances, what may seem like the same implementation of a model may lead to different answers and both can actually be right !\n\n\nThis is because the underlying model implemented in the software package may actually be slightly different.\n\n\nInstead we will implement our own models from scratch using Stan."
-  },
-  {
     "objectID": "slides/00_Introduction/index.html#good-reference",
     "href": "slides/00_Introduction/index.html#good-reference",
     "title": "Introduction",
@@ -910,6 +875,20 @@
     "text": "Great technical references\n\nEverything is there but it can gets technical !"
   },
   {
+    "objectID": "slides/00_Introduction/index.html#implementation",
+    "href": "slides/00_Introduction/index.html#implementation",
+    "title": "Introduction",
+    "section": "Implementation",
+    "text": "Implementation\n\n\nHierarchical models have been implemented in many software packages,\n\n\n\n\nin R\n\nlme4, brms, nlme, glmmTMB, MCMCglmm, …\n\n\n\n\n\nin SAS\n\nMIXED, HPMIXED, GLMMIX, …\n\n\n\n\n\nin Julia\n\nMixedModels.jl\n\n…"
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#implementation-1",
+    "href": "slides/00_Introduction/index.html#implementation-1",
+    "title": "Introduction",
+    "section": "Implementation",
+    "text": "Implementation\nWhat we will use\n\nWe will not use any of these software packages because under specific circumstances, what may seem like the same implementation of a model may lead to different answers and both can actually be right !\n\n\nThis is because the underlying model implemented in the software package may actually be slightly different.\n\n\nInstead we will implement our own models from scratch using Stan."
+  },
+  {
     "objectID": "slides/00_Introduction/index.html#r-and-stan",
     "href": "slides/00_Introduction/index.html#r-and-stan",
     "title": "Introduction",
@@ -921,7 +900,7 @@
     "href": "slides/00_Introduction/index.html#r-package-to-install",
     "title": "Introduction",
     "section": "R package to install",
-    "text": "R package to install\n\n# Package on CRAN\ninstall.packages(c(\"vegan\",\n                   \"palmerpenguins\",\n                   \"tidybayes\",\n                   \"tidyverse\",\n                   \"posterior\"))\n\n# cmdstanr - One last important package\ninstall.packages(\"cmdstanr\",\n                 repos = c(\"https://mc-stan.org/r-packages/\",\n                           getOption(\"repos\")))\ncmdstanr::check_cmdstan_toolchain()\ncmdstanr::install_cmdstan(cores = 2) # If necessary"
+    "text": "R package to install\n\n# Package on CRAN\ninstall.packages(c(\"vegan\",\n                   \"palmerpenguins\",\n                   \"tidybayes\",\n                   \"tidyverse\",\n                   \"posterior\"))\n\n# run the next line if you already have rstan installed\n# remove.packages(c(\"StanHeaders\", \"rstan\"))\n\ninstall.packages(\"rstan\", repos = c('https://stan-dev.r-universe.dev', getOption(\"repos\")))\n\nexample(stan_model, package = \"rstan\", run.dontrun = TRUE)"
   },
   {
     "objectID": "topics/03_one_random_effect/index.html",
@@ -998,21 +977,14 @@
     "href": "topics/00_distributions/index.html",
     "title": "Catch a wild distribution",
     "section": "",
-    "text": "To warm up for this class we will conduct a brief exercise . This exercise serves a few purposes. First, it will help us to think about data generating processes. Second, it will introduce us to some of the bestiary of statistical distributions that have been invented. Third, it will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. Most importantly, it will help us to get to know each other a bit!"
+    "text": "To warm up for this class we will conduct a brief exercise. This exercise serves a few purposes.\nMost importantly, it will help us to get to know each other a bit!"
   },
   {
     "objectID": "topics/00_distributions/index.html#group-exercise",
     "href": "topics/00_distributions/index.html#group-exercise",
     "title": "Catch a wild distribution",
     "section": "Group Exercise",
-    "text": "Group Exercise\n\nPlease take some time with your group to talk about what we mean by the word “same” in this sentence! What makes things the “same” from the point of view of this exercise.\n\n\nSeparate yourselves into groups. The groups should be at least 2 people. Suggestion pair with people you’ve only just met.\nEach group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure about 30 times or so in about 1.5 hours or so. Your measurements should be of the SAME thing. Here are some ideas to get you started:\n\nHow long can someone hop on one foot\namount of change in everyone’s pockets\nhow many birds can you hear in 2 minutes\n\nHypothesize What stastical distribution might describe these observations? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you’re going to measure.\n\nSimulate. create a simulation of the data you’re about to collect. Every statistical distribution has four functions in R, and here you can use two of them: the the density function and the random number. These always start with d and r respectively, e.g. dnorm() and rnorm. Simulate about as many number as you hope to collect. There’s a quick example below.\n\nCollect after you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take about 1hr depending on time.\n\nVisualize and fit Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn’t match, why might that be? For this step you have a couple of choices:\n\ncompare histoger\nhist() or geom_hist\nfitdistr\noptim\nStan (we’ll do this one tomorrow!)\n\nDiscuss We’ll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!"
-  },
-  {
-    "objectID": "topics/00_distributions/index.html#evening-exercises",
-    "href": "topics/00_distributions/index.html#evening-exercises",
-    "title": "Catch a wild distribution",
-    "section": "Evening exercises",
-    "text": "Evening exercises\nMake sure you have a working computer set-up to fit the kinds of models that we are working on in this class. If you want to follow along, we’ll be using Stan, and specfically the cmdstanr interface. You can follow this vignette to install cmdstan; to confirm that everything works, run the examples in the section running MCMC"
+    "text": "Group Exercise\n\nWhat makes things the “same” from the point of view of this exercise? Please take some time with your group to talk about what we mean by the word “same”!\n\nSeparate yourselves into groups. The groups should be at least 2 people. Suggestion pair with people you’ve only just met.\nEach group should pick a different quantity that they will measure repeatedly. This can be anything that you can measure rooughly 30 times in the next 90 minutes. Your measurements should be of the SAME thing. Here are some ideas to get you started:\n\nHow long can someone hop on one foot ?\nAmount of change in everyone’s pockets ?\nHow many birds can you hear in 2 minutes ?\n\n\nHypothesize\nWhat statiscal distribution might describe the observations you are sampling/measuring? What are its property? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you’re going to measure.\n\n\nSimulate\ncreate a simulation of the data you’re about to collect. Every statistical distribution has four functions in R, and here you can use two of them:\n\nDensity function (starting with d)\nRandom generation function (starting with r).\n\nFor example, dnorm() and rnorm. Simulate about as many number as you hope to collect. There’s a quick example below.\n\n\nCollect\nAfter you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take roughly 1 hour.\n\n\nVisualize and fit\nEnter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn’t match, why might that be? For this step you have a couple of choices: - Compare histograms : - hist() (base R) or geom_hist (ggplot2 R package) - fitdistr (MASS R package) - optim (base R) - Stan (we’ll do this one tomorrow!)\n\n\nDiscuss\nWe’ll go around the room and each group will do a brief show-and-tell of their chosen distribution, their measurement methods, their results and what they might mean!"
   },
   {
     "objectID": "topics/04_gp/index.html",
@@ -1761,7 +1733,7 @@
     "href": "slides/02_5_Distribution/index.html#the-basics-of-probabilities-1",
     "title": "Probability Distribution",
     "section": "The basics of probabilities",
-    "text": "The basics of probabilities\nNotation\n\nA classic way to write the probability of an event is to use the notation \\(P\\).\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nThe probability that it rains as you walk outside after the lecture is written as\n\\[P(r)\\] where \\(r\\) is the event you are interested in. Here, \\(r\\) is whether it rains as you walk outside after the lecture today"
+    "text": "The basics of probabilities\nNotation\n\nA classic way to write the probability of an event is to use the notation \\(P\\).\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nThe probability that it rains as you walk outside after the lecture is written as\n\\[P(r)\\] where \\(r\\) is the event you are interested in. Here, \\(r\\) is a rain as you walk outside after the lecture today"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#probabilities-and-events",
@@ -1789,7 +1761,7 @@
     "href": "slides/02_5_Distribution/index.html#independent",
     "title": "Probability Distribution",
     "section": "Independent !?",
-    "text": "Independent !?\n\nEvents that are independent from each other means that the if an event occurs it is in no way related to the occurrence of another event.\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nIf we assume that weather events like a rainy day are independent from one another, it means that if it rains today it is unrelated to the weather of yesterday or tomorrow.\n\n\n\n\nNote : This can be a good or a bad or dangerous assumption to make depending on the problem you are working on."
+    "text": "Independent !?\n\nEvents that are independent from each other means that if an event occurs it is in no way related to the occurrence of another event.\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nIf we assume that weather events like a rainy day are independent from one another, it means that if it rains today it is unrelated to the weather of yesterday or tomorrow.\n\n\n\n\nNote : This can be a good or a bad or dangerous assumption to make depending on the problem you are working on."
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#bernoulli-distribution",
@@ -1845,7 +1817,7 @@
     "href": "slides/02_5_Distribution/index.html#lets-make-it-more-complicated",
     "title": "Probability Distribution",
     "section": "Let’s make it more complicated",
-    "text": "Let’s make it more complicated\nSo far, we focused on a situation where the two events to consider either occur or not.\n\nThere are many problems were interest lies in studying the likeliness of an event occurring over a known number of independent trials.\n\n\nExample\nHow many rainy day will there be during the five days of our summer school ?"
+    "text": "Let’s make it more complicated\nSo far, we focused on a situation where the two events to consider either occur or not.\n\nThere are many problems where interest lies in studying the likeliness of an event occurring over a known number of independent trials.\n\n\nExample\nHow many rainy day will there be during the five days of our summer school ?"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#binomial-distribution",
@@ -1985,14 +1957,14 @@
     "href": "slides/02_5_Distribution/index.html#moment-of-the-gaussian-distribution",
     "title": "Probability Distribution",
     "section": "Moment of the Gaussian distribution",
-    "text": "Moment of the Gaussian distribution\nMean\n\\[\\mu\\]\nExample\n\n\nLet’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a mean of \\(\\mu\\). We will look at this in more details in the practical exercices later today."
+    "text": "Moment of the Gaussian distribution\nMean\n\\[\\mu\\]\nExample\n\n\nLet’s say we measure the length of the right wing of individual of this species of (angry) bird, it is expected that the wing length will follow a Gaussian distribution with a mean of \\(\\mu\\). We will look at this in more details in the practical exercices later today."
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#moment-of-the-gaussian-distribution-1",
     "href": "slides/02_5_Distribution/index.html#moment-of-the-gaussian-distribution-1",
     "title": "Probability Distribution",
     "section": "Moment of the Gaussian distribution",
-    "text": "Moment of the Gaussian distribution\nVariance\n\\[\\sigma^2\\]\nExample\n\n\nLet’s say we measure the length of the left wing of individual of this species of (angry) birds, it is expected that the wing length will follow a Gaussian distribution with a variance of \\(\\sigma^2\\). We will look at this in more details in the practical exercices later today."
+    "text": "Moment of the Gaussian distribution\nVariance\n\\[\\sigma^2\\]\nExample\n\n\nLet’s say we measure the length of the right wing of individual of this species of (angry) bird, it is expected that the wing length will follow a Gaussian distribution with a variance of \\(\\sigma^2\\). We will look at this in more details in the practical exercices later today."
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#general-properties-of-distributions",
@@ -2006,7 +1978,7 @@
     "href": "slides/02_5_Distribution/index.html#rnorm",
     "title": "Probability Distribution",
     "section": "rnorm",
-    "text": "rnorm\n\nThe r in rnorm is for random\n\n\n\nThis function allows us to randomly sample directly from the distribution of interest.\n\n\n\nExample\n\n\n\n\n\n\nLet’s assume that we look at the historical record and gather the minimum temperature measured on today’s date for the past 40 years. This data can be assumed to be a random sample of 40 temperature measurements with an average of \\(4^{\\circ}C\\) and a standard deviation of \\(2^{\\circ}C\\). We can simulate these values as follow\n\n\nrnorm(40, mean = 4, sd = 2)"
+    "text": "rnorm\n\nThe r in rnorm is for random\n\n\n\nThis function allows us to randomly sample directly from the distribution of interest.\n\n\n\nExample\n\n\n\n\n\n\nLet’s assume that we look at the historical record and gather the minimum temperature measured on today’s date for the past 40 years here in Jouvence. Let’s assume that the random sample of 40 temperature measurements has an average of \\(4^{\\circ}C\\) and a standard deviation of \\(2^{\\circ}C\\). We can simulate these values as follow\n\n\nrnorm(40, mean = 4, sd = 2)"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#rnorm40-mean-4-sd-2",
@@ -2034,7 +2006,7 @@
     "href": "slides/02_5_Distribution/index.html#qnorm",
     "title": "Probability Distribution",
     "section": "qnorm",
-    "text": "qnorm\n\nThe q in qnorm is for quantile\n\n\n\nThis function gives the value of the distribution given a certain density\n\n\n\nExample\n\n\n\n\n\n\nIf we assume that the average temperature at this time of the year is \\(4^{\\circ}C\\) with a standard deviation of \\(2^{\\circ}C\\), qnorm allows us to calculate the temperature expected to be obtained at the lowest quartile (1/4). It is calculate as\n\n\nqnorm(0.25, mean = 4, sd = 2)\n\n[1] 2.65102"
+    "text": "qnorm\n\nThe q in qnorm is for quantile\n\n\n\nThis function gives the value of the distribution given a certain density\n\n\n\nExample\n\n\n\n\n\n\nIf we assume that the average temperature at this time of the year is \\(4^{\\circ}C\\) with a standard deviation of \\(2^{\\circ}C\\), qnorm allows us to calculate the temperature expected to be obtained in the lowest quartile (1/4). It is calculate as\n\n\nqnorm(0.25, mean = 4, sd = 2)\n\n[1] 2.65102"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#qnorm0.25-mean4-sd2",
@@ -2083,7 +2055,7 @@
     "href": "slides/02_5_Distribution/index.html#bernoulli-distribution-3",
     "title": "Probability Distribution",
     "section": "Bernoulli distribution",
-    "text": "Bernoulli distribution\nHowever, sometimes we must know a little bit of theory (as I have show today) to use the right function.\n\nrbinom\ndbinom\nqbinom\npbinom"
+    "text": "Bernoulli distribution\nHowever, sometimes we must know a little bit of theory (as I have shown today) to use the right function.\n\nrbinom\ndbinom\nqbinom\npbinom"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#bernoulli-distribution-4",
@@ -2097,7 +2069,7 @@
     "href": "slides/02_5_Distribution/index.html#other-distributions",
     "title": "Probability Distribution",
     "section": "Other distributions",
-    "text": "Other distributions\nStatisticians and biologists have been very, very (!!) creative in proposing new probability distribution for specific problems\n\nIf you want to learn about the diversity of distribution that is out there, take a look at :\nhttps://en.wikipedia.org/wiki/List_of_probability_distributions\n\n\nMany of them have been implemented in R, either in base R or specialized packages\n\n\nIf you want to know if you favourite distribution has been implemented in R take a look at\nhttps://cran.r-project.org/web/views/Distributions.html"
+    "text": "Other distributions\nStatisticians and biologists have been very, very (!!) creative in proposing new probability distribution for specific problems\n\nIf you want to learn about the diversity of distributions that are out there, take a look at :\nhttps://en.wikipedia.org/wiki/List_of_probability_distributions\n\n\nMany of them have been implemented in R, either in base R or specialized packages\n\n\nIf you want to know if you favourite distribution has been implemented in R take a look at\nhttps://cran.r-project.org/web/views/Distributions.html"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far",
@@ -2622,7 +2594,7 @@
     "href": "slides/08_Complex_hierarchical_model/index.html#a-small-step-back",
     "title": "Complex hierarchical models",
     "section": "A small step back",
-    "text": "A small step back\n\n\nThe structure of the hierarchy discussed so far were “less complex” in the sense that\n\n\n\n\n\nA single variance parameter is estimated\n\n\\[\\sigma^2_{f}\\]\n\n\n\n\n\nMultiple independent variance parameters are estiamted\n\n\\[\n\\begin{bmatrix}\n  \\sigma^2_f & 0\\\\\n  0& \\sigma^2_{g}\\\\\n\\end{bmatrix}\n\\]\n\n\n\n\nIn Bayesian, having uncorrelated variance allows us to sample variance parameter independently even with mutiple factors, which is computationally more efficient.\n\n\n\n\nFrom this point on, we will look at more complex covariance structures where the hierarchical levels are not independent from each other."
+    "text": "A small step back\n\n\nThe structure of the hierarchy discussed so far were “less complex” in the sense that\n\n\n\n\n\nA single variance parameter is estimated\n\n\\[\\sigma^2_{f}\\]\n\n\n\n\n\nMultiple independent variance parameters are estimated\n\n\\[\n\\begin{bmatrix}\n  \\sigma^2_f & 0\\\\\n  0& \\sigma^2_{g}\\\\\n\\end{bmatrix}\n\\]\n\n\n\n\nIn Bayesian, having uncorrelated variances allows us to sample variance parameters independently even with multiple factors, which is computationally more efficient.\n\n\n\n\nFrom this point on, we will look at more complex covariance structures where the hierarchical levels are not independent from each other."
   },
   {
     "objectID": "slides/08_Complex_hierarchical_model/index.html#correlated-intercept-and-slope-hierarchy",

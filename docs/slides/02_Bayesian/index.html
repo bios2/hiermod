@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
-  <meta name="dcterms.date" content="2024-04-29">
+  <meta name="dcterms.date" content="2025-05-06">
   <title>Modèles hiérarchiques pour les sciences de la vie – Bayesian modelling</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -337,7 +337,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 
-  <p class="date">2024-04-29</p>
+  <p class="date">2025-05-06</p>
 </section>
 <section id="frequentist" class="slide level2">
 <h2>Frequentist</h2>
@@ -426,7 +426,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.75em">
-<p>The <strong>prior probability</strong> informes us about the probability of the model being true <em>before</em> the current data is considered</p>
+<p>The <strong>prior probability</strong> informes us about the probability of the model being true <em>before</em> considering any available data</p>
 </div>
 </div>
 <div class="fragment">
@@ -535,14 +535,14 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.75em;">
-<p>The goal of this course is <strong>not</strong> to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how it works MCMC and HMC.</p>
+<p>The goal of this course is <strong>not</strong> to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how MCMC and HMC work.</p>
 </div>
 </div>
 </section>
 <section id="markov-chain-monte-carlo-mcmc" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <div style="font-size: 0.75em;">
-<p>Historically, the developments of MCMC have been intimately linked with the arrival of computers. As such, the first developments and applications of MCMC were made during the Los Alamos projects.</p>
+<p>Historically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made during the Los Alamos projects.</p>
 <p>To explain what is an MCMC, let’s imagine that we are interested in understanding how the mallard (<em>Anas platyrhynchos</em>) grows from hatchling to adult.</p>
 </div>
 
@@ -619,10 +619,10 @@ Guillaume Blanchet – Andrew MacDonald
 <section id="markov-chain-monte-carlo-mcmc-4" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <div class="fragment">
-<p>When using an MCMC, we are interested in sampling the distributions to estimate the parameters of the model.</p>
+<p>When using an MCMC, we are interested in sampling distributions to estimate the parameters of the model.</p>
 </div>
 <div class="fragment">
-<p>Since we do not know what the “true” characteristics of the distributions, MCMC and HMC rely on different approaches to assess the structure of the distribution is.</p>
+<p>Technically, MCMC and HMC rely on different approaches to assess the structure of the distributions.</p>
 </div>
 </section>
 <section id="markov-chain-monte-carlo-mcmc-5" class="slide level2">
@@ -647,7 +647,7 @@ Guillaume Blanchet – Andrew MacDonald
 <p>Here is a rough procedure to follow:</p>
 <ol type="1">
 <li>Perform a pilot run with a reduced number of iterations (e.g.&nbsp;10) and measure the time it takes</li>
-<li>Decide on a number of steps to run to obtain a result in a reasonable amount of time</li>
+<li>Decide on a number of steps to use to obtain a result in a reasonable amount of time</li>
 <li>Run the algorithm again !</li>
 <li>Study the chain visually</li>
 </ol>

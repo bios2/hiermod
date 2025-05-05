@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
-  <meta name="dcterms.date" content="2024-05-01">
+  <meta name="dcterms.date" content="2025-05-07">
   <title>Modèles hiérarchiques pour les sciences de la vie – ‘Simple’ hierarchical models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -337,7 +337,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 
-  <p class="date">2024-05-01</p>
+  <p class="date">2025-05-07</p>
 </section>
 <section id="hierarchical-models" class="slide level2">
 <h2>Hierarchical models</h2>
@@ -367,7 +367,7 @@ Guillaume Blanchet – Andrew MacDonald
 <h2>The “<code>|</code>”</h2>
 <div class="fragment">
 <div style="font-size: 0.8em">
-<p>Most of you have probably already used the packages <code>lme4</code> or <code>brms</code> to build hierarchical models and so you have used the <code>|</code> to include a hierachy in your model.</p>
+<p>Most of you have probably already used the packages <code>lme4</code>, <code>brms</code> or <code>glmmTMB</code> to build hierarchical models and so you have used the <code>|</code> to include a hierarchy in your model.</p>
 </div>
 </div>
 <div class="fragment">
@@ -518,7 +518,7 @@ Guillaume Blanchet – Andrew MacDonald
 <p><strong>Answer : Very little !</strong></p>
 <div class="fragment">
 <p>Actually, if we return to the way <span class="math inline">\(\mathbf{b}\)</span> is defined we see that in both case it is defined as</p>
-<p><span class="math display">\[\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)\]</span> with the sole difference that <span class="math inline">\(\mathbf{b}\)</span> is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
+<p><span class="math display">\[\mathbf{b}_f \sim \mathcal{N}(\mu_f, \sigma^2_f)\]</span> with the sole difference is that <span class="math inline">\(\mathbf{b}\)</span> is linked to an explanatory variable when the hierarchy is on the slope, while when the hierarchy is on the intercept it is not linked to any explanatory variable.</p>
 </div>
 <div class="fragment">
 <p>Well… Actually… When a hierarchy is applied on the intercept it is technically associated to a <strong>constant</strong> explanatory variable.</p>
@@ -798,7 +798,7 @@ Guillaume Blanchet – Andrew MacDonald
 <p>Although these different models are mathematically quite similar, they approach very different biological questions.</p>
 </div>
 <div class="fragment">
-<p>A comparison of the different figures caricaturizing how each model works should give a good insight about what each model can do.</p>
+<p>A comparison of the different figures caricaturizing how each model works should give a good insight of what each model can do.</p>
 </div>
 <div class="fragment">
 <p>It is thus important to make sure you design your biological question well so that deciding on which model to use is reasonably straight forward.</p>

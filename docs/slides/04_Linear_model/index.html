@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
-  <meta name="dcterms.date" content="2024-04-30">
+  <meta name="dcterms.date" content="2025-05-06">
   <title>Modèles hiérarchiques pour les sciences de la vie – Linear models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -402,7 +402,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 
-  <p class="date">2024-04-30</p>
+  <p class="date">2025-05-06</p>
 </section>
 <section id="basic-regression-model" class="slide level2">
 <h2>Basic regression model</h2>
@@ -463,7 +463,7 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 <img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
 <section id="regression-parameters" class="slide level2">
 <h2>Regression parameters</h2>
-<p>Generally, we focused on the most commonly assessed regression parameters of the simple linear model, the <strong>slope</strong> and the <strong>intercept</strong>, but there is another one that is very important to consider, especially for this course.</p>
+<p>Generally, the <strong>slope</strong> and the <strong>intercept</strong> are the regression parameters we focus on when studying the simple linear model, but there is another one that is very important to consider, especially for this course.</p>
 <div class="fragment">
 <p><strong>Any ideas which one it is ?</strong></p>
 <div class="quarto-figure quarto-figure-center">
@@ -501,7 +501,7 @@ y_i = \beta_0 + \beta_1 x_{i} + \varepsilon
 </div>
 <div class="fragment">
 <div style="font-size: 0.75em">
-<p>For most the course, we will play with the variance parameter <span class="math inline">\(\sigma^2\)</span> in a bunch of different ways.</p>
+<p>For most of the course, we will play with the variance parameter <span class="math inline">\(\sigma^2\)</span> in a bunch of different ways.</p>
 </div>
 </div>
 <div class="fragment">
@@ -625,7 +625,7 @@ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \vare
 </div>
 <div class="fragment">
 <div style="font-size: 0.85em">
-<p>Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, in practice, matrix algebra is quite practical to use in this context and also for this course in general.</p>
+<p>Theoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, technically, matrix algebra is quite practical to use in this context and especially for this course.</p>
 </div>
 </div>
 <div class="fragment">
@@ -902,7 +902,7 @@ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \vare
 <p>As previously mentioned, in (simple and multiple!) linear regression the error term (<span class="math inline">\(\varepsilon\)</span>) has actually a very precise definition:</p>
 <p><span class="math display">\[\varepsilon \sim \mathcal{N}(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is an estimated variance</p>
 <div class="fragment">
-<p>which means that the error linear regression follows a Gaussian distribution with an estimateed variance.</p>
+<p>which means that the error in a linear regression follows a Gaussian distribution with an estimated variance.</p>
 </div>
 <div class="fragment">
 <p><strong>Note</strong> The model can be written using matrix notation as<br>
@@ -912,7 +912,7 @@ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \vare
 <section id="generalized-linear-models" class="slide level2">
 <h2>Generalized linear models</h2>
 <div class="fragment">
-<p>To go around this problem, <em>generalized</em> linear models (GLMs) have been proposed. In essence, GLMs use <em>link functions</em> to adapt models for them to be used on non-Gaussian data.</p>
+<p>If for some reason we do not want our model to have a Gaussian error, <em>generalized</em> linear models (GLMs) have been proposed. In essence, GLMs use <em>link functions</em> to adapt models for them to be used on non-Gaussian data.</p>
 </div>
 <div class="fragment">
 <p>Mathematically, the generic way to write generalized linear model is</p>
