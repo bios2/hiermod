@@ -412,29 +412,29 @@ Shortcuts to these common tasks
 <col style="width: 13%">
 <col style="width: 13%">
 <col style="width: 13%">
-<col style="width: 12%">
+<col style="width: 13%">
 <col style="width: 13%">
 </colgroup>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">inters</td>
-<td style="text-align: right;">20.0043832</td>
-<td style="text-align: right;">18.7154328</td>
-<td style="text-align: right;">15.2272188</td>
-<td style="text-align: right;">16.3241250</td>
-<td style="text-align: right;">15.3094525</td>
-<td style="text-align: right;">14.503924</td>
-<td style="text-align: right;">12.5317379</td>
+<td style="text-align: right;">18.6487972</td>
+<td style="text-align: right;">20.1888241</td>
+<td style="text-align: right;">14.5996818</td>
+<td style="text-align: right;">18.6676823</td>
+<td style="text-align: right;">16.7871466</td>
+<td style="text-align: right;">16.8112014</td>
+<td style="text-align: right;">16.2558397</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">slopes</td>
-<td style="text-align: right;">-0.3153835</td>
-<td style="text-align: right;">0.0860523</td>
-<td style="text-align: right;">-0.0496798</td>
-<td style="text-align: right;">0.2555364</td>
-<td style="text-align: right;">-0.8804651</td>
-<td style="text-align: right;">1.152602</td>
-<td style="text-align: right;">0.3816751</td>
+<td style="text-align: right;">-0.5557941</td>
+<td style="text-align: right;">0.3867236</td>
+<td style="text-align: right;">-0.8740392</td>
+<td style="text-align: right;">0.9958234</td>
+<td style="text-align: right;">-0.0002412</td>
+<td style="text-align: right;">-0.0858761</td>
+<td style="text-align: right;">-0.4704916</td>
 </tr>
 </tbody>
 </table>
@@ -607,15 +607,15 @@ EXERCISE
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(normal_reg_no_pred)<span class="sc">$</span>summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   mean      se_mean         sd         2.5%           25%
-intercept   17.15264142 0.0016478829 0.10394263   16.9494352   17.08278951
-slope       -0.08446108 0.0002923144 0.01935945   -0.1229168   -0.09731406
-sigma        1.92559056 0.0011383070 0.07272603    1.7911089    1.87472178
-lp__      -395.70062075 0.0280828697 1.21376995 -398.7778319 -396.23858530
+intercept   17.15117346 0.0017020820 0.10511064   16.9433842   17.07813848
+slope       -0.08537517 0.0003194274 0.01885810   -0.1219875   -0.09820541
+sigma        1.92443229 0.0012370919 0.07334817    1.7857342    1.87466053
+lp__      -395.69506014 0.0254190640 1.20424619 -398.7440977 -396.22979543
                     50%           75%         97.5%    n_eff      Rhat
-intercept   17.15126450   17.22298166   17.35427811 3978.641 0.9996253
-slope       -0.08447768   -0.07117767   -0.04613487 4386.172 0.9992985
-sigma        1.92436607    1.97329214    2.07514721 4081.887 0.9995621
-lp__      -395.37216385 -394.83935677 -394.31874118 1868.056 1.0001991</code></pre>
+intercept   17.15107863   17.22275911   17.35666392 3813.576 1.0000088
+slope       -0.08554731   -0.07276562   -0.04814264 3485.389 0.9996194
+sigma        1.92252260    1.97290709    2.07408634 3515.399 0.9993972
+lp__      -395.39188158 -394.82225508 -394.30915053 2244.458 1.0004071</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -653,7 +653,7 @@ EXERCISE
 <pre><code># A tibble: 1 × 3
             slope  intercept        sigma
        &lt;rvar[1d]&gt; &lt;rvar[1d]&gt;   &lt;rvar[1d]&gt;
-1  -0.084 ± 0.019   17 ± 0.1  1.9 ± 0.073</code></pre>
+1  -0.085 ± 0.019  17 ± 0.11  1.9 ± 0.073</code></pre>
 </div>
 </div>
 <p><code>tidybayes</code> helps us extract the posterior distribution of the parameters into a convenient object called an <code>rvar</code>. Learn more about tidybayes <a href="http://mjskay.github.io/tidybayes/articles/tidybayes.html">here</a> and about the rvar datatype <a href="https://mc-stan.org/posterior/articles/rvar.html">here</a></p>
@@ -677,34 +677,34 @@ EXERCISE
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">-0.084 ± 0.019</td>
-<td style="text-align: left;">17 ± 0.1</td>
+<td style="text-align: left;">-0.085 ± 0.019</td>
+<td style="text-align: left;">17 ± 0.11</td>
 <td style="text-align: right;">-15.0</td>
-<td style="text-align: left;">18 ± 0.31</td>
+<td style="text-align: left;">18 ± 0.30</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">-0.084 ± 0.019</td>
-<td style="text-align: left;">17 ± 0.1</td>
+<td style="text-align: left;">-0.085 ± 0.019</td>
+<td style="text-align: left;">17 ± 0.11</td>
 <td style="text-align: right;">-7.5</td>
 <td style="text-align: left;">18 ± 0.18</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">-0.084 ± 0.019</td>
-<td style="text-align: left;">17 ± 0.1</td>
+<td style="text-align: left;">-0.085 ± 0.019</td>
+<td style="text-align: left;">17 ± 0.11</td>
 <td style="text-align: right;">0.0</td>
-<td style="text-align: left;">17 ± 0.10</td>
+<td style="text-align: left;">17 ± 0.11</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">-0.084 ± 0.019</td>
-<td style="text-align: left;">17 ± 0.1</td>
+<td style="text-align: left;">-0.085 ± 0.019</td>
+<td style="text-align: left;">17 ± 0.11</td>
 <td style="text-align: right;">7.5</td>
 <td style="text-align: left;">17 ± 0.18</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">-0.084 ± 0.019</td>
-<td style="text-align: left;">17 ± 0.1</td>
+<td style="text-align: left;">-0.085 ± 0.019</td>
+<td style="text-align: left;">17 ± 0.11</td>
 <td style="text-align: right;">15.0</td>
-<td style="text-align: left;">16 ± 0.31</td>
+<td style="text-align: left;">16 ± 0.30</td>
 </tr>
 </tbody>
 </table>
@@ -747,74 +747,74 @@ EXERCISE
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">338</td>
-<td style="text-align: right;">1338</td>
-<td style="text-align: right;">-0.0731880</td>
-<td style="text-align: right;">17.10257</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">694</td>
-<td style="text-align: right;">1694</td>
-<td style="text-align: right;">-0.0547486</td>
-<td style="text-align: right;">16.87400</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">960</td>
-<td style="text-align: right;">2960</td>
-<td style="text-align: right;">-0.1176134</td>
-<td style="text-align: right;">17.38026</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">358</td>
-<td style="text-align: right;">2358</td>
-<td style="text-align: right;">-0.0917159</td>
-<td style="text-align: right;">17.14285</td>
-</tr>
-<tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">556</td>
-<td style="text-align: right;">556</td>
-<td style="text-align: right;">-0.1049648</td>
-<td style="text-align: right;">17.30690</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">178</td>
-<td style="text-align: right;">1178</td>
-<td style="text-align: right;">-0.1128396</td>
-<td style="text-align: right;">17.20734</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">965</td>
-<td style="text-align: right;">2965</td>
-<td style="text-align: right;">-0.0640296</td>
-<td style="text-align: right;">17.08314</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">769</td>
-<td style="text-align: right;">2769</td>
-<td style="text-align: right;">-0.0609063</td>
-<td style="text-align: right;">17.27854</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">734</td>
-<td style="text-align: right;">1734</td>
-<td style="text-align: right;">-0.1219895</td>
-<td style="text-align: right;">17.11492</td>
+<td style="text-align: right;">767</td>
+<td style="text-align: right;">767</td>
+<td style="text-align: right;">-0.0711106</td>
+<td style="text-align: right;">17.24333</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">946</td>
-<td style="text-align: right;">946</td>
-<td style="text-align: right;">-0.0618891</td>
-<td style="text-align: right;">17.11427</td>
+<td style="text-align: right;">679</td>
+<td style="text-align: right;">679</td>
+<td style="text-align: right;">-0.0905867</td>
+<td style="text-align: right;">17.21424</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">440</td>
+<td style="text-align: right;">440</td>
+<td style="text-align: right;">-0.0796100</td>
+<td style="text-align: right;">17.16418</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">715</td>
+<td style="text-align: right;">2715</td>
+<td style="text-align: right;">-0.1112276</td>
+<td style="text-align: right;">17.17217</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">702</td>
+<td style="text-align: right;">702</td>
+<td style="text-align: right;">-0.0870336</td>
+<td style="text-align: right;">17.26523</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">416</td>
+<td style="text-align: right;">416</td>
+<td style="text-align: right;">-0.0893496</td>
+<td style="text-align: right;">17.19166</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">763</td>
+<td style="text-align: right;">3763</td>
+<td style="text-align: right;">-0.0795076</td>
+<td style="text-align: right;">17.15667</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">686</td>
+<td style="text-align: right;">686</td>
+<td style="text-align: right;">-0.0703160</td>
+<td style="text-align: right;">17.11417</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">481</td>
+<td style="text-align: right;">3481</td>
+<td style="text-align: right;">-0.0775645</td>
+<td style="text-align: right;">17.17581</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">508</td>
+<td style="text-align: right;">1508</td>
+<td style="text-align: right;">-0.0737987</td>
+<td style="text-align: right;">17.09931</td>
 </tr>
 </tbody>
 </table>
@@ -1037,7 +1037,7 @@ SOLUTION
 <col style="width: 9%">
 <col style="width: 9%">
 <col style="width: 7%">
-<col style="width: 8%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1057,68 +1057,68 @@ SOLUTION
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">intercept[1]</td>
-<td style="text-align: right;">19.3587311</td>
-<td style="text-align: right;">0.0025534</td>
-<td style="text-align: right;">0.1155090</td>
-<td style="text-align: right;">19.1352778</td>
-<td style="text-align: right;">19.2812960</td>
-<td style="text-align: right;">19.3576779</td>
-<td style="text-align: right;">19.4370161</td>
-<td style="text-align: right;">19.5895913</td>
-<td style="text-align: right;">2046.421</td>
-<td style="text-align: right;">1.0016469</td>
+<td style="text-align: right;">19.3550217</td>
+<td style="text-align: right;">0.0029222</td>
+<td style="text-align: right;">0.1212268</td>
+<td style="text-align: right;">19.1155582</td>
+<td style="text-align: right;">19.2735328</td>
+<td style="text-align: right;">19.3556950</td>
+<td style="text-align: right;">19.4357631</td>
+<td style="text-align: right;">19.5890760</td>
+<td style="text-align: right;">1720.965</td>
+<td style="text-align: right;">1.000482</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">intercept[2]</td>
-<td style="text-align: right;">17.4446511</td>
-<td style="text-align: right;">0.0029852</td>
-<td style="text-align: right;">0.1436438</td>
-<td style="text-align: right;">17.1607185</td>
-<td style="text-align: right;">17.3470405</td>
-<td style="text-align: right;">17.4425066</td>
-<td style="text-align: right;">17.5432696</td>
-<td style="text-align: right;">17.7246031</td>
-<td style="text-align: right;">2315.400</td>
-<td style="text-align: right;">1.0003934</td>
+<td style="text-align: right;">17.4516925</td>
+<td style="text-align: right;">0.0032255</td>
+<td style="text-align: right;">0.1471325</td>
+<td style="text-align: right;">17.1711787</td>
+<td style="text-align: right;">17.3524668</td>
+<td style="text-align: right;">17.4495100</td>
+<td style="text-align: right;">17.5473602</td>
+<td style="text-align: right;">17.7445907</td>
+<td style="text-align: right;">2080.755</td>
+<td style="text-align: right;">1.000216</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">intercept[3]</td>
-<td style="text-align: right;">14.2789976</td>
-<td style="text-align: right;">0.0022699</td>
-<td style="text-align: right;">0.1075275</td>
-<td style="text-align: right;">14.0677759</td>
-<td style="text-align: right;">14.2064398</td>
-<td style="text-align: right;">14.2771284</td>
-<td style="text-align: right;">14.3509485</td>
-<td style="text-align: right;">14.4903548</td>
-<td style="text-align: right;">2243.943</td>
-<td style="text-align: right;">1.0007074</td>
+<td style="text-align: right;">14.2803437</td>
+<td style="text-align: right;">0.0024364</td>
+<td style="text-align: right;">0.1074504</td>
+<td style="text-align: right;">14.0759197</td>
+<td style="text-align: right;">14.2090821</td>
+<td style="text-align: right;">14.2794245</td>
+<td style="text-align: right;">14.3528048</td>
+<td style="text-align: right;">14.4944105</td>
+<td style="text-align: right;">1944.939</td>
+<td style="text-align: right;">1.000227</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">slope</td>
-<td style="text-align: right;">0.1982317</td>
-<td style="text-align: right;">0.0004189</td>
-<td style="text-align: right;">0.0173236</td>
-<td style="text-align: right;">0.1646094</td>
-<td style="text-align: right;">0.1861981</td>
-<td style="text-align: right;">0.1982558</td>
-<td style="text-align: right;">0.2100545</td>
-<td style="text-align: right;">0.2323654</td>
-<td style="text-align: right;">1710.421</td>
-<td style="text-align: right;">1.0023685</td>
+<td style="text-align: right;">0.1975091</td>
+<td style="text-align: right;">0.0004576</td>
+<td style="text-align: right;">0.0175465</td>
+<td style="text-align: right;">0.1626719</td>
+<td style="text-align: right;">0.1856541</td>
+<td style="text-align: right;">0.1977264</td>
+<td style="text-align: right;">0.2090899</td>
+<td style="text-align: right;">0.2312051</td>
+<td style="text-align: right;">1470.520</td>
+<td style="text-align: right;">1.000769</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">0.9569830</td>
-<td style="text-align: right;">0.0006108</td>
-<td style="text-align: right;">0.0366812</td>
-<td style="text-align: right;">0.8888225</td>
-<td style="text-align: right;">0.9308345</td>
-<td style="text-align: right;">0.9564269</td>
-<td style="text-align: right;">0.9819058</td>
-<td style="text-align: right;">1.0300383</td>
-<td style="text-align: right;">3606.954</td>
-<td style="text-align: right;">0.9994974</td>
+<td style="text-align: right;">0.9556364</td>
+<td style="text-align: right;">0.0006132</td>
+<td style="text-align: right;">0.0363004</td>
+<td style="text-align: right;">0.8858854</td>
+<td style="text-align: right;">0.9309111</td>
+<td style="text-align: right;">0.9540508</td>
+<td style="text-align: right;">0.9800880</td>
+<td style="text-align: right;">1.0294475</td>
+<td style="text-align: right;">3504.812</td>
+<td style="text-align: right;">1.000371</td>
 </tr>
 </tbody>
 </table>
@@ -1180,7 +1180,7 @@ SOLUTION
 </section>
 <section id="exercise-5" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-5">Exercise!</h2>
-<p>Show how the <span class="math inline">\(\sigma\)</span> is different between these two models</p>
+<p>We have one model without species identity as an independent variable, and one which includes species. Look at the difference in <span class="math inline">\(\sigma\)</span> between these two models. Why did the value change?</p>
 
 
 <!-- -->
@@ -2167,7 +2167,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb33-548"><a href="#cb33-548" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-549"><a href="#cb33-549" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise! </span></span>
 <span id="cb33-550"><a href="#cb33-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-551"><a href="#cb33-551" aria-hidden="true" tabindex="-1"></a>Show how the $\sigma$ is different between these two models     </span>
+<span id="cb33-551"><a href="#cb33-551" aria-hidden="true" tabindex="-1"></a>We have one model without species identity as an independent variable, and one which includes species. Look at the difference in $\sigma$ between these two models. Why did the value change?      </span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
