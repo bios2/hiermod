@@ -11,7 +11,24 @@ editor_options:
   chunk_output_type: console
 ---
 
-Let's start by taking a look at the Palmer Penguin dataset. Let's look at the distribution of observations of bill size.
+In this section we're going to look at models with one discrete predictor. 
+You may have encountered this kind of model with discrete predictors. 
+
+## Load packages and data
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+# library(cmdstanr)
+suppressPackageStartupMessages(library(rstan))
+rstan_options("auto_write" = TRUE)
+options(mc.cores = parallel::detectCores())
+library(tidybayes)
+```
+
+## Data exploration
+
+Let's start by taking a look at the Palmer Penguin dataset by looking at the distribution of observations of bill size.
 
 ```{r}
 #| fig-cap: Histogram of bill depth for all the penguins in the Palmer Penguin dataset.
