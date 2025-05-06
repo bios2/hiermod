@@ -56,7 +56,8 @@ let's express the same model in Stan:
 ```{r}
 #| class-output: stan
 
-normal_dist <- stan_model("topics/discrete_predictor/normal_dist.stan")
+normal_dist <- stan_model(
+  "topics/discrete_predictor/normal_dist.stan")
 normal_dist
 ```
 
@@ -97,7 +98,7 @@ normal_bill_dep_samp |>
 
 ## Plotting parameters. 
 
-We don't have one distribution for each of our unknown numbers: we have thousands. 
+We don't have one value for each of our unknown numbers: we have thousands. 
 We need to get a sense of what these possible values mean scientifically. 
 An excellent way to do this is by making as many pictures as possible. 
 We will start with making plots of specific parameters. 
@@ -116,6 +117,7 @@ bayesplot::mcmc_hist(normal_bill_dep_samp, pars = "sigma") +
 Notice that the distributions do not have the same shape as the prior-- this is particularly true for $\sigma$. 
 
 ```{r}
+#| layout-ncol: 2
 tibble(param = c("mu"), 
        values= rnorm(200, 17.5, 2)) |> 
   ggplot(aes(x = values)) + 
@@ -139,6 +141,17 @@ And with good reason: you need to know how much to trust a model before using it
 Bayes offers a straightforward way to show how well a model is doing: plot model predictions, and compare them to the observed data. 
 This involves using the model as a data generating machine, which we'll look at next.
 
+### Pseudocode
+
+Here is the procedure for generating posterior predictions:
+
+* Select some posterior posterior draws. 
+* For each draw, extract all the model parameters
+* For each draw, plug the sampled parameters in to the model. Use all the same predictors, factors, etc as the original model.
+* For each draw, draw a random dataset that is the _same size and shape_ as your original data. 
+* Overlay the simulated datasets on the observed data.
+
+
 ### Posterior prediction in R
 
 ```{r}
@@ -154,7 +167,10 @@ yrep <- matrix(0, ncol = list_bill_dep$N, nrow = nsamples)
 
 # pick some random rows
 set.seed(1234)
-chosen_samples <- sample(1:nrow(draws_matrix), replace = FALSE, size = nsamples)
+chosen_samples <- sample(1:nrow(draws_matrix), 
+                         replace = FALSE,
+                         size = nsamples)
+
 subset_draws <- draws_matrix[chosen_samples,]
 
 for (r in 1:nsamples){
@@ -239,8 +255,8 @@ Sometimes scientists will plot histograms of data at the beginning of a research
 
 $$
 \begin{align}
-\text{Bill depth}_{i} &\sim \text{Normal}(\mu_{\text{sp}[i]}, \sigma) \\
-\mu_{\text{sp}} &\sim \text{Normal}(17, 2) \\
+\text{Bill depth}_{i} &\sim \text{Normal}(\mu_{\text{species}[i]}, \sigma) \\
+\mu_{\text{species}} &\sim \text{Normal}(17, 2) \\
 \sigma &\sim \text{Exponential}(2) \\
 \end{align}
 $$
@@ -342,18 +358,12 @@ shinystan::launch_shinystan(samp_normal_dist_rng_spp)
 and we can repeat the posterior checking from before:
 
 ```{r}
-
-spp_yrep_draws <- samp_normal_dist_rng_spp$draws(variables = c("yrep"))
-spp_draws_matrix <- posterior::as_draws_matrix(spp_yrep_draws)
-
-bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
-                            yrep = head(spp_draws_matrix, 50))
-
 # Extract and convert draws
-normal_dist_rng_spp_yrep <- rstan::extract(normal_dist_rng_spp_samp, pars = "yrep")$yrep
+spp_yrep_draws <- extract(normal_dist_rng_spp_samp, pars = c("yrep"))
 
 # Posterior predictive check
-bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements, yrep = normal_dist_rng_spp_yrep[1:50, ])
+bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
+                            yrep = head(spp_yrep_draws$yrep, 50))
 ```
 
 
@@ -369,7 +379,7 @@ Here we will move away from using `bayesplot` and try to visualize our posterior
 ```{r}
 library(tidybayes)
 
-normal_dist_post_samp <- tidybayes::gather_draws(samp_normal_dist_rng_spp,
+normal_dist_post_samp <- tidybayes::gather_draws(normal_dist_rng_spp_samp,
                         yrep[row_id], 
                         ndraws = 50)
 
