@@ -1,0 +1,77 @@
+---
+title: "Extra course content"
+description: |
+  A collection of topics that didn't fit in the course schedule but are still useful and interesting!
+execute:
+  freeze: true
+comments:
+  hypothesis: true
+format:
+  html:
+    code-tools: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Load packages and data
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+# library(cmdstanr)
+suppressPackageStartupMessages(library(rstan))
+rstan_options("auto_write" = TRUE)
+options(mc.cores = parallel::detectCores())
+library(tidybayes)
+```
+
+
+
+## Simulation workout! 
+
+1) make a histogram of 500 numbers from a distribution! 
+   * normal 
+   * poisson
+   * **EXTRA** try a new one, like beta, gamma, lognormal
+   
+2) make a histogram of poisson observations, using the classic **`log()` link function**. 
+
+$$
+\begin{align}
+y &\sim \text{Poisson}(e^a) \\
+a &\sim \text{Normal}(??, ??)
+\end{align}
+$$
+
+:::{.callout-note collapse="true"}
+### TIP
+```{r}
+## sample poisson variables like this:
+rpois(500, exp(3))
+```
+:::
+
+3)  make a histogram of Binomial observations, using the **inverse logit link function**
+
+$$
+\begin{align}
+y &\sim \text{Binomial}\left(\frac{1}{1+e^{-a}}, N \right) \\
+a &\sim \text{Normal}(??, ??)
+\end{align}
+$$
+
+Here's a plot of the link function, to help you think about it:
+
+```{r}
+curve(1 / (1 + exp(-x)), xlim = c(-3, 3), ylim = c(0, 1))
+```
+
+
+:::{.callout-note collapse="true"}
+### TIP
+```{r}
+a <- rnorm(1, mean = 0, 1)
+hist(rbinom(n = 500, size = 50, prob = 1 / (1 + exp(-a))))
+```
+:::
+
