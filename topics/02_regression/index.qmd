@@ -13,54 +13,17 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Simulation workout! 
-
-1) make a histogram of 500 numbers from a distribution! 
-   * normal 
-   * poisson
-   * ** EXTRA** try a new one, like beta, gamma, lognormal
-   
-2) make a histogram of poisson observations, using the classic **`log()` link function**. 
-
-$$
-\begin{align}
-y &\sim \text{Poisson}(e^a) \\
-a &\sim \text{Normal}(??, ??)
-\end{align}
-$$
-
-:::{.callout-note collapse="true"}
-### TIP
-```{r}
-## sample poisson variables like this:
-rpois(500, exp(3))
-```
-:::
-
-3)  make a histogram of Binomial observations, using the **inverse logit link function**
-
-$$
-\begin{align}
-y &\sim \text{Binomial}\left(\frac{1}{1+e^{-a}}, N \right) \\
-a &\sim \text{Normal}(??, ??)
-\end{align}
-$$
-
-Here's a plot of the link function, to help you think about it:
+## Load packages and data
 
 ```{r}
-curve(1 / (1 + exp(-x)), xlim = c(-3, 3), ylim = c(0, 1))
+library(palmerpenguins)
+library(tidyverse)
+# library(cmdstanr)
+suppressPackageStartupMessages(library(rstan))
+rstan_options("auto_write" = TRUE)
+options(mc.cores = parallel::detectCores())
+library(tidybayes)
 ```
-
-
-:::{.callout-note collapse="true"}
-### TIP
-```{r}
-a <- rnorm(1, mean = 0, 1)
-hist(rbinom(n = 500, size = 50, prob = 1 / (1 + exp(-a))))
-```
-:::
-
 
 ## Statistical models of Penguin bill morphology.
 
@@ -72,10 +35,6 @@ Let's begin with plotting the data:
 
 ```{r}
 #| fig-cap: Bill depth (mm) as predicted by bill length (mm) across the entire `palmerpenguins` dataset.
-library(palmerpenguins)
-library(tidyverse)
-library(cmdstanr)
-library(tidybayes)
 penguins |> 
   ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) + 
   geom_point() + 
@@ -175,7 +134,7 @@ some_bill_lengths <- seq(
 
 These tasks are so common that they are automated in helper functions.
 
-For centering predictors, see the base R function `?scale`
+For centering predictors, see the base R function `?scale` (however, doing this by hand is often more convenient)
 
 For creating a short vector over the range of a predictor, see `modelr::seq_range`. The R package [`modelr`](https://modelr.tidyverse.org/) has many different functions to help with modelling.
 :::
@@ -280,8 +239,9 @@ bill_line <- coef(lm(bill_depth_mm ~ species + I(bill_length_mm - mean(bill_leng
 
 ```{r}
 #| class-output: stan
-normal_regression_no_prediction <- cmdstan_model(
-  stan_file = "topics/02_regression/normal_regression_no_prediction.stan")
+normal_regression_no_prediction <- stan_model(
+  file = here::here("topics/02_regression/normal_regression_no_prediction.stan"),
+  model_name = "normal_regression_no_prediction")
 
 normal_regression_no_prediction
 ```
@@ -307,15 +267,16 @@ data_list <- with(penguins_no_NA,
           ))
 
 ## run the sampler, using the compiled model.
-normal_reg_no_pred <- normal_regression_no_prediction$sample(
+normal_reg_no_pred <- sampling(
+  object = normal_regression_no_prediction,
   data = data_list, 
   refresh = 0)
 
-normal_reg_no_pred$summary()
+summary(normal_reg_no_pred)$summary
 ```
 
 ```{r}
-normal_reg_no_pred$draws() |> 
+normal_reg_no_pred |> 
   bayesplot::mcmc_areas(pars = c("slope", "intercept", "sigma"))
 ```
 
@@ -395,7 +356,7 @@ We can also make these posterior predictions in Stan.
 
 ```{r}
 #| class-output: stan
-normal_regression <- cmdstan_model(stan_file = "topics/02_regression/normal_regression.stan")
+normal_regression <- stan_model(file = here::here("topics/02_regression/normal_regression.stan"))
 
 normal_regression
 ```
@@ -414,12 +375,9 @@ data_list <- with(penguins_no_NA,
           pred_values = modelr::seq_range(penguins_no_NA$bill_length_center, n = 6)
           ))
 
-bill_norm_reg <- normal_regression$sample(data = data_list, 
-                                          refresh = 0)
-```
-
-```{r}
-posterior::as_draws_df(bill_norm_reg$draws(variables = "post_bill_dep_obs"))
+bill_norm_reg <- sampling(normal_regression,
+                          data = data_list, 
+                          refresh = 0)
 ```
 
 
@@ -463,7 +421,8 @@ When you're done, look at the resulting summary of coefficients. What do you not
 ### SOLUTION
 ```{r, include=TRUE}
 #| class-output: stan
-normal_regression_spp <- cmdstan_model(stan_file = "topics/02_regression/normal_regression_spp.stan")
+normal_regression_spp <- stan_model(file = here::here("topics/02_regression/normal_regression_spp.stan"),
+                                    model_name = "normal_regression_spp")
 
 normal_regression_spp
 ```
@@ -485,14 +444,17 @@ data_list_spp <- with(penguins_no_NA,
           pred_spp_id = rep(1:3, each = 6)
           ))
 
-normal_reg_spp_post <- normal_regression_spp$sample(data = data_list_spp, refresh = 0)
+normal_reg_spp_post <- sampling(normal_regression_spp,
+                                data = data_list_spp, refresh = 0)
 
 ```
 
 Note that the sign of the slope is different now! 
 
 ```{r}
-normal_reg_spp_post$summary()
+summary(normal_reg_spp_post)$summary |> 
+  head(5) |>
+  knitr::kable()
 ```
 
 :::
