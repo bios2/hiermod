@@ -607,6 +607,18 @@ mtext("Variance", side = 2, line = 3.75, cex = 2.5)
 
 What can we learn from this model ?
 
+## Prediction map
+
+```{r, echo =FALSE}
+library(terra)
+lapinMtl <- readRDS("./slides/data/lapinMtl.RDS")
+mapview::mapview(lapinMtl) + 
+mapview(list(present, absent),
+      col.regions = list("lightblue", "hotpink"),
+      color = list("blue", "hotpink"),
+      legend = list(TRUE, TRUE))
+```
+
 ## Kringing
 
 If we want to interpolate across the region of interest, this is known as **kriging**.
@@ -645,11 +657,3 @@ If we want to account for one or more explanatory variables in the model such th
 
 $$\mathbf{y}\sim\mathcal{N}(\beta_0 + \mathbf{X}\beta, f(d))$$
 This is known as **Universal kriging**.
-
-## Prediction map
-
-```{r, echo =FALSE}
-library(terra)
-lapinMtl <- readRDS("./slides/data/lapinMtl.RDS")
-mapview::mapview(lapinMtl)
-```
