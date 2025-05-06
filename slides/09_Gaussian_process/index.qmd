@@ -71,7 +71,7 @@ and
 
 $$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$
 
-## Even more complex hierarchical models!? {style="font-size: 0.9em;"}
+## An even more complex hierarchical models! {style="font-size: 0.85em;"}
 
 So far we have seen many (!) types of hierarchical models, which got increasingly more complex in their structure.
 
@@ -85,31 +85,28 @@ Would you know how to constraint (spatially, temporally, phylogenetically, etc.)
 
 ![](https://www.i2symbol.com/pictures/emojis/f/c/3/2/fc326fef420c2381348864310ea8efa1_384.png){fig-align="center" width=30%}
 
-## Even more complex hierarchical models! {style="font-size: 0.8em;"}
+## An even more complex hierarchical models! {style="font-size: 0.85em;"}
 
 If we get back to a model that has a single hierarchy on the intercept such that
-
 $$\mathbf{y} \sim \mathcal{N}(\mathbf{b},\sigma^2)$$
 
 . . .
 
 where
-
 $$\mathbf{b} \sim \mathcal{N}(\mu, \sigma^2).$$
 
 . . . 
 
 If we want to account for a constraint on the previously presented model, we can rewrite the equation fo $\mathbf{b}$ as 
-
 $$\mathbf{b} \sim \mathcal{N}\left(\mu, f(d)\right)$$
 
 . . .
 
 where
 
-- $f(d)$ is a function of a distance matrix
+$f(d)$ is a function of a (spatial, temporal, phylogenetic, ...) distance matrix
 
-## Even more complex hierarchical models! {style="font-size: 0.9em;"}
+## An even more complex hierarchical models! {style="font-size: 0.85em;"}
 
 $$\mathbf{b} \sim \mathcal{N}\left(\mu, f(d)\right)$$
 
@@ -190,7 +187,7 @@ However, in practice, there are particularities of the functions that are define
 
 . . . 
 
-As such, here is a classic structure these variance function take
+Here is a classic structure these variance function take
 
 ```{r, echo=FALSE, fig.align='center', fig.height= 3.5}
 expVario <- function(d, nugget = 2, sill = 5, range = 10){
@@ -442,34 +439,185 @@ $$b \sim{\cal N}\left(0, C_0 +C_1\left(1 - e^{\frac{-d}{a}}\right)\right)$$
 
 ## Fitting the model
 
+```{r, echo = FALSE, eval = FALSE}
+library(sf)
+library(terra)
+library(vegan)
+library(INLA)
+
+lapin <- readRDS("Repository/hiermod/slides/data/lapin.RDS")
+explan <- readRDS("Repository/hiermod/slides/data/explanaNest.RDS")
+mtl <- readRDS("Repository/hiermod/slides/data/mtl.RDS")
+
+#===============================
+# Building presence-absence data
+#===============================
+# Extract coordinates
+lapinCoord <- st_coordinates(st_centroid(explan))
+
+# Build PCNM for coordinates
+PCNM <- pcnm(dist(lapinCoord))
+
+# Presence-absence
+lapin$PA <- ifelse(sign(PCNM$vectors[,6])<0, 0, 1)
+
+#==================================================
+# Building model - I cheated to make it fast and
+# the Matern function was used, not the exponential
+#==================================================
+# INLA Mesh
+mesh <- inla.mesh.2d(boundary = mtl, 
+                     max.edge = 0.02,
+                     offset = c(0.02,0.02),
+                     cutoff = 0.01,
+                     crs = st_crs(mtl))
+
+# SPDE
+SPDE <- inla.spde2.pcmatern(mesh=mesh,
+                            alpha=2,
+                            prior.range=c(0.05, 0.01),
+                            prior.sigma=c(1, 0.01))
+
+# Index matrix
+Field <- inla.spde.make.index("field",n.spde=mesh$n)
+
+# A matrix for estimation
+AEst<-inla.spde.make.A(mesh,loc=as.matrix(lapinCoord))
+
+# A matrix for prediction
+APred<-inla.spde.make.A(mesh)
+
+# For estimation
+AEstlist <- list(AEst)
+
+# For prediction
+APredlist <- list(APred)
+
+# Organise effect
+
+# Estimation
+effectEst <- list(i = 1:SPDE$n.spde)
+
+# Prediction
+effectPred <- list(i = 1:SPDE$n.spde)
+
+# Stack for estimation
+StackEst <- inla.stack(data=list(lapin = PA),
+                       A = AEstlist,
+                       effects = effectEst,
+                       tag="est")
+
+# Stack for prediction
+StackPred <- inla.stack(data=list(lapin = NA),
+                        A=APredlist,
+                        effects=effectPred,
+                        tag="pred")
+
+# Organise StackEst and StackPred into a single stack
+Stack <- inla.stack(StackEst,StackPred)
+
+# Build model
+model <- inla(lapin ~ 0 + f(i, model = SPDE),
+              data = inla.stack.data(Stack),
+              family="binomial",
+              Ntrials=1,
+              control.family =list(link="logit"),
+              control.predictor=list(A=inla.stack.A(Stack),
+                                     compute=TRUE, link = 1),
+              control.compute=list(waic=TRUE))
+
+#===============
+# Prediction map
+#===============
+# Dimention of the raster
+rasterDim <- c(1000, 1500)
+
+# Define basis of the map
+mapBasis <- inla.mesh.projector(mesh,
+                                dims = rasterDim,
+                                xlim = c(st_bbox(mtl)[1], st_bbox(mtl)[3]),
+                                ylim = c(st_bbox(mtl)[2], st_bbox(mtl)[4]),
+                                crs = st_crs(mtl))
+
+# Find the mesh edges on which predictions should be made
+ID <- inla.stack.index(Stack, tag="pred")$data
+
+# Calculate prediction
+mapMean <- inla.mesh.project(mapBasis, 
+                             model$summary.fitted.values[["mean"]][ID])
+
+# Transform map into a raster
+rastMean <- rast(nrows = rasterDim[1],
+                 ncol = rasterDim[2],
+                 crs = crs(mtl),
+                 xmin = min(mapBasis$x), xmax = max(mapBasis$x),
+                 ymin = min(mapBasis$y), ymax = max(mapBasis$y))
+
+values(rastMean) <- as.vector(t(mapMean[,ncol(mapMean):1]))
+
+# Mask of Montréal over the raster
+lapinPredMask <- mask(rastMean,mtl)
+
+saveRDS(lapinPredMask, file= "lapinMtl.RDS")
+
+#==============================
+# Calculate the range in meters
+#==============================
+x <- c(-73.8, -73.8 + model$summary.hyperpar$mean[1])
+y <- c(45.4, 45.4)
+
+twoPts <- st_as_sf(as.data.frame(cbind(x,y)),
+                   coords = c("x", "y"),
+                   crs = st_crs(mtl))
+
+twoPtsProj <- st_transform(twoPts, crs = 32182)
+
+dist(st_coordinates(twoPtsProj)) 
+# Range = ~ 10200 m
+model$summary.hyperpar$mean[2]
+# Sill = ~ 3.12
+```
+
 If we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like
 
 
 ```{r, echo = FALSE, fig.align="center"}
-expVario <- function(d, nugget = 0.2, sill = 4, range = 150){
+expVario <- function(d, nugget = 0, sill = 3.12, range = 10200){
   nugget + sill * (1 - exp(-d / range))
 }
 
 # The parameters were slightly 
 
-par(mar = c(5.1, 5.1, 0.1, 0.1))
-curve(expVario, 0, 700, 
+par(mar = c(5.1, 5.5, 0.1, 0.1))
+curve(expVario, 0, 45000, 
       lwd = 5,
       bty = "L",
-      ylim = c(0, 4.1),
+      ylim = c(0, 3.5),
       las = 1,
-      xlab = "Distance",
-      ylab = "Variance",
-      cex.lab = 2.5,
+      xlab = "",
+      ylab = "",
       cex.axis = 2,
       col = "blue")
 
-
+mtext("Distance", side = 1, line = 3.5, cex = 2.5)
+mtext("Variance", side = 2, line = 3.75, cex = 2.5)
 ```
 
 . . .
 
 What can we learn from this model ?
+
+## Prediction map
+
+```{r, echo =FALSE}
+library(terra)
+lapinMtl <- readRDS("./slides/data/lapinMtl.RDS")
+mapview::mapview(lapinMtl) + 
+mapview(list(present, absent),
+      col.regions = list("lightblue", "hotpink"),
+      color = list("blue", "hotpink"),
+      legend = list(TRUE, TRUE))
+```
 
 ## Kringing
 
@@ -509,10 +657,3 @@ If we want to account for one or more explanatory variables in the model such th
 
 $$\mathbf{y}\sim\mathcal{N}(\beta_0 + \mathbf{X}\beta, f(d))$$
 This is known as **Universal kriging**.
-
-## Prediction map
-
-```{r, echo =FALSE}
-lapinMtlraster <- readRDS("./slides/data/lapinMtl.RDS")
-mapview::mapview(lapinMtlraster)
-```

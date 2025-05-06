@@ -55,17 +55,18 @@ let's express the same model in Stan:
 
 ```{r}
 #| class-output: stan
-library(cmdstanr)
 
-normal_dist <- cmdstan_model("topics/discrete_predictor/normal_dist.stan")
+normal_dist <- stan_model("topics/discrete_predictor/normal_dist.stan")
 normal_dist
 ```
 
 The model section looks very much like the mathematics shown above. 
 I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. 
-Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian separates the world into unmeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).
+Models are devices for putting together the probability of all the quantities we are looking for. 
+Again, a Bayesian separates the world into unmeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).
 
-We can fit this model to data and see the result: 
+Before we fit this model we need to get the data ready. 
+We'll drop NA values^[just for this toy example!], and set up the data in a list.
 
 ```{r}
 # first we drop all NA values
@@ -83,12 +84,12 @@ list_bill_dep <- with(penguins_nobillNA,
           measurements = bill_depth_mm))
      
 ## sample 4 chains, suppress counting iterations
-samp_bill_dep <- normal_dist$sample(data = list_bill_dep, 
-                                    parallel_chains = 4,
-                                    refresh = 0)
+normal_bill_dep_samp <- sampling(normal_dist,
+                               data = list_bill_dep, 
+                               refresh = 0)
 
 ## summarize the samples for each parameter into a nice table
-samp_bill_dep |> 
+normal_bill_dep_samp |> 
   posterior::summarise_draws() |> 
   knitr::kable()
 ```
@@ -105,43 +106,44 @@ We can look at the distributions easily using the `bayesplot` package.
 
 ```{r}
 #| layout-ncol: 2
-draws <- samp_bill_dep$draws(variables = c("mu", "sigma"))
 
-bayesplot::mcmc_hist(draws, pars = "mu")
-bayesplot::mcmc_hist(draws, pars = "sigma")
-
-
+bayesplot::mcmc_hist(normal_bill_dep_samp, pars = "mu")  + 
+  coord_cartesian(xlim = c(10, 25))
+bayesplot::mcmc_hist(normal_bill_dep_samp, pars = "sigma") + 
+  coord_cartesian(xlim = c(0, 7))
 ```
 
 Notice that the distributions do not have the same shape as the prior-- this is particularly true for $\sigma$. 
-This shows an important point: the prior distribution does not determine what the posterior looks like. 
-[should I sample from the prior and show them that?]{.aside}
 
 ```{r}
-#| label: fig-dotsint
-#| fig-cap: the package `ggdist` has many fun & useful ways to draw pictures of posterior distributions. Here is one called `stats_dotsinterval()`
-#| column: margin
-library(ggplot2)
-library(ggdist)
+tibble(param = c("mu"), 
+       values= rnorm(200, 17.5, 2)) |> 
+  ggplot(aes(x = values)) + 
+  geom_histogram() + 
+  coord_cartesian(xlim = c(10,25))
 
-draws |>  
-  posterior::as_draws_df() |> 
-  ggplot(aes(x = sigma)) + 
-  stat_dotsinterval()
+tibble(param = c("sigma"), 
+       values= rexp(200,1)) |> 
+  ggplot(aes(x = values)) + 
+  geom_histogram() + 
+  coord_cartesian(xlim = c(0,7))
 ```
+
+
+This shows an important point: the prior distribution does not determine what the posterior looks like. 
 
 ## Posterior predictions: the easy way to check your model
 
-People care so much about model diagnostics. 
+In my experience, ecologists (rightly!) care a great deal about model diagnostics. 
 And with good reason: you need to know how much to trust a model before using it to make a scientific claim. 
-One way to find out which model is best would be to use them to make a prediction, and see how right you are. 
-An alternative is to see how well the data fit your sample. 
+Bayes offers a straightforward way to show how well a model is doing: plot model predictions, and compare them to the observed data. 
+This involves using the model as a data generating machine, which we'll look at next.
 
 ### Posterior prediction in R
 
 ```{r}
 # just get some draws
-draws <- samp_bill_dep$draws(variables = c("mu", "sigma"))
+draws <- rstan::extract(normal_bill_dep_samp, pars = c("mu", "sigma"))
 draws_matrix <- posterior::as_draws_matrix(draws)
 
 ## set up a matrix. for every posterior sample, 
@@ -160,8 +162,6 @@ for (r in 1:nsamples){
                    mean = subset_draws[r, "mu"], 
                    sd = subset_draws[r, "sigma"])
 }
-
-
 
 bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
                             yrep = yrep)
@@ -186,7 +186,7 @@ However, if you want, you can do the same process in Stan.
 ```{r}
 #| class-output: stan
 
-normal_dist_rng <- cmdstan_model(stan_file = "topics/discrete_predictor/normal_dist_rng.stan")
+normal_dist_rng <- stan_model(file = "topics/discrete_predictor/normal_dist_rng.stan")
 
 normal_dist_rng
 ```
@@ -195,16 +195,15 @@ Here we have a handy random number generator _inside_ Stan.
 
 ```{r}
 
-samp_bill_dep_rng <- normal_dist_rng$sample(
+samp_bill_dep_rng <- sampling(normal_dist_rng,
   data = list_bill_dep,
-  refresh = 0,
-  parallel_chains = 4)
+  refresh = 0)
 
-draws <- samp_bill_dep_rng$draws(variables = c("yrep"))
-draws_matrix <- posterior::as_draws_matrix(draws)
+samp_bill_dep_rng_draws <- rstan::extract(samp_bill_dep_rng, pars = "yrep")
+samp_bill_dep_rng_draws_matrix <- posterior::as_draws_matrix(samp_bill_dep_rng_draws$yrep)
 
 bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
-                            yrep = head(draws_matrix, 50))
+                            yrep = head(samp_bill_dep_rng_draws_matrix, 50))
 ```
 
 The code is much shorter, because there is less to do in R. 
@@ -249,7 +248,7 @@ $$
 
 ```{r}
 #| class-output: stan
-normal_dist_rng_spp_forloop <- cmdstan_model(stan_file = "topics/discrete_predictor/normal_dist_rng_spp_forloop.stan")
+normal_dist_rng_spp_forloop <- stan_model(file = "topics/discrete_predictor/normal_dist_rng_spp_forloop.stan")
 
 normal_dist_rng_spp_forloop
 ```
@@ -294,11 +293,11 @@ df_of_means |>
 
 ## Vector indexing in Stan
 
-We can use this precise technique in Stan: 
+We can use this very same technique in Stan: 
 
 ```{r}
 #| class-output: stan
-normal_dist_rng_spp <- cmdstan_model(stan_file = "topics/discrete_predictor/normal_dist_rng_spp.stan")
+normal_dist_rng_spp <- stan_model(file = "topics/discrete_predictor/normal_dist_rng_spp.stan")
 
 normal_dist_rng_spp
 ```
@@ -327,14 +326,9 @@ list_bill_dep_spp <- with(penguins_nobillNA,
      )
 )
      
-samp_normal_dist_rng_spp <- normal_dist_rng_spp$sample(
+normal_dist_rng_spp_samp <- sampling(normal_dist_rng_spp,
   data = list_bill_dep_spp, 
-  parallel_chains = 4,
   refresh = 0)
-
-samp_normal_dist_rng_spp$draws(variables = c("mu", "sigma")) |> 
-  posterior::summarise_draws() |> 
-  knitr::kable()
 
 ```
 
@@ -354,21 +348,26 @@ spp_draws_matrix <- posterior::as_draws_matrix(spp_yrep_draws)
 
 bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
                             yrep = head(spp_draws_matrix, 50))
+
+# Extract and convert draws
+normal_dist_rng_spp_yrep <- rstan::extract(normal_dist_rng_spp_samp, pars = "yrep")$yrep
+
+# Posterior predictive check
+bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements, yrep = normal_dist_rng_spp_yrep[1:50, ])
 ```
 
 
-The predicted distribution is now much more like the real data
+The predicted distribution is now much more like the real data!
 
 :::
 
 ### Visualizing species -- using `tidybayes`
 
 We can also make figures for each individual species. 
-Here we will move away from using `bayesplot` and try to visualize our posterior using the handy functions in the `tidybayes` package [add a link]{.aside}
+Here we will move away from using `bayesplot` and try to visualize our posterior using the handy functions in the [`tidybayes` package](https://mjskay.github.io/tidybayes/).
 
 ```{r}
 library(tidybayes)
-spp_draws_df <- posterior::as_draws_df(spp_yrep_draws)
 
 normal_dist_post_samp <- tidybayes::gather_draws(samp_normal_dist_rng_spp,
                         yrep[row_id], 
