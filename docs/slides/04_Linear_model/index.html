@@ -900,13 +900,13 @@ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \vare
 <section id="error-in-linear-models" class="slide level2">
 <h2>Error in linear models</h2>
 <p>As previously mentioned, in (simple and multiple!) linear regression the error term (<span class="math inline">\(\varepsilon\)</span>) has actually a very precise definition:</p>
-<p><span class="math display">\[\varepsilon \sim \mathcal{N}(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is an estimated variance</p>
+<p><span class="math display">\[\boldsymbol{\varepsilon} \sim \mathcal{MVN}(0, \sigma^2\mathbf{I})\]</span> where <span class="math inline">\(\sigma^2\)</span> is an estimated variance</p>
 <div class="fragment">
 <p>which means that the error in a linear regression follows a Gaussian distribution with an estimated variance.</p>
 </div>
 <div class="fragment">
 <p><strong>Note</strong> The model can be written using matrix notation as<br>
-<span class="math display">\[\mathbf{y} \sim \mathcal{N}(\mathbf{X}\boldsymbol{\beta}, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span></p>
+<span class="math display">\[\mathbf{y} \sim \mathcal{MVN}(\mathbf{X}\boldsymbol{\beta}, \sigma^2\mathbf{I})\]</span> where <span class="math inline">\(\sigma^2\)</span></p>
 </div>
 </section>
 <section id="generalized-linear-models" class="slide level2">

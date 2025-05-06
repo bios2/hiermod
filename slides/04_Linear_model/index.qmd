@@ -610,7 +610,7 @@ Using the matrix notation, we assume that
 
 As previously mentioned, in (simple and multiple!) linear regression the error term ($\varepsilon$) has actually a very precise definition:
 
-$$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$ where $\sigma^2$ is an estimated variance
+$$\boldsymbol{\varepsilon} \sim \mathcal{MVN}(0, \sigma^2\mathbf{I})$$ where $\sigma^2$ is an estimated variance
 
 . . .
 
@@ -619,7 +619,7 @@ which means that the error in a linear regression follows a Gaussian distributio
 . . .
 
 **Note** The model can be written using matrix notation as  
-$$\mathbf{y} \sim \mathcal{N}(\mathbf{X}\boldsymbol{\beta}, \sigma^2)$$ where $\sigma^2$
+$$\mathbf{y} \sim \mathcal{MVN}(\mathbf{X}\boldsymbol{\beta}, \sigma^2\mathbf{I})$$ where $\sigma^2$
 
 ## Generalized linear models
 
