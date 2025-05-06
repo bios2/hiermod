@@ -71,7 +71,7 @@ and
 
 $$\varepsilon \sim \mathcal{N}(0, \sigma^2)$$
 
-## Even more complex hierarchical models!? {style="font-size: 0.9em;"}
+## An even more complex hierarchical models! {style="font-size: 0.85em;"}
 
 So far we have seen many (!) types of hierarchical models, which got increasingly more complex in their structure.
 
@@ -85,31 +85,28 @@ Would you know how to constraint (spatially, temporally, phylogenetically, etc.)
 
 ![](https://www.i2symbol.com/pictures/emojis/f/c/3/2/fc326fef420c2381348864310ea8efa1_384.png){fig-align="center" width=30%}
 
-## Even more complex hierarchical models! {style="font-size: 0.8em;"}
+## An even more complex hierarchical models! {style="font-size: 0.85em;"}
 
 If we get back to a model that has a single hierarchy on the intercept such that
-
 $$\mathbf{y} \sim \mathcal{N}(\mathbf{b},\sigma^2)$$
 
 . . .
 
 where
-
 $$\mathbf{b} \sim \mathcal{N}(\mu, \sigma^2).$$
 
 . . . 
 
 If we want to account for a constraint on the previously presented model, we can rewrite the equation fo $\mathbf{b}$ as 
-
 $$\mathbf{b} \sim \mathcal{N}\left(\mu, f(d)\right)$$
 
 . . .
 
 where
 
-- $f(d)$ is a function of a distance matrix
+$f(d)$ is a function of a (spatial, temporal, phylogenetic, ...) distance matrix
 
-## Even more complex hierarchical models! {style="font-size: 0.9em;"}
+## An even more complex hierarchical models! {style="font-size: 0.85em;"}
 
 $$\mathbf{b} \sim \mathcal{N}\left(\mu, f(d)\right)$$
 
@@ -190,7 +187,7 @@ However, in practice, there are particularities of the functions that are define
 
 . . . 
 
-As such, here is a classic structure these variance function take
+Here is a classic structure these variance function take
 
 ```{r, echo=FALSE, fig.align='center', fig.height= 3.5}
 expVario <- function(d, nugget = 2, sill = 5, range = 10){
