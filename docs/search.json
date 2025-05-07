@@ -2223,7 +2223,7 @@
     "href": "slides/09_Gaussian_process/index.html#an-illustrative-example",
     "title": "Gaussian process",
     "section": "An illustrative example",
-    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation"
+    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation\n\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox."
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-typical-member-of-the-species",
@@ -2700,5 +2700,40 @@
     "title": "Complex hierarchical models",
     "section": "Pumpkinseed growth example",
     "text": "Pumpkinseed growth example\nQuestion\n\nIs the growth of Pumpkinseed influenced by water temperature?\n\n\n\n\n\n\n\nTry to build the model that best answer this question\n\n\nTo have the most precise model, we need to account for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink… teachers assistant may have an influence here as well)."
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#model-technical-interlude",
+    "href": "slides/09_Gaussian_process/index.html#model-technical-interlude",
+    "title": "Gaussian process",
+    "section": "Model (technical interlude)",
+    "text": "Model (technical interlude)\n\nActually, the function used to estimate the Gaussian process, was the Matérn function, that is\n\\[b \\sim{\\cal N}\\left(0,C_1\\frac{2^{1-\\nu}}{\\Gamma(\\nu)}\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)^\\nu K_\\nu\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)\\right)\\]\n\n\n\nwhere\n\n\\(\\Gamma(\\nu) = (\\nu - 1)!\\)\n\\(K_\\nu\\) is a modified Bessel function\n\\(d\\) is the distance\n\\(a\\) is the range\n\\(\\nu\\) is a strictly positive parameter giving flexibility to the left tail of the function\n\nif \\(\\nu = 0.5\\) the function converges to an exponential function \\(\\left(C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\)\nif \\(\\nu \\rightarrow \\infty\\) the function converges to an Gaussian function \\(\\left(C_1\\left(1 - e^{\\frac{-d^2}{a^2}}\\right)\\right)\\)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#matérn-function",
+    "href": "slides/09_Gaussian_process/index.html#matérn-function",
+    "title": "Gaussian process",
+    "section": "Matérn function",
+    "text": "Matérn function\n\n\\[b \\sim{\\cal N}\\left(0,C_1\\frac{2^{1-\\nu}}{\\Gamma(\\nu)}\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)^\\nu K_\\nu\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)\\right)\\]\n\n\n\nwhere\n\n\\(\\Gamma(\\nu) = (\\nu - 1)!\\)\n\\(K_\\nu\\) is a modified Bessel function\n\\(d\\) is the distance\n\\(a\\) is the range\n\\(\\nu\\) is a strictly positive parameter giving flexibility to the left tail of the function\n\nif \\(\\nu = 0.5\\) the function converges to an exponential function \\(\\left(C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\)\nif \\(\\nu \\rightarrow \\infty\\) the function converges to an Gaussian function (also known as the exponentiated quadratic function) \\(\\left(C_1\\left(1 - e^{\\frac{-d^2}{2a^2}}\\right)\\right)\\)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#matérn-function-1",
+    "href": "slides/09_Gaussian_process/index.html#matérn-function-1",
+    "title": "Gaussian process",
+    "section": "Matérn function",
+    "text": "Matérn function\nSill : 5 – Range : 10 – \\(\\nu\\) : 0.5"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#matérn-function-2",
+    "href": "slides/09_Gaussian_process/index.html#matérn-function-2",
+    "title": "Gaussian process",
+    "section": "Matérn function",
+    "text": "Matérn function\nSill : 5 – Range : 10 – \\(\\nu\\) : 5"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#another-cova",
+    "href": "slides/09_Gaussian_process/index.html#another-cova",
+    "title": "Gaussian process",
+    "section": "Another cova",
+    "text": "Another cova"
   }
 ]

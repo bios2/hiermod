@@ -362,6 +362,81 @@ curve(expVario, 0, 100,
       col = "blue")
 ```
 
+## Matérn function
+
+:::{style="font-size: 0.65em;"}
+$$b \sim{\cal N}\left(0,C_1\frac{2^{1-\nu}}{\Gamma(\nu)}\left(\sqrt{2\nu}\frac{d}{a}\right)^\nu K_\nu\left(\sqrt{2\nu}\frac{d}{a}\right)\right)$$
+:::
+
+. . . 
+
+
+:::{style="font-size: 0.65em;"}
+where
+
+- $\Gamma(\nu) = (\nu - 1)!$
+
+- $K_\nu$ is a modified Bessel function
+
+- $d$ is the distance
+
+- $a$ is the range
+
+- $\nu$ is a strictly positive parameter giving flexibility to the left tail of the function
+  - if $\nu = 0.5$ the function converges to an exponential function $\left(C_1\left(1 - e^{\frac{-d}{a}}\right)\right)$
+  - if $\nu \rightarrow \infty$ the function converges to an Gaussian function (also known as the exponentiated quadratic function) $\left(C_1\left(1 - e^{\frac{-d^2}{2a^2}}\right)\right)$
+:::
+
+## Matérn function
+
+Sill : 5 -- Range : 10 -- $\nu$ : 0.5
+
+```{r, echo = FALSE}
+library(gstat)
+matVario.5 <- show.vgms(sill = 5,
+                        model = "Mat", 
+                        range = 10,
+                        kappa = 0.5,
+                        max = 100)
+
+plot(matVario.5$panel.args[[1]]$x, matVario.5$panel.args[[1]]$y,
+     type = "l",
+     lwd = 5,
+     bty = "L",
+     ylim = c(0, 7),
+     las = 1,
+     xlab = "Distance",
+     ylab = "Variance",
+     cex.lab = 2.5,
+     cex.axis = 2,
+     col = "blue")
+```
+
+## Matérn function
+
+Sill : 5 -- Range : 10 -- $\nu$ : 5
+
+```{r, echo = FALSE}
+library(gstat)
+matVario5 <- show.vgms(sill = 5,
+                       model = "Mat", 
+                       range = 10,
+                       kappa = 5,
+                       max = 100)
+
+plot(matVario5$panel.args[[1]]$x, matVario5$panel.args[[1]]$y,
+     type = "l",
+     lwd = 5,
+     bty = "L",
+     ylim = c(0, 7),
+     las = 1,
+     xlab = "Distance",
+     ylab = "Variance",
+     cex.lab = 2.5,
+     cex.axis = 2,
+     col = "blue")
+```
+
 ## An illustrative example {style="font-size: 0.9em;"}
 
 . . . 
@@ -376,11 +451,11 @@ To present how Gaussian processes can be used, let's study the distribution of *
 
 . . .
 
-- They lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox. 
+- They move well in an urban  setting and are not affected by the level of urbanisation
 
 . . .
 
-- They move well in an urban  setting and are not affected by the level of urbanisation
+- They lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox. 
 
 
 ## A typical member of the species
@@ -445,9 +520,9 @@ library(terra)
 library(vegan)
 library(INLA)
 
-lapin <- readRDS("Repository/hiermod/slides/data/lapin.RDS")
-explan <- readRDS("Repository/hiermod/slides/data/explanaNest.RDS")
-mtl <- readRDS("Repository/hiermod/slides/data/mtl.RDS")
+lapin <- readRDS("./slides/data/lapin.RDS")
+explan <- readRDS("./slides/data/explanaNest.RDS")
+mtl <- readRDS("./slides/data/mtl.RDS")
 
 #===============================
 # Building presence-absence data
@@ -502,7 +577,7 @@ effectEst <- list(i = 1:SPDE$n.spde)
 effectPred <- list(i = 1:SPDE$n.spde)
 
 # Stack for estimation
-StackEst <- inla.stack(data=list(lapin = PA),
+StackEst <- inla.stack(data=list(lapin = lapin$PA),
                        A = AEstlist,
                        effects = effectEst,
                        tag="est")
@@ -523,13 +598,12 @@ model <- inla(lapin ~ 0 + f(i, model = SPDE),
               Ntrials=1,
               control.family =list(link="logit"),
               control.predictor=list(A=inla.stack.A(Stack),
-                                     compute=TRUE, link = 1),
-              control.compute=list(waic=TRUE))
+                                     compute=TRUE, link = 1))
 
 #===============
 # Prediction map
 #===============
-# Dimention of the raster
+# Dimension of the raster
 rasterDim <- c(1000, 1500)
 
 # Define basis of the map
@@ -618,6 +692,8 @@ mapview(list(present, absent),
       color = list("blue", "hotpink"),
       legend = list(TRUE, TRUE))
 ```
+
+## Another cova
 
 ## Kringing
 
