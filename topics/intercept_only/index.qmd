@@ -1,10 +1,9 @@
 ---
 title:  Fitting an intercept-only model
 description: |
-  Where is the variation
+  Where is the variation?
 execute:
   freeze: true
-eval: false
 format:
   html:
     code-tools: true
@@ -88,7 +87,7 @@ I'm sampling only 2 chains below, for illustration purposes only! use more chain
 :::
 
 ```{r eval=TRUE}
-spp_site_obs_intercepts_samp <- sampling(
+spp_site_obs_intercepts_samp <- rstan::sampling(
   spp_site_obs_intercepts,
   data = list(
     N = nrow(mite_long),
@@ -104,23 +103,38 @@ spp_site_obs_intercepts_samp <- sampling(
 
 ## Exploring the model output
 
+The output is large, so rather than showing all the parameters, I'm just going to count them. 
+
+```{r}
+nrow(summary(spp_site_obs_intercepts_samp)$summary)
+nrow(mite_long)
+```
+
+We have fit many more parameters than observations! However, this model fits just fine, with no divergent iterations. These are one indication (not the only one!) that the model fit OK:
+
 ```{r}
 rstan::check_divergences(spp_site_obs_intercepts_samp)
 ```
 
-The sampler was just fine! Note that we have just estimated many more parameters than observations.
-
-## Plot the standard deviations
-
-This just takes one line of bayesplot code.
+Let's view the summary of only the standard deviations of the random effects (`sigma`):
 
 ```{r}
+## let's look at the variance components
+
+summary(spp_site_obs_intercepts_samp,
+        pars = c("sigma_spp", "sigma_sites", "sigma_obs"))$summary
+```
+
+And we can plot them also:
+
+```{r}
+#| fig-cap: Standard deviations of the mite dataset
 bayesplot::mcmc_areas(spp_site_obs_intercepts_samp,
                       regex_pars ='sigma', 
                       border_size = 0.5)
 ```
 
-We can also do this as a data frame:
+Alternatively we can pull out posterior samples and make this figure ourselves:
 
 ```{r}
 sigma_post <- rstan::extract(spp_site_obs_intercepts_samp,
@@ -132,13 +146,16 @@ sigma_post_df |>
   pivot_longer(starts_with("sigma"), 
                names_to = "sigma", 
                values_to = "value") |> 
-  ggplot(aes(x = value)) + 
-  geom_histogram() + 
-  facet_wrap(~sigma)
+  mutate(sigma = forcats::fct_reorder(sigma, value)) |> 
+  ggplot(aes(y = sigma, x = value)) + 
+  stat_dots()
 ```
 
+This can be a useful guide to future model building -- perhaps collecting data on species traits would help to improve a model's predictive power.
 
 ### Calculate the posterior distribution of average abundance for each species
+
+We can conceptualize this as a kind of "averaged rank abundance plot" for the species.
 
 To do this we need to extract the average $mu$ and add it to the species effects, $\beta_{\text{species}}$
 
@@ -165,11 +182,28 @@ spp_mu_rvars <- spp_site_obs_intercepts_samp |>
 ```
 
 ```{r}
-spp_mu_rvars |> 
-  mutate(spp_avg = mu + spp_effects) |> 
-  ggplot(aes(dist = spp_avg, group = spp_id)) + 
+#| fig-cap: Two visualizations of species average abundances, as measured by a random effects model which included random effects for site and site-species combinations. 
+#|   - species average abundances on the log scale
+#|   - species average abundances on the observation scale.
+#| layout-nrow: 2
+spp_effect_df <- spp_mu_rvars |> 
+  mutate(spp_avg = mu + spp_effects,
+         species = names(spp_names)[spp_id],
+         species = forcats::fct_reorder(species, spp_avg))
+
+spp_effect_df |> 
+  ggplot(aes(dist = spp_avg, y = species)) + 
   tidybayes::stat_slab(col = "black") + 
-  coord_flip() + 
+  # coord_flip() + 
   theme_minimal()
+
+spp_effect_df |> 
+  mutate(spp_avg_count = exp(spp_avg),
+         species = forcats::fct_reorder(species, spp_avg, .desc = TRUE)) |> 
+  ggplot(aes(dist = exp(spp_avg), x = species)) + 
+  tidybayes::stat_pointinterval() + 
+  # coord_flip() + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90))
 ```
 

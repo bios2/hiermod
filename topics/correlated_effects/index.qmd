@@ -21,25 +21,38 @@ This is useful to help us understand what a hierarchical model does.
 
 However it is also useful from a strict model-building perspective -- so useful that [Andrew Gelman calls it a "Secret Weapon"](https://statmodeling.stat.columbia.edu/2005/03/07/the_secret_weap/)
 
-```{r}
+## Loading models and data
+
+```{r setup}
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+library(tidyr)
+# library(cmdstanr)
+suppressPackageStartupMessages(library(rstan))
+rstan_options("auto_write" = TRUE)
+options(mc.cores = parallel::detectCores())
+library(tidybayes)
+
 data(mite, package = "vegan")
 data("mite.env", package = "vegan")
-library(tidyverse)
-library(cmdstanr)
+```
 
+And some quick data restructuring to combine both.
+
+```{r datasetup}
 # combine data and environment
 mite_data_long <- bind_cols(mite.env, mite) |> 
   pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
 ```
 
-To keep things simple and univariate, let's consider only water:
+To keep things simple and univariate, let's consider only water concentration as an independent variable.
 
 First, a quick word about centering and scaling a predictor variable:
 
 1.  I center the predictor by subtracting the mean. This changes the *intercept* of my linear predictor. it becomes the mean log-odds of occurrance when the water content is average
 2.  I divide water content by 100. The dataset has units of **grams per Litre** of water (see `?vegan::mite.env` for more details). This is fine, but I don't think mites are able to sense differences as precise as a millimeter of water either way. by dividing by 10 I transform this into centilitres, which is more informative.
 
-```{r}
+```{r smoothglm}
 mite_data_long_transformed <- mite_data_long |> 
   mutate(presabs = as.numeric(abd>0),
          # center predictors
@@ -58,7 +71,7 @@ some things to notice about this figure:
 -   the x-axis scale has been transformed from "grams per litre" to "centilitres away from average
 -   there is a ton of variation in how different species respond to water!
 
-```{r}
+```{r make_mite_glms}
 mite_many_glms <- mite_data_long_transformed |> 
   nest_by(spp) |> 
   mutate(logistic_regressions = list(
@@ -76,7 +89,7 @@ To explore this kind of thinking, we are going to use an approach sometimes call
 There are many possible ways to do this in practice. We are using a technique here from the tidyverse, which you can [read more about](https://dplyr.tidyverse.org/articles/rowwise.html).
 :::
 
-```{r}
+```{r coef_plot}
 mite_many_glm_coefs <- mite_many_glms |> 
   select(-data, -logistic_regressions) |> 
   unnest(coefs)
@@ -91,7 +104,7 @@ mite_many_glm_coefs |>
 
 As you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.
 
-```{r}
+```{r secretweapon_hist}
 mite_many_glm_coefs |> 
   ggplot(aes(x = estimate)) + 
   geom_histogram(binwidth = .5) + 
@@ -109,9 +122,8 @@ The above tidyverse approach is very appealing and intuitive, but we can also do
 
 ```{r}
 #| class-output: stan
-all_species_unpooled <- cmdstan_model(
-  stan_file = "topics/correlated_effects/all_species_unpooled.stan", 
-  pedantic = TRUE)
+all_species_unpooled <- stan_model(
+  file = "topics/correlated_effects/all_species_unpooled.stan")
 
 all_species_unpooled
 ```
@@ -130,10 +142,11 @@ mite_pa_list <- list(
     )
 
 all_species_unpooled_posterior <- 
-  all_species_unpooled$sample(
+  rstan::sampling(
+    all_species_unpooled,
     data = mite_pa_list, 
-    refresh = 1000, parallel_chains = 4
-    )
+    refresh = 1000, chains = 4
+  )
 ```
 
 now let's try to plot this:
@@ -158,7 +171,7 @@ post_pred
 
 We can imitate the original figure by adding the observed data in orange:
 
-```{r}
+```{r stan_secret_weapon_fig}
 #| warning: false
 #| fig-height: 9
 #| fig-width: 7
@@ -188,9 +201,8 @@ First we rewrite the Stan model from above, replacing the standard deviations wi
 
 ```{r}
 #| class-output: stan
-all_species_partpooled <- cmdstan_model(
-  stan_file = "topics/correlated_effects/all_species_partpooled.stan", 
-  pedantic = TRUE)
+all_species_partpooled <- stan_model(
+  file = "topics/correlated_effects/all_species_partpooled.stan")
 
 all_species_partpooled
 ```
@@ -198,11 +210,11 @@ all_species_partpooled
 Sample the model
 
 ```{r}
-
 all_species_partpooled_posterior <- 
-  all_species_partpooled$sample(
+  sampling(
+    all_species_partpooled,
     data = mite_pa_list, 
-    refresh = 1000, parallel_chains = 4
+    refresh = 1000, chains = 4
     )
 ```
 
@@ -232,7 +244,6 @@ post_pred_partpooled
 #### Comparing slope estimates of both models
 
 
-
 ```{r}
 unpooled_slopes <- tidybayes::spread_rvars(all_species_unpooled_posterior, 
               slope[spp_id]) |> 
@@ -258,6 +269,9 @@ partpooled_slopes |>
 
 #### Posterior distribution of species richness
 
+We can always calculate things out of the posterior distribution, and get a new distribution which reflects the uncertainty in all our parameter estimates.  
+Here I'm suggesting we calculate the relationship between **species richness** and water concentration
+
 ```{r}
 tidybayes::spread_draws(all_species_partpooled_posterior, 
              intercept[spp_id], slope[spp_id], ndraws = 700) |> 
@@ -274,183 +288,3 @@ tidybayes::spread_draws(all_species_partpooled_posterior,
 
 
 :::
-
-
-
-
-
-
-
-:::{.callout-warning}
-## Covariance matrices
-
-If you've fit a lot of hierarchical models you may know that usually, slopes and intercepts are modelled as correlated. In this course, we've decided to stop here, but the material below is available for anyone who wants. Fist I show how to rewrite the fixed-effect model above.
-
-:::
-
-
-## Saying it another way: with matrix algebra
-
-First let's look at how to scale a univariate distribution:
-
-```{r}
-#| layout-ncol: 2
-z <- rnorm(300, mean = 0, sd = 1)
-hist(z)
-sd(z)
-
-hist(z*2.7)
-sd(z*2.7)
-```
-
-you can also scale two things at once with a diagonal matrix:
-
-```{r}
-two_sds <- diag(c(.4, 7))
-
-zz <- matrix(rnorm(200), ncol = 2)
-
-rescaled_zz <- zz %*% two_sds
-
-plot(rescaled_zz)
-
-apply(rescaled_zz, 2, sd)
-```
-
-We can apply this approach in Stan to create the SAME model as above:
-
-```{r}
-#| class-output: stan
-all_species_unpooled_diag <- cmdstan_model(
-  stan_file = "topics/correlated_effects/all_species_unpooled_diag.stan", 
-  pedantic = TRUE)
-
-all_species_unpooled_diag
-```
-
-```{r}
-all_species_unpooled_diag_sample <- all_species_unpooled_diag$sample(
-  data = mite_pa_list, 
-  refresh = 1000, parallel_chains = 4
-)
-```
-
-
-## Making it hierarchical
-
-```{r}
-#| class-output: stan
-all_species_partpooled_diag <- cmdstan_model(
-  stan_file = "topics/correlated_effects/all_species_partpooled_diag.stan", 
-  pedantic = TRUE)
-
-all_species_partpooled_diag
-```
-
-
-
-
-## Modelling COvariation
-
-```{r}
-#| class.output: stan
-
-all_species_partpooled_diag_corr <- cmdstan_model(
-  stan_file = "topics/correlated_effects/all_species_partpooled_diag_corr.stan", 
-  pedantic = TRUE)
-
-all_species_partpooled_diag_corr
-```
-
-```{r}
-mite_data_list <- list(
-  Nsites = nrow(mite_bin),
-  S = ncol(mite_bin),
-  x = cbind(1, with(mite.env, (WatrCont - mean(WatrCont))/100)),
-  y = as.matrix(mite_bin))
-
-all_species_partpooled_diag_corr_posterior <- 
-  all_species_partpooled_diag_corr$sample(
-  data = mite_data_list,
-  refresh = 0, parallel_chains = 4)
-```
-
-
-plot these, reproducing the figure from earlier:
-
-```{r}
-
-# get the unpooled numbers
-unpooled_slopes <- all_species_unpooled_posterior |> 
-  tidybayes::spread_rvars(slope[spp])
-
-# tidybayes::get_variables(all_species_partpooled_diag_posterior)
-
-partpooled_slopes <- all_species_partpooled_diag_corr_posterior |> 
-  tidybayes::spread_rvars(beta[param, spp]) |> 
-  filter(param == 2)
-
-left_join(unpooled_slopes,
-          partpooled_slopes,
-          by = "spp") |> 
-  ggplot(aes(x = median(slope), y = median(beta))) + 
-  geom_point() + 
-  geom_abline(intercept = 0, slope = 1)
-
-```
-
-## 
-
-```{r}
-unpooled_params <- all_species_unpooled_posterior |> 
-  tidybayes::spread_rvars(slope[spp], intercept[spp]) |> 
-  mutate(slope = median(slope), 
-         intercept = median(intercept))
-
-
-
-all_species_partpooled_diag_corr_posterior |> 
-  tidybayes::spread_rvars(beta[param, spp]) |> 
-  mutate(beta = median(beta),
-         param = c("intercept", "slope")[param]) |> 
-  pivot_wider(names_from = "param", values_from = beta) |> 
-  ggplot(aes(x = intercept, y = slope)) + 
-  geom_point() + 
-  geom_point(data = unpooled_params, col = "red")
-
-```
-
-
-
-## Correlating numbers with a cholesky decomposition of a correlation matrix.
-
-```{r}
-eg <- rethinking::rlkjcorr(1, 2, 1)
-cc <- chol(eg)
-
-zz <- matrix(data = rnorm(2000), ncol = 2)
-plot(zz)
-cor(zz)
-
-rr <- t(cc) %*% t(zz)
-plot(t(rr))
-cor(t(rr))[1,2]
-
-```
-
-The LKJ prior distribution is a prior over correlation matrices
-
-```{r}
-# rethinking::rlkjcorr(1, 5, .3)
-```
-
-
-
-```{r}
-# correlation between both parts (pres-abs and also the mean of the count) comes from a BETA distribution (not a scaled beta). so it is always positive, because we assume that an animal which is very common when found is also found in many sites. 
-# Is there a known relationship between incidence and abundance? surely. That could be an excellent step 2, to show that .
-# Actually it seems like its a bit of a controversy! https://en.wikipedia.org/wiki/Occupancy%E2%80%93abundance_relationship
-
-# can a GP output a vector of values? how exactly. And if so, could output a pair of species coefs for both the logit (present) and count (poisson) model. 
-```
-
