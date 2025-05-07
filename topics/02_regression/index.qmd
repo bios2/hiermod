@@ -17,12 +17,13 @@ editor_options:
 
 ```{r}
 library(palmerpenguins)
-library(tidyverse)
+library(ggplot2)
+suppressPackageStartupMessages(library(dplyr))
+library(tidybayes)
 # library(cmdstanr)
 suppressPackageStartupMessages(library(rstan))
 rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
-library(tidybayes)
 ```
 
 ## Statistical models of Penguin bill morphology.
@@ -63,7 +64,7 @@ It has to be somewhere. Does it make sense? take control and choose for yourself
 If we fit a model like this **without** thinking about the location of zero, we get some pretty silly answers:
 
 ```{r}
-bill_line <- coef(lm(bill_depth_mm ~ bill_length_mm, data = penguins))
+coef(lm(bill_depth_mm ~ bill_length_mm, data = penguins))
 ```
 
 When the value of bill length is 0, the average of the response is the intercept:
@@ -76,9 +77,10 @@ $$
 \end{align}
 $$
 
-But, if we take the data as we found it, we're going to be talking about $\beta_0$ as the depth of a penguin's bill _when the bill has 0 length!_ Either way it is the same line. However, from the point of view of setting priors and interpreting coefficients, it helps a lot to set a meaningful 0.
+But, if we take the data as we found it, we're going to be talking about $\beta_0$ as the depth of a penguin's bill _when the bill has 0 length!_ 
+Clearly that isn't a very meaningful value. From the point of view of setting priors and interpreting coefficients, it helps a lot to set a meaningful 0.
 
-A very common choice is to **subtract the average** from your independent variable, so that it is equal to 0 at the average:
+A very common choice is to **subtract the average** from your independent variable, so that penguins with an average bill length now have an average of 0:
 
 $$
 \begin{align}
@@ -209,7 +211,7 @@ tibble(
   mutate(avg = list(x * slopes + inters),
          obs = list(rnorm(length(avg), mean = avg, sd = sigmas)),
          sim_id = as.factor(sim_id)) |> 
-  unnest(cols = c("x", "avg", "obs")) |> 
+  tidyr::unnest(cols = c("x", "avg", "obs")) |> 
   ggplot(aes(x= x, y = avg, group = sim_id, fill = sim_id)) + 
   geom_line(aes(colour = sim_id)) + 
   geom_point(aes(y = obs, fill = sim_id), pch = 21, size = 3) + 
@@ -232,10 +234,6 @@ Pick one of the two simulations above and modify it. Here are some suggested mod
 
 Now we write a Stan program for this model. 
 We'll begin with a simple model that has no posterior predictions:
-
-```{r eval=FALSE, include=FALSE}
-bill_line <- coef(lm(bill_depth_mm ~ species + I(bill_length_mm - mean(bill_length_mm, na.rm = TRUE)), data = penguins))
-```
 
 ```{r}
 #| class-output: stan
@@ -306,10 +304,10 @@ Next we combine these posteriors with a vector of observations to make a posteri
 
 normal_reg_predline <- normal_reg_no_pred |> 
   tidybayes::spread_rvars(slope, intercept) |> 
-  expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
+  tidyr::expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
   mutate(mu = intercept + slope*x)
 
-knitr::kable(normal_reg_predline)
+normal_reg_predline
 ```
 
 Finally we'll plot these:
@@ -332,14 +330,14 @@ We can get these with another tidybayes function `spread_draws`:
 
 ```{r}
 normal_reg_predline_draws <- normal_reg_no_pred |> 
-  tidybayes::spread_draws(slope, intercept, ndraws = 10)
+  tidybayes::spread_draws(slope, intercept, ndraws = 12)
 
 knitr::kable(normal_reg_predline_draws)
 ```
 
 ```{r}
 normal_reg_predline_draws |> 
-  expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
+  tidyr::expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
   mutate(mu = intercept + slope*x) |> 
   ggplot(aes(x = x, y = mu, group = .draw)) + 
   geom_line() + 
@@ -354,12 +352,16 @@ normal_reg_predline_draws |>
 
 We can also make these posterior predictions in Stan.
 
+First, compile the model:
+
 ```{r}
 #| class-output: stan
 normal_regression <- stan_model(file = here::here("topics/02_regression/normal_regression.stan"))
 
 normal_regression
 ```
+
+Then prepare the data and feed it into the `sampling()` function.
 
 ```{r}
 penguins_no_NA <- penguins |> 
@@ -508,5 +510,7 @@ bill_posterior |>
 
 ## Exercise! 
 
-We have one model without species identity as an independent variable, and one which includes species. Look at the difference in $\sigma$ between these two models. Why did the value change?      
+1. We have one model without species identity as an independent variable, and one which includes species. Look at the difference in $\sigma$ between these two models. Why did the value change? 
+2. **Posterior predictions** Edit the generated quantities blocks of `normal_regression.stan` and `normal_regression_spp.stan`  to create replicate observations for all N observations (that is, `yrep` as we did in the model of [bill depth previously](../discrete_predictor/index.qmd)). Use this to compare the models using `bayesplot::ppc_dens_overlay()` or another function from the bayesplot package.
+
 

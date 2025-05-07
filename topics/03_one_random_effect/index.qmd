@@ -30,7 +30,9 @@ Today's goal is to look at a couple of different model structures that we saw ye
 
 ```{r}
 library(palmerpenguins)
-library(tidyverse)
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+library(tidyr)
 # library(cmdstanr)
 suppressPackageStartupMessages(library(rstan))
 rstan_options("auto_write" = TRUE)
@@ -57,10 +59,12 @@ You can always transform a variable to more sensible units!
 ```{r gauss-inter-setup}
 penguin_mass_island <- penguins |> 
   select(species, island, body_mass_g) |> 
-  drop_na(body_mass_g) |> 
-  unite(sp_island, species, island) |> 
+  tidyr::drop_na(body_mass_g) |> 
+  tidyr::unite(sp_island, species, island) |> 
   ## center mass and change the units
   mutate(mass_kg = (body_mass_g)/1000)
+
+knitr::kable(head(penguin_mass_island))
 ```
 
 Let's visualize the distribution of body sizes for these species+island combinations:
@@ -325,7 +329,8 @@ penguin_pred_obs |>
 Below I'm comparing the two Stan programs side-by-side. Compare them to the models above! 
 
 ```{r}
-hierarchical_groups <- cmdstan_model(stan_file = "topics/03_one_random_effect/hierarchical_groups.stan")
+hierarchical_groups <- stan_model(
+  file = "topics/03_one_random_effect/hierarchical_groups.stan")
 ```
 
 :::{.column-screen}
@@ -368,8 +373,8 @@ hierarchical_groups
 
 
 ```{r}
-hierarchical_groups_samples <- hierarchical_groups$sample(
-  data = peng_group_list, refresh = 0, parallel_chains = 4)
+hierarchical_groups_samples <- sampling(hierarchical_groups,
+  data = peng_group_list, refresh = 0)
 ```
 
 ```{r}
@@ -407,7 +412,9 @@ hierarchical_groups_samples |>
              x = mass_kg,
              colour = sp_island), 
              inherit.aes = FALSE,
-             alpha = .2, data = penguin_groupid)
+             alpha = .7,
+             data = penguin_groupid,
+             position = position_jitter(width = 0, height = .2))
 ```
 
 
@@ -504,9 +511,26 @@ mite_community_abd |>
 
 ### Write the model in Stan and estimate it
 
+This model will have a structure very similar to previous ones we've seen. 
+The main difference is the use of the `poisson_log` function:
+
 ```{r}
-poisson_regression <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_regression.stan")
+#| class-output: stan
+poisson_regression <- stan_model(
+  file = "topics/03_one_random_effect/poisson_regression.stan",
+  model_name = "poisson_regression")
+
+poisson_regression
 ```
+
+:::{.callout-note}
+### Built in Stan functions
+
+Stan has a lot of built-in functions to facilitate modelling. 
+For example the log link function is so common that there is a specialized likelihood function just for that, `poisson_log`. And there's an even more efficient version called `poisson_log_glm`. I didn't use it here because I wanted to code to closely match the equations. You can read about these functions (and much more!) in the amazing [Stan manual](https://mc-stan.org/docs/functions-reference/unbounded_discrete_distributions.html#poisson)
+:::
+
+Using a now-familiar workflow, we feed the data into the model:
 
 ```{r}
 
@@ -518,7 +542,8 @@ abd_data_list <- list(N = length(mite_community_abd$N),
               Npred = 15,
               water_pred = water_for_pred)
 
-poisson_regression_sample <- poisson_regression$sample(
+poisson_regression_sample <- sampling(
+  poisson_regression,
   data = abd_data_list,
   refresh = 0)
 ```
@@ -537,17 +562,15 @@ poisson_regression_sample |>
              inherit.aes = FALSE) + 
   scale_fill_brewer(palette = "Greens")
 
-fake_obs_S <- poisson_regression_sample$draws(variables = "fake_obs")
-fake_obs_S_matrix <- posterior::as_draws_matrix(fake_obs_S)
+fake_obs_S <- rstan::extract(poisson_regression_sample, pars = "fake_obs")
 
 bayesplot::ppc_dens_overlay(y = mite_community_abd$N,
-                            yrep = head(fake_obs_S_matrix, 50))
+                            yrep = head(fake_obs_S$fake_obs, 50))
 ```
 
 Remember, on the left we are plotting the _*Prediction interval*_ here: it's showing the distribution of probable observations according to the model. Notice that the the model predicts much narrower variation than we really find!   
 
 On the right hand side we have the posterior predictive check, which once again shows that the model is overconfident and predicts a range of observations that are far too narrow.  
-
 
 
 :::{.callout-tip
@@ -583,23 +606,34 @@ $$
 
 #### Stan code 
 
+Write the model
 
 ```{r}
-poisson_regression_overdisp <- cmdstan_model(stan_file = "topics/03_one_random_effect/poisson_regression_overdisp.stan")
+#| class-output: stan
+poisson_regression_overdisp <- stan_model(
+  file = "topics/03_one_random_effect/poisson_regression_overdisp.stan",
+  model_name = "poisson_regression_overdisp")
 
-poisson_regression_overdisp_sample <- poisson_regression_overdisp$sample(
-  data = abd_data_list, refresh = 0)
+poisson_regression_overdisp
+```
+
+Sample it
+
+```{r}
+poisson_regression_overdisp_sample <- sampling(
+  poisson_regression_overdisp, 
+  data = abd_data_list, refresh = 0
+  )
 ```
 
 
 ```{r}
 #| layout-ncol: 2
 #| 
-fake_obs_S <- poisson_regression_overdisp_sample$draws(variables = "fake_obs")
-fake_obs_S_matrix <- posterior::as_draws_matrix(fake_obs_S)
+fake_obs_overdisp_S <- rstan::extract(poisson_regression_overdisp_sample, pars = "fake_obs")
 
 bayesplot::ppc_dens_overlay(y = mite_community_abd$N,
-                            yrep = head(fake_obs_S_matrix, 50))
+                            yrep = head(fake_obs_overdisp_S$fake_obs, 50))
 
 poisson_regression_overdisp_sample |> 
   tidybayes::gather_rvars(line_obs[i]) |> 
@@ -613,8 +647,12 @@ poisson_regression_overdisp_sample |>
 
 :::
 
-
-
 :::{.callout-note}
+## Bonus exercises
+
+Compare the slope estimates between the two poisson models above (possibly in the same figure). What happened here?
+
 Another great way to model overdispersion is via the [Negative Binomial](https://en.wikipedia.org/wiki/Negative_binomial_distribution) distribution. Look at the Stan documentation for [neg_binomial_2_log](https://mc-stan.org/docs/functions-reference/neg-binom-2-log.html) and adapt your model to use it (don't forget to drop the random effect when you do!).
+
+EXPERIMENTAL: replace the normal distribution for the random observation-level effect with the student_t distribution, to help with that one extreme datapoint! how does the slope change?
 :::
