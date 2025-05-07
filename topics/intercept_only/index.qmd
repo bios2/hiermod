@@ -4,17 +4,26 @@ description: |
   Where is the variation
 execute:
   freeze: true
+eval: false
 format:
   html:
     code-tools: true
+editor_options: 
+  chunk_output_type: console
 ---
 
-## Resources
+## Variance partitioning with hierarchical models
 
-* [tidybayes](http://mjskay.github.io/tidybayes/index.html) is an incredible tool, and the vignette is a great read for visualization approaches (even if you aren't using `rvars`)
-* the [posterior package](https://mc-stan.org/posterior/) is the best place to learn about how to manipulate Stan posterior distributions.
+Its very useful to have an idea of where the variation is in a dataset, as a guide to model building and future data collection. Before collecting information on independent variables that you think might explain variation -- first find out how much variation there is! 
 
+Random intercepts give us a very handy way to investigate this: the so-called "intercept only" model. 
+At this point in the course we now have all the tools needed to build it. There are two steps: first we build a model with no predictors at all, only a random intercept for every grouping variable in the data (e.g. species, sites, years, regions). Then we examine the relative magnitudes of the standard deviations to see which is relatively larger or smaller.
 
+## Abundance of mites in different samples
+
+We're going to build this by extending the observation level random effect model from the previous section. Remember that observation-level random effects are mostly useful for Poisson distributions! If you want to extend this model to other kinds of data, remember to remove that part of it.
+
+### Mathematical model
 
 $$
 \begin{align}
@@ -30,14 +39,23 @@ $$
 \end{align}
 $$
 
+### Load packages and prepare data
 
 ```{r}
-library(tidyverse)
-library(cmdstanr)
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+library(tidyr)
+# library(cmdstanr)
+suppressPackageStartupMessages(library(rstan))
+rstan_options("auto_write" = TRUE)
+options(mc.cores = parallel::detectCores())
 library(tidybayes)
 
-data("mite", package = "vegan")
 
+data("mite", package = "vegan")
+```
+
+```{r}
 spp_names <- colnames(mite)
 spp_names <- setNames(1:ncol(mite), colnames(mite))
 
@@ -48,14 +66,17 @@ mite_long <- mite |>
                       names_to = "spp",
                       values_to = "abd") |> 
   dplyr::mutate(spp_id = spp_names[spp])
+
+knitr::kable(head(mite_long))
 ```
 
 ```{r}
 #| class-output: stan
-library(cmdstanr)
 
-spp_site_obs_intercepts <- cmdstan_model("topics/intercept_only/spp_site_obs_intercepts.stan", 
-                                  pedantic = TRUE)
+spp_site_obs_intercepts <- stan_model(
+  file = "topics/intercept_only/spp_site_obs_intercepts.stan",
+  model_name = "spp_site_obs_intercepts")
+
 spp_site_obs_intercepts
 ```
 
@@ -66,8 +87,9 @@ Now we can sample this model.
 I'm sampling only 2 chains below, for illustration purposes only! use more chains in your research.
 :::
 
-```{r eval=FALSE}
-spp_site_obs_intercepts_samp <- spp_site_obs_intercepts$sample(
+```{r eval=TRUE}
+spp_site_obs_intercepts_samp <- sampling(
+  spp_site_obs_intercepts,
   data = list(
     N = nrow(mite_long),
     N_spp = max(mite_long$spp_id),
@@ -75,47 +97,37 @@ spp_site_obs_intercepts_samp <- spp_site_obs_intercepts$sample(
     N_sites = max(mite_long$site_id),
     site_id = mite_long$site_id,
     abd = mite_long$abd
-  ),chains = 2, parallel_chains = 2)
+  ),chains = 2)
 
-spp_site_obs_intercepts_samp$save_object("topics/intercept_only/spp_site_obs_intercepts.rds")
-```
-
-```{r}
-spp_site_obs_intercepts_samp <- read_rds("topics/intercept_only/spp_site_obs_intercepts.rds")
+# spp_site_obs_intercepts_samp$save_object("topics/intercept_only/spp_site_obs_intercepts.rds")
 ```
 
 ## Exploring the model output
 
 ```{r}
-spp_site_obs_intercepts_samp
+rstan::check_divergences(spp_site_obs_intercepts_samp)
 ```
 
 The sampler was just fine! Note that we have just estimated many more parameters than observations.
 
 ## Plot the standard deviations
 
-```{r}
-sigma_post <- spp_site_obs_intercepts_samp$draws(
-  variables = c("sigma_spp", "sigma_sites", "sigma_obs"))
+This just takes one line of bayesplot code.
 
-sigma_post
+```{r}
+bayesplot::mcmc_areas(spp_site_obs_intercepts_samp,
+                      regex_pars ='sigma', 
+                      border_size = 0.5)
 ```
 
-
-The default output is a draws array
-
-```{r}
-sigma_post_df <- spp_site_obs_intercepts_samp$draws(
-  variables = c("sigma_spp", "sigma_sites", "sigma_obs"),
-  format = "data.frame")
-
-sigma_post_df
-```
-
-We can also get a huge data frame. 
-If you are comfortable manipulating data frames, you can use all your regular techniques here. Here I use tidyverse tools to reshape and plot the posterior distribution of the three $\sigma$ variables:
+We can also do this as a data frame:
 
 ```{r}
+sigma_post <- rstan::extract(spp_site_obs_intercepts_samp,
+  pars = c("sigma_spp", "sigma_sites", "sigma_obs"))
+
+sigma_post_df <- posterior::as_draws_df(sigma_post)
+
 sigma_post_df |> 
   pivot_longer(starts_with("sigma"), 
                names_to = "sigma", 
@@ -125,20 +137,15 @@ sigma_post_df |>
   facet_wrap(~sigma)
 ```
 
-:::{.callout-warning}
-## Caution
-Parameters from a posterior are NOT independent. If you want to combine parameters in any way (to calculate an average for example) you have to do it WITHIN each posterior sample. Work on ROWS of the draws data frame above
-:::
 
 ### Calculate the posterior distribution of average abundance for each species
 
 To do this we need to extract the average $mu$ and add it to the species effects, $\beta_{\text{species}}$
 
-```{r}
-spp_avg_effects_df <- spp_site_obs_intercepts_samp$draws(
-  variables = c("mu", "spp_effects"),
-  format = "data.frame")
-
+```{r eval=FALSE, include=FALSE}
+spp_avg_effects_df <- rstan::extract(spp_site_obs_intercepts_samp, 
+  pars = c("mu", "spp_effects")) |> 
+  posterior::as_draws_df()
 
 spp_avg_effects_df |> 
   select(mu, starts_with("spp_effects")) |> 
@@ -151,9 +158,6 @@ spp_avg_effects_df |>
   geom_density()
 ```
 
-## with rvars
-
-We can do the same operation even more quickly by using some of the tools from tidybayes
 
 ```{r}
 spp_mu_rvars <- spp_site_obs_intercepts_samp |> 

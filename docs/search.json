@@ -24,15 +24,15 @@
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model",
     "href": "slides/04_Linear_model/index.html#basic-regression-model",
     "title": "Linear models",
-    "section": "",
-    "text": "Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\n\n. . .\n\nIn its simplest form, a regression model is usually presented as\n\n. . .\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n. . .\n\nIt is known as a simple linear model, where :\n\n. . .\n\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\n. . .\n\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\n. . .\n\n\\(\\beta_0\\) is the model intercept\n\n. . .\n\n\\(\\beta_1\\) is the model slope\n\n. . .\n\n\\(\\varepsilon\\) is the error term"
+    "section": "Basic regression model",
+    "text": "Basic regression model\n\nHierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\n\n\n\nIn its simplest form, a regression model is usually presented as\n\n\n\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n\n\nIt is known as a simple linear model, where :\n\n\n\n\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\n\n\n\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\n\n\n\n\\(\\beta_0\\) is the model intercept\n\n\n\n\n\\(\\beta_1\\) is the model slope\n\n\n\n\n\\(\\varepsilon\\) is the error term"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model-1",
     "href": "slides/04_Linear_model/index.html#basic-regression-model-1",
     "title": "Linear models",
     "section": "Basic regression model",
-    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily.\n. . .\nFor example if we are interested in knowing how a newly discovered plant species (Bidonia exemplaris) reacts to humidity, we can relate the biomass of B. exemplaris sampled at 100 sites with the soil humidity content and readily visual the data and the trend."
+    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily.\n\nFor example if we are interested in knowing how a newly discovered plant species (Bidonia exemplaris) reacts to humidity, we can relate the biomass of B. exemplaris sampled at 100 sites with the soil humidity content and readily visual the data and the trend."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model-2",
@@ -46,35 +46,35 @@
     "href": "slides/04_Linear_model/index.html#regression-parameters",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nGenerally, the slope and the intercept are the regression parameters we focus on when studying the simple linear model, but there is another one that is very important to consider, especially for this course.\n. . .\nAny ideas which one it is ?"
+    "text": "Regression parameters\nGenerally, the slope and the intercept are the regression parameters we focus on when studying the simple linear model, but there is another one that is very important to consider, especially for this course.\n\nAny ideas which one it is ?"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-1",
     "href": "slides/04_Linear_model/index.html#regression-parameters-1",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n. . .\n\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\n. . .\n\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]\n\n\nwhere \\(\\sigma^2\\) is an estimated variance.\n\n. . .\n\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\n\n. . .\n\nFor most of the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\n\n. . .\n\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
+    "text": "Regression parameters\n\nIf we go back to the mathematical description of the model\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n\n\n\nwe can see that in the simple linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\n\n\n\n\\[\\varepsilon \\sim \\mathcal{N}(0, \\sigma^2)\\]\n\n\nwhere \\(\\sigma^2\\) is an estimated variance.\n\n\n\n\nIn words, it means that the error in a simple linear regression follows a Gaussian distribution with a variance that is estimated.\n\n\n\n\nFor most of the course, we will play with the variance parameter \\(\\sigma^2\\) in a bunch of different ways.\n\n\n\n\nBut before we do this, we need to understand a bit more about how this parameter influence the model."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-2",
     "href": "slides/04_Linear_model/index.html#regression-parameters-2",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nA first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as \\[\ny \\sim \\mathcal{N}(\\beta_0 + \\beta_1 x_{i}, \\sigma^2)\n\\]\n. . .\nAs we will see later in this course, this writting style will become particularly useful."
+    "text": "Regression parameters\nA first way to do this is to think about the simple linear regression in a slightly different way. Specifically, based on what we learned in the previous slide the simple linear regression can be rewritten as \\[\ny \\sim \\mathcal{N}(\\beta_0 + \\beta_1 x_{i}, \\sigma^2)\n\\]\n\nAs we will see later in this course, this writting style will become particularly useful."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-3",
     "href": "slides/04_Linear_model/index.html#regression-parameters-3",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\n\n. . .\n\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)\n\n. . ."
+    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\n\nIn essence, \\(\\sigma^2\\) tells us about what the model could not account for.\n\n\n\nFor example, let’s compare the biomass of Bidonia exemplaris with that of Ilovea chicktighii, another species (a carnivorous plant)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-4",
     "href": "slides/04_Linear_model/index.html#regression-parameters-4",
     "title": "Linear models",
     "section": "Regression parameters",
-    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n. . .\n\n# Regression model\nregBexemplaris &lt;- lm(b.exemplaris ~ humidity)\nregIchicktighii &lt;- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris &lt;- summary(regBexemplaris)\nsummaryRegIchicktighii &lt;- summary(regIchicktighii)"
+    "text": "Regression parameters\nVariance of the model (\\(\\sigma^2\\))\nBy regressing humidity on the biomass of both plants, we can obtain the estimated parameters for each regression (which are all available using summary.lm)\n\n\n# Regression model\nregBexemplaris &lt;- lm(b.exemplaris ~ humidity)\nregIchicktighii &lt;- lm(i.chicktighii ~ humidity)\n\n# Summary\nsummaryRegBexemplaris &lt;- summary(regBexemplaris)\nsummaryRegIchicktighii &lt;- summary(regIchicktighii)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#regression-parameters-5",
@@ -88,14 +88,14 @@
     "href": "slides/04_Linear_model/index.html#limits-of-the-simple-linear-regression",
     "title": "Linear models",
     "section": "Limits of the simple linear regression",
-    "text": "Limits of the simple linear regression\nThere are two major pitfalls of the simple linear model for problems in the life sciences\n. . .\n\nOne explanatory is almost never enough to approach biological questions nowadays.\n\n. . .\n\nThe simple linear model assumes that the error follows a Gaussian distribution."
+    "text": "Limits of the simple linear regression\nThere are two major pitfalls of the simple linear model for problems in the life sciences\n\n\nOne explanatory is almost never enough to approach biological questions nowadays.\n\n\n\n\nThe simple linear model assumes that the error follows a Gaussian distribution."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#multiple-linear-regression",
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\n\n. . .\n\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n. . .\n\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, technically, matrix algebra is quite practical to use in this context and especially for this course.\n\n. . .\n\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
+    "text": "Multiple linear regression\n\nSimple linear regression can be extended to account for multiple explanatory variables to study more complexe problems. This type of regression model is known as a multiple linear regression.\n\n\n\nMathematically, a multiple linear regression can be defined as\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n\n\n\nTheoretically, estimating the parameters of a multiple regression model is done the same ways as for simple linear regression. However, technically, matrix algebra is quite practical to use in this context and especially for this course.\n\n\n\n\nIn this respect, let’s take a bit of time to get acquinted with different basic (and maybe not so basic!) knowledge of matrix algebra."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#a-general-way-to-write-matrices",
@@ -144,7 +144,7 @@
     "href": "slides/04_Linear_model/index.html#identity-matrix",
     "title": "Linear models",
     "section": "Identity matrix",
-    "text": "Identity matrix\nThe identity matrix is a square matrix where all values of its diagonal are 0 except the diagonal values which are all 1s.\n\n\\[\n\\mathbf{I}=\\begin{bmatrix}\n                1 & 0 & 0\\\\\n                0 & 1 & 0\\\\\n                0 & 0 & 1\\\\\n        \\end{bmatrix}\n\\]\n\n. . .\n\nThe identity matrix is important because\n\\[\\mathbf{A} \\cdot \\mathbf{I}_n = \\mathbf{A}\\] or\n\\[\\mathbf{I}_m \\cdot \\mathbf{A} = \\mathbf{A}\\]"
+    "text": "Identity matrix\nThe identity matrix is a square matrix where all values of its diagonal are 0 except the diagonal values which are all 1s.\n\n\\[\n\\mathbf{I}=\\begin{bmatrix}\n                1 & 0 & 0\\\\\n                0 & 1 & 0\\\\\n                0 & 0 & 1\\\\\n        \\end{bmatrix}\n\\]\n\n\n\nThe identity matrix is important because\n\\[\\mathbf{A} \\cdot \\mathbf{I}_n = \\mathbf{A}\\] or\n\\[\\mathbf{I}_m \\cdot \\mathbf{A} = \\mathbf{A}\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#diagonal-matrix",
@@ -158,42 +158,42 @@
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression-1",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\n. . .\nIn this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the \\(\\beta\\)s) can depend on other other data and parameters.\n. . .\nAs we saw earlier, a classic way to write multiple linear regression is\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n. . .\nHowever, we can rewrite this using matrix notation has\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]"
+    "text": "Multiple linear regression\n\nIn this course, we will rely heavily on multiple linear regression and expand on it by studying how some of the parameters (the \\(\\beta\\)s) can depend on other other data and parameters.\n\n\nAs we saw earlier, a classic way to write multiple linear regression is\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip} + \\varepsilon\n\\]\n\n\nHowever, we can rewrite this using matrix notation has\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#multiple-linear-regression-2",
     "href": "slides/04_Linear_model/index.html#multiple-linear-regression-2",
     "title": "Linear models",
     "section": "Multiple linear regression",
-    "text": "Multiple linear regression\nMatrix notation\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]\nUsing the matrix notation, we assume that\n. . .\n\n\n\\(\\mathbf{y}\\) is a vector of length \\(n\\) (samples)\n\n\n. . .\n\n\n\\(\\mathbf{X}\\) is a matrix with \\(n\\) samples (rows) and representing \\(p\\) explanatory variables (columns)\n\n\n. . .\n\n\n\\(\\boldsymbol{\\beta}\\) is a vector of \\(p\\) regression coefficients\n\n\n. . .\n\n\n\\(\\boldsymbol{\\varepsilon}\\) is a vector of residuals of length \\(n\\)"
+    "text": "Multiple linear regression\nMatrix notation\n\\[\n\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\n\\]\nUsing the matrix notation, we assume that\n\n\n\n\\(\\mathbf{y}\\) is a vector of length \\(n\\) (samples)\n\n\n\n\n\n\n\\(\\mathbf{X}\\) is a matrix with \\(n\\) samples (rows) and representing \\(p\\) explanatory variables (columns)\n\n\n\n\n\n\n\\(\\boldsymbol{\\beta}\\) is a vector of \\(p\\) regression coefficients\n\n\n\n\n\n\n\\(\\boldsymbol{\\varepsilon}\\) is a vector of residuals of length \\(n\\)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#error-in-linear-models",
     "href": "slides/04_Linear_model/index.html#error-in-linear-models",
     "title": "Linear models",
     "section": "Error in linear models",
-    "text": "Error in linear models\nAs previously mentioned, in (simple and multiple!) linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\boldsymbol{\\varepsilon} \\sim \\mathcal{MVN}(0, \\sigma^2\\mathbf{I})\\] where \\(\\sigma^2\\) is an estimated variance\n. . .\nwhich means that the error in a linear regression follows a Gaussian distribution with an estimated variance.\n. . .\nNote The model can be written using matrix notation as\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{X}\\boldsymbol{\\beta}, \\sigma^2\\mathbf{I})\\] where \\(\\sigma^2\\)"
+    "text": "Error in linear models\nAs previously mentioned, in (simple and multiple!) linear regression the error term (\\(\\varepsilon\\)) has actually a very precise definition:\n\\[\\boldsymbol{\\varepsilon} \\sim \\mathcal{MVN}(0, \\sigma^2\\mathbf{I})\\] where \\(\\sigma^2\\) is an estimated variance\n\nwhich means that the error in a linear regression follows a Gaussian distribution with an estimated variance.\n\n\nNote The model can be written using matrix notation as\n\\[\\mathbf{y} \\sim \\mathcal{MVN}(\\mathbf{X}\\boldsymbol{\\beta}, \\sigma^2\\mathbf{I})\\] where \\(\\sigma^2\\)"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\n. . .\nIf for some reason we do not want our model to have a Gaussian error, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\n. . .\nMathematically, the generic way to write generalized linear model is\n\\[\n\\widehat{y}_i = g^{-1}(\\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip})\n\\]\n. . .\nor in matrix notation\n\\[\n\\widehat{\\mathbf{y}} = g^{-1}(\\mathbf{X}\\boldsymbol{\\beta})\n\\]\nwhere \\(g\\) is the link function and \\(g^{-1}\\) the inverse link function."
+    "text": "Generalized linear models\n\nIf for some reason we do not want our model to have a Gaussian error, generalized linear models (GLMs) have been proposed. In essence, GLMs use link functions to adapt models for them to be used on non-Gaussian data.\n\n\nMathematically, the generic way to write generalized linear model is\n\\[\n\\widehat{y}_i = g^{-1}(\\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} + \\dots + \\beta_p x_{ip})\n\\]\n\n\nor in matrix notation\n\\[\n\\widehat{\\mathbf{y}} = g^{-1}(\\mathbf{X}\\boldsymbol{\\beta})\n\\]\nwhere \\(g\\) is the link function and \\(g^{-1}\\) the inverse link function."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models-1",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models-1",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\nLink functions\n\nThere are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.\n\n. . .\n\nArguably the most common link function in ecology is\n\n. . .\nlogit link function\n\nIt is commonly used for modelling binary (0-1) data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\frac{\\widehat{\\mathbf{y}}}{1 - \\widehat{\\mathbf{y}}}\\right)\n\\]\n\n. . .\n\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\frac{\\exp(\\mathbf{X}\\boldsymbol{\\beta})}{1 + \\exp(\\mathbf{X}\\boldsymbol{\\beta})} = \\frac{1}{1 + \\exp(-\\mathbf{X}\\boldsymbol{\\beta})}\n\\]"
+    "text": "Generalized linear models\nLink functions\n\nThere are many types of link functions and they are usually directly associated to the underlying data the analysis is carried out on.\n\n\n\nArguably the most common link function in ecology is\n\n\n\nlogit link function\n\nIt is commonly used for modelling binary (0-1) data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\frac{\\widehat{\\mathbf{y}}}{1 - \\widehat{\\mathbf{y}}}\\right)\n\\]\n\n\n\n\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\frac{\\exp(\\mathbf{X}\\boldsymbol{\\beta})}{1 + \\exp(\\mathbf{X}\\boldsymbol{\\beta})} = \\frac{1}{1 + \\exp(-\\mathbf{X}\\boldsymbol{\\beta})}\n\\]"
   },
   {
     "objectID": "slides/04_Linear_model/index.html#generalized-linear-models-2",
     "href": "slides/04_Linear_model/index.html#generalized-linear-models-2",
     "title": "Linear models",
     "section": "Generalized linear models",
-    "text": "Generalized linear models\nLink functions\nAnother commonly used link function is\n. . .\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\]\n. . .\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
+    "text": "Generalized linear models\nLink functions\nAnother commonly used link function is\n\nlog link function\nIt is commonly used for modelling count data.\n\\[\n\\mathbf{X}\\boldsymbol{\\beta} = \\ln\\left(\\widehat{\\mathbf{y}}\\right)\n\\]\n\n\nThe inverse logit link function is\n\\[\n\\widehat{\\mathbf{y}} = \\exp(\\mathbf{X}\\boldsymbol{\\beta})\n\\]"
   },
   {
     "objectID": "slides/template/index.html#un-beau-titre",
@@ -917,6 +917,13 @@
     "text": "Bayesian workflow\n\n\n\n\nVisualize your data\nDecide on your model structure\nSimulate from the model to understand it\nFit the model to the data\nPlot model predictions to evaluate the fit / draw conclusions\nToday’s goal is to look at a couple of different model structures that we saw yesterday."
   },
   {
+    "objectID": "topics/03_one_random_effect/index.html#load-packages-and-data",
+    "href": "topics/03_one_random_effect/index.html#load-packages-and-data",
+    "title": "Models with one level of hierarchy",
+    "section": "Load packages and data",
+    "text": "Load packages and data\n\nlibrary(palmerpenguins)\nsuppressPackageStartupMessages(library(dplyr))\nlibrary(ggplot2)\nlibrary(tidyr)\n# library(cmdstanr)\nsuppressPackageStartupMessages(library(rstan))\nrstan_options(\"auto_write\" = TRUE)\noptions(mc.cores = parallel::detectCores())\nlibrary(tidybayes)"
+  },
+  {
     "objectID": "topics/03_one_random_effect/index.html#gaussian-random-intercepts-penguin-body-mass",
     "href": "topics/03_one_random_effect/index.html#gaussian-random-intercepts-penguin-body-mass",
     "title": "Models with one level of hierarchy",
@@ -929,6 +936,13 @@
     "title": "Models with one level of hierarchy",
     "section": "Observation-level random effects: Mite abundance",
     "text": "Observation-level random effects: Mite abundance\n\nWhat is the question?\nLet’s write a model to answer the question:\nHow does the total abundance of the mite community change as water content increases?\n\n\nExpress this in Math\nHere’s a partially complete model for species richness over time\n\\[\n\\begin{align}\n\\text{S}_i &\\sim \\text{Poisson}(e^a) \\\\\na &= \\bar\\beta + \\beta_{\\text{water}} \\cdot \\text{water}_i \\\\\n\\bar\\beta &\\sim \\text{Normal}(?, ?) \\\\\n\\beta_{\\text{water}} &\\sim \\text{Normal}(?, ?) \\\\\n\\end{align}\n\\]\n\n\n\n\n\n\nEXERCISE\n\n\n\nSimulate from this model, and look at your simulations to decide on a reasonable prior for the data.\n\n\n\n\n\n\n\n\nSOLUTION\n\n\n\n\n\n\nn &lt;- 30\nwater &lt;- seq(from = -5, to = 5, length.out = n)\n\nb0 &lt;- rnorm(1, mean = log(17), sd = .3)\nb1 &lt;- rnorm(1, mean = 0, sd = .2)\n\nS &lt;- rpois(n, lambda = exp(b0 + b1*water))\nplot(water, S)\n\n\n\n\n\n\n\n\n\n\n\n\n\nData preparation & visualization\nFirst we need to load and prepare the data:\n\ndata(mite, package = \"vegan\")\ndata(\"mite.env\", package = \"vegan\")\n\n# combine data and environment\n\nmite_data_long &lt;- mite |&gt; \n  tibble::rownames_to_column(var = \"site_id\") |&gt; \n  bind_cols(mite.env) |&gt; \n  pivot_longer(Brachy:Trimalc2,\n               names_to = \"spp\", values_to = \"abd\")\n\nFirst let’s transform the mite dataset into a dataframe of total community abundance (N) per site. We’ll also standardize the water content while we’re at it:\n\nmite_community_abd &lt;- mite_data_long |&gt; \n  group_by(site_id, WatrCont) |&gt; \n  summarize(N = sum(abd)) |&gt;\n  ungroup() |&gt; \n  mutate(water_c = (WatrCont - mean(WatrCont))/100)\n\n`summarise()` has grouped output by 'site_id'. You can override using the\n`.groups` argument.\n\nknitr::kable(head(mite_community_abd))\n\n\n\n\nsite_id\nWatrCont\nN\nwater_c\n\n\n\n\n1\n350.15\n140\n-0.6048571\n\n\n10\n220.73\n166\n-1.8990571\n\n\n11\n134.13\n216\n-2.7650571\n\n\n12\n405.91\n213\n-0.0472571\n\n\n13\n243.70\n177\n-1.6693571\n\n\n14\n239.51\n269\n-1.7112571\n\n\n\n\n\nWe get a nice histogram of community abundance, and a clear negative relationship with water volume:\nmite_community_abd |&gt; \n  ggplot(aes(x = N)) + \n  geom_histogram()\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\nmite_community_abd |&gt; \n  ggplot(aes(x = water_c, y = N)) + \n  geom_point()\n\n\n\n\n\n\n\n\n\n\n\n\nWrite the model in Stan and estimate it\nThis model will have a structure very similar to previous ones we’ve seen. The main difference is the use of the poisson_log function:\n\npoisson_regression &lt;- stan_model(\n  file = \"topics/03_one_random_effect/poisson_regression.stan\",\n  model_name = \"poisson_regression\")\n\nrecompiling to avoid crashing R session\n\npoisson_regression\n\nS4 class stanmodel 'poisson_regression' coded as follows:\ndata {\n  int&lt;lower=0&gt; N;\n  vector[N] water;\n  array[N] int y;\n  // for prediction\n  int&lt;lower=0&gt; Npred;\n  vector[Npred] water_pred;\n}\nparameters {\n  real b_avg;\n  real b_water;\n}\nmodel {\n  y ~ poisson_log(b_avg + b_water * water);\n  b_water ~ normal(0, .2);\n  b_avg ~ normal(0, .3);\n}\ngenerated quantities {\n  array[N] int fake_obs;\n  for (i in 1:N){\n    fake_obs[i] = poisson_log_rng(b_avg + b_water * water[i]);\n  }\n\n  // confidence interval for the line\n  vector[Npred] line_avg;\n  line_avg = exp(b_avg + b_water * water_pred);\n\n  // prediction interval for the line\n  array[Npred] int line_obs;\n  for (j in 1:Npred){\n    line_obs[j] = poisson_rng(line_avg[j]);\n  }\n} \n\n\n\n\n\n\n\n\nBuilt in Stan functions\n\n\n\nStan has a lot of built-in functions to facilitate modelling. For example the log link function is so common that there is a specialized likelihood function just for that, poisson_log. And there’s an even more efficient version called poisson_log_glm. I didn’t use it here because I wanted to code to closely match the equations. You can read about these functions (and much more!) in the amazing Stan manual\n\n\nUsing a now-familiar workflow, we feed the data into the model:\n\nwater_for_pred &lt;- seq(from = -3, to = 4.5, length.out = 15)\n\nabd_data_list &lt;- list(N = length(mite_community_abd$N),\n              water = mite_community_abd$water_c,\n              y = mite_community_abd$N,\n              Npred = 15,\n              water_pred = water_for_pred)\n\npoisson_regression_sample &lt;- sampling(\n  poisson_regression,\n  data = abd_data_list,\n  refresh = 0)\n\n\n\nPlot the model to see if it fits well\npoisson_regression_sample |&gt; \n  tidybayes::gather_rvars(line_obs[i]) |&gt; \n  mutate(water = water_for_pred) |&gt; \n  ggplot(aes(x = water, dist = .value)) + \n  stat_lineribbon() + \n  geom_point(aes(x = water_c, y = N), \n             data = mite_community_abd, \n             inherit.aes = FALSE) + \n  scale_fill_brewer(palette = \"Greens\")\nfake_obs_S &lt;- rstan::extract(poisson_regression_sample, pars = \"fake_obs\")\n\nbayesplot::ppc_dens_overlay(y = mite_community_abd$N,\n                            yrep = head(fake_obs_S$fake_obs, 50))\n\n\n\n\n\n\n\n\n\n\nRemember, on the left we are plotting the Prediction interval here: it’s showing the distribution of probable observations according to the model. Notice that the the model predicts much narrower variation than we really find!\nOn the right hand side we have the posterior predictive check, which once again shows that the model is overconfident and predicts a range of observations that are far too narrow.\n\n\nEXERCISE\n\nDiscuss with your neighbours: would you trust this model? Would you publish it? The technical name for this phenomenon is “overdisperson”. Have you checked for this in previous count models you’ve done?\nAdd a random effect for every individual observation in the model. Begin by writing the mathematical notation for this new model!\nfit the model and re-create the two figures above. What do you notice?\n\n\nWhich model is more trustworthy?\nlook at the slope in the new model. Is it different?\n\n\n\n\n\n\n\n\nSOLUTION\n\n\n\n\n\n\nMathematical notation\n\\[\n\\begin{align}\n\\text{S}_i &\\sim \\text{Poisson}(e^a) \\\\\na &= \\bar\\beta + \\beta_{\\text{water}} \\cdot \\text{water}_i + \\text{site}_i\\\\\n\\bar\\beta &\\sim \\text{Normal}(?, ?) \\\\\n\\beta_{\\text{water}} &\\sim \\text{Normal}(?, ?) \\\\\n\\text{site} &\\sim \\text{Normal}(?, \\sigma) \\\\\n\\sigma &\\sim \\text{Exponential}(?)\n\\end{align}\n\\]\n\n\nStan code\nWrite the model\n\npoisson_regression_overdisp &lt;- stan_model(\n  file = \"topics/03_one_random_effect/poisson_regression_overdisp.stan\",\n  model_name = \"poisson_regression_overdisp\")\n\nrecompiling to avoid crashing R session\n\npoisson_regression_overdisp\n\nS4 class stanmodel 'poisson_regression_overdisp' coded as follows:\ndata {\n  int&lt;lower=0&gt; N;\n  vector[N] water;\n  array[N] int y;\n  // for prediction\n  int&lt;lower=0&gt; Npred;\n  vector[Npred] water_pred;\n}\nparameters {\n  real b_avg;\n  real b_water;\n  real&lt;lower=0&gt; sigma_site;\n  vector[N] site_intercepts;\n}\nmodel {\n  b_avg ~ normal(0, .3);\n  b_water ~ normal(0, .2);\n  site_intercepts ~ normal(0, sigma_site);\n  sigma_site ~ exponential(.5);\n  y ~ poisson_log(b_avg + b_water * water + site_intercepts);\n}\ngenerated quantities {\n  array[N] int fake_obs;\n  for (i in 1:N){\n    fake_obs[i] = poisson_log_rng(b_avg + b_water * water[i] + site_intercepts[i]);\n  }\n\n  // confidence interval for the line\n\n  // prediction interval for the line\n  vector[Npred] new_site_intercepts;\n  array[Npred] int line_obs;\n  for (j in 1:Npred){\n    new_site_intercepts[j] = normal_rng(0, sigma_site);\n  }\n\n  vector[Npred] line_avg;\n  line_avg = exp(b_avg + b_water * water_pred + new_site_intercepts);\n\n  for(k in 1:Npred){\n    line_obs[k] = poisson_rng(line_avg[k]);\n  }\n} \n\n\nSample it\n\npoisson_regression_overdisp_sample &lt;- sampling(\n  poisson_regression_overdisp, \n  data = abd_data_list, refresh = 0\n  )\n\nWarning: The largest R-hat is 1.08, indicating chains have not mixed.\nRunning the chains for more iterations may help. See\nhttps://mc-stan.org/misc/warnings.html#r-hat\n\n\nWarning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.\nRunning the chains for more iterations may help. See\nhttps://mc-stan.org/misc/warnings.html#bulk-ess\n\n\nWarning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.\nRunning the chains for more iterations may help. See\nhttps://mc-stan.org/misc/warnings.html#tail-ess\n\n\nfake_obs_overdisp_S &lt;- rstan::extract(poisson_regression_overdisp_sample, pars = \"fake_obs\")\n\nbayesplot::ppc_dens_overlay(y = mite_community_abd$N,\n                            yrep = head(fake_obs_overdisp_S$fake_obs, 50))\npoisson_regression_overdisp_sample |&gt; \n  tidybayes::gather_rvars(line_obs[i]) |&gt; \n  mutate(water = water_for_pred) |&gt; \n  ggplot(aes(x = water, dist = .value)) + \n  stat_lineribbon() + \n  geom_point(aes(x = water_c, y = N), \n             data = mite_community_abd, \n             inherit.aes = FALSE)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBonus exercises\n\n\n\nCompare the slope estimates between the two poisson models above (possibly in the same figure). What happened here?\nAnother great way to model overdispersion is via the Negative Binomial distribution. Look at the Stan documentation for neg_binomial_2_log and adapt your model to use it (don’t forget to drop the random effect when you do!).\nEXPERIMENTAL: replace the normal distribution for the random observation-level effect with the student_t distribution, to help with that one extreme datapoint! how does the slope change?"
+  },
+  {
+    "objectID": "topics/03_one_random_effect/index.html#footnotes",
+    "href": "topics/03_one_random_effect/index.html#footnotes",
+    "title": "Models with one level of hierarchy",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\ndropping NA values is not always the best idea! I’m doing it here to create a focused example. Bayes gives us other options for working with missing values, including modelling them directly.↩︎\nagain, this is slightly contrived for the sake of making a clean example! normally you’d most likely treat these two variables separately.↩︎"
   },
   {
     "objectID": "topics/99_extra_content/index.html",
@@ -2124,8 +2138,8 @@
     "objectID": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far",
     "href": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far",
     "title": "Gaussian process",
-    "section": "",
-    "text": ". . .\nAn already (very !) general formulation\n\nSo far, we have built hierarchical models that can be integrated into the following framework.\n\n. . .\n\n\\[(\\mathbf{y}|\\mathbf{X},\\mathbf{Z}, \\boldsymbol{\\beta}, \\mathbf{b}, \\sigma_\\mathbf{y}^2)\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma_\\mathbf{y}^2\\mathbf{I})\\]\n\n. . .\n\nwhere\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\]\n\n. . .\n\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma_\\mathbf{y}^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is designed matrix of “explanatory” variables with \\(n\\) rows (samples) and \\(q\\) columns\n\\(\\mu\\) is a vector defining the average importance of hierarchical parameters\n\\(\\mathbf{\\Sigma}\\) is a matrix defining the covariance structure of hierarchical parameters"
+    "section": "Hierarchical models so far",
+    "text": "Hierarchical models so far\n\nAn already (very !) general formulation\n\nSo far, we have built hierarchical models that can be integrated into the following framework.\n\n\n\n\n\\[(\\mathbf{y}|\\mathbf{X},\\mathbf{Z}, \\boldsymbol{\\beta}, \\mathbf{b}, \\sigma_\\mathbf{y}^2)\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma_\\mathbf{y}^2\\mathbf{I})\\]\n\n\n\n\nwhere\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\]\n\n\n\n\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma_\\mathbf{y}^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is designed matrix of “explanatory” variables with \\(n\\) rows (samples) and \\(q\\) columns\n\\(\\mu\\) is a vector defining the average importance of hierarchical parameters\n\\(\\mathbf{\\Sigma}\\) is a matrix defining the covariance structure of hierarchical parameters"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#hierarchical-models-so-far-1",
@@ -2139,28 +2153,28 @@
     "href": "slides/09_Gaussian_process/index.html#an-even-more-complex-hierarchical-models",
     "title": "Gaussian process",
     "section": "An even more complex hierarchical models!",
-    "text": "An even more complex hierarchical models!\nSo far we have seen many (!) types of hierarchical models, which got increasingly more complex in their structure.\n. . .\nLet’s continue on that slippery slope…\n. . .\nWould you know how to constraint (spatially, temporally, phylogenetically, etc.) such a model ?"
+    "text": "An even more complex hierarchical models!\nSo far we have seen many (!) types of hierarchical models, which got increasingly more complex in their structure.\n\nLet’s continue on that slippery slope…\n\n\nWould you know how to constraint (spatially, temporally, phylogenetically, etc.) such a model ?"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#an-even-more-complex-hierarchical-models-1",
     "href": "slides/09_Gaussian_process/index.html#an-even-more-complex-hierarchical-models-1",
     "title": "Gaussian process",
     "section": "An even more complex hierarchical models!",
-    "text": "An even more complex hierarchical models!\nIf we get back to a model that has a single hierarchy on the intercept such that \\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{b},\\sigma^2)\\]\n. . .\nwhere \\[\\mathbf{b} \\sim \\mathcal{N}(\\mu, \\sigma^2).\\]\n. . .\nIf we want to account for a constraint on the previously presented model, we can rewrite the equation fo \\(\\mathbf{b}\\) as \\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n. . .\nwhere\n\\(f(d)\\) is a function of a (spatial, temporal, phylogenetic, …) distance matrix"
+    "text": "An even more complex hierarchical models!\nIf we get back to a model that has a single hierarchy on the intercept such that \\[\\mathbf{y} \\sim \\mathcal{N}(\\mathbf{b},\\sigma^2)\\]\n\nwhere \\[\\mathbf{b} \\sim \\mathcal{N}(\\mu, \\sigma^2).\\]\n\n\nIf we want to account for a constraint on the previously presented model, we can rewrite the equation fo \\(\\mathbf{b}\\) as \\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n\n\nwhere\n\\(f(d)\\) is a function of a (spatial, temporal, phylogenetic, …) distance matrix"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#an-even-more-complex-hierarchical-models-2",
     "href": "slides/09_Gaussian_process/index.html#an-even-more-complex-hierarchical-models-2",
     "title": "Gaussian process",
     "section": "An even more complex hierarchical models!",
-    "text": "An even more complex hierarchical models!\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n. . .\nWhat this equation means conceptually is that the variance associated to \\(\\mathbf{b}\\) is not a constant, it changes based on distance (across space, time, phylogeny, etc.). This is known as a Gaussian process."
+    "text": "An even more complex hierarchical models!\n\\[\\mathbf{b} \\sim \\mathcal{N}\\left(\\mu, f(d)\\right)\\]\n\nWhat this equation means conceptually is that the variance associated to \\(\\mathbf{b}\\) is not a constant, it changes based on distance (across space, time, phylogeny, etc.). This is known as a Gaussian process."
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-bit-of-history",
     "href": "slides/09_Gaussian_process/index.html#a-bit-of-history",
     "title": "Gaussian process",
     "section": "A bit of history",
-    "text": "A bit of history\n. . .\nIn statistics, Gaussian processes have a unique history. The development of this type of model is closely linked to the estimation of mineral deposits.\n. . .\nSpatial Gaussian processes are also called geostatistical models, where the prefix geo refers to geology, not geography, as one may be led to believe.\n. . .\nAs mining engineers are at the root of the development of Gaussian processes, the language associated with this type of model is influenced by this field."
+    "text": "A bit of history\n\nIn statistics, Gaussian processes have a unique history. The development of this type of model is closely linked to the estimation of mineral deposits.\n\n\nSpatial Gaussian processes are also called geostatistical models, where the prefix geo refers to geology, not geography, as one may be led to believe.\n\n\nAs mining engineers are at the root of the development of Gaussian processes, the language associated with this type of model is influenced by this field."
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-bit-of-history-1",
@@ -2174,21 +2188,21 @@
     "href": "slides/09_Gaussian_process/index.html#assumption-with-gaussian-processes",
     "title": "Gaussian process",
     "section": "Assumption with Gaussian processes",
-    "text": "Assumption with Gaussian processes\n. . .\nIn general, when defining a Gaussian process, we make the following assumptions:\n. . .\n\nThe closer two samples are, the more similar they are.\n\n. . .\n\nAfter a certain distance, it is no longer necessary to consider that a sample influences another.\n\n. . .\nNote The distance of influence of a sample on another can be different depending on what is being studied, where it is being studied and when it is being studied"
+    "text": "Assumption with Gaussian processes\n\nIn general, when defining a Gaussian process, we make the following assumptions:\n\n\n\nThe closer two samples are, the more similar they are.\n\n\n\n\nAfter a certain distance, it is no longer necessary to consider that a sample influences another.\n\n\n\nNote The distance of influence of a sample on another can be different depending on what is being studied, where it is being studied and when it is being studied"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd",
     "href": "slides/09_Gaussian_process/index.html#fd",
     "title": "Gaussian process",
     "section": "\\(f(d)\\)",
-    "text": "\\(f(d)\\)\n. . .\nSo, what does \\(f(d)\\) looks like exactly ?\n. . .\nIn theory, \\(f(d)\\) can be anything…\n. . .\nHowever, in practice, there are particularities of the functions that are defined by the assumptions we impose on our model.\n. . .\nHere is a classic structure these variance function take"
+    "text": "\\(f(d)\\)\n\nSo, what does \\(f(d)\\) looks like exactly ?\n\n\nIn theory, \\(f(d)\\) can be anything…\n\n\nHowever, in practice, there are particularities of the functions that are defined by the assumptions we impose on our model.\n\n\nHere is a classic structure these variance function take"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary",
     "href": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - A bit of vocabulary",
-    "text": "\\(f(d)\\) - A bit of vocabulary\n. . .\nNugget effect"
+    "text": "\\(f(d)\\) - A bit of vocabulary\n\nNugget effect"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fd---a-bit-of-vocabulary-1",
@@ -2209,7 +2223,7 @@
     "href": "slides/09_Gaussian_process/index.html#fd---types-of-functions",
     "title": "Gaussian process",
     "section": "\\(f(d)\\) - types of functions",
-    "text": "\\(f(d)\\) - types of functions\n. . .\nMany functions that have been proposed have this general shape\n. . .\nLet’s first study the exponential function\n\\[C_0 + C_1 \\left(1-e^{-d/a}\\right)\\]\n. . .\nwhere\n\n\\(C_0\\) is the nugget effect\n\n. . .\n\n\\(C_1\\) is the sill\n\n. . .\n\n\\(d\\) is the distance\n\n. . .\n\n\\(a\\) is the range"
+    "text": "\\(f(d)\\) - types of functions\n\nMany functions that have been proposed have this general shape\n\n\nLet’s first study the exponential function\n\\[C_0 + C_1 \\left(1-e^{-d/a}\\right)\\]\n\n\nwhere\n\n\\(C_0\\) is the nugget effect\n\n\n\n\n\\(C_1\\) is the sill\n\n\n\n\n\\(d\\) is the distance\n\n\n\n\n\\(a\\) is the range"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#exponential-function",
@@ -2219,11 +2233,32 @@
     "text": "Exponential function\nNugget : 2 – Sill : 5 – Range : 10"
   },
   {
+    "objectID": "slides/09_Gaussian_process/index.html#matérn-function",
+    "href": "slides/09_Gaussian_process/index.html#matérn-function",
+    "title": "Gaussian process",
+    "section": "Matérn function",
+    "text": "Matérn function\n\n\\[b \\sim{\\cal N}\\left(0,C_1\\frac{2^{1-\\nu}}{\\Gamma(\\nu)}\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)^\\nu K_\\nu\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)\\right)\\]\n\n\n\nwhere\n\n\\(\\Gamma(\\nu) = (\\nu - 1)!\\)\n\\(K_\\nu\\) is a modified Bessel function\n\\(d\\) is the distance\n\\(a\\) is the range\n\\(\\nu\\) is a strictly positive parameter giving flexibility to the left tail of the function\n\nif \\(\\nu = 0.5\\) the function converges to an exponential function \\(\\left(C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\)\nif \\(\\nu \\rightarrow \\infty\\) the function converges to an Gaussian function (also known as the exponentiated quadratic function) \\(\\left(C_1\\left(1 - e^{\\frac{-d^2}{2a^2}}\\right)\\right)\\)"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#matérn-function-1",
+    "href": "slides/09_Gaussian_process/index.html#matérn-function-1",
+    "title": "Gaussian process",
+    "section": "Matérn function",
+    "text": "Matérn function\nSill : 5 – Range : 10 – \\(\\nu\\) : 0.5"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#matérn-function-2",
+    "href": "slides/09_Gaussian_process/index.html#matérn-function-2",
+    "title": "Gaussian process",
+    "section": "Matérn function",
+    "text": "Matérn function\nSill : 5 – Range : 10 – \\(\\nu\\) : 5"
+  },
+  {
     "objectID": "slides/09_Gaussian_process/index.html#an-illustrative-example",
     "href": "slides/09_Gaussian_process/index.html#an-illustrative-example",
     "title": "Gaussian process",
     "section": "An illustrative example",
-    "text": "An illustrative example\n. . .\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n. . .\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n. . .\n\nThey move well in an urban setting and are not affected by the level of urbanisation\n\n. . .\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox."
+    "text": "An illustrative example\n\nTo present how Gaussian processes can be used, let’s study the distribution of Sylvilagus oviparus in Montréal.\n\n\nA few characteristics of Sylvilagus oviparus\n\nThey are found mainly in urban parks of Montréal and are very efficient at hiding in hollow trees and burrows.\n\n\n\n\nThey move well in an urban setting and are not affected by the level of urbanisation\n\n\n\n\nThey lay their eggs (often pastel-coloured) on the Sunday following the first full moon after the spring equinox."
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#a-typical-member-of-the-species",
@@ -2237,35 +2272,21 @@
     "href": "slides/09_Gaussian_process/index.html#distribution-of-s.-oviparus-in-montréal",
     "title": "Gaussian process",
     "section": "Distribution of S. oviparus in Montréal",
-    "text": "Distribution of S. oviparus in Montréal\n. . .\nIn 2015, a survey was carried out to find Sylvilagus oviparus in Montréal’s park. Here are the data . . .\n\n\n\n\n\n\n\n\n\n\nWithin the censused park\n\nBlue parks : observed\nPink parks : not observed"
+    "text": "Distribution of S. oviparus in Montréal\n\nIn 2015, a survey was carried out to find Sylvilagus oviparus in Montréal’s park. Here are the data . . .\n\n\n\n\n\n\n\n\n\n\nWithin the censused park\n\nBlue parks : observed\nPink parks : not observed"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#model",
     "href": "slides/09_Gaussian_process/index.html#model",
     "title": "Gaussian process",
     "section": "Model",
-    "text": "Model\n. . .\nSince we have presence-absence data\n\\[P(y = 1) = \\frac{\\exp(b)}{1 - \\exp(b)}\\]\n. . .\nwhere \\[b \\sim{\\cal N}\\left(0, C_0 +C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\]"
+    "text": "Model\n\nSince we have presence-absence data\n\\[P(y = 1) = \\frac{\\exp(b)}{1 - \\exp(b)}\\]\n\n\nwhere \\[b \\sim{\\cal N}\\left(0, C_0 +C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\]"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#fitting-the-model",
     "href": "slides/09_Gaussian_process/index.html#fitting-the-model",
     "title": "Gaussian process",
     "section": "Fitting the model",
-    "text": "Fitting the model\nIf we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like\n\n\n\n\n\n\n\n\n\n. . .\nWhat can we learn from this model ?"
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html#kringing",
-    "href": "slides/09_Gaussian_process/index.html#kringing",
-    "title": "Gaussian process",
-    "section": "Kringing",
-    "text": "Kringing\nIf we want to interpolate across the region of interest, this is known as kriging.\n. . .\nSimple kriging\nSo far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function.\n. . .\nIn a linear regression perspective, this means that\n\\[\\mathbf{y}\\sim\\mathcal{N}(0, f(d))\\]"
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html#kringing-1",
-    "href": "slides/09_Gaussian_process/index.html#kringing-1",
-    "title": "Gaussian process",
-    "section": "Kringing",
-    "text": "Kringing\n\nOrdinary kriging\n\nIf we want to account for an intercept in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0, f(d))\\]\nThis is known as ordinary kriging.\n. . .\n\nUniversal kriging\n\nIf we want to account for one or more explanatory variables in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0 + \\mathbf{X}\\beta, f(d))\\] This is known as Universal kriging."
+    "text": "Fitting the model\nIf we estimate the parameters of the model presented in the previous slide we get a Gaussian process that looks like\n\n\nWhat can we learn from this model ?"
   },
   {
     "objectID": "slides/09_Gaussian_process/index.html#prediction-map",
@@ -2273,6 +2294,27 @@
     "title": "Gaussian process",
     "section": "Prediction map",
     "text": "Prediction map"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#another-cova",
+    "href": "slides/09_Gaussian_process/index.html#another-cova",
+    "title": "Gaussian process",
+    "section": "Another cova",
+    "text": "Another cova"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#kringing",
+    "href": "slides/09_Gaussian_process/index.html#kringing",
+    "title": "Gaussian process",
+    "section": "Kringing",
+    "text": "Kringing\nIf we want to interpolate across the region of interest, this is known as kriging.\n\nSimple kriging\nSo far, we have seen the most simplistic Gaussian process where there is not even any intercept that is estimated. In short, the model is constructed using only the covariance function.\n\n\nIn a linear regression perspective, this means that\n\\[\\mathbf{y}\\sim\\mathcal{N}(0, f(d))\\]"
+  },
+  {
+    "objectID": "slides/09_Gaussian_process/index.html#kringing-1",
+    "href": "slides/09_Gaussian_process/index.html#kringing-1",
+    "title": "Gaussian process",
+    "section": "Kringing",
+    "text": "Kringing\n\nOrdinary kriging\n\nIf we want to account for an intercept in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0, f(d))\\]\nThis is known as ordinary kriging.\n\n\nUniversal kriging\n\nIf we want to account for one or more explanatory variables in the model such that\n\\[\\mathbf{y}\\sim\\mathcal{N}(\\beta_0 + \\mathbf{X}\\beta, f(d))\\] This is known as Universal kriging."
   },
   {
     "objectID": "slides/nn_extra_slides/index.html#square-matrix",
@@ -2700,68 +2742,5 @@
     "title": "Complex hierarchical models",
     "section": "Pumpkinseed growth example",
     "text": "Pumpkinseed growth example\nQuestion\n\nIs the growth of Pumpkinseed influenced by water temperature?\n\n\n\n\n\n\n\nTry to build the model that best answer this question\n\n\nTo have the most precise model, we need to account for lakes area and depth as well as control for the temperature variation in between lakes and for divergences in sampling measurements of each year (wink, wink… teachers assistant may have an influence here as well)."
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html#model-technical-interlude",
-    "href": "slides/09_Gaussian_process/index.html#model-technical-interlude",
-    "title": "Gaussian process",
-    "section": "Model (technical interlude)",
-    "text": "Model (technical interlude)\n\nActually, the function used to estimate the Gaussian process, was the Matérn function, that is\n\\[b \\sim{\\cal N}\\left(0,C_1\\frac{2^{1-\\nu}}{\\Gamma(\\nu)}\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)^\\nu K_\\nu\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)\\right)\\]\n\n\n\nwhere\n\n\\(\\Gamma(\\nu) = (\\nu - 1)!\\)\n\\(K_\\nu\\) is a modified Bessel function\n\\(d\\) is the distance\n\\(a\\) is the range\n\\(\\nu\\) is a strictly positive parameter giving flexibility to the left tail of the function\n\nif \\(\\nu = 0.5\\) the function converges to an exponential function \\(\\left(C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\)\nif \\(\\nu \\rightarrow \\infty\\) the function converges to an Gaussian function \\(\\left(C_1\\left(1 - e^{\\frac{-d^2}{a^2}}\\right)\\right)\\)"
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html#matérn-function",
-    "href": "slides/09_Gaussian_process/index.html#matérn-function",
-    "title": "Gaussian process",
-    "section": "Matérn function",
-    "text": "Matérn function\n\n\\[b \\sim{\\cal N}\\left(0,C_1\\frac{2^{1-\\nu}}{\\Gamma(\\nu)}\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)^\\nu K_\\nu\\left(\\sqrt{2\\nu}\\frac{d}{a}\\right)\\right)\\]\n\n. . .\n\nwhere\n\n\\(\\Gamma(\\nu) = (\\nu - 1)!\\)\n\\(K_\\nu\\) is a modified Bessel function\n\\(d\\) is the distance\n\\(a\\) is the range\n\\(\\nu\\) is a strictly positive parameter giving flexibility to the left tail of the function\n\nif \\(\\nu = 0.5\\) the function converges to an exponential function \\(\\left(C_1\\left(1 - e^{\\frac{-d}{a}}\\right)\\right)\\)\nif \\(\\nu \\rightarrow \\infty\\) the function converges to an Gaussian function (also known as the exponentiated quadratic function) \\(\\left(C_1\\left(1 - e^{\\frac{-d^2}{2a^2}}\\right)\\right)\\)"
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html#matérn-function-1",
-    "href": "slides/09_Gaussian_process/index.html#matérn-function-1",
-    "title": "Gaussian process",
-    "section": "Matérn function",
-    "text": "Matérn function\nSill : 5 – Range : 10 – \\(\\nu\\) : 0.5"
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html#matérn-function-2",
-    "href": "slides/09_Gaussian_process/index.html#matérn-function-2",
-    "title": "Gaussian process",
-    "section": "Matérn function",
-    "text": "Matérn function\nSill : 5 – Range : 10 – \\(\\nu\\) : 5"
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html#another-cova",
-    "href": "slides/09_Gaussian_process/index.html#another-cova",
-    "title": "Gaussian process",
-    "section": "Another cova",
-    "text": "Another cova"
-  },
-  {
-    "objectID": "slides/09_Gaussian_process/index.html",
-    "href": "slides/09_Gaussian_process/index.html",
-    "title": "Gaussian process",
-    "section": "",
-    "text": ". . .\nAn already (very !) general formulation\n\nSo far, we have built hierarchical models that can be integrated into the following framework.\n\n. . .\n\n\\[(\\mathbf{y}|\\mathbf{X},\\mathbf{Z}, \\boldsymbol{\\beta}, \\mathbf{b}, \\sigma_\\mathbf{y}^2)\\sim \\mathcal{MVN}(\\mathbf{X} \\boldsymbol{\\beta} + \\mathbf{Z}\\mathbf{b}, \\sigma_\\mathbf{y}^2\\mathbf{I})\\]\n\n. . .\n\nwhere\n\\[\\mathbf{b}\\sim \\mathcal{MVN}(\\mu, \\mathbf{\\Sigma})\\]\n\n. . .\n\n\n\\(\\mathbf{y}\\) is a vector quantifying a response variable of length \\(n\\)\n\\(\\mathbf{X}\\) is a matrix of explanatory variables with \\(n\\) rows (samples) and \\(p\\) columns (explanatory variables)\n\\(\\boldsymbol{\\beta}\\) is a vector \\(p\\) pararameters weighting the importance of each explanatory variables in \\(\\mathbf{X}\\)\n\\(\\sigma_\\mathbf{y}^2\\) is a measure of variance of the error in the regression model\n\\(\\mathbf{I}\\) is an \\(n \\times n\\) identity matrix\n\n\n\n\\(\\mathbf{Z}\\) is designed matrix of “explanatory” variables with \\(n\\) rows (samples) and \\(q\\) columns\n\\(\\mu\\) is a vector defining the average importance of hierarchical parameters\n\\(\\mathbf{\\Sigma}\\) is a matrix defining the covariance structure of hierarchical parameters"
-  },
-  {
-    "objectID": "slides/04_Linear_model/index.html",
-    "href": "slides/04_Linear_model/index.html",
-    "title": "Linear models",
-    "section": "",
-    "text": "Hierarchical models are a generalized version of the classic regression models you have seen in your undergraduate courses.\n\n. . .\n\nIn its simplest form, a regression model is usually presented as\n\n. . .\n\\[\ny_i = \\beta_0 + \\beta_1 x_{i} + \\varepsilon\n\\]\n. . .\n\nIt is known as a simple linear model, where :\n\n. . .\n\n\\(y_i\\) is the value of a response variable for observation \\(i\\)\n\n. . .\n\n\\(x_i\\) is the value of an explanatory variable for observation \\(i\\)\n\n. . .\n\n\\(\\beta_0\\) is the model intercept\n\n. . .\n\n\\(\\beta_1\\) is the model slope\n\n. . .\n\n\\(\\varepsilon\\) is the error term"
-  },
-  {
-    "objectID": "topics/03_one_random_effect/index.html#load-packages-and-data",
-    "href": "topics/03_one_random_effect/index.html#load-packages-and-data",
-    "title": "Models with one level of hierarchy",
-    "section": "Load packages and data",
-    "text": "Load packages and data\n\nlibrary(palmerpenguins)\nsuppressPackageStartupMessages(library(dplyr))\nlibrary(ggplot2)\nlibrary(tidyr)\n# library(cmdstanr)\nsuppressPackageStartupMessages(library(rstan))\nrstan_options(\"auto_write\" = TRUE)\noptions(mc.cores = parallel::detectCores())\nlibrary(tidybayes)"
-  },
-  {
-    "objectID": "topics/03_one_random_effect/index.html#footnotes",
-    "href": "topics/03_one_random_effect/index.html#footnotes",
-    "title": "Models with one level of hierarchy",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\ndropping NA values is not always the best idea! I’m doing it here to create a focused example. Bayes gives us other options for working with missing values, including modelling them directly.↩︎\nagain, this is slightly contrived for the sake of making a clean example! normally you’d most likely treat these two variables separately.↩︎"
   }
 ]
