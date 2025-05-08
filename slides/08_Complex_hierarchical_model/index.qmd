@@ -79,7 +79,7 @@ $$y_i = b_{f[i]\times g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 
 ::: {style="font-size: 0.7em"}
 where
-$$\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\times g}\right)$$
+$$\mathbf{b}_{f\times g} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)$$
 :::
 
 . . .
@@ -161,9 +161,9 @@ $$y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 ::: {style="font-size: 0.65em"}
 where
 
-$$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_g\\
+$$\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}
                                 , 
                                 \begin{bmatrix}
@@ -265,9 +265,9 @@ $$y_i = b_{f[i]}+b_{f[i]\times g[i]} + \varepsilon \quad i = 1\dots n$$
 ::: {style="font-size: 0.65em"}
 where
 
-$$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_{f\times g}\\
+$$\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                                 \begin{bmatrix}
                                   \sigma^2_f & 0\\
@@ -348,7 +348,7 @@ legend("topright",
 ## Uncorrelated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
 ::: {style="font-size: 0.65em"}
-`lme4` notation : `y ~ x + (x || f)` or `y ~ 1 + x + (1 | f) + (0 + x | g)`
+`lme4` notation : `y ~ x + (x || f)` or `y ~ 1 + x + (1 | f) + (0 + x | f)`
 :::
 
 . . .
@@ -376,9 +376,9 @@ This is because in this model
 $$\begin{bmatrix}
     b_0\\
     b_1\\
-\end{bmatrix} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\end{bmatrix} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                                 \begin{bmatrix}
                                   \sigma^2_{b_0f} & 0\\
@@ -524,9 +524,9 @@ $$\begin{bmatrix}
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                       \begin{bmatrix}
                         \sigma^2_{b_0f} & \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\ 
@@ -550,9 +550,9 @@ $$\begin{bmatrix}
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                       \begin{bmatrix}
                         \sigma^2_{b_0f} & \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\ 
