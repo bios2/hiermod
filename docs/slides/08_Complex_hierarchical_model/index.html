@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
-  <meta name="dcterms.date" content="2025-05-07">
+  <meta name="dcterms.date" content="2025-05-08">
   <title>Modèles hiérarchiques pour les sciences de la vie – Complex hierarchical models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -337,7 +337,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 
-  <p class="date">2025-05-07</p>
+  <p class="date">2025-05-08</p>
 </section>
 <section id="hierarchical-model-structure-so-far" class="slide level2">
 <h2>Hierarchical model structure so far</h2>
@@ -543,23 +543,11 @@ Guillaume Blanchet – Andrew MacDonald
 <section id="a-small-step-back" class="slide level2">
 <h2>A small step back</h2>
 <div class="fragment">
-<div style="font-size: 0.7em">
-<p>The structure of the hierarchy discussed so far were “less complex” in the sense that</p>
+<div style="font-size: 0.8em">
+<p>The structure of the hierarchy discussed so far were “mildly complex” in the sense that</p>
 </div>
-</div>
-<div class="fragment">
-<div style="font-size: 0.7em">
-<ul>
-<li>A single variance parameter is estimated</li>
-</ul>
-<p><span class="math display">\[\sigma^2_{f}\]</span></p>
-</div>
-</div>
-<div class="fragment">
-<div style="font-size: 0.7em">
-<ul>
-<li>Multiple independent variance parameters are estimated</li>
-</ul>
+<div style="font-size: 0.8em">
+<p>Even if we estimate parameters of a covariance matrix, they are uncorrelated.</p>
 <p><span class="math display">\[
 \begin{bmatrix}
   \sigma^2_f &amp; 0\\
@@ -569,13 +557,13 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 <div class="fragment">
-<div style="font-size: 0.7em">
+<div style="font-size: 0.8em">
 <p>In Bayesian, having uncorrelated variances allows us to sample variance parameters independently even with multiple factors, which is computationally more efficient.</p>
 </div>
 </div>
 <div class="fragment">
-<div style="font-size: 0.7em">
-<p>From this point on, we will look at more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
+<div style="font-size: 0.8em">
+<p>From this point on, we will look at even more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
 </div>
 </div>
 </section>
