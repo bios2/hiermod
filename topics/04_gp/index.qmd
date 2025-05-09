@@ -42,15 +42,23 @@ Gaussian processes are very common, and there are lots of resources on the topic
 
 Let's begin by (once again!) loading and reorganizing the mite data. This time we'll also use `mite.xy`, which gives the coordinates of each one of the 70 samples.
 
-```{r}
-# today we need to do the 
+#### Loading models and data
+
+```{r setup}
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+library(tidyr)
+# library(cmdstanr)
+suppressPackageStartupMessages(library(rstan))
+rstan_options("auto_write" = TRUE)
+options(mc.cores = parallel::detectCores())
+library(tidybayes)
+
 data(mite, package = "vegan")
 data("mite.env", package = "vegan")
-data("mite.xy", package = "vegan")
-library(tidyverse)
-library(cmdstanr)
-```
 
+## ALSO: the spatial data
+```
 
 ```{r reorganize-mites-again}
 # combine data and environment

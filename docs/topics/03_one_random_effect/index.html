@@ -2445,58 +2445,72 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb49-651"><a href="#cb49-651" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
 <span id="cb49-652"><a href="#cb49-652" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb49-653"><a href="#cb49-653" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-654"><a href="#cb49-654" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Stan code </span></span>
+<span id="cb49-654"><a href="#cb49-654" aria-hidden="true" tabindex="-1"></a><span class="fu">### Prior predictive checks -- DON'T skip</span></span>
 <span id="cb49-655"><a href="#cb49-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-656"><a href="#cb49-656" aria-hidden="true" tabindex="-1"></a>Write the model</span>
-<span id="cb49-657"><a href="#cb49-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-660"><a href="#cb49-660" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb49-661"><a href="#cb49-661" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb49-662"><a href="#cb49-662" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp <span class="ot">&lt;-</span> <span class="fu">stan_model</span>(</span>
-<span id="cb49-663"><a href="#cb49-663" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"topics/03_one_random_effect/poisson_regression_overdisp.stan"</span>,</span>
-<span id="cb49-664"><a href="#cb49-664" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_name =</span> <span class="st">"poisson_regression_overdisp"</span>)</span>
-<span id="cb49-665"><a href="#cb49-665" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-666"><a href="#cb49-666" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp</span>
+<span id="cb49-658"><a href="#cb49-658" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb49-659"><a href="#cb49-659" aria-hidden="true" tabindex="-1"></a>prior_b0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="fl">4.5</span>, .<span class="dv">2</span>)</span>
+<span id="cb49-660"><a href="#cb49-660" aria-hidden="true" tabindex="-1"></a>prior_b1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, .<span class="dv">2</span>)</span>
+<span id="cb49-661"><a href="#cb49-661" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-662"><a href="#cb49-662" aria-hidden="true" tabindex="-1"></a>mite_community_abd <span class="sc">|&gt;</span> </span>
+<span id="cb49-663"><a href="#cb49-663" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg =</span> <span class="fu">exp</span>(prior_b0 <span class="sc">+</span> prior_b1<span class="sc">*</span>water_c)) <span class="sc">|&gt;</span> </span>
+<span id="cb49-664"><a href="#cb49-664" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water_c, <span class="at">y =</span> avg)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb49-665"><a href="#cb49-665" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>))</span>
+<span id="cb49-666"><a href="#cb49-666" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb49-667"><a href="#cb49-667" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb49-668"><a href="#cb49-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-669"><a href="#cb49-669" aria-hidden="true" tabindex="-1"></a>Sample it</span>
-<span id="cb49-670"><a href="#cb49-670" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-673"><a href="#cb49-673" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb49-674"><a href="#cb49-674" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp_sample <span class="ot">&lt;-</span> <span class="fu">sampling</span>(</span>
-<span id="cb49-675"><a href="#cb49-675" aria-hidden="true" tabindex="-1"></a>  poisson_regression_overdisp, </span>
-<span id="cb49-676"><a href="#cb49-676" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> abd_data_list, <span class="at">refresh =</span> <span class="dv">0</span></span>
-<span id="cb49-677"><a href="#cb49-677" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb49-678"><a href="#cb49-678" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb49-679"><a href="#cb49-679" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-680"><a href="#cb49-680" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-683"><a href="#cb49-683" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb49-684"><a href="#cb49-684" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb49-685"><a href="#cb49-685" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
-<span id="cb49-686"><a href="#cb49-686" aria-hidden="true" tabindex="-1"></a>fake_obs_overdisp_S <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">extract</span>(poisson_regression_overdisp_sample, <span class="at">pars =</span> <span class="st">"fake_obs"</span>)</span>
-<span id="cb49-687"><a href="#cb49-687" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-688"><a href="#cb49-688" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> mite_community_abd<span class="sc">$</span>N,</span>
-<span id="cb49-689"><a href="#cb49-689" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(fake_obs_overdisp_S<span class="sc">$</span>fake_obs, <span class="dv">50</span>))</span>
-<span id="cb49-690"><a href="#cb49-690" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-691"><a href="#cb49-691" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp_sample <span class="sc">|&gt;</span> </span>
-<span id="cb49-692"><a href="#cb49-692" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">gather_rvars</span>(line_obs[i]) <span class="sc">|&gt;</span> </span>
-<span id="cb49-693"><a href="#cb49-693" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">water =</span> water_for_pred) <span class="sc">|&gt;</span> </span>
-<span id="cb49-694"><a href="#cb49-694" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">dist =</span> .value)) <span class="sc">+</span> </span>
-<span id="cb49-695"><a href="#cb49-695" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
-<span id="cb49-696"><a href="#cb49-696" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> water_c, <span class="at">y =</span> N), </span>
-<span id="cb49-697"><a href="#cb49-697" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> mite_community_abd, </span>
-<span id="cb49-698"><a href="#cb49-698" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb49-699"><a href="#cb49-699" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb49-700"><a href="#cb49-700" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-701"><a href="#cb49-701" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb49-702"><a href="#cb49-702" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-703"><a href="#cb49-703" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb49-704"><a href="#cb49-704" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus exercises</span></span>
-<span id="cb49-705"><a href="#cb49-705" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-706"><a href="#cb49-706" aria-hidden="true" tabindex="-1"></a>Compare the slope estimates between the two poisson models above (possibly in the same figure). What happened here?</span>
-<span id="cb49-707"><a href="#cb49-707" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-708"><a href="#cb49-708" aria-hidden="true" tabindex="-1"></a>Another great way to model overdispersion is via the <span class="co">[</span><span class="ot">Negative Binomial</span><span class="co">](https://en.wikipedia.org/wiki/Negative_binomial_distribution)</span> distribution. Look at the Stan documentation for <span class="co">[</span><span class="ot">neg_binomial_2_log</span><span class="co">](https://mc-stan.org/docs/functions-reference/neg-binom-2-log.html)</span> and adapt your model to use it (don't forget to drop the random effect when you do!).</span>
-<span id="cb49-709"><a href="#cb49-709" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-710"><a href="#cb49-710" aria-hidden="true" tabindex="-1"></a>EXPERIMENTAL: replace the normal distribution for the random observation-level effect with the student_t distribution, to help with that one extreme datapoint! how does the slope change?</span>
-<span id="cb49-711"><a href="#cb49-711" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb49-669"><a href="#cb49-669" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-670"><a href="#cb49-670" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Stan code </span></span>
+<span id="cb49-671"><a href="#cb49-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-672"><a href="#cb49-672" aria-hidden="true" tabindex="-1"></a>Write the model</span>
+<span id="cb49-673"><a href="#cb49-673" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-676"><a href="#cb49-676" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb49-677"><a href="#cb49-677" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb49-678"><a href="#cb49-678" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp <span class="ot">&lt;-</span> <span class="fu">stan_model</span>(</span>
+<span id="cb49-679"><a href="#cb49-679" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"topics/03_one_random_effect/poisson_regression_overdisp.stan"</span>,</span>
+<span id="cb49-680"><a href="#cb49-680" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_name =</span> <span class="st">"poisson_regression_overdisp"</span>)</span>
+<span id="cb49-681"><a href="#cb49-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-682"><a href="#cb49-682" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp</span>
+<span id="cb49-683"><a href="#cb49-683" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb49-684"><a href="#cb49-684" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-685"><a href="#cb49-685" aria-hidden="true" tabindex="-1"></a>Sample it</span>
+<span id="cb49-686"><a href="#cb49-686" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-689"><a href="#cb49-689" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb49-690"><a href="#cb49-690" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp_sample <span class="ot">&lt;-</span> <span class="fu">sampling</span>(</span>
+<span id="cb49-691"><a href="#cb49-691" aria-hidden="true" tabindex="-1"></a>  poisson_regression_overdisp, </span>
+<span id="cb49-692"><a href="#cb49-692" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> abd_data_list, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb49-693"><a href="#cb49-693" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb49-694"><a href="#cb49-694" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb49-695"><a href="#cb49-695" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-696"><a href="#cb49-696" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-699"><a href="#cb49-699" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb49-700"><a href="#cb49-700" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb49-701"><a href="#cb49-701" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb49-702"><a href="#cb49-702" aria-hidden="true" tabindex="-1"></a>fake_obs_overdisp_S <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">extract</span>(poisson_regression_overdisp_sample, <span class="at">pars =</span> <span class="st">"fake_obs"</span>)</span>
+<span id="cb49-703"><a href="#cb49-703" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-704"><a href="#cb49-704" aria-hidden="true" tabindex="-1"></a>bayesplot<span class="sc">::</span><span class="fu">ppc_dens_overlay</span>(<span class="at">y =</span> mite_community_abd<span class="sc">$</span>N,</span>
+<span id="cb49-705"><a href="#cb49-705" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(fake_obs_overdisp_S<span class="sc">$</span>fake_obs, <span class="dv">50</span>))</span>
+<span id="cb49-706"><a href="#cb49-706" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-707"><a href="#cb49-707" aria-hidden="true" tabindex="-1"></a>poisson_regression_overdisp_sample <span class="sc">|&gt;</span> </span>
+<span id="cb49-708"><a href="#cb49-708" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">gather_rvars</span>(line_avg[i]) <span class="sc">|&gt;</span> </span>
+<span id="cb49-709"><a href="#cb49-709" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">water =</span> water_for_pred) <span class="sc">|&gt;</span> </span>
+<span id="cb49-710"><a href="#cb49-710" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">dist =</span> .value)) <span class="sc">+</span> </span>
+<span id="cb49-711"><a href="#cb49-711" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>() <span class="sc">+</span> </span>
+<span id="cb49-712"><a href="#cb49-712" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> water_c, <span class="at">y =</span> N), </span>
+<span id="cb49-713"><a href="#cb49-713" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> mite_community_abd, </span>
+<span id="cb49-714"><a href="#cb49-714" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb49-715"><a href="#cb49-715" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb49-716"><a href="#cb49-716" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-717"><a href="#cb49-717" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb49-718"><a href="#cb49-718" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-719"><a href="#cb49-719" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb49-720"><a href="#cb49-720" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus exercises</span></span>
+<span id="cb49-721"><a href="#cb49-721" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-722"><a href="#cb49-722" aria-hidden="true" tabindex="-1"></a>Compare the slope estimates between the two poisson models above (possibly in the same figure). What happened here?</span>
+<span id="cb49-723"><a href="#cb49-723" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-724"><a href="#cb49-724" aria-hidden="true" tabindex="-1"></a>Another great way to model overdispersion is via the <span class="co">[</span><span class="ot">Negative Binomial</span><span class="co">](https://en.wikipedia.org/wiki/Negative_binomial_distribution)</span> distribution. Look at the Stan documentation for <span class="co">[</span><span class="ot">neg_binomial_2_log</span><span class="co">](https://mc-stan.org/docs/functions-reference/neg-binom-2-log.html)</span> and adapt your model to use it (don't forget to drop the random effect when you do!).</span>
+<span id="cb49-725"><a href="#cb49-725" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-726"><a href="#cb49-726" aria-hidden="true" tabindex="-1"></a>EXPERIMENTAL: replace the normal distribution for the random observation-level effect with the student_t distribution, to help with that one extreme datapoint! how does the slope change?</span>
+<span id="cb49-727"><a href="#cb49-727" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

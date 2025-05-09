@@ -604,6 +604,21 @@ a &= \bar\beta + \beta_{\text{water}} \cdot \text{water}_i + \text{site}_i\\
 \end{align}
 $$
 
+### Prior predictive checks -- DON'T skip
+
+```{r}
+
+prior_b0 <- rnorm(1, 4.5, .2)
+prior_b1 <- rnorm(1, 0, .2)
+
+mite_community_abd |> 
+  mutate(avg = exp(prior_b0 + prior_b1*water_c)) |> 
+  ggplot(aes(x = water_c, y = avg)) + geom_line() + 
+  coord_cartesian(ylim = c(0, 500))
+  
+```
+
+
 #### Stan code 
 
 Write the model
@@ -636,7 +651,7 @@ bayesplot::ppc_dens_overlay(y = mite_community_abd$N,
                             yrep = head(fake_obs_overdisp_S$fake_obs, 50))
 
 poisson_regression_overdisp_sample |> 
-  tidybayes::gather_rvars(line_obs[i]) |> 
+  tidybayes::gather_rvars(line_avg[i]) |> 
   mutate(water = water_for_pred) |> 
   ggplot(aes(x = water, dist = .value)) + 
   stat_lineribbon() + 

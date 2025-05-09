@@ -1281,364 +1281,372 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>Let's begin by (once again!) loading and reorganizing the mite data. This time we'll also use <span class="in">`mite.xy`</span>, which gives the coordinates of each one of the 70 samples.</span>
 <span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a><span class="co"># today we need to do the </span></span>
-<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mite, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
-<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite.env"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
-<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"mite.xy"</span>, <span class="at">package =</span> <span class="st">"vegan"</span>)</span>
-<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Loading models and data</span></span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a><span class="in">suppressPackageStartupMessages(library(dplyr))</span></span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyr)</span></span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a><span class="in"># library(cmdstanr)</span></span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a><span class="in">suppressPackageStartupMessages(library(rstan))</span></span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a><span class="in">rstan_options("auto_write" = TRUE)</span></span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a><span class="in">options(mc.cores = parallel::detectCores())</span></span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidybayes)</span></span>
 <span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r reorganize-mites-again}</span></span>
-<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a><span class="in"># combine data and environment</span></span>
-<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long &lt;- bind_cols(mite.env, mite) |&gt; </span></span>
-<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(plot_id = 1:length(WatrCont)) |&gt; </span></span>
-<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a><span class="in">  pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")</span></span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a><span class="in">data(mite, package = "vegan")</span></span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a><span class="in">data("mite.env", package = "vegan")</span></span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a><span class="in">## ALSO: the spatial data</span></span>
+<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long_transformed &lt;- mite_data_long |&gt; </span></span>
-<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(presabs = as.numeric(abd&gt;0),</span></span>
-<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a><span class="in">         # center predictors</span></span>
-<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a><span class="in">         water = (WatrCont - mean(WatrCont)) / 100</span></span>
-<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a><span class="in">         )</span></span>
+<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r reorganize-mites-again}</span></span>
+<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a><span class="in"># combine data and environment</span></span>
+<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long &lt;- bind_cols(mite.env, mite) |&gt; </span></span>
+<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(plot_id = 1:length(WatrCont)) |&gt; </span></span>
+<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a><span class="in">  pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")</span></span>
+<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a><span class="in"># pick a species that has about 50/50 chance </span></span>
-<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long_transformed |&gt;</span></span>
-<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(spp) |&gt;</span></span>
-<span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(freq = mean(presabs)) |&gt;</span></span>
-<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(freq &gt; .4 &amp; freq &lt; .6)</span></span>
-<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a><span class="in">## how about: PWIL </span></span>
-<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a>Let's choose just one species as an example. </span>
-<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a>I've chosen one where the relationship with water is rather strong, and for which presence and absence are roughly balanced. </span>
-<span id="cb34-82"><a href="#cb34-82" aria-hidden="true" tabindex="-1"></a>This is just to make the example clear.</span>
-<span id="cb34-83"><a href="#cb34-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-86"><a href="#cb34-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-87"><a href="#cb34-87" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Probability of occurrance of one mite species, as a fuction of water content of the soil</span></span>
-<span id="cb34-88"><a href="#cb34-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-89"><a href="#cb34-89" aria-hidden="true" tabindex="-1"></a>pwil_data <span class="ot">&lt;-</span> mite_data_long_transformed <span class="sc">|&gt;</span> </span>
-<span id="cb34-90"><a href="#cb34-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(spp <span class="sc">==</span> <span class="st">"PWIL"</span>)</span>
-<span id="cb34-91"><a href="#cb34-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-92"><a href="#cb34-92" aria-hidden="true" tabindex="-1"></a>pwil_data <span class="sc">|&gt;</span> </span>
-<span id="cb34-93"><a href="#cb34-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb34-94"><a href="#cb34-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> glm, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
-<span id="cb34-95"><a href="#cb34-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb34-96"><a href="#cb34-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long_transformed &lt;- mite_data_long |&gt; </span></span>
+<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(presabs = as.numeric(abd&gt;0),</span></span>
+<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a><span class="in">         # center predictors</span></span>
+<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a><span class="in">         water = (WatrCont - mean(WatrCont)) / 100</span></span>
+<span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a><span class="in">         )</span></span>
+<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a><span class="in"># pick a species that has about 50/50 chance </span></span>
+<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a><span class="in">mite_data_long_transformed |&gt;</span></span>
+<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(spp) |&gt;</span></span>
+<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a><span class="in">  summarize(freq = mean(presabs)) |&gt;</span></span>
+<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a><span class="in">  filter(freq &gt; .4 &amp; freq &lt; .6)</span></span>
+<span id="cb34-82"><a href="#cb34-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-83"><a href="#cb34-83" aria-hidden="true" tabindex="-1"></a><span class="in">## how about: PWIL </span></span>
+<span id="cb34-84"><a href="#cb34-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-85"><a href="#cb34-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-86"><a href="#cb34-86" aria-hidden="true" tabindex="-1"></a>Let's choose just one species as an example. </span>
+<span id="cb34-87"><a href="#cb34-87" aria-hidden="true" tabindex="-1"></a>I've chosen one where the relationship with water is rather strong, and for which presence and absence are roughly balanced. </span>
+<span id="cb34-88"><a href="#cb34-88" aria-hidden="true" tabindex="-1"></a>This is just to make the example clear.</span>
+<span id="cb34-89"><a href="#cb34-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-92"><a href="#cb34-92" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-93"><a href="#cb34-93" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Probability of occurrance of one mite species, as a fuction of water content of the soil</span></span>
+<span id="cb34-94"><a href="#cb34-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-95"><a href="#cb34-95" aria-hidden="true" tabindex="-1"></a>pwil_data <span class="ot">&lt;-</span> mite_data_long_transformed <span class="sc">|&gt;</span> </span>
+<span id="cb34-96"><a href="#cb34-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(spp <span class="sc">==</span> <span class="st">"PWIL"</span>)</span>
 <span id="cb34-97"><a href="#cb34-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-100"><a href="#cb34-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-101"><a href="#cb34-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Presence-absence data for mite species "PWIL", at the spatial location of each point.</span></span>
-<span id="cb34-102"><a href="#cb34-102" aria-hidden="true" tabindex="-1"></a><span class="co"># add the spatial coordinates:</span></span>
+<span id="cb34-98"><a href="#cb34-98" aria-hidden="true" tabindex="-1"></a>pwil_data <span class="sc">|&gt;</span> </span>
+<span id="cb34-99"><a href="#cb34-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> presabs)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb34-100"><a href="#cb34-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> glm, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
+<span id="cb34-101"><a href="#cb34-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb34-102"><a href="#cb34-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-103"><a href="#cb34-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-104"><a href="#cb34-104" aria-hidden="true" tabindex="-1"></a>pwil_spatial <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(pwil_data, mite.xy)</span>
-<span id="cb34-105"><a href="#cb34-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-106"><a href="#cb34-106" aria-hidden="true" tabindex="-1"></a>pwil_spatial <span class="sc">|&gt;</span> </span>
-<span id="cb34-107"><a href="#cb34-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> <span class="fu">as.factor</span>(presabs))) <span class="sc">+</span> </span>
-<span id="cb34-108"><a href="#cb34-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">stroke =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb34-109"><a href="#cb34-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">type =</span> <span class="st">"qual"</span>, <span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span> </span>
-<span id="cb34-110"><a href="#cb34-110" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb34-111"><a href="#cb34-111" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span> </span>
-<span id="cb34-112"><a href="#cb34-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Pres/Abs"</span>)</span>
-<span id="cb34-113"><a href="#cb34-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-114"><a href="#cb34-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-115"><a href="#cb34-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-116"><a href="#cb34-116" aria-hidden="true" tabindex="-1"></a>We'll look at two possibilities in turn:  </span>
-<span id="cb34-117"><a href="#cb34-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-118"><a href="#cb34-118" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A nonlinear function of one variable</span>
-<span id="cb34-119"><a href="#cb34-119" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A smooth function of distance</span>
+<span id="cb34-106"><a href="#cb34-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-107"><a href="#cb34-107" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Presence-absence data for mite species "PWIL", at the spatial location of each point.</span></span>
+<span id="cb34-108"><a href="#cb34-108" aria-hidden="true" tabindex="-1"></a><span class="co"># add the spatial coordinates:</span></span>
+<span id="cb34-109"><a href="#cb34-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-110"><a href="#cb34-110" aria-hidden="true" tabindex="-1"></a>pwil_spatial <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(pwil_data, mite.xy)</span>
+<span id="cb34-111"><a href="#cb34-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-112"><a href="#cb34-112" aria-hidden="true" tabindex="-1"></a>pwil_spatial <span class="sc">|&gt;</span> </span>
+<span id="cb34-113"><a href="#cb34-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> <span class="fu">as.factor</span>(presabs))) <span class="sc">+</span> </span>
+<span id="cb34-114"><a href="#cb34-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">stroke =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb34-115"><a href="#cb34-115" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">type =</span> <span class="st">"qual"</span>, <span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span> </span>
+<span id="cb34-116"><a href="#cb34-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb34-117"><a href="#cb34-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span> </span>
+<span id="cb34-118"><a href="#cb34-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Pres/Abs"</span>)</span>
+<span id="cb34-119"><a href="#cb34-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-120"><a href="#cb34-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-121"><a href="#cb34-121" aria-hidden="true" tabindex="-1"></a><span class="fu"># Smooth function of one variable</span></span>
-<span id="cb34-122"><a href="#cb34-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-123"><a href="#cb34-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## Write the model</span></span>
-<span id="cb34-124"><a href="#cb34-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-125"><a href="#cb34-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-126"><a href="#cb34-126" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb34-127"><a href="#cb34-127" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb34-128"><a href="#cb34-128" aria-hidden="true" tabindex="-1"></a>\mathsf{Pr}(y_i = 1) &amp;\sim \mathsf{Bernoulli}(p_i)<span class="sc">\\</span></span>
-<span id="cb34-129"><a href="#cb34-129" aria-hidden="true" tabindex="-1"></a>\mathsf{logit}(p_i) &amp;= a + f_i<span class="sc">\\</span> </span>
-<span id="cb34-130"><a href="#cb34-130" aria-hidden="true" tabindex="-1"></a>f_i &amp;\sim \mathsf{multivariate\ normal}(0, K(x | \theta)) <span class="sc">\\</span></span>
-<span id="cb34-131"><a href="#cb34-131" aria-hidden="true" tabindex="-1"></a>  K(x | \alpha, \rho, \sigma)_{i, j}</span>
-<span id="cb34-132"><a href="#cb34-132" aria-hidden="true" tabindex="-1"></a>&amp;= \alpha^2</span>
-<span id="cb34-133"><a href="#cb34-133" aria-hidden="true" tabindex="-1"></a>\exp \left(</span>
-<span id="cb34-134"><a href="#cb34-134" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>\dfrac{1}{2 \rho^2} \sum_{d=1}^D (x_{i,d} - x_{j,d})^2</span>
-<span id="cb34-135"><a href="#cb34-135" aria-hidden="true" tabindex="-1"></a>\right)</span>
-<span id="cb34-136"><a href="#cb34-136" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\delta_{i, j} \sigma^2,</span>
-<span id="cb34-137"><a href="#cb34-137" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb34-138"><a href="#cb34-138" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb34-139"><a href="#cb34-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-140"><a href="#cb34-140" aria-hidden="true" tabindex="-1"></a>That's the general notation for D dimensions. In our case we're looking at something much simpler.</span>
-<span id="cb34-141"><a href="#cb34-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-142"><a href="#cb34-142" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb34-143"><a href="#cb34-143" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
-<span id="cb34-144"><a href="#cb34-144" aria-hidden="true" tabindex="-1"></a>\mathsf{Pr}(y_i = 1) &amp;\sim \mathsf{Bernoulli}(p_i)<span class="sc">\\</span></span>
-<span id="cb34-145"><a href="#cb34-145" aria-hidden="true" tabindex="-1"></a>\mathsf{logit}(p_i) &amp;= a + f_i<span class="sc">\\</span> </span>
-<span id="cb34-146"><a href="#cb34-146" aria-hidden="true" tabindex="-1"></a>f_i &amp;\sim \mathsf{Multivariate\ Normal}(0, K(x | \theta)) <span class="sc">\\</span></span>
-<span id="cb34-147"><a href="#cb34-147" aria-hidden="true" tabindex="-1"></a>  K(x | \alpha, \rho, \sigma)_{i, j}</span>
-<span id="cb34-148"><a href="#cb34-148" aria-hidden="true" tabindex="-1"></a>&amp;= \alpha^2</span>
-<span id="cb34-149"><a href="#cb34-149" aria-hidden="true" tabindex="-1"></a>\exp \left(</span>
-<span id="cb34-150"><a href="#cb34-150" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>\frac{(\text{water}_i - \text{water}_j)^2}{2 \rho^2} </span>
-<span id="cb34-151"><a href="#cb34-151" aria-hidden="true" tabindex="-1"></a>\right)</span>
-<span id="cb34-152"><a href="#cb34-152" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\delta_{i, j} \sigma^2 <span class="sc">\\</span></span>
-<span id="cb34-153"><a href="#cb34-153" aria-hidden="true" tabindex="-1"></a>\rho &amp;\sim \mathsf{Inverse\ Gamma}(5, 14) <span class="sc">\\</span></span>
-<span id="cb34-154"><a href="#cb34-154" aria-hidden="true" tabindex="-1"></a>\alpha &amp;\sim \mathsf{Normal}(0, .8) <span class="sc">\\</span></span>
-<span id="cb34-155"><a href="#cb34-155" aria-hidden="true" tabindex="-1"></a>a &amp;\sim \mathsf{Normal}(0, .2) <span class="sc">\\</span></span>
-<span id="cb34-156"><a href="#cb34-156" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
-<span id="cb34-157"><a href="#cb34-157" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb34-158"><a href="#cb34-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-159"><a href="#cb34-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simulate to understand it</span></span>
-<span id="cb34-160"><a href="#cb34-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-163"><a href="#cb34-163" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-164"><a href="#cb34-164" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb34-165"><a href="#cb34-165" aria-hidden="true" tabindex="-1"></a>gp_example_sim <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_sim.stan"</span>)</span>
+<span id="cb34-121"><a href="#cb34-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-122"><a href="#cb34-122" aria-hidden="true" tabindex="-1"></a>We'll look at two possibilities in turn:  </span>
+<span id="cb34-123"><a href="#cb34-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-124"><a href="#cb34-124" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A nonlinear function of one variable</span>
+<span id="cb34-125"><a href="#cb34-125" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A smooth function of distance</span>
+<span id="cb34-126"><a href="#cb34-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-127"><a href="#cb34-127" aria-hidden="true" tabindex="-1"></a><span class="fu"># Smooth function of one variable</span></span>
+<span id="cb34-128"><a href="#cb34-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-129"><a href="#cb34-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## Write the model</span></span>
+<span id="cb34-130"><a href="#cb34-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-131"><a href="#cb34-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-132"><a href="#cb34-132" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-133"><a href="#cb34-133" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb34-134"><a href="#cb34-134" aria-hidden="true" tabindex="-1"></a>\mathsf{Pr}(y_i = 1) &amp;\sim \mathsf{Bernoulli}(p_i)<span class="sc">\\</span></span>
+<span id="cb34-135"><a href="#cb34-135" aria-hidden="true" tabindex="-1"></a>\mathsf{logit}(p_i) &amp;= a + f_i<span class="sc">\\</span> </span>
+<span id="cb34-136"><a href="#cb34-136" aria-hidden="true" tabindex="-1"></a>f_i &amp;\sim \mathsf{multivariate\ normal}(0, K(x | \theta)) <span class="sc">\\</span></span>
+<span id="cb34-137"><a href="#cb34-137" aria-hidden="true" tabindex="-1"></a>  K(x | \alpha, \rho, \sigma)_{i, j}</span>
+<span id="cb34-138"><a href="#cb34-138" aria-hidden="true" tabindex="-1"></a>&amp;= \alpha^2</span>
+<span id="cb34-139"><a href="#cb34-139" aria-hidden="true" tabindex="-1"></a>\exp \left(</span>
+<span id="cb34-140"><a href="#cb34-140" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>\dfrac{1}{2 \rho^2} \sum_{d=1}^D (x_{i,d} - x_{j,d})^2</span>
+<span id="cb34-141"><a href="#cb34-141" aria-hidden="true" tabindex="-1"></a>\right)</span>
+<span id="cb34-142"><a href="#cb34-142" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\delta_{i, j} \sigma^2,</span>
+<span id="cb34-143"><a href="#cb34-143" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb34-144"><a href="#cb34-144" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-145"><a href="#cb34-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-146"><a href="#cb34-146" aria-hidden="true" tabindex="-1"></a>That's the general notation for D dimensions. In our case we're looking at something much simpler.</span>
+<span id="cb34-147"><a href="#cb34-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-148"><a href="#cb34-148" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-149"><a href="#cb34-149" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb34-150"><a href="#cb34-150" aria-hidden="true" tabindex="-1"></a>\mathsf{Pr}(y_i = 1) &amp;\sim \mathsf{Bernoulli}(p_i)<span class="sc">\\</span></span>
+<span id="cb34-151"><a href="#cb34-151" aria-hidden="true" tabindex="-1"></a>\mathsf{logit}(p_i) &amp;= a + f_i<span class="sc">\\</span> </span>
+<span id="cb34-152"><a href="#cb34-152" aria-hidden="true" tabindex="-1"></a>f_i &amp;\sim \mathsf{Multivariate\ Normal}(0, K(x | \theta)) <span class="sc">\\</span></span>
+<span id="cb34-153"><a href="#cb34-153" aria-hidden="true" tabindex="-1"></a>  K(x | \alpha, \rho, \sigma)_{i, j}</span>
+<span id="cb34-154"><a href="#cb34-154" aria-hidden="true" tabindex="-1"></a>&amp;= \alpha^2</span>
+<span id="cb34-155"><a href="#cb34-155" aria-hidden="true" tabindex="-1"></a>\exp \left(</span>
+<span id="cb34-156"><a href="#cb34-156" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>\frac{(\text{water}_i - \text{water}_j)^2}{2 \rho^2} </span>
+<span id="cb34-157"><a href="#cb34-157" aria-hidden="true" tabindex="-1"></a>\right)</span>
+<span id="cb34-158"><a href="#cb34-158" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\delta_{i, j} \sigma^2 <span class="sc">\\</span></span>
+<span id="cb34-159"><a href="#cb34-159" aria-hidden="true" tabindex="-1"></a>\rho &amp;\sim \mathsf{Inverse\ Gamma}(5, 14) <span class="sc">\\</span></span>
+<span id="cb34-160"><a href="#cb34-160" aria-hidden="true" tabindex="-1"></a>\alpha &amp;\sim \mathsf{Normal}(0, .8) <span class="sc">\\</span></span>
+<span id="cb34-161"><a href="#cb34-161" aria-hidden="true" tabindex="-1"></a>a &amp;\sim \mathsf{Normal}(0, .2) <span class="sc">\\</span></span>
+<span id="cb34-162"><a href="#cb34-162" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb34-163"><a href="#cb34-163" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb34-164"><a href="#cb34-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-165"><a href="#cb34-165" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simulate to understand it</span></span>
 <span id="cb34-166"><a href="#cb34-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-167"><a href="#cb34-167" aria-hidden="true" tabindex="-1"></a>gp_example_sim</span>
-<span id="cb34-168"><a href="#cb34-168" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-169"><a href="#cb34-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-170"><a href="#cb34-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-171"><a href="#cb34-171" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb34-172"><a href="#cb34-172" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_sim_samples &lt;- gp_example_sim$sample(data = list(</span></span>
-<span id="cb34-173"><a href="#cb34-173" aria-hidden="true" tabindex="-1"></a><span class="in">  N = 20,</span></span>
-<span id="cb34-174"><a href="#cb34-174" aria-hidden="true" tabindex="-1"></a><span class="in">  x = seq(from = -3, to = 5, length.out = 20)),</span></span>
-<span id="cb34-175"><a href="#cb34-175" aria-hidden="true" tabindex="-1"></a><span class="in">  refresh = 200, chains = 1, iter_sampling = 200</span></span>
-<span id="cb34-176"><a href="#cb34-176" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb34-177"><a href="#cb34-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-178"><a href="#cb34-178" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_sim_samples$save_object(</span></span>
-<span id="cb34-179"><a href="#cb34-179" aria-hidden="true" tabindex="-1"></a><span class="in">  file = "topics/04_gp/gp_example_sim_samples")</span></span>
-<span id="cb34-180"><a href="#cb34-180" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-181"><a href="#cb34-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-184"><a href="#cb34-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-185"><a href="#cb34-185" aria-hidden="true" tabindex="-1"></a>gp_example_sim_samples <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/04_gp/gp_example_sim_samples"</span>)</span>
-<span id="cb34-186"><a href="#cb34-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-187"><a href="#cb34-187" aria-hidden="true" tabindex="-1"></a>x_value_df <span class="ot">&lt;-</span> <span class="fu">enframe</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">20</span>),</span>
-<span id="cb34-188"><a href="#cb34-188" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"i"</span>, <span class="at">value =</span> <span class="st">"water"</span>)</span>
-<span id="cb34-189"><a href="#cb34-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-190"><a href="#cb34-190" aria-hidden="true" tabindex="-1"></a>gp_example_sim_samples <span class="sc">|&gt;</span> </span>
-<span id="cb34-191"><a href="#cb34-191" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(f[i], a, <span class="at">ndraws =</span> <span class="dv">45</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb34-192"><a href="#cb34-192" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(x_value_df) <span class="sc">|&gt;</span> </span>
-<span id="cb34-193"><a href="#cb34-193" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> <span class="fu">plogis</span>(f <span class="sc">+</span> a), <span class="at">group =</span> .draw)) <span class="sc">+</span> </span>
-<span id="cb34-194"><a href="#cb34-194" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
-<span id="cb34-195"><a href="#cb34-195" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb34-196"><a href="#cb34-196" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-197"><a href="#cb34-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-198"><a href="#cb34-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-199"><a href="#cb34-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-200"><a href="#cb34-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## Express that model in code</span></span>
-<span id="cb34-201"><a href="#cb34-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-204"><a href="#cb34-204" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-205"><a href="#cb34-205" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb34-206"><a href="#cb34-206" aria-hidden="true" tabindex="-1"></a>gp_example_pred <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb34-207"><a href="#cb34-207" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_pred.stan"</span>)</span>
-<span id="cb34-208"><a href="#cb34-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-209"><a href="#cb34-209" aria-hidden="true" tabindex="-1"></a>gp_example_pred</span>
-<span id="cb34-210"><a href="#cb34-210" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-211"><a href="#cb34-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-212"><a href="#cb34-212" aria-hidden="true" tabindex="-1"></a>We need to generate data for making predictions! I'll create a new vector of observations called <span class="in">`new_x`</span> that cover the range of the <span class="in">`water`</span> variable in our dataset.</span>
-<span id="cb34-213"><a href="#cb34-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-214"><a href="#cb34-214" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
-<span id="cb34-215"><a href="#cb34-215" aria-hidden="true" tabindex="-1"></a><span class="in"># sample N values on the range of x</span></span>
-<span id="cb34-216"><a href="#cb34-216" aria-hidden="true" tabindex="-1"></a><span class="in">new_x &lt;- seq(from = -3, to = 5, length.out = 15)</span></span>
+<span id="cb34-169"><a href="#cb34-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-170"><a href="#cb34-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-171"><a href="#cb34-171" aria-hidden="true" tabindex="-1"></a>gp_example_sim <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_sim.stan"</span>)</span>
+<span id="cb34-172"><a href="#cb34-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-173"><a href="#cb34-173" aria-hidden="true" tabindex="-1"></a>gp_example_sim</span>
+<span id="cb34-174"><a href="#cb34-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-175"><a href="#cb34-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-176"><a href="#cb34-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-177"><a href="#cb34-177" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
+<span id="cb34-178"><a href="#cb34-178" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_sim_samples &lt;- gp_example_sim$sample(data = list(</span></span>
+<span id="cb34-179"><a href="#cb34-179" aria-hidden="true" tabindex="-1"></a><span class="in">  N = 20,</span></span>
+<span id="cb34-180"><a href="#cb34-180" aria-hidden="true" tabindex="-1"></a><span class="in">  x = seq(from = -3, to = 5, length.out = 20)),</span></span>
+<span id="cb34-181"><a href="#cb34-181" aria-hidden="true" tabindex="-1"></a><span class="in">  refresh = 200, chains = 1, iter_sampling = 200</span></span>
+<span id="cb34-182"><a href="#cb34-182" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb34-183"><a href="#cb34-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-184"><a href="#cb34-184" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_sim_samples$save_object(</span></span>
+<span id="cb34-185"><a href="#cb34-185" aria-hidden="true" tabindex="-1"></a><span class="in">  file = "topics/04_gp/gp_example_sim_samples")</span></span>
+<span id="cb34-186"><a href="#cb34-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-187"><a href="#cb34-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-190"><a href="#cb34-190" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-191"><a href="#cb34-191" aria-hidden="true" tabindex="-1"></a>gp_example_sim_samples <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/04_gp/gp_example_sim_samples"</span>)</span>
+<span id="cb34-192"><a href="#cb34-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-193"><a href="#cb34-193" aria-hidden="true" tabindex="-1"></a>x_value_df <span class="ot">&lt;-</span> <span class="fu">enframe</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">20</span>),</span>
+<span id="cb34-194"><a href="#cb34-194" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"i"</span>, <span class="at">value =</span> <span class="st">"water"</span>)</span>
+<span id="cb34-195"><a href="#cb34-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-196"><a href="#cb34-196" aria-hidden="true" tabindex="-1"></a>gp_example_sim_samples <span class="sc">|&gt;</span> </span>
+<span id="cb34-197"><a href="#cb34-197" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(f[i], a, <span class="at">ndraws =</span> <span class="dv">45</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-198"><a href="#cb34-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(x_value_df) <span class="sc">|&gt;</span> </span>
+<span id="cb34-199"><a href="#cb34-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> <span class="fu">plogis</span>(f <span class="sc">+</span> a), <span class="at">group =</span> .draw)) <span class="sc">+</span> </span>
+<span id="cb34-200"><a href="#cb34-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb34-201"><a href="#cb34-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb34-202"><a href="#cb34-202" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-203"><a href="#cb34-203" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-204"><a href="#cb34-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-205"><a href="#cb34-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-206"><a href="#cb34-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## Express that model in code</span></span>
+<span id="cb34-207"><a href="#cb34-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-210"><a href="#cb34-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-211"><a href="#cb34-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-212"><a href="#cb34-212" aria-hidden="true" tabindex="-1"></a>gp_example_pred <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb34-213"><a href="#cb34-213" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_pred.stan"</span>)</span>
+<span id="cb34-214"><a href="#cb34-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-215"><a href="#cb34-215" aria-hidden="true" tabindex="-1"></a>gp_example_pred</span>
+<span id="cb34-216"><a href="#cb34-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-217"><a href="#cb34-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-218"><a href="#cb34-218" aria-hidden="true" tabindex="-1"></a><span class="in"># put them on the dataframe</span></span>
-<span id="cb34-219"><a href="#cb34-219" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp &lt;- gp_example_pred$sample(</span></span>
-<span id="cb34-220"><a href="#cb34-220" aria-hidden="true" tabindex="-1"></a><span class="in">  data = list(N = length(pwil_spatial$presabs) + length(new_x),</span></span>
-<span id="cb34-221"><a href="#cb34-221" aria-hidden="true" tabindex="-1"></a><span class="in">              Nobs = length(pwil_spatial$presabs),</span></span>
-<span id="cb34-222"><a href="#cb34-222" aria-hidden="true" tabindex="-1"></a><span class="in">              x = c(pwil_spatial$water, new_x),</span></span>
-<span id="cb34-223"><a href="#cb34-223" aria-hidden="true" tabindex="-1"></a><span class="in">              z = pwil_spatial$presabs),</span></span>
-<span id="cb34-224"><a href="#cb34-224" aria-hidden="true" tabindex="-1"></a><span class="in">  chains = 2, parallel_chains = 2, refresh = 1000)</span></span>
-<span id="cb34-225"><a href="#cb34-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-226"><a href="#cb34-226" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp$save_object("topics/04_gp/gp_example_samp_pwil.rds")</span></span>
-<span id="cb34-227"><a href="#cb34-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-228"><a href="#cb34-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-229"><a href="#cb34-229" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
-<span id="cb34-230"><a href="#cb34-230" aria-hidden="true" tabindex="-1"></a>Note that <span class="in">`cmdstanr`</span> models have a method called <span class="in">`$save_object()`</span>, which lets you save the model outputs into an <span class="in">`.rds`</span> object.</span>
-<span id="cb34-231"><a href="#cb34-231" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb34-232"><a href="#cb34-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-233"><a href="#cb34-233" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=TRUE}</span></span>
+<span id="cb34-218"><a href="#cb34-218" aria-hidden="true" tabindex="-1"></a>We need to generate data for making predictions! I'll create a new vector of observations called <span class="in">`new_x`</span> that cover the range of the <span class="in">`water`</span> variable in our dataset.</span>
+<span id="cb34-219"><a href="#cb34-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-220"><a href="#cb34-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
+<span id="cb34-221"><a href="#cb34-221" aria-hidden="true" tabindex="-1"></a><span class="in"># sample N values on the range of x</span></span>
+<span id="cb34-222"><a href="#cb34-222" aria-hidden="true" tabindex="-1"></a><span class="in">new_x &lt;- seq(from = -3, to = 5, length.out = 15)</span></span>
+<span id="cb34-223"><a href="#cb34-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-224"><a href="#cb34-224" aria-hidden="true" tabindex="-1"></a><span class="in"># put them on the dataframe</span></span>
+<span id="cb34-225"><a href="#cb34-225" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp &lt;- gp_example_pred$sample(</span></span>
+<span id="cb34-226"><a href="#cb34-226" aria-hidden="true" tabindex="-1"></a><span class="in">  data = list(N = length(pwil_spatial$presabs) + length(new_x),</span></span>
+<span id="cb34-227"><a href="#cb34-227" aria-hidden="true" tabindex="-1"></a><span class="in">              Nobs = length(pwil_spatial$presabs),</span></span>
+<span id="cb34-228"><a href="#cb34-228" aria-hidden="true" tabindex="-1"></a><span class="in">              x = c(pwil_spatial$water, new_x),</span></span>
+<span id="cb34-229"><a href="#cb34-229" aria-hidden="true" tabindex="-1"></a><span class="in">              z = pwil_spatial$presabs),</span></span>
+<span id="cb34-230"><a href="#cb34-230" aria-hidden="true" tabindex="-1"></a><span class="in">  chains = 2, parallel_chains = 2, refresh = 1000)</span></span>
+<span id="cb34-231"><a href="#cb34-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-232"><a href="#cb34-232" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp$save_object("topics/04_gp/gp_example_samp_pwil.rds")</span></span>
+<span id="cb34-233"><a href="#cb34-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-234"><a href="#cb34-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-235"><a href="#cb34-235" aria-hidden="true" tabindex="-1"></a><span class="in"># sample N values on the range of x</span></span>
-<span id="cb34-236"><a href="#cb34-236" aria-hidden="true" tabindex="-1"></a><span class="in">new_x &lt;- seq(from = -3, to = 5, length.out = 15)</span></span>
-<span id="cb34-237"><a href="#cb34-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-238"><a href="#cb34-238" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp_pwil &lt;- read_rds(</span></span>
-<span id="cb34-239"><a href="#cb34-239" aria-hidden="true" tabindex="-1"></a><span class="in">  "topics/04_gp/gp_example_samp_pwil.rds")</span></span>
+<span id="cb34-235"><a href="#cb34-235" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
+<span id="cb34-236"><a href="#cb34-236" aria-hidden="true" tabindex="-1"></a>Note that <span class="in">`cmdstanr`</span> models have a method called <span class="in">`$save_object()`</span>, which lets you save the model outputs into an <span class="in">`.rds`</span> object.</span>
+<span id="cb34-237"><a href="#cb34-237" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb34-238"><a href="#cb34-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-239"><a href="#cb34-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=TRUE}</span></span>
 <span id="cb34-240"><a href="#cb34-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-241"><a href="#cb34-241" aria-hidden="true" tabindex="-1"></a><span class="in">water_prediction_points &lt;- gp_example_samp_pwil |&gt; </span></span>
-<span id="cb34-242"><a href="#cb34-242" aria-hidden="true" tabindex="-1"></a><span class="in">  tidybayes::gather_rvars(f[rownum]) |&gt; </span></span>
-<span id="cb34-243"><a href="#cb34-243" aria-hidden="true" tabindex="-1"></a><span class="in">  slice(-(1:length(pwil_spatial$presabs)))</span></span>
-<span id="cb34-244"><a href="#cb34-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-245"><a href="#cb34-245" aria-hidden="true" tabindex="-1"></a><span class="in">water_prediction_points |&gt; </span></span>
-<span id="cb34-246"><a href="#cb34-246" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(water = new_x,</span></span>
-<span id="cb34-247"><a href="#cb34-247" aria-hidden="true" tabindex="-1"></a><span class="in">         presabs = posterior::rfun(plogis)(.value)) |&gt; </span></span>
-<span id="cb34-248"><a href="#cb34-248" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = water, dist = presabs)) + </span></span>
-<span id="cb34-249"><a href="#cb34-249" aria-hidden="true" tabindex="-1"></a><span class="in">  tidybayes::stat_lineribbon() + </span></span>
-<span id="cb34-250"><a href="#cb34-250" aria-hidden="true" tabindex="-1"></a><span class="in">  # scale_fill_viridis_d(option = "rocket") + </span></span>
-<span id="cb34-251"><a href="#cb34-251" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_fill_brewer(palette = "Reds", direction  = -1) + </span></span>
-<span id="cb34-252"><a href="#cb34-252" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_jitter(aes(x = water, y = presabs), </span></span>
-<span id="cb34-253"><a href="#cb34-253" aria-hidden="true" tabindex="-1"></a><span class="in">              inherit.aes = FALSE, </span></span>
-<span id="cb34-254"><a href="#cb34-254" aria-hidden="true" tabindex="-1"></a><span class="in">              height = .01, width = 0,</span></span>
-<span id="cb34-255"><a href="#cb34-255" aria-hidden="true" tabindex="-1"></a><span class="in">              data = pwil_spatial)</span></span>
-<span id="cb34-256"><a href="#cb34-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-257"><a href="#cb34-257" aria-hidden="true" tabindex="-1"></a><span class="in">ggsave("topics/04_gp/pwil_water.png")</span></span>
-<span id="cb34-258"><a href="#cb34-258" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-259"><a href="#cb34-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-260"><a href="#cb34-260" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ![](topics/04_gp/pwil_water.png) --&gt;</span></span>
-<span id="cb34-261"><a href="#cb34-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-262"><a href="#cb34-262" aria-hidden="true" tabindex="-1"></a>We can also pull out some specific functions. What I want you to see here is that there are MANY curvy lines that are consistent with this model.</span>
-<span id="cb34-263"><a href="#cb34-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-266"><a href="#cb34-266" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-267"><a href="#cb34-267" aria-hidden="true" tabindex="-1"></a>some_predicted_lines <span class="ot">&lt;-</span>  gp_example_samp_pwil <span class="sc">|&gt;</span> </span>
-<span id="cb34-268"><a href="#cb34-268" aria-hidden="true" tabindex="-1"></a>  <span class="co"># take just some draws</span></span>
-<span id="cb34-269"><a href="#cb34-269" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(a, f[rownum], <span class="at">ndraws =</span> <span class="dv">63</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb34-270"><a href="#cb34-270" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove the rows that match observed data,</span></span>
-<span id="cb34-271"><a href="#cb34-271" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and look only at the points for predictions.</span></span>
-<span id="cb34-272"><a href="#cb34-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rownum <span class="sc">&gt;</span> <span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs)) <span class="sc">|&gt;</span> </span>
-<span id="cb34-273"><a href="#cb34-273" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convert to probability</span></span>
-<span id="cb34-274"><a href="#cb34-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prob =</span> <span class="fu">plogis</span>(f <span class="sc">+</span> a),</span>
-<span id="cb34-275"><a href="#cb34-275" aria-hidden="true" tabindex="-1"></a>         <span class="at">rownum =</span> rownum <span class="sc">-</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb34-276"><a href="#cb34-276" aria-hidden="true" tabindex="-1"></a>  <span class="do">## need a dataframe that says which "rownum" from </span></span>
-<span id="cb34-277"><a href="#cb34-277" aria-hidden="true" tabindex="-1"></a>  <span class="do">## above goes with which value of water from the</span></span>
-<span id="cb34-278"><a href="#cb34-278" aria-hidden="true" tabindex="-1"></a>  <span class="do">## new_x vector I made:</span></span>
-<span id="cb34-279"><a href="#cb34-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(tibble<span class="sc">::</span><span class="fu">enframe</span>(new_x,</span>
-<span id="cb34-280"><a href="#cb34-280" aria-hidden="true" tabindex="-1"></a>                            <span class="at">name =</span> <span class="st">"rownum"</span>, </span>
-<span id="cb34-281"><a href="#cb34-281" aria-hidden="true" tabindex="-1"></a>                            <span class="at">value =</span> <span class="st">"water"</span>))</span>
-<span id="cb34-282"><a href="#cb34-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-283"><a href="#cb34-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-284"><a href="#cb34-284" aria-hidden="true" tabindex="-1"></a>some_predicted_lines <span class="sc">|&gt;</span> </span>
-<span id="cb34-285"><a href="#cb34-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> prob, <span class="at">group =</span> .draw)) <span class="sc">+</span> </span>
-<span id="cb34-286"><a href="#cb34-286" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span> </span>
-<span id="cb34-287"><a href="#cb34-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb34-288"><a href="#cb34-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb34-289"><a href="#cb34-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-290"><a href="#cb34-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-291"><a href="#cb34-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-292"><a href="#cb34-292" aria-hidden="true" tabindex="-1"></a><span class="fu"># Spatial predictions</span></span>
-<span id="cb34-293"><a href="#cb34-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-294"><a href="#cb34-294" aria-hidden="true" tabindex="-1"></a>To make a prediction of a function on one X variable, we needed a sequence of points to predict along. </span>
-<span id="cb34-295"><a href="#cb34-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-296"><a href="#cb34-296" aria-hidden="true" tabindex="-1"></a>To make spatial predictions, we need a _grid_ of points to predict along.</span>
+<span id="cb34-241"><a href="#cb34-241" aria-hidden="true" tabindex="-1"></a><span class="in"># sample N values on the range of x</span></span>
+<span id="cb34-242"><a href="#cb34-242" aria-hidden="true" tabindex="-1"></a><span class="in">new_x &lt;- seq(from = -3, to = 5, length.out = 15)</span></span>
+<span id="cb34-243"><a href="#cb34-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-244"><a href="#cb34-244" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_samp_pwil &lt;- read_rds(</span></span>
+<span id="cb34-245"><a href="#cb34-245" aria-hidden="true" tabindex="-1"></a><span class="in">  "topics/04_gp/gp_example_samp_pwil.rds")</span></span>
+<span id="cb34-246"><a href="#cb34-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-247"><a href="#cb34-247" aria-hidden="true" tabindex="-1"></a><span class="in">water_prediction_points &lt;- gp_example_samp_pwil |&gt; </span></span>
+<span id="cb34-248"><a href="#cb34-248" aria-hidden="true" tabindex="-1"></a><span class="in">  tidybayes::gather_rvars(f[rownum]) |&gt; </span></span>
+<span id="cb34-249"><a href="#cb34-249" aria-hidden="true" tabindex="-1"></a><span class="in">  slice(-(1:length(pwil_spatial$presabs)))</span></span>
+<span id="cb34-250"><a href="#cb34-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-251"><a href="#cb34-251" aria-hidden="true" tabindex="-1"></a><span class="in">water_prediction_points |&gt; </span></span>
+<span id="cb34-252"><a href="#cb34-252" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(water = new_x,</span></span>
+<span id="cb34-253"><a href="#cb34-253" aria-hidden="true" tabindex="-1"></a><span class="in">         presabs = posterior::rfun(plogis)(.value)) |&gt; </span></span>
+<span id="cb34-254"><a href="#cb34-254" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot(aes(x = water, dist = presabs)) + </span></span>
+<span id="cb34-255"><a href="#cb34-255" aria-hidden="true" tabindex="-1"></a><span class="in">  tidybayes::stat_lineribbon() + </span></span>
+<span id="cb34-256"><a href="#cb34-256" aria-hidden="true" tabindex="-1"></a><span class="in">  # scale_fill_viridis_d(option = "rocket") + </span></span>
+<span id="cb34-257"><a href="#cb34-257" aria-hidden="true" tabindex="-1"></a><span class="in">  scale_fill_brewer(palette = "Reds", direction  = -1) + </span></span>
+<span id="cb34-258"><a href="#cb34-258" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_jitter(aes(x = water, y = presabs), </span></span>
+<span id="cb34-259"><a href="#cb34-259" aria-hidden="true" tabindex="-1"></a><span class="in">              inherit.aes = FALSE, </span></span>
+<span id="cb34-260"><a href="#cb34-260" aria-hidden="true" tabindex="-1"></a><span class="in">              height = .01, width = 0,</span></span>
+<span id="cb34-261"><a href="#cb34-261" aria-hidden="true" tabindex="-1"></a><span class="in">              data = pwil_spatial)</span></span>
+<span id="cb34-262"><a href="#cb34-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-263"><a href="#cb34-263" aria-hidden="true" tabindex="-1"></a><span class="in">ggsave("topics/04_gp/pwil_water.png")</span></span>
+<span id="cb34-264"><a href="#cb34-264" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-265"><a href="#cb34-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-266"><a href="#cb34-266" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ![](topics/04_gp/pwil_water.png) --&gt;</span></span>
+<span id="cb34-267"><a href="#cb34-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-268"><a href="#cb34-268" aria-hidden="true" tabindex="-1"></a>We can also pull out some specific functions. What I want you to see here is that there are MANY curvy lines that are consistent with this model.</span>
+<span id="cb34-269"><a href="#cb34-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-272"><a href="#cb34-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-273"><a href="#cb34-273" aria-hidden="true" tabindex="-1"></a>some_predicted_lines <span class="ot">&lt;-</span>  gp_example_samp_pwil <span class="sc">|&gt;</span> </span>
+<span id="cb34-274"><a href="#cb34-274" aria-hidden="true" tabindex="-1"></a>  <span class="co"># take just some draws</span></span>
+<span id="cb34-275"><a href="#cb34-275" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(a, f[rownum], <span class="at">ndraws =</span> <span class="dv">63</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-276"><a href="#cb34-276" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove the rows that match observed data,</span></span>
+<span id="cb34-277"><a href="#cb34-277" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and look only at the points for predictions.</span></span>
+<span id="cb34-278"><a href="#cb34-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rownum <span class="sc">&gt;</span> <span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs)) <span class="sc">|&gt;</span> </span>
+<span id="cb34-279"><a href="#cb34-279" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convert to probability</span></span>
+<span id="cb34-280"><a href="#cb34-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prob =</span> <span class="fu">plogis</span>(f <span class="sc">+</span> a),</span>
+<span id="cb34-281"><a href="#cb34-281" aria-hidden="true" tabindex="-1"></a>         <span class="at">rownum =</span> rownum <span class="sc">-</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-282"><a href="#cb34-282" aria-hidden="true" tabindex="-1"></a>  <span class="do">## need a dataframe that says which "rownum" from </span></span>
+<span id="cb34-283"><a href="#cb34-283" aria-hidden="true" tabindex="-1"></a>  <span class="do">## above goes with which value of water from the</span></span>
+<span id="cb34-284"><a href="#cb34-284" aria-hidden="true" tabindex="-1"></a>  <span class="do">## new_x vector I made:</span></span>
+<span id="cb34-285"><a href="#cb34-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(tibble<span class="sc">::</span><span class="fu">enframe</span>(new_x,</span>
+<span id="cb34-286"><a href="#cb34-286" aria-hidden="true" tabindex="-1"></a>                            <span class="at">name =</span> <span class="st">"rownum"</span>, </span>
+<span id="cb34-287"><a href="#cb34-287" aria-hidden="true" tabindex="-1"></a>                            <span class="at">value =</span> <span class="st">"water"</span>))</span>
+<span id="cb34-288"><a href="#cb34-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-289"><a href="#cb34-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-290"><a href="#cb34-290" aria-hidden="true" tabindex="-1"></a>some_predicted_lines <span class="sc">|&gt;</span> </span>
+<span id="cb34-291"><a href="#cb34-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> water, <span class="at">y =</span> prob, <span class="at">group =</span> .draw)) <span class="sc">+</span> </span>
+<span id="cb34-292"><a href="#cb34-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb34-293"><a href="#cb34-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb34-294"><a href="#cb34-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb34-295"><a href="#cb34-295" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-296"><a href="#cb34-296" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-297"><a href="#cb34-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-300"><a href="#cb34-300" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-301"><a href="#cb34-301" aria-hidden="true" tabindex="-1"></a>grid_points <span class="ot">&lt;-</span> modelr<span class="sc">::</span><span class="fu">data_grid</span>(mite.xy, </span>
-<span id="cb34-302"><a href="#cb34-302" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">x =</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(x, <span class="at">by =</span> .<span class="dv">5</span>),</span>
-<span id="cb34-303"><a href="#cb34-303" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">y =</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(y, <span class="at">by =</span> .<span class="dv">5</span>)) </span>
-<span id="cb34-304"><a href="#cb34-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-305"><a href="#cb34-305" aria-hidden="true" tabindex="-1"></a>grid_points <span class="sc">|&gt;</span> </span>
-<span id="cb34-306"><a href="#cb34-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> </span>
-<span id="cb34-307"><a href="#cb34-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb34-308"><a href="#cb34-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()</span>
-<span id="cb34-309"><a href="#cb34-309" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-298"><a href="#cb34-298" aria-hidden="true" tabindex="-1"></a><span class="fu"># Spatial predictions</span></span>
+<span id="cb34-299"><a href="#cb34-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-300"><a href="#cb34-300" aria-hidden="true" tabindex="-1"></a>To make a prediction of a function on one X variable, we needed a sequence of points to predict along. </span>
+<span id="cb34-301"><a href="#cb34-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-302"><a href="#cb34-302" aria-hidden="true" tabindex="-1"></a>To make spatial predictions, we need a _grid_ of points to predict along.</span>
+<span id="cb34-303"><a href="#cb34-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-306"><a href="#cb34-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-307"><a href="#cb34-307" aria-hidden="true" tabindex="-1"></a>grid_points <span class="ot">&lt;-</span> modelr<span class="sc">::</span><span class="fu">data_grid</span>(mite.xy, </span>
+<span id="cb34-308"><a href="#cb34-308" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">x =</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(x, <span class="at">by =</span> .<span class="dv">5</span>),</span>
+<span id="cb34-309"><a href="#cb34-309" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">y =</span> modelr<span class="sc">::</span><span class="fu">seq_range</span>(y, <span class="at">by =</span> .<span class="dv">5</span>)) </span>
 <span id="cb34-310"><a href="#cb34-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-311"><a href="#cb34-311" aria-hidden="true" tabindex="-1"></a>Other than a change in the <span class="in">`data {}`</span> block, the Stan code is unchanged! </span>
-<span id="cb34-312"><a href="#cb34-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-313"><a href="#cb34-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-314"><a href="#cb34-314" aria-hidden="true" tabindex="-1"></a><span class="fu">### Prior predictive simulations</span></span>
-<span id="cb34-315"><a href="#cb34-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-318"><a href="#cb34-318" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-319"><a href="#cb34-319" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb34-320"><a href="#cb34-320" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb34-321"><a href="#cb34-321" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_2D_prior.stan"</span>)</span>
-<span id="cb34-322"><a href="#cb34-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-323"><a href="#cb34-323" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior</span>
-<span id="cb34-324"><a href="#cb34-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-325"><a href="#cb34-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-326"><a href="#cb34-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-329"><a href="#cb34-329" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-330"><a href="#cb34-330" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior_samp <span class="ot">&lt;-</span> gp_example_2D_prior<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb34-331"><a href="#cb34-331" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">nrow</span>(grid_points),</span>
-<span id="cb34-332"><a href="#cb34-332" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> grid_points),</span>
-<span id="cb34-333"><a href="#cb34-333" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>, <span class="at">refresh =</span> <span class="dv">1000</span>)</span>
-<span id="cb34-334"><a href="#cb34-334" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-335"><a href="#cb34-335" aria-hidden="true" tabindex="-1"></a><span class="fu">### visualize the prior</span></span>
-<span id="cb34-336"><a href="#cb34-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-339"><a href="#cb34-339" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-340"><a href="#cb34-340" aria-hidden="true" tabindex="-1"></a>  <span class="do">## extract the predictors</span></span>
-<span id="cb34-341"><a href="#cb34-341" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior_samp <span class="sc">|&gt;</span> </span>
-<span id="cb34-342"><a href="#cb34-342" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(f[rownum], a, <span class="at">ndraws =</span> <span class="dv">6</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb34-343"><a href="#cb34-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rownum =</span> <span class="fu">as.character</span>(rownum)) <span class="sc">|&gt;</span> </span>
-<span id="cb34-344"><a href="#cb34-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(grid_points <span class="sc">|&gt;</span> </span>
-<span id="cb34-345"><a href="#cb34-345" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="st">"rownum"</span>), <span class="at">by =</span> <span class="fu">join_by</span>(rownum)) <span class="sc">|&gt;</span> </span>
-<span id="cb34-346"><a href="#cb34-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">presabs =</span> <span class="fu">plogis</span>(f <span class="sc">+</span> a)) <span class="sc">|&gt;</span> </span>
-<span id="cb34-347"><a href="#cb34-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> presabs)) <span class="sc">+</span> </span>
-<span id="cb34-348"><a href="#cb34-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>()<span class="sc">+</span></span>
-<span id="cb34-349"><a href="#cb34-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"rocket"</span>) <span class="sc">+</span> </span>
-<span id="cb34-350"><a href="#cb34-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()<span class="sc">+</span></span>
-<span id="cb34-351"><a href="#cb34-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb34-352"><a href="#cb34-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Pr(y=1)"</span>) <span class="sc">+</span> </span>
-<span id="cb34-353"><a href="#cb34-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>.draw) <span class="sc">+</span></span>
-<span id="cb34-354"><a href="#cb34-354" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span> </span>
-<span id="cb34-355"><a href="#cb34-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-356"><a href="#cb34-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-357"><a href="#cb34-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-358"><a href="#cb34-358" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb34-359"><a href="#cb34-359" aria-hidden="true" tabindex="-1"></a><span class="fu">## CAUTION: Slow</span></span>
-<span id="cb34-360"><a href="#cb34-360" aria-hidden="true" tabindex="-1"></a>The model below, over 70 points, is the slowest model we've seen so far and takes about 7 minutes on my (Andrew's) laptop.</span>
-<span id="cb34-361"><a href="#cb34-361" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb34-311"><a href="#cb34-311" aria-hidden="true" tabindex="-1"></a>grid_points <span class="sc">|&gt;</span> </span>
+<span id="cb34-312"><a href="#cb34-312" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> </span>
+<span id="cb34-313"><a href="#cb34-313" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb34-314"><a href="#cb34-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()</span>
+<span id="cb34-315"><a href="#cb34-315" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-316"><a href="#cb34-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-317"><a href="#cb34-317" aria-hidden="true" tabindex="-1"></a>Other than a change in the <span class="in">`data {}`</span> block, the Stan code is unchanged! </span>
+<span id="cb34-318"><a href="#cb34-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-319"><a href="#cb34-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-320"><a href="#cb34-320" aria-hidden="true" tabindex="-1"></a><span class="fu">### Prior predictive simulations</span></span>
+<span id="cb34-321"><a href="#cb34-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-324"><a href="#cb34-324" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-325"><a href="#cb34-325" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-326"><a href="#cb34-326" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb34-327"><a href="#cb34-327" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_2D_prior.stan"</span>)</span>
+<span id="cb34-328"><a href="#cb34-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-329"><a href="#cb34-329" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior</span>
+<span id="cb34-330"><a href="#cb34-330" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-331"><a href="#cb34-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-332"><a href="#cb34-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-335"><a href="#cb34-335" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-336"><a href="#cb34-336" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior_samp <span class="ot">&lt;-</span> gp_example_2D_prior<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb34-337"><a href="#cb34-337" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">nrow</span>(grid_points),</span>
+<span id="cb34-338"><a href="#cb34-338" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> grid_points),</span>
+<span id="cb34-339"><a href="#cb34-339" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">parallel_chains =</span> <span class="dv">2</span>, <span class="at">refresh =</span> <span class="dv">1000</span>)</span>
+<span id="cb34-340"><a href="#cb34-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-341"><a href="#cb34-341" aria-hidden="true" tabindex="-1"></a><span class="fu">### visualize the prior</span></span>
+<span id="cb34-342"><a href="#cb34-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-345"><a href="#cb34-345" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-346"><a href="#cb34-346" aria-hidden="true" tabindex="-1"></a>  <span class="do">## extract the predictors</span></span>
+<span id="cb34-347"><a href="#cb34-347" aria-hidden="true" tabindex="-1"></a>gp_example_2D_prior_samp <span class="sc">|&gt;</span> </span>
+<span id="cb34-348"><a href="#cb34-348" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(f[rownum], a, <span class="at">ndraws =</span> <span class="dv">6</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-349"><a href="#cb34-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rownum =</span> <span class="fu">as.character</span>(rownum)) <span class="sc">|&gt;</span> </span>
+<span id="cb34-350"><a href="#cb34-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(grid_points <span class="sc">|&gt;</span> </span>
+<span id="cb34-351"><a href="#cb34-351" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="st">"rownum"</span>), <span class="at">by =</span> <span class="fu">join_by</span>(rownum)) <span class="sc">|&gt;</span> </span>
+<span id="cb34-352"><a href="#cb34-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">presabs =</span> <span class="fu">plogis</span>(f <span class="sc">+</span> a)) <span class="sc">|&gt;</span> </span>
+<span id="cb34-353"><a href="#cb34-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> presabs)) <span class="sc">+</span> </span>
+<span id="cb34-354"><a href="#cb34-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>()<span class="sc">+</span></span>
+<span id="cb34-355"><a href="#cb34-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"rocket"</span>) <span class="sc">+</span> </span>
+<span id="cb34-356"><a href="#cb34-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()<span class="sc">+</span></span>
+<span id="cb34-357"><a href="#cb34-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb34-358"><a href="#cb34-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Pr(y=1)"</span>) <span class="sc">+</span> </span>
+<span id="cb34-359"><a href="#cb34-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>.draw) <span class="sc">+</span></span>
+<span id="cb34-360"><a href="#cb34-360" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span> </span>
+<span id="cb34-361"><a href="#cb34-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-362"><a href="#cb34-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-365"><a href="#cb34-365" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-366"><a href="#cb34-366" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
-<span id="cb34-367"><a href="#cb34-367" aria-hidden="true" tabindex="-1"></a>gp_example_pred_2D <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
-<span id="cb34-368"><a href="#cb34-368" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_pred_2D.stan"</span>)</span>
-<span id="cb34-369"><a href="#cb34-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-370"><a href="#cb34-370" aria-hidden="true" tabindex="-1"></a>gp_example_pred_2D</span>
-<span id="cb34-371"><a href="#cb34-371" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-372"><a href="#cb34-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-373"><a href="#cb34-373" aria-hidden="true" tabindex="-1"></a>plot the effect in space:</span>
-<span id="cb34-374"><a href="#cb34-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-375"><a href="#cb34-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb34-376"><a href="#cb34-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-377"><a href="#cb34-377" aria-hidden="true" tabindex="-1"></a><span class="in">## sample the model</span></span>
-<span id="cb34-378"><a href="#cb34-378" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_2D_samp &lt;- gp_example_pred_2D$sample(</span></span>
-<span id="cb34-379"><a href="#cb34-379" aria-hidden="true" tabindex="-1"></a><span class="in">  data = list(N = length(pwil_spatial$presabs) + nrow(grid_points),</span></span>
-<span id="cb34-380"><a href="#cb34-380" aria-hidden="true" tabindex="-1"></a><span class="in">              Nobs = length(pwil_spatial$presabs),</span></span>
-<span id="cb34-381"><a href="#cb34-381" aria-hidden="true" tabindex="-1"></a><span class="in">              x = bind_rows(pwil_spatial[c("x", "y")], grid_points),</span></span>
-<span id="cb34-382"><a href="#cb34-382" aria-hidden="true" tabindex="-1"></a><span class="in">              z = pwil_spatial$presabs),</span></span>
-<span id="cb34-383"><a href="#cb34-383" aria-hidden="true" tabindex="-1"></a><span class="in">  chains = 2, parallel_chains = 2, refresh = 1000)</span></span>
-<span id="cb34-384"><a href="#cb34-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-385"><a href="#cb34-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-386"><a href="#cb34-386" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_2D_samp$save_object("topics/04_gp/gp_example_2D_samp_pwil.rds")</span></span>
-<span id="cb34-387"><a href="#cb34-387" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-388"><a href="#cb34-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-391"><a href="#cb34-391" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb34-392"><a href="#cb34-392" aria-hidden="true" tabindex="-1"></a>gp_example_2D_samp_pwil <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/04_gp/gp_example_2D_samp_pwil.rds"</span>)</span>
-<span id="cb34-393"><a href="#cb34-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-394"><a href="#cb34-394" aria-hidden="true" tabindex="-1"></a><span class="do">## extract the predictors</span></span>
-<span id="cb34-395"><a href="#cb34-395" aria-hidden="true" tabindex="-1"></a>gp_example_2D_samp_pwil <span class="sc">|&gt;</span> </span>
-<span id="cb34-396"><a href="#cb34-396" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(f[rownum], a) <span class="sc">|&gt;</span> </span>
-<span id="cb34-397"><a href="#cb34-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs))) <span class="sc">|&gt;</span> </span>
-<span id="cb34-398"><a href="#cb34-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(grid_points) <span class="sc">|&gt;</span> </span>
-<span id="cb34-399"><a href="#cb34-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">presabs =</span> posterior<span class="sc">::</span><span class="fu">rfun</span>(plogis)(f <span class="sc">+</span> a),</span>
-<span id="cb34-400"><a href="#cb34-400" aria-hidden="true" tabindex="-1"></a>         <span class="at">pa_median =</span> <span class="fu">median</span>(presabs)) <span class="sc">|&gt;</span> </span>
-<span id="cb34-401"><a href="#cb34-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> pa_median)) <span class="sc">+</span> </span>
-<span id="cb34-402"><a href="#cb34-402" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>()<span class="sc">+</span></span>
-<span id="cb34-403"><a href="#cb34-403" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> x,</span>
-<span id="cb34-404"><a href="#cb34-404" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> y,</span>
-<span id="cb34-405"><a href="#cb34-405" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> presabs),</span>
-<span id="cb34-406"><a href="#cb34-406" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb34-407"><a href="#cb34-407" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> pwil_spatial,</span>
-<span id="cb34-408"><a href="#cb34-408" aria-hidden="true" tabindex="-1"></a>             <span class="at">pch =</span> <span class="dv">21</span> ,</span>
-<span id="cb34-409"><a href="#cb34-409" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb34-410"><a href="#cb34-410" aria-hidden="true" tabindex="-1"></a>             <span class="at">stroke =</span> .<span class="dv">3</span>,</span>
-<span id="cb34-411"><a href="#cb34-411" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"lightblue"</span></span>
-<span id="cb34-412"><a href="#cb34-412" aria-hidden="true" tabindex="-1"></a>             ) <span class="sc">+</span> </span>
-<span id="cb34-413"><a href="#cb34-413" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"rocket"</span>) <span class="sc">+</span> </span>
-<span id="cb34-414"><a href="#cb34-414" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()<span class="sc">+</span></span>
-<span id="cb34-415"><a href="#cb34-415" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb34-416"><a href="#cb34-416" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Pr(y=1)"</span>) <span class="sc">+</span> </span>
-<span id="cb34-417"><a href="#cb34-417" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span> </span>
-<span id="cb34-418"><a href="#cb34-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-419"><a href="#cb34-419" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("topics/04_gp/pwil_spatial.png")</span></span>
-<span id="cb34-420"><a href="#cb34-420" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb34-421"><a href="#cb34-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-422"><a href="#cb34-422" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ![](topics/04_gp/pwil_spatial.png) --&gt;</span></span>
-<span id="cb34-423"><a href="#cb34-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-424"><a href="#cb34-424" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extensions:</span></span>
-<span id="cb34-425"><a href="#cb34-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-426"><a href="#cb34-426" aria-hidden="true" tabindex="-1"></a>Add water to the model. Does the spatial effect disappear, increase, or stay kind of the same?</span>
+<span id="cb34-363"><a href="#cb34-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-364"><a href="#cb34-364" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb34-365"><a href="#cb34-365" aria-hidden="true" tabindex="-1"></a><span class="fu">## CAUTION: Slow</span></span>
+<span id="cb34-366"><a href="#cb34-366" aria-hidden="true" tabindex="-1"></a>The model below, over 70 points, is the slowest model we've seen so far and takes about 7 minutes on my (Andrew's) laptop.</span>
+<span id="cb34-367"><a href="#cb34-367" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb34-368"><a href="#cb34-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-371"><a href="#cb34-371" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-372"><a href="#cb34-372" aria-hidden="true" tabindex="-1"></a><span class="co">#| class-output: stan</span></span>
+<span id="cb34-373"><a href="#cb34-373" aria-hidden="true" tabindex="-1"></a>gp_example_pred_2D <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(</span>
+<span id="cb34-374"><a href="#cb34-374" aria-hidden="true" tabindex="-1"></a>  <span class="at">stan_file =</span> <span class="st">"topics/04_gp/gp_example_pred_2D.stan"</span>)</span>
+<span id="cb34-375"><a href="#cb34-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-376"><a href="#cb34-376" aria-hidden="true" tabindex="-1"></a>gp_example_pred_2D</span>
+<span id="cb34-377"><a href="#cb34-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-378"><a href="#cb34-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-379"><a href="#cb34-379" aria-hidden="true" tabindex="-1"></a>plot the effect in space:</span>
+<span id="cb34-380"><a href="#cb34-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-381"><a href="#cb34-381" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
+<span id="cb34-382"><a href="#cb34-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-383"><a href="#cb34-383" aria-hidden="true" tabindex="-1"></a><span class="in">## sample the model</span></span>
+<span id="cb34-384"><a href="#cb34-384" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_2D_samp &lt;- gp_example_pred_2D$sample(</span></span>
+<span id="cb34-385"><a href="#cb34-385" aria-hidden="true" tabindex="-1"></a><span class="in">  data = list(N = length(pwil_spatial$presabs) + nrow(grid_points),</span></span>
+<span id="cb34-386"><a href="#cb34-386" aria-hidden="true" tabindex="-1"></a><span class="in">              Nobs = length(pwil_spatial$presabs),</span></span>
+<span id="cb34-387"><a href="#cb34-387" aria-hidden="true" tabindex="-1"></a><span class="in">              x = bind_rows(pwil_spatial[c("x", "y")], grid_points),</span></span>
+<span id="cb34-388"><a href="#cb34-388" aria-hidden="true" tabindex="-1"></a><span class="in">              z = pwil_spatial$presabs),</span></span>
+<span id="cb34-389"><a href="#cb34-389" aria-hidden="true" tabindex="-1"></a><span class="in">  chains = 2, parallel_chains = 2, refresh = 1000)</span></span>
+<span id="cb34-390"><a href="#cb34-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-391"><a href="#cb34-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-392"><a href="#cb34-392" aria-hidden="true" tabindex="-1"></a><span class="in">gp_example_2D_samp$save_object("topics/04_gp/gp_example_2D_samp_pwil.rds")</span></span>
+<span id="cb34-393"><a href="#cb34-393" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb34-394"><a href="#cb34-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-397"><a href="#cb34-397" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-398"><a href="#cb34-398" aria-hidden="true" tabindex="-1"></a>gp_example_2D_samp_pwil <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"topics/04_gp/gp_example_2D_samp_pwil.rds"</span>)</span>
+<span id="cb34-399"><a href="#cb34-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-400"><a href="#cb34-400" aria-hidden="true" tabindex="-1"></a><span class="do">## extract the predictors</span></span>
+<span id="cb34-401"><a href="#cb34-401" aria-hidden="true" tabindex="-1"></a>gp_example_2D_samp_pwil <span class="sc">|&gt;</span> </span>
+<span id="cb34-402"><a href="#cb34-402" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">spread_rvars</span>(f[rownum], a) <span class="sc">|&gt;</span> </span>
+<span id="cb34-403"><a href="#cb34-403" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(pwil_spatial<span class="sc">$</span>presabs))) <span class="sc">|&gt;</span> </span>
+<span id="cb34-404"><a href="#cb34-404" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(grid_points) <span class="sc">|&gt;</span> </span>
+<span id="cb34-405"><a href="#cb34-405" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">presabs =</span> posterior<span class="sc">::</span><span class="fu">rfun</span>(plogis)(f <span class="sc">+</span> a),</span>
+<span id="cb34-406"><a href="#cb34-406" aria-hidden="true" tabindex="-1"></a>         <span class="at">pa_median =</span> <span class="fu">median</span>(presabs)) <span class="sc">|&gt;</span> </span>
+<span id="cb34-407"><a href="#cb34-407" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> pa_median)) <span class="sc">+</span> </span>
+<span id="cb34-408"><a href="#cb34-408" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>()<span class="sc">+</span></span>
+<span id="cb34-409"><a href="#cb34-409" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> x,</span>
+<span id="cb34-410"><a href="#cb34-410" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> y,</span>
+<span id="cb34-411"><a href="#cb34-411" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> presabs),</span>
+<span id="cb34-412"><a href="#cb34-412" aria-hidden="true" tabindex="-1"></a>             <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb34-413"><a href="#cb34-413" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> pwil_spatial,</span>
+<span id="cb34-414"><a href="#cb34-414" aria-hidden="true" tabindex="-1"></a>             <span class="at">pch =</span> <span class="dv">21</span> ,</span>
+<span id="cb34-415"><a href="#cb34-415" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb34-416"><a href="#cb34-416" aria-hidden="true" tabindex="-1"></a>             <span class="at">stroke =</span> .<span class="dv">3</span>,</span>
+<span id="cb34-417"><a href="#cb34-417" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"lightblue"</span></span>
+<span id="cb34-418"><a href="#cb34-418" aria-hidden="true" tabindex="-1"></a>             ) <span class="sc">+</span> </span>
+<span id="cb34-419"><a href="#cb34-419" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"rocket"</span>) <span class="sc">+</span> </span>
+<span id="cb34-420"><a href="#cb34-420" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>()<span class="sc">+</span></span>
+<span id="cb34-421"><a href="#cb34-421" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb34-422"><a href="#cb34-422" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Pr(y=1)"</span>) <span class="sc">+</span> </span>
+<span id="cb34-423"><a href="#cb34-423" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span> </span>
+<span id="cb34-424"><a href="#cb34-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-425"><a href="#cb34-425" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("topics/04_gp/pwil_spatial.png")</span></span>
+<span id="cb34-426"><a href="#cb34-426" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb34-427"><a href="#cb34-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-428"><a href="#cb34-428" aria-hidden="true" tabindex="-1"></a>Next step: try to model water curve for more than one species. Would it be possible to make the species rho parameters hierarchical?</span>
+<span id="cb34-428"><a href="#cb34-428" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ![](topics/04_gp/pwil_spatial.png) --&gt;</span></span>
+<span id="cb34-429"><a href="#cb34-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-430"><a href="#cb34-430" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extensions:</span></span>
+<span id="cb34-431"><a href="#cb34-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-432"><a href="#cb34-432" aria-hidden="true" tabindex="-1"></a>Add water to the model. Does the spatial effect disappear, increase, or stay kind of the same?</span>
+<span id="cb34-433"><a href="#cb34-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-434"><a href="#cb34-434" aria-hidden="true" tabindex="-1"></a>Next step: try to model water curve for more than one species. Would it be possible to make the species rho parameters hierarchical?</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
