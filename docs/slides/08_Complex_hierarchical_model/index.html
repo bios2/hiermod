@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Guillaume Blanchet – Andrew MacDonald">
-  <meta name="dcterms.date" content="2025-05-07">
+  <meta name="dcterms.date" content="2025-05-08">
   <title>Modèles hiérarchiques pour les sciences de la vie – Complex hierarchical models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -337,7 +337,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 
-  <p class="date">2025-05-07</p>
+  <p class="date">2025-05-08</p>
 </section>
 <section id="hierarchical-model-structure-so-far" class="slide level2">
 <h2>Hierarchical model structure so far</h2>
@@ -397,7 +397,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.7em">
-<p>where <span class="math display">\[\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\times g}\right)\]</span></p>
+<p>where <span class="math display">\[\mathbf{b}_{f\times g} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)\]</span></p>
 </div>
 </div>
 <div class="fragment">
@@ -430,9 +430,9 @@ Guillaume Blanchet – Andrew MacDonald
 <div class="fragment">
 <div style="font-size: 0.65em">
 <p>where</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_g\\
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}
                                 ,
                                 \begin{bmatrix}
@@ -472,9 +472,9 @@ Guillaume Blanchet – Andrew MacDonald
 <div class="fragment">
 <div style="font-size: 0.65em">
 <p>where</p>
-<p><span class="math display">\[\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_{f\times g}\\
+<p><span class="math display">\[\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                                 \begin{bmatrix}
                                   \sigma^2_f &amp; 0\\
@@ -501,7 +501,7 @@ Guillaume Blanchet – Andrew MacDonald
 <section id="uncorrelated-intercept-and-slope-hierarchy" class="slide level2" style="font-size: 0.9em">
 <h2>Uncorrelated intercept and slope hierarchy</h2>
 <div style="font-size: 0.65em">
-<p><code>lme4</code> notation : <code>y ~ x + (x || f)</code> or <code>y ~ 1 + x + (1 | f) + (0 + x | g)</code></p>
+<p><code>lme4</code> notation : <code>y ~ x + (x || f)</code> or <code>y ~ 1 + x + (1 | f) + (0 + x | f)</code></p>
 </div>
 <div class="fragment">
 <div style="font-size: 0.65em">
@@ -521,9 +521,9 @@ Guillaume Blanchet – Andrew MacDonald
 <p><span class="math display">\[\begin{bmatrix}
     b_0\\
     b_1\\
-\end{bmatrix} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\end{bmatrix} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                                 \begin{bmatrix}
                                   \sigma^2_{b_0f} &amp; 0\\
@@ -543,23 +543,11 @@ Guillaume Blanchet – Andrew MacDonald
 <section id="a-small-step-back" class="slide level2">
 <h2>A small step back</h2>
 <div class="fragment">
-<div style="font-size: 0.7em">
-<p>The structure of the hierarchy discussed so far were “less complex” in the sense that</p>
+<div style="font-size: 0.8em">
+<p>The structure of the hierarchy discussed so far were “mildly complex” in the sense that</p>
 </div>
-</div>
-<div class="fragment">
-<div style="font-size: 0.7em">
-<ul>
-<li>A single variance parameter is estimated</li>
-</ul>
-<p><span class="math display">\[\sigma^2_{f}\]</span></p>
-</div>
-</div>
-<div class="fragment">
-<div style="font-size: 0.7em">
-<ul>
-<li>Multiple independent variance parameters are estimated</li>
-</ul>
+<div style="font-size: 0.8em">
+<p>Even if we estimate parameters of a covariance matrix, they are uncorrelated.</p>
 <p><span class="math display">\[
 \begin{bmatrix}
   \sigma^2_f &amp; 0\\
@@ -569,13 +557,13 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 </div>
 <div class="fragment">
-<div style="font-size: 0.7em">
+<div style="font-size: 0.8em">
 <p>In Bayesian, having uncorrelated variances allows us to sample variance parameters independently even with multiple factors, which is computationally more efficient.</p>
 </div>
 </div>
 <div class="fragment">
-<div style="font-size: 0.7em">
-<p>From this point on, we will look at more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
+<div style="font-size: 0.8em">
+<p>From this point on, we will look at even more complex covariance structures where the hierarchical levels are <strong>not</strong> independent from each other.</p>
 </div>
 </div>
 </section>
@@ -605,9 +593,9 @@ Guillaume Blanchet – Andrew MacDonald
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                       \begin{bmatrix}
                         \sigma^2_{b_0f} &amp; \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\
@@ -628,9 +616,9 @@ Guillaume Blanchet – Andrew MacDonald
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                       \begin{bmatrix}
                         \sigma^2_{b_0f} &amp; \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\

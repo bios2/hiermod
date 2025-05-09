@@ -4,7 +4,7 @@ title-slide-attributes:
   data-background-image: ../img/bg.jpg
   data-background-size: full
 author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2025-05-07"
+date: "2025-05-08"
 execute:
   echo: true
 format: 
@@ -79,7 +79,7 @@ $$y_i = b_{f[i]\times g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 
 ::: {style="font-size: 0.7em"}
 where
-$$\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\times g}\right)$$
+$$\mathbf{b}_{f\times g} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)$$
 :::
 
 . . .
@@ -161,9 +161,9 @@ $$y_i = b_{f[i]} + b_{g[i]} + \varepsilon \quad\forall\quad i = 1\dots n$$
 ::: {style="font-size: 0.65em"}
 where
 
-$$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_g\\
+$$\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}
                                 , 
                                 \begin{bmatrix}
@@ -265,9 +265,9 @@ $$y_i = b_{f[i]}+b_{f[i]\times g[i]} + \varepsilon \quad i = 1\dots n$$
 ::: {style="font-size: 0.65em"}
 where
 
-$$\mathbf{b} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_{f\times g}\\
+$$\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                                 \begin{bmatrix}
                                   \sigma^2_f & 0\\
@@ -348,7 +348,7 @@ legend("topright",
 ## Uncorrelated intercept and slope hierarchy  {style="font-size: 0.9em"}
 
 ::: {style="font-size: 0.65em"}
-`lme4` notation : `y ~ x + (x || f)` or `y ~ 1 + x + (1 | f) + (0 + x | g)`
+`lme4` notation : `y ~ x + (x || f)` or `y ~ 1 + x + (1 | f) + (0 + x | f)`
 :::
 
 . . .
@@ -376,9 +376,9 @@ This is because in this model
 $$\begin{bmatrix}
     b_0\\
     b_1\\
-\end{bmatrix} \sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\end{bmatrix} \sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                                 \begin{bmatrix}
                                   \sigma^2_{b_0f} & 0\\
@@ -463,22 +463,12 @@ par(xpd = FALSE)
 
 . . .
 
-::: {style="font-size: 0.7em"}
-The structure of the hierarchy discussed so far were "less complex" in the sense that
+::: {style="font-size: 0.8em"}
+The structure of the hierarchy discussed so far were "mildly complex" in the sense that
 :::
 
-. . .
-
-::: {style="font-size: 0.7em"}
-- A single variance parameter is estimated
-
-$$\sigma^2_{f}$$
-:::
-
-. . .
-
-::: {style="font-size: 0.7em"}
-- Multiple independent variance parameters are estimated
+::: {style="font-size: 0.8em"}
+Even if we estimate parameters of a covariance matrix, they are uncorrelated.
 
 $$
 \begin{bmatrix}
@@ -490,14 +480,14 @@ $$
 
 . . .
 
-::: {style="font-size: 0.7em"}
+::: {style="font-size: 0.8em"}
 In Bayesian, having uncorrelated variances allows us to sample variance parameters independently even with multiple factors, which is computationally more efficient.
 :::
 
 . . .
 
-::: {style="font-size: 0.7em"}
-From this point on, we will look at more complex covariance structures where the hierarchical levels are **not** independent from each other.
+::: {style="font-size: 0.8em"}
+From this point on, we will look at even more complex covariance structures where the hierarchical levels are **not** independent from each other.
 :::
 
 ## Correlated intercept and slope hierarchy  {style="font-size: 0.9em"}
@@ -534,9 +524,9 @@ $$\begin{bmatrix}
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                       \begin{bmatrix}
                         \sigma^2_{b_0f} & \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\ 
@@ -560,9 +550,9 @@ $$\begin{bmatrix}
     b_0\\
     b_1\\
 \end{bmatrix}
-\sim \mathcal{N}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+\sim \mathcal{MNV}\left(\begin{bmatrix}
+                                    0\\
+                                    0\\
                                   \end{bmatrix}, 
                       \begin{bmatrix}
                         \sigma^2_{b_0f} & \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\ 
@@ -626,7 +616,7 @@ library(mnormt)
 x     <- seq(-3, 3, 0.1) 
 y     <- seq(-3, 3, 0.1)
 mu    <- c(0, 0)
-sigma <- matrix(c(2, 1, 1, 1), nrow=2)
+sigma <- matrix(c(2, 1.2, 1.2, 1), nrow=2)
 f     <- function(x, y) dmnorm(cbind(x, y), mu, sigma)
 z     <- outer(x, y, f)
 
