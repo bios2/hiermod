@@ -397,7 +397,7 @@ Guillaume Blanchet – Andrew MacDonald
 </div>
 <div class="fragment">
 <div style="font-size: 0.7em">
-<p>where <span class="math display">\[\mathbf{b}_{f\times g} \sim \mathcal{N}\left(\mu_{f\times g}, \sigma^2_{f\times g}\right)\]</span></p>
+<p>where <span class="math display">\[\mathbf{b}_{f\times g} \sim \mathcal{N}\left(0, \sigma^2_{f\times g}\right)\]</span></p>
 </div>
 </div>
 <div class="fragment">
@@ -431,8 +431,8 @@ Guillaume Blanchet – Andrew MacDonald
 <div style="font-size: 0.65em">
 <p>where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_g\\
+                                    0\\
+                                    0\\
                                   \end{bmatrix}
                                 ,
                                 \begin{bmatrix}
@@ -473,8 +473,8 @@ Guillaume Blanchet – Andrew MacDonald
 <div style="font-size: 0.65em">
 <p>where</p>
 <p><span class="math display">\[\mathbf{b} \sim \mathcal{MNV}\left(\begin{bmatrix}
-                                    \mu_f\\
-                                    \mu_{f\times g}\\
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                                 \begin{bmatrix}
                                   \sigma^2_f &amp; 0\\
@@ -501,7 +501,7 @@ Guillaume Blanchet – Andrew MacDonald
 <section id="uncorrelated-intercept-and-slope-hierarchy" class="slide level2" style="font-size: 0.9em">
 <h2>Uncorrelated intercept and slope hierarchy</h2>
 <div style="font-size: 0.65em">
-<p><code>lme4</code> notation : <code>y ~ x + (x || f)</code> or <code>y ~ 1 + x + (1 | f) + (0 + x | g)</code></p>
+<p><code>lme4</code> notation : <code>y ~ x + (x || f)</code> or <code>y ~ 1 + x + (1 | f) + (0 + x | f)</code></p>
 </div>
 <div class="fragment">
 <div style="font-size: 0.65em">
@@ -522,8 +522,8 @@ Guillaume Blanchet – Andrew MacDonald
     b_0\\
     b_1\\
 \end{bmatrix} \sim \mathcal{MNV}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                                 \begin{bmatrix}
                                   \sigma^2_{b_0f} &amp; 0\\
@@ -594,8 +594,8 @@ Guillaume Blanchet – Andrew MacDonald
     b_1\\
 \end{bmatrix}
 \sim \mathcal{MNV}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                       \begin{bmatrix}
                         \sigma^2_{b_0f} &amp; \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\
@@ -617,8 +617,8 @@ Guillaume Blanchet – Andrew MacDonald
     b_1\\
 \end{bmatrix}
 \sim \mathcal{MNV}\left(\begin{bmatrix}
-                                    \mu_{b_0f}\\
-                                    \mu_{b_1f}\\
+                                    0\\
+                                    0\\
                                   \end{bmatrix},
                       \begin{bmatrix}
                         \sigma^2_{b_0f} &amp; \rho_{b_0,b_1}\sigma_{b_0f}\sigma_{b_1f} \\
