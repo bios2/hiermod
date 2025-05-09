@@ -54,10 +54,12 @@ rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
 library(tidybayes)
 
+# mite data
 data(mite, package = "vegan")
-data("mite.env", package = "vegan")
+data(mite.env, package = "vegan")
 
 ## ALSO: the spatial data
+data(mite.xy, package = "vegan")
 ```
 
 ```{r reorganize-mites-again}
@@ -148,9 +150,8 @@ $$
 f_i &\sim \mathsf{Multivariate\ Normal}(0, K(x | \theta)) \\
   K(x | \alpha, \rho, \sigma)_{i, j}
 &= \alpha^2
-\exp \left(
-- \frac{(\text{water}_i - \text{water}_j)^2}{2 \rho^2} 
-\right)
+e^{
+\frac{-(\text{water}_i - \text{water}_j)^2}{2 \rho^2}}
 + \delta_{i, j} \sigma^2 \\
 \rho &\sim \mathsf{Inverse\ Gamma}(5, 14) \\
 \alpha &\sim \mathsf{Normal}(0, .8) \\
@@ -158,32 +159,39 @@ a &\sim \mathsf{Normal}(0, .2) \\
 \end{align}
 $$
 
+Here's an interpretation of the parameters of this model: 
+
+* $a^2$ is the maximume covariance between two points
+* $\rho$ tells us how quickly that covariance goes down as two samples become more different in their water amount
+* $\delta_{i, j} \sigma^2$ adds the variances along the diagonal
+
+See the explanation of this function in the [Stan User's guide](https://mc-stan.org/docs/stan-users-guide/gaussian-processes.html#gaussian-process-regression)
+
 ## Simulate to understand it
+
+Here is the Stan code that replicates the mathematical model above.
 
 ```{r}
 #| class-output: stan
-gp_example_sim <- cmdstan_model(stan_file = "topics/04_gp/gp_example_sim.stan")
+gp_example_sim <- stan_model(file = "topics/04_gp/gp_example_sim.stan")
 
 gp_example_sim
 ```
 
 
-```{r, eval=FALSE}
-gp_example_sim_samples <- gp_example_sim$sample(data = list(
-  N = 20,
-  x = seq(from = -3, to = 5, length.out = 20)),
-  refresh = 200, chains = 1, iter_sampling = 200
+```{r, eval=TRUE}
+gp_example_sim_samples <- sampling(
+  gp_example_sim,
+  data = list(
+    N = 20,
+    x = seq(from = -3, to = 5, length.out = 20)),
+  refresh = 200, chains = 1
 )
 
-gp_example_sim_samples$save_object(
-  file = "topics/04_gp/gp_example_sim_samples")
 ```
 
 ```{r}
-
-gp_example_sim_samples <- read_rds("topics/04_gp/gp_example_sim_samples")
-
-x_value_df <- enframe(x = seq(from = -3, to = 5, length.out = 20),
+x_value_df <- tibble::enframe(x = seq(from = -3, to = 5, length.out = 20),
                       name = "i", value = "water")
 
 gp_example_sim_samples |> 
@@ -198,44 +206,49 @@ gp_example_sim_samples |>
 
 ## Express that model in code
 
+With a working simulation, we can now adapt the model to handle real data.
+
 ```{r}
 #| class-output: stan
-gp_example_pred <- cmdstan_model(
-  stan_file = "topics/04_gp/gp_example_pred.stan")
+gp_example_pred <- stan_model(
+  file = "topics/04_gp/gp_example_pred.stan")
 
 gp_example_pred
 ```
 
 We need to generate data for making predictions! I'll create a new vector of observations called `new_x` that cover the range of the `water` variable in our dataset.
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 # sample N values on the range of x
 new_x <- seq(from = -3, to = 5, length.out = 15)
 
-# put them on the dataframe
-gp_example_samp <- gp_example_pred$sample(
-  data = list(N = length(pwil_spatial$presabs) + length(new_x),
-              Nobs = length(pwil_spatial$presabs),
-              x = c(pwil_spatial$water, new_x),
-              z = pwil_spatial$presabs),
-  chains = 2, parallel_chains = 2, refresh = 1000)
+gp_data_list <- list(N = length(pwil_spatial$presabs) + length(new_x),
+                     Nobs = length(pwil_spatial$presabs),
+                     x = c(pwil_spatial$water, new_x),
+                     z = pwil_spatial$presabs)
 
-gp_example_samp$save_object("topics/04_gp/gp_example_samp_pwil.rds")
+# put them on the dataframe
+gp_example_pwil_samp <- sampling(
+  gp_example_pred,
+  data = gp_data_list,
+  chains = 2, refresh = 1000)
+
+# gp_example_samp$save_object("topics/04_gp/gp_example_samp_pwil.rds")
 ```
 
 :::{.callout-tip}
 Note that `cmdstanr` models have a method called `$save_object()`, which lets you save the model outputs into an `.rds` object.
+
+Also note that these notes have been converted to `rstan` so this tip doesn't help that much anymore ;) 
 :::
 
 ```{r eval=TRUE}
+#| fig.cap: A Gaussian Process estimates a distribution of smooth functions to a dataset. Here we're using it to estimate the effect of water amount on the occurence of a mite.
 
-# sample N values on the range of x
-new_x <- seq(from = -3, to = 5, length.out = 15)
+# gp_example_samp_pwil <- read_rds(
+#   "topics/04_gp/gp_example_samp_pwil.rds")
 
-gp_example_samp_pwil <- read_rds(
-  "topics/04_gp/gp_example_samp_pwil.rds")
-
-water_prediction_points <- gp_example_samp_pwil |> 
+water_prediction_points <- gp_example_pwil_samp |> 
   tidybayes::gather_rvars(f[rownum]) |> 
   slice(-(1:length(pwil_spatial$presabs)))
 
@@ -250,8 +263,6 @@ water_prediction_points |>
               inherit.aes = FALSE, 
               height = .01, width = 0,
               data = pwil_spatial)
-
-ggsave("topics/04_gp/pwil_water.png")
 ```
 
 <!-- ![](topics/04_gp/pwil_water.png) -->
@@ -259,7 +270,7 @@ ggsave("topics/04_gp/pwil_water.png")
 We can also pull out some specific functions. What I want you to see here is that there are MANY curvy lines that are consistent with this model.
 
 ```{r}
-some_predicted_lines <-  gp_example_samp_pwil |> 
+some_predicted_lines <-  gp_example_pwil_samp |> 
   # take just some draws
   tidybayes::spread_draws(a, f[rownum], ndraws = 63) |> 
   # remove the rows that match observed data,
@@ -308,19 +319,22 @@ Other than a change in the `data {}` block, the Stan code is unchanged!
 
 ```{r}
 #| class-output: stan
-gp_example_2D_prior <- cmdstan_model(
-  stan_file = "topics/04_gp/gp_example_2D_prior.stan")
+gp_example_2D_prior <- stan_model(
+  file = "topics/04_gp/gp_example_2D_prior.stan")
 
 gp_example_2D_prior
 ```
 
 
 ```{r}
-gp_example_2D_prior_samp <- gp_example_2D_prior$sample(
+gp_example_2D_prior_samp <- sampling(
+  gp_example_2D_prior,
   data = list(N = nrow(grid_points),
-              x = grid_points),
-  chains = 2, parallel_chains = 2, refresh = 1000)
+              x = grid_points,
+              rho_a = 5, rho_b = 14),
+  chains = 2, refresh = 1000)
 ```
+
 ### visualize the prior
 
 ```{r}
@@ -344,39 +358,40 @@ gp_example_2D_prior_samp |>
 
 :::{.callout-warning}
 ## CAUTION: Slow
-The model below, over 70 points, is the slowest model we've seen so far and takes about 7 minutes on my (Andrew's) laptop.
+The model below, over 70 points, is the slowest model we've seen so far and takes about 1 minute on my (Andrew's) laptop.
 :::
 
 ```{r}
 #| class-output: stan
-gp_example_pred_2D <- cmdstan_model(
-  stan_file = "topics/04_gp/gp_example_pred_2D.stan")
+gp_example_pred_2D <- stan_model(
+  file = "topics/04_gp/gp_example_pred_2D.stan")
 
 gp_example_pred_2D
 ```
 
 plot the effect in space:
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 
 ## sample the model
-gp_example_2D_samp <- gp_example_pred_2D$sample(
+gp_example_2D_samp <- sampling(
+  gp_example_pred_2D,
   data = list(N = length(pwil_spatial$presabs) + nrow(grid_points),
               Nobs = length(pwil_spatial$presabs),
               x = bind_rows(pwil_spatial[c("x", "y")], grid_points),
               z = pwil_spatial$presabs),
-  chains = 2, parallel_chains = 2, refresh = 1000)
+  chains = 2, refresh = 200)
 
 
-gp_example_2D_samp$save_object("topics/04_gp/gp_example_2D_samp_pwil.rds")
+# gp_example_2D_samp$save_object("topics/04_gp/gp_example_2D_samp_pwil.rds")
 ```
 
 ```{r}
 
-gp_example_2D_samp_pwil <- read_rds("topics/04_gp/gp_example_2D_samp_pwil.rds")
+# gp_example_2D_samp_pwil <- read_rds("topics/04_gp/gp_example_2D_samp_pwil.rds")
 
 ## extract the predictors
-gp_example_2D_samp_pwil |> 
+gp_example_2D_samp |> 
   tidybayes::spread_rvars(f[rownum], a) |> 
   slice(-(1:length(pwil_spatial$presabs))) |> 
   bind_cols(grid_points) |> 
