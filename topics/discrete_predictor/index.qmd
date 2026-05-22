@@ -11,19 +11,17 @@ editor_options:
   chunk_output_type: console
 ---
 
-In this section we're going to look at models with one discrete predictor. 
-You may have encountered this kind of model with discrete predictors. 
+In this section we're going to look at models with one discrete predictor. These are models you may have encountered in the past. 
 
 ## Load packages and data
 
 ```{r}
 library(palmerpenguins)
-library(tidyverse)
-# library(cmdstanr)
-suppressPackageStartupMessages(library(rstan))
+#library(tidyverse)
+library(rstan)
 rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
-library(tidybayes)
+#library(tidybayes)
 ```
 
 ## Data exploration
@@ -32,11 +30,9 @@ Let's start by taking a look at the Palmer Penguin dataset by looking at the dis
 
 ```{r}
 #| fig-cap: Histogram of bill depth for all the penguins in the Palmer Penguin dataset.
-library(tidyverse)
+#library(tidyverse)
 library(palmerpenguins)
-penguins |> 
-  ggplot(aes(x=bill_depth_mm)) + 
-  geom_histogram(binwidth = .5)
+hist(penguins$bill_depth_mm)
 ```
 
 There's quite a lot of variation in these measurements, with a suggestion of perhaps more than one peak in this distribution.
@@ -51,33 +47,30 @@ $$
 \end{align}
 $$
 
-let's express the same model in Stan:
+Let's express the same model in Stan:
 
 ```{r}
 #| class-output: stan
 
-normal_dist <- stan_model(
-  "topics/discrete_predictor/normal_dist.stan")
+normal_dist <- stan_model("topics/discrete_predictor/normal_dist.stan")
 normal_dist
 ```
 
 The model section looks very much like the mathematics shown above. 
-I want you to notice especially how the bottom chunk has three lines, each describing a probability distribution. 
+In particular, notice how the bottom block has three lines, each describing a probability distribution. 
 Models are devices for putting together the probability of all the quantities we are looking for. 
-Again, a Bayesian separates the world into unmeasured or measured quantities -- and above we state which are observed (the data block) and which are unobserved (the parameters block).
+Again, a Bayesian model separates the world into unmeasured or measured quantities. In this respect, in the Stan code we state which are observed (the data block) and which are unobserved (the parameters block).
 
 Before we fit this model we need to get the data ready. 
 We'll drop NA values^[just for this toy example!], and set up the data in a list.
 
 ```{r}
-# first we drop all NA values
-penguins_nobillNA <- penguins |> 
-  #drop NA values
-  filter(!is.na(bill_depth_mm))
+# Remove all NA
+penguins_nobillNA <- penguins[which(!is.na(penguins$bill_depth_mm)),]
 
-## then we assemble the data as a list.
-## I'm using the base function with()
-##  it lets me use the variable name directly 
+# Assemble the data as a list
+## I'm using the function with(),
+## it lets me use the variable name directly 
 ## without writing penguins_nobillNA$bill_depth_mm
 
 list_bill_dep <- with(penguins_nobillNA,
@@ -90,47 +83,38 @@ normal_bill_dep_samp <- sampling(normal_dist,
                                refresh = 0)
 
 ## summarize the samples for each parameter into a nice table
-normal_bill_dep_samp |> 
-  posterior::summarise_draws() |> 
-  knitr::kable()
+tableDraw <- posterior::summarise_draws(normal_bill_dep_samp)
+knitr::kable(tableDraw)
 ```
 
+## Plotting parameters
 
-## Plotting parameters. 
-
-We don't have one value for each of our unknown numbers: we have thousands. 
-We need to get a sense of what these possible values mean scientifically. 
-An excellent way to do this is by making as many pictures as possible. 
-We will start with making plots of specific parameters. 
+After we sampled from our model, we don't have one value for each of our unknown numbers; we have thousands. 
+To get a sense of what these possible values mean scientifically, the best way to do this is to draw as many pictures as possible. We will start with making plots of specific parameters. 
 
 We can look at the distributions easily using the `bayesplot` package.
 
 ```{r}
 #| layout-ncol: 2
+normal_bill_dep_samp_df <- as.data.frame(normal_bill_dep_samp)
 
-bayesplot::mcmc_hist(normal_bill_dep_samp, pars = "mu")  + 
-  coord_cartesian(xlim = c(10, 25))
-bayesplot::mcmc_hist(normal_bill_dep_samp, pars = "sigma") + 
-  coord_cartesian(xlim = c(0, 7))
+hist(normal_bill_dep_samp_df$mu, xlim = c(10, 25))
+hist(normal_bill_dep_samp_df$sigma, xlim = c(0, 7))
 ```
 
-Notice that the distributions do not have the same shape as the prior-- this is particularly true for $\sigma$. 
+Notice that the distributions do not have the same shape as the prior. This is particularly true for $\sigma$. 
 
 ```{r}
 #| layout-ncol: 2
-tibble(param = c("mu"), 
-       values= rnorm(200, 17.5, 2)) |> 
-  ggplot(aes(x = values)) + 
-  geom_histogram() + 
-  coord_cartesian(xlim = c(10,25))
 
-tibble(param = c("sigma"), 
-       values= rexp(200,1)) |> 
-  ggplot(aes(x = values)) + 
-  geom_histogram() + 
-  coord_cartesian(xlim = c(0,7))
+hist(rnorm(200, 17.5, 2),
+     xlim = c(10, 25),
+     main = "mu")
+
+hist(rexp(200, 1),
+     xlim = c(0,7),
+     main = "sigma")
 ```
-
 
 This shows an important point: the prior distribution does not determine what the posterior looks like. 
 
@@ -138,35 +122,37 @@ This shows an important point: the prior distribution does not determine what th
 
 In my experience, ecologists (rightly!) care a great deal about model diagnostics. 
 And with good reason: you need to know how much to trust a model before using it to make a scientific claim. 
-Bayes offers a straightforward way to show how well a model is doing: plot model predictions, and compare them to the observed data. 
+Bayesian models offer a straightforward way to show how well a model is doing: plot model predictions and compare them to the observed data. 
 This involves using the model as a data generating machine, which we'll look at next.
 
 ### Pseudocode
 
 Here is the procedure for generating posterior predictions:
 
-* Select some posterior posterior draws. 
-* For each draw, extract all the model parameters
-* For each draw, plug the sampled parameters in to the model. Use all the same predictors, factors, etc as the original model.
-* For each draw, draw a random dataset that is the _same size and shape_ as your original data. 
-* Overlay the simulated datasets on the observed data.
-
+1. Select some posterior posterior draws
+2. For each draw
+  a. Extract all the model parameters
+  b. Use the model parameters into the model. In doing so, make sure that all the same explanatory variables are **EXACTLY** the same as the original model.
+  c. Draw a random dataset that is the _same size and shape_ as your original data. 
+3. Overlay the simulated datasets on the observed data.
 
 ### Posterior prediction in R
 
 ```{r}
-# just get some draws
+# Extract parameters from Stan 
 draws <- rstan::extract(normal_bill_dep_samp, pars = c("mu", "sigma"))
+
+# Organise them into a matrix
 draws_matrix <- posterior::as_draws_matrix(draws)
 
-## set up a matrix. for every posterior sample, 
-## (that is, for a value of mu and a value of sigma) 
-## draw a whole fake dataset from a normal distribution with that mean and sd. 
+## For every posterior sample, 
+## (that is, for each combination of  mu and sigma values) 
+## draw a whole fake dataset from a normal distribution 
 nsamples <- 50
 yrep <- matrix(0, ncol = list_bill_dep$N, nrow = nsamples)
 
 # pick some random rows
-set.seed(1234)
+set.seed(42)
 chosen_samples <- sample(1:nrow(draws_matrix), 
                          replace = FALSE,
                          size = nsamples)
@@ -174,26 +160,24 @@ chosen_samples <- sample(1:nrow(draws_matrix),
 subset_draws <- draws_matrix[chosen_samples,]
 
 for (r in 1:nsamples){
- yrep[r,] <- rnorm(n = list_bill_dep$N, 
-                   mean = subset_draws[r, "mu"], 
-                   sd = subset_draws[r, "sigma"])
+  yrep[r,] <- rnorm(n = list_bill_dep$N, 
+                    mean = subset_draws[r, "mu"], 
+                    sd = subset_draws[r, "sigma"])
 }
 
 bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
                             yrep = yrep)
-
 ```
-
 
 ### Posterior predictions in Stan
 
 ::: {.callout-tip}
 ### EXERCISE
-In the code above I show how to simulate the posterior predictive distribution using the posterior draws for $\mu$ and $\sigma$. 
-However, if you want, you can do the same process in Stan.   
+In the code above, I show how to simulate the posterior predictive distribution using the posterior draws for $\mu$ and $\sigma$. 
+However, you can carry out the same process in Stan.   
 
 1. Extend the Stan code above to simulate new observations using the `generated quantities` block. (Tip: look back at the [Simulation exercise](topics/01_simulation)).  
-2. plot them using bayesplot, as above.
+2. plot them using `bayesplot`, as above.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -203,21 +187,24 @@ However, if you want, you can do the same process in Stan.
 #| class-output: stan
 
 normal_dist_rng <- stan_model(file = "topics/discrete_predictor/normal_dist_rng.stan")
-
 normal_dist_rng
 ```
 
-Here we have a handy random number generator _inside_ Stan.
+From this exercise, it can be understood that we have a powerful random number generator _inside_ Stan.
 
 ```{r}
-
+# Sample from Stan
 samp_bill_dep_rng <- sampling(normal_dist_rng,
-  data = list_bill_dep,
-  refresh = 0)
+                              data = list_bill_dep,
+                              refresh = 0)
 
-samp_bill_dep_rng_draws <- rstan::extract(samp_bill_dep_rng, pars = "yrep")
+# Extract and organize the data
+samp_bill_dep_rng_draws <- rstan::extract(samp_bill_dep_rng,
+                                          pars = "yrep")
+
 samp_bill_dep_rng_draws_matrix <- posterior::as_draws_matrix(samp_bill_dep_rng_draws$yrep)
 
+# Draw density plot for 50 model iterations and the measured data on top 
 bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,
                             yrep = head(samp_bill_dep_rng_draws_matrix, 50))
 ```
@@ -226,28 +213,51 @@ The code is much shorter, because there is less to do in R.
 
 :::
 
-Both of these gives the same outcome: the posterior predictive distribution. 
+Both the R and Stan code gives the same result: **The posterior predictive distribution**.
 This gives us a straightfoward way to test our model's performance: 
 
-1. we use the model to generate fake observations. 
-2. plot these on top of the real data
-3. if the data is a really poor match, we know our model has a distorted view of the world.
+1. We use the model to generate fake observations. 
+2. Plot these on top of the real data
+3. If the data is a really poor match, we know our model is distorted
 
 ## Different groups are different
 
-let's add in differences among species
+Let's add in differences among species
 
 ```{r}
-penguins |> 
-  ggplot(aes(x = bill_depth_mm, fill = species))+ 
-  geom_histogram(binwidth = .5) + 
-  scale_fill_brewer(palette = "Dark2")
+br <- seq(min(penguins$bill_depth_mm, na.rm = TRUE),
+          max(penguins$bill_depth_mm, na.rm = TRUE), length = 30)
+
+# Adelie
+hist(penguins$bill_depth_mm[penguins$species == "Adelie"], 
+     col = rgb(1, 0, 0, 0.5),
+     breaks = br)
+
+# Chinstrap
+hist(penguins$bill_depth_mm[penguins$species == "Chinstrap"],
+     col = rgb(0, 1, 0, 0.5), 
+     breaks = br,
+     add = TRUE)
+
+# Gentoo
+hist(penguins$bill_depth_mm[penguins$species == "Gentoo"], 
+     col = rgb(0, 0, 1, 0.5),
+     breaks = br,
+     add = TRUE)
+
+legend("topright",
+       fill = c(rgb(1, 0, 0, 0.5),
+                rgb(0, 1, 0, 0.5),
+                rgb(0, 0, 1, 0.5)),
+       legend = c("Adelie",
+                  "Chinstrap",
+                  "Gentoo"))
 ```
 
-Now we can see that the distribution is in fact three different shapes, all placed together. 
+Now we can see that the distribution of bill depth is in fact unique to each penguin species. 
 
 :::{.callout-warning}
-Sometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are "normally distributed" or not. This is not helpful! Instead, decide on a model first, and ask yourself what kind of data you expect.
+Sometimes scientists will plot histograms of data at the beginning of a research project, and use the histogram to decide if their data are "normally distributed" or not. This is not helpful and may cause you trouble! Instead, decide on a model first, and ask yourself what kind of data you expect.
 :::
 
 ## Stan code for species differences
@@ -265,46 +275,76 @@ $$
 ```{r}
 #| class-output: stan
 normal_dist_rng_spp_forloop <- stan_model(file = "topics/discrete_predictor/normal_dist_rng_spp_forloop.stan")
-
 normal_dist_rng_spp_forloop
 ```
 
-There's a few differences to notice here:
+Compared to the `normal_dist_rng` Stan function, there are a few differences worth noticing:
 
-* in the `data` block: We have a new input! A declaration of the array of integers at the top, saying if this is "species 1", "species 2", or "species 3"
+* In the `data` block: We have a new input! A declaration of the array of integers at the top, stating if a value is associated to "species 1", "species 2", or "species 3" (or  "Adelie", "Chinstrap", "Gentoo")
 * `mu` is a vector now. why?
 * notice the for-loop. 
 
 ## Quick detour : vector indexing
 
 A **very** useful technique, in both R and Stan, is transforming a vector with _indexing_. 
-Vector indexing requires two vectors: the first contains values we want to select or replicate, the second contains integers giving the positions of the elements we want. For example:
+Vector indexing requires two vectors: 
+  1. A vector that contains values we want to select or replicate
+  2. A pointer vector that contains integers giving the positions of the elements we want to access.
+  
+For example:
 
 ```{r}
+# Vector of important values
 some_values <- c("taco", "cat", "goat", "cheeze", "pizza")
+
+# Pointer vector
 positions <- c(1,1,2,2,3,1,1,5)
 
 some_values[positions]
 ```
 
-This works for number values as well, and is very useful when you want to do simulations! let's simulate three groups with different averages.
+This works for any type of variables (including numbered values), and it is very useful when you want to do simulations! Let's simulate three groups with different averages.
 
 ```{r}
-set.seed(525600)
+set.seed(42)
 some_means <- c(12, 17, 19)
 some_labels <- c("taco", "cat", "goat")
 
-df_of_means <- data.frame(index = rep(1:3, each = 42)) |> 
-  mutate(the_mean = some_means[index],
-         labels = some_labels[index],
-         obs = rnorm(n = length(the_mean),
-                     mean = the_mean,
-                     sd = 1))
+df_of_means <- data.frame(index = rep(1:3, each = 42),
+                          the_mean = rep(some_means, each = 42),
+                          labels = rep(some_labels, each = 42),
+                          obs = rnorm(n = 3 * 42,
+                                      mean = rep(some_means, each = 42),
+                                      sd = 1))
 
-df_of_means |> 
-  ggplot(aes(x = obs, fill = labels)) + 
-  geom_histogram()
+# Histogram
+br <- seq(min(df_of_means$obs, na.rm = TRUE),
+          max(df_of_means$obs, na.rm = TRUE), length = 30)
 
+# Taco
+hist(df_of_means$obs[df_of_means$labels == "taco"], 
+     col = rgb(1, 0, 0, 0.5),
+     breaks = br)
+
+# Cat
+hist(df_of_means$obs[df_of_means$labels == "cat"], 
+     col = rgb(0, 1, 0, 0.5),
+     breaks = br,
+     add = TRUE)
+
+# Goat
+hist(df_of_means$obs[df_of_means$labels == "goat"], 
+     col = rgb(0, 0, 1, 0.5),
+     breaks = br,
+     add = TRUE)
+
+legend("topright",
+       fill = c(rgb(1, 0, 0, 0.5),
+                rgb(0, 1, 0, 0.5),
+                rgb(0, 0, 1, 0.5)),
+       legend = c("Taco",
+                  "Cat",
+                  "Goat"))
 ```
 
 ## Vector indexing in Stan
@@ -314,11 +354,10 @@ We can use this very same technique in Stan:
 ```{r}
 #| class-output: stan
 normal_dist_rng_spp <- stan_model(file = "topics/discrete_predictor/normal_dist_rng_spp.stan")
-
 normal_dist_rng_spp
 ```
 
-The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However it's not possible in every case.
+The only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However, it's not always possible to use this trick.
 
 ### Sampling the species model
 
@@ -333,7 +372,6 @@ Fit one (or both) of the species-specific models above.
 ### SOLUTION
 
 ```{r}
-
 list_bill_dep_spp <- with(penguins_nobillNA,
      list(
        N = length(bill_depth_mm),
@@ -343,17 +381,15 @@ list_bill_dep_spp <- with(penguins_nobillNA,
 )
      
 normal_dist_rng_spp_samp <- sampling(normal_dist_rng_spp,
-  data = list_bill_dep_spp, 
-  refresh = 0)
-
+                                     data = list_bill_dep_spp, 
+                                     refresh = 0)
 ```
 
 Let's take a look at this in Shinystan
 
 ```{r, eval=FALSE}
-shinystan::launch_shinystan(samp_normal_dist_rng_spp)
+shinystan::launch_shinystan(normal_dist_rng_spp_samp)
 ```
-
 
 and we can repeat the posterior checking from before:
 
@@ -377,27 +413,22 @@ We can also make figures for each individual species.
 Here we will move away from using `bayesplot` and try to visualize our posterior using the handy functions in the [`tidybayes` package](https://mjskay.github.io/tidybayes/).
 
 ```{r}
-library(tidybayes)
+#| layout-ncol: 3
 
-normal_dist_post_samp <- tidybayes::gather_draws(normal_dist_rng_spp_samp,
-                        yrep[row_id], 
-                        ndraws = 50)
+adelie <- penguins_nobillNA$species == "Adelie"
+bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[adelie],
+                            yrep = head(spp_yrep_draws$yrep[,adelie], 50))
 
-normal_dist_post_samp |> 
-  mutate(species = penguins_nobillNA$species[row_id]) |> 
-  ggplot(aes(x = .value, colour = species)) + 
-  geom_density(aes(group = .iteration), alpha = .1) + 
-  facet_wrap(~species) + 
-  geom_density(aes(x = bill_depth_mm),
-               data = penguins_nobillNA,
-               colour = "black") + 
-  scale_colour_brewer(palette = "Dark2")
+gentoo <- penguins_nobillNA$species == "Gentoo"
+bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[gentoo],
+                            yrep = head(spp_yrep_draws$yrep[,gentoo], 50))
 
+chinstrap <- penguins_nobillNA$species == "Chinstrap"
+bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[chinstrap],
+                            yrep = head(spp_yrep_draws$yrep[,chinstrap], 50))
 ```
 
-
 ### Exercises
-
 
 #### Level 1
 * repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)

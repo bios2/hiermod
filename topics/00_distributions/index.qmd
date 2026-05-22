@@ -14,11 +14,11 @@ format:
 
 To warm up for this class we will conduct a brief exercise. This exercise serves a few purposes. 
 
-1. It will help us to think about data generating processes. 
+1. It will help us think about data generating processes. 
 2. It will introduce us to some of the bestiary of statistical distributions that have been invented. 
 3. It will help us practice the whole cycle of applied statistics: question, simulation, data collection, fitting and checking a model, interpretation. 
 
-Most importantly, it will help us to get to know each other a bit! 
+Most importantly, it will help us get to know each other a bit! 
 
 ## Group Exercise
 <aside>What makes things the "same" from the point of view of this exercise? Please take some time with your group to talk about what we mean by the word "same"!</aside>
@@ -33,11 +33,11 @@ Each group should pick a different quantity that they will measure repeatedly. T
 
 ### Hypothesize
 
-What statiscal distribution might describe the observations you are sampling/measuring? What are its property? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.  
+What statistical distribution might describe the observations you are sampling/measuring? What are its property? Think about the kind of statistical distribution that might represent this phenomenon! Take a moment and write down the name of the distribution, and why it might describe the thing you're going to measure.  
 
 ### Simulate
 
-create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: 
+Create a simulation of the data you're about to collect. Every statistical distribution has four functions in R, and here you can use two of them: 
   
 - Density function (starting with `d`)
 - Random generation function (starting with `r`).
@@ -47,16 +47,15 @@ Simulate about as many number as you hope to collect. There's a quick example be
 
 ### Collect
 
-After you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take roughly 1 hour.  
+After you have an idea of what your data might look like, go and get some! Try to get a good number (30 or more), this should take ~1 hour.  
 
 ### Visualize and fit
 
 Enter the data into R and visualize them. Do they match your hypothesized distribution? How do you know? If it doesn't match, why might that be? For this step you have a couple of choices: 
 
 - Compare histograms 
-- `hist()` (base R) or `geom_hist` (ggplot2 R package) 
-- `fitdistr` (MASS R package) 
-- `optim` (base R)  
+- `hist()`
+- `fitdistr` (MASS) 
 - `Stan` (we'll do this one tomorrow!) 
 
 ### Discuss

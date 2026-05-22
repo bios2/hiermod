@@ -1,6 +1,7 @@
 data {
   int<lower=0> n_people;
 }
+
 generated quantities {
   real<lower=0> avg_birds_per_person;
   // an array -- like a list in R
