@@ -802,7 +802,7 @@
     "href": "slides/00_Introduction/index.html#what-we-want-to-do-during-this-course-1",
     "title": "Introduction",
     "section": "What we want to do during this course",
-    "text": "What we want to do during this course\nStatistical computing\n\nIntroduction to Stan (???)\n\n\n\nI will not give an introduction to any programming language (e.g. R, Python, Julia).\nI assume you know one and are comfortable using it… I am more comfortable in R, but can work with many other languages (but please no Fortran !)"
+    "text": "What we want to do during this course\nStatistical computing\n\nIntroduction to Stan\n\n\n\nI will not give an introduction to any programming language (e.g. R, Python, Julia).\nI assume you know one and are comfortable using it… I am more comfortable in R, but can work with many other languages (but please no Fortran !)"
   },
   {
     "objectID": "slides/00_Introduction/index.html#what-we-want-to-do-during-this-course-2",
@@ -914,14 +914,14 @@
     "href": "slides/00_Introduction/index.html#r-and-stan",
     "title": "Introduction",
     "section": "R and Stan",
-    "text": "R and Stan\nAll of the practical aspect of the course will be done with R and Stan.\n\nRStudio\nWe strongly (!) encourage you to use RStudio and to start a project for the course."
+    "text": "R and Stan\nAll of the practical aspect of the course will be done with R and Stan.\n\nRStudio\nI strongly (!) encourage you to use RStudio and to start a project for the course."
   },
   {
     "objectID": "slides/00_Introduction/index.html#r-package-to-install",
     "href": "slides/00_Introduction/index.html#r-package-to-install",
     "title": "Introduction",
     "section": "R package to install",
-    "text": "R package to install\n\n# Package on CRAN\ninstall.packages(c(\"vegan\",\n                   \"palmerpenguins\",\n#                   \"tidybayes\",\n#                   \"tidyverse\",\n                   \"posterior\"))\n\n# Run the next line if you already have rstan installed\n# remove.packages(c(\"StanHeaders\", \"rstan\"))\n\ninstall.packages(\"rstan\", repos = c('https://stan-dev.r-universe.dev', getOption(\"repos\")))\n\nexample(stan_model, package = \"rstan\", run.dontrun = TRUE)"
+    "text": "R package to install\n\n# Package on CRAN\ninstall.packages(c(\"vegan\",\n                   \"palmerpenguins\",\n                   \"posterior\"))\n\n# Run the next line if you already have rstan installed\n# remove.packages(c(\"StanHeaders\", \"rstan\"))\n\ninstall.packages(\"rstan\", repos = c('https://stan-dev.r-universe.dev', getOption(\"repos\")))\n\nexample(stan_model, package = \"rstan\", run.dontrun = TRUE)"
   },
   {
     "objectID": "topics/03_one_random_effect/index.html",
@@ -2769,7 +2769,7 @@
     "href": "slides/00_Introduction/index.html#dos-and-donts-at-the-gault-natural-reserve",
     "title": "Introduction",
     "section": "Dos and don’ts at the Gault Natural Reserve",
-    "text": "Dos and don’ts at the Gault Natural Reserve\n\nBe respectful of the environment\n\n\nMeals will be served XXX\n\n\nAlcohol (???)\n\n\nGlass containers are not allowed(???)\n\n\nIt is forbidden to smoke cannabis on site (???)\n\n\nMore details can be found in this Google Doc."
+    "text": "Dos and don’ts at the Gault Natural Reserve\n\nBe respectful of the environment\n\n\nYou are not allowed to pick wood from the forest\n\n\nFires can only be started in the fire pits with wood provided on site. Using the wood cost something, so please discuss this with me before starting a fire.\n\n\nFires can only be started if the fire risk from the SOPFEU at Mont St-Hilaire is Low or Moderate\n\n\nIf you start a fire when the fire risk is High, Very High or Extreme you will be evicted from the premises… and you will fail the course."
   },
   {
     "objectID": "topics/discrete_predictor/index.html#plotting-parameters",
@@ -2777,5 +2777,33 @@
     "title": "Palmer penguins and discrete predictors",
     "section": "Plotting parameters",
     "text": "Plotting parameters\nAfter we sampled from our model, we don’t have one value for each of our unknown numbers; we have thousands. To get a sense of what these possible values mean scientifically, the best way to do this is to draw as many pictures as possible. We will start with making plots of specific parameters.\nWe can look at the distributions easily using the bayesplot package.\nnormal_bill_dep_samp_df &lt;- as.data.frame(normal_bill_dep_samp)\n\nhist(normal_bill_dep_samp_df$mu, xlim = c(10, 25))\nhist(normal_bill_dep_samp_df$sigma, xlim = c(0, 7))\n\n\n\n\n\n\n\n\n\n\nNotice that the distributions do not have the same shape as the prior. This is particularly true for \\(\\sigma\\).\nhist(rnorm(200, 17.5, 2),\n     xlim = c(10, 25),\n     main = \"mu\")\nhist(rexp(200, 1),\n     xlim = c(0,7),\n     main = \"sigma\")\n\n\n\n\n\n\n\n\n\n\nThis shows an important point: the prior distribution does not determine what the posterior looks like."
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#emergencies",
+    "href": "slides/00_Introduction/index.html#emergencies",
+    "title": "Introduction",
+    "section": "Emergencies",
+    "text": "Emergencies\n\nCellphone reception is unreliable\n\n\nThere is a fix phone in every building : 9-1-1"
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#dos-and-donts-at-the-gault-natural-reserve-1",
+    "href": "slides/00_Introduction/index.html#dos-and-donts-at-the-gault-natural-reserve-1",
+    "title": "Introduction",
+    "section": "Dos and don’ts at the Gault Natural Reserve",
+    "text": "Dos and don’ts at the Gault Natural Reserve\n\nYou have access to all trails in the natural reserve but you must remain on them at all time when you use them\n\n\nTrails should not be used at after the sunsets\n\n\nSmoking is permitted only in the parking lots\n\n\nCandles are not allowed inside\n\n\nInside furniture must remaining inside\n\n\nNo music outside\n\n\nSwimming in Lac Hertel is prohibited"
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#meals",
+    "href": "slides/00_Introduction/index.html#meals",
+    "title": "Introduction",
+    "section": "Meals",
+    "text": "Meals\nMeals are provided but we must do the dishes after we eat"
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html#rooms-and-facilities",
+    "href": "slides/00_Introduction/index.html#rooms-and-facilities",
+    "title": "Introduction",
+    "section": "Rooms and Facilities",
+    "text": "Rooms and Facilities\n\nIt is recommended that you leave your room unlocked.\n\n\nI will give you a code to make sure you can get out if you get locked into your room.\n\n\nIf you forget the code, after 3 tries the lock with be blocked\n\n\nAlarm\nIf the alarm goes off… and I am not aware (!?), let me know I have the code to stop it."
   }
 ]
