@@ -3,8 +3,8 @@ title: "Probability Distribution"
 title-slide-attributes: 
   data-background-image: ../img/bg.jpg
   data-background-size: full
-author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2025-05-05"
+author: "Guillaume Blanchet"
+date: "2026-06-01"
 execute:
   echo: true
 format: 
@@ -46,7 +46,7 @@ If you want a fun book to read about probabilities, its history and the difficul
 :::
 
 ```{r echo=FALSE, out.width="30%", fig.align='center'}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/en/3/35/The_Drunkard%27s_Walk.jpg")
+knitr::include_graphics("https://m.media-amazon.com/images/I/612nx4zQ34L._SL1200_.jpg")
 ```
 
 ## The basics of probabilities
@@ -94,7 +94,7 @@ knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-w
 ::: {style="font-size: 0.7em"}
 The probability that it rains as you walk outside after the lecture is written as
 
-$$P(r)$$ where $r$ is the event you are interested in. Here, $r$ is a rain as you walk outside after the lecture today
+$$P(r)$$ where $r$ is the event you are interested in. Here, $r$ is a rain event as you walk outside after the lecture today
 :::
 
 ## Probabilities and events
@@ -138,7 +138,7 @@ $$P(r)=0.5$$
 . . .
 
 ::: {style="font-size: 0.7em"}
-However, in probability theory, P(r) can have any value ranging between 0 and 1.
+However, in probability theory, $P(r)$ can have any value ranging between 0 and 1.
 :::
 
 . . .
@@ -202,11 +202,11 @@ If we assume that weather events like a rainy day are independent from one anoth
 ## Bernoulli distribution
 
 ```{r echo=FALSE, out.width="40%", fig.align='center'}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Jakob_Bernoulli.jpg/800px-Jakob_Bernoulli.jpg")
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/1/19/Jakob_Bernoulli.jpg")
 ```
 
 ::: r-stack
-Jacob Bernoulli (1655 - 1705)
+Jacques Bernoulli (1655 - 1705)
 :::
 
 ## Bernoulli distribution
@@ -230,7 +230,7 @@ p \quad & \text{if} \quad x =1\\
 (1-p) \quad & \text{if}\quad  x =0
 \end{align*}$$
 
-where $p$ is a shorthand for $P(x)$ and $x$ is one of two events.
+where $p$ is a shorthand for $P(x)$ and $x$ is the event of interest.
 
 ## Moment interlude
 
@@ -284,7 +284,7 @@ $$p(1-p)=0.5\times(1-0.5)=0.25\quad\text{and}\quad \sqrt{0.25} = 0.5$$
 
 ## Moments of the Bernoulli distribution
 
-If you want to go deeper down and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution
+If you want to go deeper and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution
 
 <https://en.wikipedia.org/wiki/Bernoulli_distribution>
 
@@ -399,7 +399,7 @@ knitr::include_graphics("https://em-content.zobj.net/source/telegram/386/cloud-w
 ```
 
 ::: {style="font-size: 0.75em"}
-If the probability that it rains is $p=0.5$ in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is
+If the probability that it rains is $p=0.5$ in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 day of rain while others might have 5 because the variance is
 
 $$np(1-p)=7 \times 0.5\times(1-0.5)=1.75\quad\text{and}\quad \sqrt{1.75} = 1.3229$$
 :::
@@ -566,7 +566,7 @@ curve(dnorm(x),-10,10,n=2000,xlab="",ylab="",add=TRUE)
 ## Gaussian (Normal) distribution
 
 ```{r echo=FALSE, out.width="35%", fig.align='center'}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Carl_Friedrich_Gauss_1840_by_Jensen.jpg/804px-Carl_Friedrich_Gauss_1840_by_Jensen.jpg")
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/e/ec/Carl_Friedrich_Gauss_1840_by_Jensen.jpg")
 ```
 
 ::: r-stack
@@ -657,7 +657,7 @@ This function allows us to randomly sample directly from the distribution of int
 ![](https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png){fig-align="center" width="8%"}
 
 ::: {style="font-size: 0.8em"}
-Let's assume that we look at the historical record and gather the minimum temperature measured on today's date for the past 40 years here in Jouvence. Let's assume that the random sample of 40 temperature measurements has an average of $4^{\circ}C$ and a standard deviation of $2^{\circ}C$. We can simulate these values as follow
+Let's assume that we look at the historical record and gather the minimum temperature measured on today's date for the past 40 years here at the Gault Natural Reserve. Let's assume that the random sample of 40 temperature measurements has an average of $4^{\circ}C$ and a standard deviation of $2^{\circ}C$. We can simulate these values as follow
 :::
 
 ```{r, eval=FALSE}
@@ -805,7 +805,7 @@ This is particularly useful because it informs us about the probability that an 
 knitr::include_graphics("https://em-content.zobj.net/source/twitter/348/thermometer_1f321-fe0f.png")
 ```
 
-If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, `pnorm` will tell us that the probability to have a temperature lower or equal to $6^{\circ}C$. This is calculated as
+If we assume that the average temperature at this time of the year is $4^{\circ}C$ with a standard deviation of $2^{\circ}C$, `pnorm` will tell us the probability to have a temperature lower or equal to $6^{\circ}C$. This is calculated as
 
 ```{r}
 pnorm(6, mean = 4, sd = 2)
@@ -839,7 +839,7 @@ text(3.5, 0.085,
 
 ## Binomial and Bernoulli distribution
 
-As I mentionned previsouly, these function are available in base R for a large number of distributions.
+As I mentionned previously, these function are available in base R for a large number of distributions.
 
 ## Binomial distribution
 
