@@ -3,8 +3,8 @@ title: "Bayesian modelling"
 title-slide-attributes: 
   data-background-image: ../img/bg.jpg
   data-background-size: full
-author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2025-05-06"
+author: "Guillaume Blanchet"
+date: "2026-06-02"
 execute:
   echo: true
 format: 
@@ -124,7 +124,7 @@ The **prior probability** informes us about the probability of the model being t
 *"Uninformative"*
 
 ::: {style="font-size: 0.75em"}
-These priors are meant to bring very little information about the model
+These priors are meant to bring very little information to the model
 :::
 
 . . .
@@ -133,7 +133,7 @@ These priors are meant to bring very little information about the model
 *Informative*
 
 ::: {style="font-size: 0.75em"}
-These priors bring information about the model that is available
+These priors bring information to the model that is available
 :::
 
 ## A few words about the prior
@@ -264,7 +264,7 @@ Historically, the developments of MCMC have been intimately linked with the arri
 To explain what is an MCMC, let's imagine that we are interested in understanding how the mallard (*Anas platyrhynchos*) grows from hatchling to adult.
 :::
 
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg/1024px-Anas_platyrhynchos_male_female_quadrat.jpg){fig-align="center" width=10%}
+![](https://upload.wikimedia.org/wikipedia/commons/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg){fig-align="center" width=10%}
 
 ## Markov Chain Monte Carlo (MCMC)
 **A simplistic statistical example**
@@ -384,7 +384,7 @@ MCMC relies on using many random samples to assess the structure of the distribu
 
 Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure of the distribution.
 
-![](https://www.westcoasttraveller.com/wp-content/uploads/2021/03/24581102_web1_210322-WCT-WestcoastSkateparks_1-800x533.jpg){fig-align="center" width=80%}
+![](https://cdn.pixabay.com/photo/2014/07/31/00/27/skatepark-405864_1280.jpg){fig-align="center" width=80%}
 
 ## Sampling the parameters
 
@@ -461,7 +461,7 @@ plot(autoLong, type = "l", xlab = "Steps",
 . . .
 
 :::{style="font-size: 0.7em;"}
-**Note** It is also possible to *thin* (record only the $n^{\text{th}}$ iteration), but it is better to keep all iterations when possible. Actually, *thinning* should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer.
+**Note** It is also possible to *thin* (record only the $n^{\text{th}}$ iteration), but it is better to keep all iterations when possible. Actually, *thinning* should only be carried out when there are too many iterations for you to keep them on your computer and manipulate them. In short, thinning should be carried out *only* when your computer does not have enough memory to work with all iterations.
 :::
 
 ## Studying convergence
