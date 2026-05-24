@@ -1797,24 +1797,22 @@ Warning
 <span id="cb31-462"><a href="#cb31-462" aria-hidden="true" tabindex="-1"></a>                            <span class="at">yrep =</span> <span class="fu">head</span>(spp_yrep_draws<span class="sc">$</span>yrep[,chinstrap], <span class="dv">50</span>))</span>
 <span id="cb31-463"><a href="#cb31-463" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb31-464"><a href="#cb31-464" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-465"><a href="#cb31-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-466"><a href="#cb31-466" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercises</span></span>
-<span id="cb31-467"><a href="#cb31-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-468"><a href="#cb31-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-469"><a href="#cb31-469" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
-<span id="cb31-470"><a href="#cb31-470" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)</span>
-<span id="cb31-471"><a href="#cb31-471" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>use bayesplot to examine the fit of body size to these data. </span>
-<span id="cb31-472"><a href="#cb31-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-473"><a href="#cb31-473" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
-<span id="cb31-474"><a href="#cb31-474" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>generate some random groups of your own, with known means. How well does the model fit these data</span>
-<span id="cb31-475"><a href="#cb31-475" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The present model is fixed for exactly 3 groups. how would you change it for any number of groups?</span>
-<span id="cb31-476"><a href="#cb31-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-477"><a href="#cb31-477" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
-<span id="cb31-478"><a href="#cb31-478" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the function <span class="in">`tidybayes::compose_data`</span> is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of <span class="in">`tidybayes::compose_data`</span>?</span>
-<span id="cb31-479"><a href="#cb31-479" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>As you can see, the model assumes the same sigma for all species. what if you relax this? </span>
-<span id="cb31-480"><a href="#cb31-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-481"><a href="#cb31-481" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optional! </span></span>
-<span id="cb31-482"><a href="#cb31-482" aria-hidden="true" tabindex="-1"></a>Try this on your own data! </span>
+<span id="cb31-465"><a href="#cb31-465" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exercises</span></span>
+<span id="cb31-466"><a href="#cb31-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-467"><a href="#cb31-467" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 1</span></span>
+<span id="cb31-468"><a href="#cb31-468" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)</span>
+<span id="cb31-469"><a href="#cb31-469" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>use bayesplot to examine the fit of body size to these data. </span>
+<span id="cb31-470"><a href="#cb31-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-471"><a href="#cb31-471" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 2</span></span>
+<span id="cb31-472"><a href="#cb31-472" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>generate some random groups of your own, with known means. How well does the model fit these data</span>
+<span id="cb31-473"><a href="#cb31-473" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>The present model is fixed for exactly 3 groups. how would you change it for any number of groups?</span>
+<span id="cb31-474"><a href="#cb31-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-475"><a href="#cb31-475" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Level 3</span></span>
+<span id="cb31-476"><a href="#cb31-476" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>the function <span class="in">`tidybayes::compose_data`</span> is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of <span class="in">`tidybayes::compose_data`</span>?</span>
+<span id="cb31-477"><a href="#cb31-477" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>As you can see, the model assumes the same sigma for all species. what if you relax this? </span>
+<span id="cb31-478"><a href="#cb31-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-479"><a href="#cb31-479" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optional! </span></span>
+<span id="cb31-480"><a href="#cb31-480" aria-hidden="true" tabindex="-1"></a>Try this on your own data! </span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
