@@ -11,21 +11,21 @@
     "href": "index.html#day-1-introduction-data-simulation-discrete-models",
     "title": "Course contents",
     "section": "Day 1: Introduction, data simulation, discrete models",
-    "text": "Day 1: Introduction, data simulation, discrete models\nCourse Syllabus\n\n\n\nSlides\n\nIntroduction to the course and location\nProbability Distributions\n\n\n\n\nExercises – data simulation & discrete models\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nImportantMonday night Stan installation session!\n\n\n\nTo use Stan in R, the rstan R package is needed. To install it, follow the steps in this vignette. Make sure you can run the example in the Verifying Installation\nIf you have not yet managed to install Stan and rstan, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
+    "text": "Day 1: Introduction, data simulation, discrete models\nCourse Syllabus\n\n\n\nTheory\n\nIntroduction to the course and location\nProbability Distributions\n\n\n\n\nExercices – data simulation & discrete models\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nImportantMonday night Stan installation session!\n\n\n\nTo use Stan in R, the rstan R package is needed. To install it, follow the steps in this vignette. Make sure you can run the example in the Verifying Installation\nIf you have not yet managed to install Stan and rstan, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
   },
   {
     "objectID": "index.html#day-2-intro-to-stan-and-regression",
     "href": "index.html#day-2-intro-to-stan-and-regression",
     "title": "Course contents",
     "section": "DAY 2: Intro to Stan and Regression",
-    "text": "DAY 2: Intro to Stan and Regression\n\n\n\nSlides\n\nBayesian and MCMC\nStan and HMC\nLinear models\nData we’ll be using\n\n\n\n\nExercises\n\nSimulation and model fitting in Stan\nDiscrete predictors"
+    "text": "DAY 2: Intro to Stan and Regression\n\n\n\nTheory\n\nBayesian and MCMC\nStan and HMC\nLinear models\nData we’ll be using\n\n\n\n\nPractice\n\nSimulation and model fitting in Stan\nDiscrete predictors"
   },
   {
     "objectID": "index.html#day-3-hierarchical-models",
     "href": "index.html#day-3-hierarchical-models",
     "title": "Course contents",
     "section": "Day 3: Hierarchical models",
-    "text": "Day 3: Hierarchical models\n\n\n\nSlides\n\nSimple hierarchical models\nComplex hierarchical models\n\n\n\n\nExercises\n\nLinear regression\nHierarchy on the intercept\nIntercept-Only Model (and tidybayes discussion)\nHierarchy on the slope"
+    "text": "Day 3: Hierarchical models\n\n\n\nTheory\n\nSimple hierarchical models\nComplex hierarchical models\n\n\n\n\nExercises\n\nLinear regression\nHierarchy on the intercept\nIntercept-Only Model (and tidybayes discussion)\nHierarchy on the slope"
   },
   {
     "objectID": "index.html#day-4-constrained-models-gaussian-processes",
@@ -921,7 +921,7 @@
     "href": "slides/00_Introduction/index.html#r-package-to-install",
     "title": "Introduction",
     "section": "R package to install",
-    "text": "R package to install\n\n# Package on CRAN\ninstall.packages(c(\"vegan\",\n                   \"palmerpenguins\",\n                   \"posterior\"))\n\n# Run the next line if you already have rstan installed\n# remove.packages(c(\"StanHeaders\", \"rstan\"))\n\ninstall.packages(\"rstan\", repos = c('https://stan-dev.r-universe.dev', getOption(\"repos\")))\n\nexample(stan_model, package = \"rstan\", run.dontrun = TRUE)"
+    "text": "R package to install\n\n# Package on CRAN\ninstall.packages(c(\"vegan\",\n                   \"palmerpenguins\",\n                   \"posterior\",\n                   \"bayesplot\"))\n\n# Run the next line if you already have rstan installed\n# remove.packages(c(\"StanHeaders\", \"rstan\"))\n\ninstall.packages(\"rstan\", repos = c('https://stan-dev.r-universe.dev', getOption(\"repos\")))\n\nexample(stan_model, package = \"rstan\", run.dontrun = TRUE)"
   },
   {
     "objectID": "topics/03_one_random_effect/index.html",
@@ -1187,7 +1187,7 @@
     "href": "about.html#course-instructors",
     "title": "Advanced Statistics and hierarchical models",
     "section": "Course Instructors",
-    "text": "Course Instructors\n\n\n\n\n\n\nDr Guillaume Blanchet"
+    "text": "Course Instructors\n\n\n\n\n\n\nPr Guillaume Blanchet"
   },
   {
     "objectID": "topics/visualization_priors.html",
@@ -1817,7 +1817,7 @@
     "href": "slides/02_5_Distribution/index.html#the-basics-of-probabilities-1",
     "title": "Probability Distribution",
     "section": "The basics of probabilities",
-    "text": "The basics of probabilities\nNotation\n\nA classic way to write the probability of an event is to use the notation \\(P\\).\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nThe probability that it rains as you walk outside after the lecture is written as\n\\[P(r)\\] where \\(r\\) is the event you are interested in. Here, \\(r\\) is a rain as you walk outside after the lecture today"
+    "text": "The basics of probabilities\nNotation\n\nA classic way to write the probability of an event is to use the notation \\(P\\).\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nThe probability that it rains as you walk outside after the lecture is written as\n\\[P(r)\\] where \\(r\\) is the event you are interested in. Here, \\(r\\) is a rain event as you walk outside after the lecture today"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#probabilities-and-events",
@@ -1831,7 +1831,7 @@
     "href": "slides/02_5_Distribution/index.html#probabilities-and-events-1",
     "title": "Probability Distribution",
     "section": "Probabilities and events",
-    "text": "Probabilities and events\n\nUsually, these basic notions of probabilities are presented using coin flipping. When a coin is flip, it is usually assumed that\n\\[P(r)=0.5\\]\n\n\n\nHowever, in probability theory, P(r) can have any value ranging between 0 and 1.\n\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nWhat do you think is the probability that it will rain at the end of the lecture?"
+    "text": "Probabilities and events\n\nUsually, these basic notions of probabilities are presented using coin flipping. When a coin is flip, it is usually assumed that\n\\[P(r)=0.5\\]\n\n\n\nHowever, in probability theory, \\(P(r)\\) can have any value ranging between 0 and 1.\n\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nWhat do you think is the probability that it will rain at the end of the lecture?"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#probabilities-and-events-2",
@@ -1852,7 +1852,7 @@
     "href": "slides/02_5_Distribution/index.html#bernoulli-distribution",
     "title": "Probability Distribution",
     "section": "Bernoulli distribution",
-    "text": "Bernoulli distribution\n\n\nJacob Bernoulli (1655 - 1705)"
+    "text": "Bernoulli distribution\n\n\nJacques Bernoulli (1655 - 1705)"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#bernoulli-distribution-1",
@@ -1866,7 +1866,7 @@
     "href": "slides/02_5_Distribution/index.html#bernoulli-distribution-2",
     "title": "Probability Distribution",
     "section": "Bernoulli distribution",
-    "text": "Bernoulli distribution\nMathematically, the probability mass function of the Bernoulli distribution can be written as\n\\[\\begin{align*}\np \\quad & \\text{if} \\quad x =1\\\\\n(1-p) \\quad & \\text{if}\\quad  x =0\n\\end{align*}\\]\nwhere \\(p\\) is a shorthand for \\(P(x)\\) and \\(x\\) is one of two events."
+    "text": "Bernoulli distribution\nMathematically, the probability mass function of the Bernoulli distribution can be written as\n\\[\\begin{align*}\np \\quad & \\text{if} \\quad x =1\\\\\n(1-p) \\quad & \\text{if}\\quad  x =0\n\\end{align*}\\]\nwhere \\(p\\) is a shorthand for \\(P(x)\\) and \\(x\\) is the event of interest."
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#moment-interlude",
@@ -1894,7 +1894,7 @@
     "href": "slides/02_5_Distribution/index.html#moments-of-the-bernoulli-distribution-2",
     "title": "Probability Distribution",
     "section": "Moments of the Bernoulli distribution",
-    "text": "Moments of the Bernoulli distribution\nIf you want to go deeper down and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution\nhttps://en.wikipedia.org/wiki/Bernoulli_distribution"
+    "text": "Moments of the Bernoulli distribution\nIf you want to go deeper and learn about the other moments of the Bernoulli distribution (as well as other aspect of the distribution), take a look at the Wikipedia page of the Bernoulli distribution\nhttps://en.wikipedia.org/wiki/Bernoulli_distribution"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#lets-make-it-more-complicated",
@@ -1936,7 +1936,7 @@
     "href": "slides/02_5_Distribution/index.html#moment-of-the-binomial-distribution-1",
     "title": "Probability Distribution",
     "section": "Moment of the binomial distribution",
-    "text": "Moment of the binomial distribution\n\nVariance\n\\[np(1-p)\\]\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nIf the probability that it rains is \\(p=0.5\\) in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 days of rain while others might have 5 because the variance is\n\\[np(1-p)=7 \\times 0.5\\times(1-0.5)=1.75\\quad\\text{and}\\quad \\sqrt{1.75} = 1.3229\\]"
+    "text": "Moment of the binomial distribution\n\nVariance\n\\[np(1-p)\\]\n\n\n\nExample\n\n\n\n\n\n\n\n\n\n\n\nIf the probability that it rains is \\(p=0.5\\) in any given day, it means that, across multiple weeks (7 days), roughly speaking some weeks might have 1 day of rain while others might have 5 because the variance is\n\\[np(1-p)=7 \\times 0.5\\times(1-0.5)=1.75\\quad\\text{and}\\quad \\sqrt{1.75} = 1.3229\\]"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#moments-of-the-binomial-distribution",
@@ -2062,7 +2062,7 @@
     "href": "slides/02_5_Distribution/index.html#rnorm",
     "title": "Probability Distribution",
     "section": "rnorm",
-    "text": "rnorm\n\nThe r in rnorm is for random\n\n\n\nThis function allows us to randomly sample directly from the distribution of interest.\n\n\n\nExample\n\n\n\n\n\n\nLet’s assume that we look at the historical record and gather the minimum temperature measured on today’s date for the past 40 years here in Jouvence. Let’s assume that the random sample of 40 temperature measurements has an average of \\(4^{\\circ}C\\) and a standard deviation of \\(2^{\\circ}C\\). We can simulate these values as follow\n\n\nrnorm(40, mean = 4, sd = 2)"
+    "text": "rnorm\n\nThe r in rnorm is for random\n\n\n\nThis function allows us to randomly sample directly from the distribution of interest.\n\n\n\nExample\n\n\n\n\n\n\nLet’s assume that we look at the historical record and gather the minimum temperature measured on today’s date for the past 40 years here at the Gault Natural Reserve. Let’s assume that the random sample of 40 temperature measurements has an average of \\(4^{\\circ}C\\) and a standard deviation of \\(2^{\\circ}C\\). We can simulate these values as follow\n\n\nrnorm(40, mean = 4, sd = 2)"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#rnorm40-mean-4-sd-2",
@@ -2111,7 +2111,7 @@
     "href": "slides/02_5_Distribution/index.html#pnorm-1",
     "title": "Probability Distribution",
     "section": "pnorm",
-    "text": "pnorm\nExample\n\nIf we assume that the average temperature at this time of the year is \\(4^{\\circ}C\\) with a standard deviation of \\(2^{\\circ}C\\), pnorm will tell us that the probability to have a temperature lower or equal to \\(6^{\\circ}C\\). This is calculated as\n\npnorm(6, mean = 4, sd = 2)\n\n[1] 0.8413447"
+    "text": "pnorm\nExample\n\nIf we assume that the average temperature at this time of the year is \\(4^{\\circ}C\\) with a standard deviation of \\(2^{\\circ}C\\), pnorm will tell us the probability to have a temperature lower or equal to \\(6^{\\circ}C\\). This is calculated as\n\npnorm(6, mean = 4, sd = 2)\n\n[1] 0.8413447"
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#pnorm6-mean-4-sd-2",
@@ -2125,7 +2125,7 @@
     "href": "slides/02_5_Distribution/index.html#binomial-and-bernoulli-distribution",
     "title": "Probability Distribution",
     "section": "Binomial and Bernoulli distribution",
-    "text": "Binomial and Bernoulli distribution\nAs I mentionned previsouly, these function are available in base R for a large number of distributions."
+    "text": "Binomial and Bernoulli distribution\nAs I mentionned previously, these function are available in base R for a large number of distributions."
   },
   {
     "objectID": "slides/02_5_Distribution/index.html#binomial-distribution-3",
@@ -2805,5 +2805,19 @@
     "title": "Introduction",
     "section": "Rooms and Facilities",
     "text": "Rooms and Facilities\n\nIt is recommended that you leave your room unlocked.\n\n\nI will give you a code to make sure you can get out if you get locked into your room.\n\n\nIf you forget the code, after 3 tries the lock with be blocked\n\n\nAlarm\nIf the alarm goes off… and I am not aware (!?), let me know I have the code to stop it."
+  },
+  {
+    "objectID": "slides/00_Introduction/index.html",
+    "href": "slides/00_Introduction/index.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "Network : XXX \nPassword : XXX\n\n\n\n. . .\nBe respectful of the environment\n. . .\nYou are not allowed to pick wood from the forest\n. . .\nFires can only be started in the fire pits with wood provided on site. Using the wood cost something, so please discuss this with me before starting a fire.\n. . .\nFires can only be started if the fire risk from the SOPFEU at Mont St-Hilaire is Low or Moderate\n. . .\nIf you start a fire when the fire risk is High, Very High or Extreme you will be evicted from the premises… and you will fail the course.\n. . .\n\n\n\n. . .\nYou have access to all trails in the natural reserve but you must remain on them at all time when you use them\n. . .\nTrails should not be used at after the sunsets\n. . .\nSmoking is permitted only in the parking lots\n. . .\nCandles are not allowed inside\n. . .\nInside furniture must remaining inside\n. . .\nNo music outside\n. . .\nSwimming in Lac Hertel is prohibited\n\n\n\nMeals are provided but we must do the dishes after we eat\n\n\n\n. . .\nCellphone reception is unreliable\n. . .\nThere is a fix phone in every building : 9-1-1\n\n\n\n. . .\nIt is recommended that you leave your room unlocked.\n. . .\nI will give you a code to make sure you can get out if you get locked into your room.\n. . .\nIf you forget the code, after 3 tries the lock with be blocked\n. . .\nAlarm\nIf the alarm goes off… and I am not aware (!?), let me know I have the code to stop it.\n\n\n\nWebsite : https://bios2.github.io/hiermod/\n. . .\nOn it, you will find the slides but also practical examples.\n. . .\nYou will also find the course syllabus\n. . .\nHere is a brief overview of the course\n\n\n\n3 credits course at Université de Sherbrooke\n. . .\nIt is a pass or fail course…\n. . .\nSo, if you get involved, ask questions, try, work… you will pass.\n\n\n\n. . .\nBasic knowldege of statistics\n\nGeneral introduction\nGeneral overview of probability theory… for the life sciences\nProbability distribution\nFrequentist and Bayesian modelling\nData simulation (how and when)\nData simulation using different probability distribution\n\n\n\n\nStatistical computing\n\nIntroduction to Stan\n\n. . .\n\nI will not give an introduction to any programming language (e.g. R, Python, Julia).\nI assume you know one and are comfortable using it… I am more comfortable in R, but can work with many other languages (but please no Fortran !)\n\n. . .\n\n\n\nSimple regression models\n\nRefresher in matrix algebra\nRefresher of linear model\nGeneralized linear model\n\nSimple hierarchical regression models\n\nModel with a single hierarchical component on the intercept\nModel with a single hierarchical component on the slope\n\n\n\n\nComplex hierarchical regression models\n\nModel with multiple hierarchical terms\nModel with multiple hierarchical levels\nHierarchical model with constraints\nGaussian process\nPhylogenetic hierarchical models\n\n\n\n\n\n\n\n \n\n\n\n\nI also want to learn about your research… and this might influence what I will present during the course !\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n7h30 to 8h30 - Breakfast\n\n8h30 to 10h00 - Lecture/Practice\n\n10h00 to 10h30 - Break\n\n10h30 to 12h30 - Lecture/Practice\n\n12h00 to 13h00 - Lunch\n\n13h30 to 15h00 - Lecture/Practice\n\n15h30 to 16h00 - Break\n\n16h00 to 17h00 - Lecture/Practice\n17h00 to 17h30 - Let us know about your research !\n\n17h30 to 18h30 - Break\n\n\n18h30 to 19h00 - Supper"
+  },
+  {
+    "objectID": "about.html#course-instructor",
+    "href": "about.html#course-instructor",
+    "title": "Advanced Statistics and hierarchical models",
+    "section": "Course Instructor",
+    "text": "Course Instructor\n\n\n\n\n\n\nPr Guillaume Blanchet"
   }
 ]
