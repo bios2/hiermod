@@ -784,6 +784,12 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 <img data-src="../img/Drunken_walk.png" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="markov-chain-monte-carlo-mcmc-8" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
+<p><strong>Problems with Markov Chain Monte Carlo</strong></p>
+<ul>
+<li>A lot of tuning is required to find the best step length (between long and short steps)</li>
+<li>Inefficient in high-dimensional spaces</li>
+<li>Cannot easily search the entire likelihood space and thus cannot easily isolate local minima</li>
+</ul>
 </section>
 <section id="hamiltonian-monte-carlo" class="slide level2">
 <h2>Hamiltonian Monte Carlo</h2>
@@ -792,6 +798,12 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 <img data-src="https://cdn.pixabay.com/photo/2014/07/31/00/27/skatepark-405864_1280.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
 <section id="hamiltonian-monte-carlo-1" class="slide level2">
 <h2>Hamiltonian Monte Carlo</h2>
+<p><strong>Solution brought by Hamiltonian Monte Carlo</strong></p>
+<ul>
+<li>Uses a gradient-based MCMC to reduce the random walk (hence reduce autocorrelation)</li>
+<li>It is a “No-U-Turn Sampler” (NUTS)</li>
+</ul>
+<p>If you do not fully get it (and even if you do), check out the <a href="https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">Brilliantly wrong</a></p>
 </section>
 <section id="sampling-the-parameters" class="slide level2">
 <h2>Sampling the parameters</h2>
@@ -872,6 +884,64 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 </div>
 </div>
 </div>
+</div>
+</section>
+<section id="stan" class="slide level2">
+<h2>Stan</h2>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://statmodeling.stat.columbia.edu/wp-content/uploads/2015/11/stan_logo.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://api.culture.pl/sites/default/files/styles/1920_auto/public/2018-12/stanislaw-ulam-gettyimages26.jpg?itok=tLdlB95q" style="width:70.0%"></p>
+<figcaption>Stanisław Ulam</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="stan-1" class="slide level2">
+<h2>Stan</h2>
+<p><a href="https://mc-stan.org/">https://mc-stan.org/</a></p>
+<blockquote>
+<p>A comprehensive software ecosystem aimed at facilitating the application of Bayesian inference</p>
+</blockquote>
+<div class="fragment">
+<p>Full Bayesian statistical inference with MCMC sampling (but not only)</p>
+</div>
+<div class="fragment">
+<p>Integrated with most data analysis languages (R, Python, MATLAB, Julia, Stata)</p>
+</div>
+</section>
+<section id="stan-2" class="slide level2">
+<h2>Stan</h2>
+<ul>
+<li>Open source</li>
+<li>Powerful sampling algorithm</li>
+<li>Extensive documentation : <a href="https://mc-stan.org/docs/">https://mc-stan.org/docs/</a></li>
+<li>Large and active online community : <a href="https://discourse.mc-stan.org/">https://discourse.mc-stan.org/</a></li>
+</ul>
+</section>
+<section id="stan-3" class="slide level2">
+<h2>Stan</h2>
+<p>Stan is very flexible allowing you to adjust a model exactly the way you want</p>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/sucre.jpg" class="quarto-figure quarto-figure-center" style="width:35.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="stan-4" class="slide level2">
+<h2>Stan</h2>
+<p>Stan makes it reasonably straight forward to implement models</p>
+<div class="fragment">
+<p><img data-src="../img/whiteboard.png"></p>
 
 
 </div>

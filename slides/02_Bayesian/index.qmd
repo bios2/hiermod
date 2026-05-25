@@ -683,7 +683,11 @@ MCMC relies on using many random samples to assess the structure of the distribu
 
 ## Markov Chain Monte Carlo (MCMC)
 
+**Problems with Markov Chain Monte Carlo**
 
+- A lot of tuning is required to find the best step length (between long and short steps)
+- Inefficient in high-dimensional spaces
+- Cannot easily search the entire likelihood space and thus cannot easily isolate local minima
 
 ## Hamiltonian Monte Carlo
 
@@ -692,6 +696,13 @@ Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure o
 ![](https://cdn.pixabay.com/photo/2014/07/31/00/27/skatepark-405864_1280.jpg){fig-align="center" width=80%}
 
 ## Hamiltonian Monte Carlo
+
+**Solution brought by Hamiltonian Monte Carlo**
+
+- Uses a gradient-based MCMC to reduce the random walk (hence reduce autocorrelation)
+- It is a "No-U-Turn Sampler" (NUTS)
+
+If you do not fully get it (and even if you do), check out the [Brilliantly wrong](https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html)
 
 
 ## Sampling the parameters
@@ -805,3 +816,51 @@ plot(burnin, type = "l", xlab = "Steps",
      ylab = "Parameter", las=1, cex.axis = 1.2, cex.lab = 3, 
      col= "darkgreen")
 ```
+
+## Stan
+
+::: {layout-ncol=2}
+
+![](https://statmodeling.stat.columbia.edu/wp-content/uploads/2015/11/stan_logo.png)
+
+![Stanisław Ulam](https://api.culture.pl/sites/default/files/styles/1920_auto/public/2018-12/stanislaw-ulam-gettyimages26.jpg?itok=tLdlB95q){width=70%}
+
+
+:::
+
+## Stan
+
+[https://mc-stan.org/](https://mc-stan.org/)
+
+> A comprehensive software ecosystem aimed at facilitating the application of Bayesian inference
+
+. . . 
+
+Full Bayesian statistical inference with MCMC sampling (but not only)
+
+. . . 
+
+Integrated with most data analysis languages (R, Python, MATLAB, Julia, Stata)
+
+## Stan
+
+* Open source
+* Powerful sampling algorithm
+* Extensive documentation :  [https://mc-stan.org/docs/](https://mc-stan.org/docs/)
+* Large and active online community :  [https://discourse.mc-stan.org/](https://discourse.mc-stan.org/)
+
+## Stan
+
+Stan is very flexible allowing you to adjust a model exactly the way you want
+
+. . . 
+
+![](../img/sucre.jpg){fig-align="center" width=35%}
+
+## Stan
+
+Stan makes it reasonably straight forward to implement models
+
+. . . 
+
+![](../img/whiteboard.png)
