@@ -3,8 +3,8 @@ title: "Linear models"
 title-slide-attributes: 
   data-background-image: ../img/bg.jpg
   data-background-size: full
-author: "Guillaume Blanchet -- Andrew MacDonald"
-date: "2025-05-06"
+author: "Guillaume Blanchet"
+date: "2026-06-02"
 execute:
   echo: true
 format: 
@@ -75,7 +75,7 @@ The cool thing about the simple linear model is that it can be studied visually 
 
 . . .
 
-For example if we are interested in knowing how a newly discovered plant species (*Bidonia exemplaris*) reacts to humidity, we can relate the biomass of *B. exemplaris* sampled at 100 sites with the soil humidity content and readily  visual the data and the trend.
+For example if we are interested in knowing how a newly discovered plant species (*Bidonia exemplaris*) reacts to humidity, we can relate the biomass of *B. exemplaris* sampled at 100 sites with the soil humidity content and readily  visualise the data and the trend.
 
 ## Basic regression model
 
@@ -226,9 +226,11 @@ plot(humidity, y_obs,
      xlab = "",
      ylab = "",
      cex = 2,
-     asp = 1,
+#     asp = 1,
      main = "B. exemplaris",
-     cex.main = 3.5)
+     cex.main = 3.5,
+     xlim = c(-1.2,1.2),
+     ylim = c(1.5, 6.5))
 
 mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
 mtext("Biomass", side = 2, line = 4.5, cex = 3.5)
@@ -244,9 +246,11 @@ plot(humidity, y_obs_small,
      ylab = "",
      cex.lab = 2.5,
      cex = 2,
-     asp = 1,
+#     asp = 1,
      main = "I. chicktighii",
-     cex.main = 3.5)
+     cex.main = 3.5,
+     xlim = c(-1.2,1.2),
+     ylim = c(1.5, 6.5))
 
 mtext("Humidity", side = 1, line = 4.5, cex = 3.5)
 
