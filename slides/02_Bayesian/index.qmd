@@ -58,43 +58,58 @@ They need **data**
 
 . . . 
 
-::: {style="font-size: 0.75em"}
 Bayesians want to find how good the model parameter(s) are given some data
-:::
 
 . . . 
 
-::: {style="font-size: 0.75em"}
 $$\text{Posterior}\hspace{1.5cm}P(\text{Model}|\text{Data})$$
-:::
 
 . . . 
 
-::: {style="font-size: 0.75em"}
 They are interested in the **posterior** distribution
-:::
 
 . . . 
 
-::: {style="font-size: 0.75em"}
 They need **data** and **prior** information
+
+. . . 
+
+The general framework used in Bayesian modelling is 
+
+$$P(\text{Model}|\text{Data}) = \frac{P(\text{Data}|\text{Model})P(\text{Model})}{P(\text{Data})}$$
+
+. . . 
+
+This is known as Bayes's theorm
+
+## A bit of history
+
+The figure behind Bayes' theorem is a Presbyterian minister named Thomas Bayes
+
+![](https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif){fig-align="center"}
+
+**Note** It is not clear whether this is actually a picture of him...
+
+
+## Bayesian
+
+::: {style="font-size: 0.85em"}
+$$P(\text{Model}|\text{Data}) = \frac{P(\text{Data}|\text{Model})P(\text{Model})}{P(\text{Data})}$$
 :::
 
 . . . 
 
-::: {style="font-size: 0.75em"}
-The general framework used in Bayesian modelling is 
-:::
+::: {style="font-size: 0.85em"}
+However, it can be simplified to
 
-::: {style="font-size: 0.75em"}
-$$\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}$$
+$$P(\text{Model}|\text{Data})\propto P(\text{Data}|\text{Model})P(\text{Model})$$
 :::
 
 . . . 
 
 #### Estimating model parameters
 
-::: {style="font-size: 0.75em"}
+::: {style="font-size: 0.85em"}
 - Markov Chain Monte Carlo
 - Hamiltonian Monte Carlo
 - ...
@@ -103,6 +118,277 @@ $$\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P
 ## Our way of thinking is Bayesian
 
 [![](../img/Fantastic_Beast.png){width=1000 height=500}](https://youtu.be/uoEnGiG9aWA?t=34)
+
+## [The different parts of a Bayesian model]{style="font-size: 0.85em"}
+
+::: {style="font-size: 0.85em"}
+$$\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}$$
+:::
+
+. . . 
+
+::: {style="font-size: 0.85em"}
+When we look at the equation above, it might be difficult to visualize exactly what are the
+
+- **Posterior**
+- **Likelihood**
+- **Prior**
+
+Understanding this will be *essential* for the course.
+:::
+
+. . . 
+
+::: {style="font-size: 0.85em"}
+Let's use a small example to make sure we understand each part of the Bayesian model well.
+:::
+
+## Illustrative example
+
+::: {style="font-size: 0.65em"}
+For this example, we will be interested in building a model to study the breeding success of the kākāpō. The kākāpō (*Strigops habroptilus*) is a critically endangered large (fat!) flightless nocturnal parrot found solely on the islands of Whenua Hou, Pukenui and Te Kākahu-o-Tamatea in New-Zealand. There are currently only 236 adults kākāpō on Earth. So studying its breeding success can be very valuable for the survival of the species
+:::
+
+![](https://upload.wikimedia.org/wikipedia/commons/a/aa/Sirocco_full_length_portrait.jpg){fig-align="center"}
+
+::: {style="font-size: 0.65em"}
+**Sirocco** Probably the most popular kākāpō. 
+
+If you wonder why Sirocco is popular, take a look at this [YouTube video](https://www.youtube.com/watch?v=9T1vfsHYiKY)
+:::
+
+
+## Illustrative example
+
+::: {style="font-size: 0.85em"}
+For the sake of this example, let's focus on three female kākāpō, the number of eggs they laid and the number of chicks that hatched. Typically a kākāpō lay 1 to 4 eggs every breeding period, which occur every 2 to 4 years. In this example, we will assume we have data for the past 20 years (so, let's assume we have data for the past 6 breeding period).
+
+| Kākāpō | Eggs laid  | Chick hatched |
+|--------|:--------:|:---------:|
+| Bella | 12 | 4 |
+| Wendy | 10 | 5 |
+| Nora  | 16 | 5 |
+
+**Note** Kākāpō names and number of hatched chicks are real (see the [List of kakapo](https://handwiki.org/wiki/Biology:List_of_kakapo)), while number of laid eggs were invented but follow what is expected from current research.
+:::
+
+
+## Illustrative example
+
+::: {style="font-size: 0.85em"}
+Based on the available information 
+
+- Available data       
+- Information provided
+- Assumptions we made
+:::
+. . . 
+
+::: {style="font-size: 0.85em"}
+We can assume rely on the Binomial distribution in this example.
+:::
+
+. . . 
+
+Do you know why ?
+
+## Illustrative example
+
+**Likelihood**
+
+What is the probability distribution that a kākāpō will produce chicks during the 20-year period?  
+$$
+\begin{align}
+\text{chick hatched} &\sim \text{Binomial}(p, \text{eggs laid}) \\
+\end{align}
+$$
+
+
+. . . 
+
+This is the probability distribution associated to the kākāpō data.
+
+It is called the _likelihood_.
+
+
+## Illustrative example
+
+**Likelihood**
+
+::: {style="font-size: 0.7em"}
+The likelihood is the product ($\times$) of the probabilities associated to each data point
+
+$$L(\theta \mid x) = \prod_{i=1}^n P(x_i \mid \theta)$$
+where 
+
+- $P(x_i \mid \theta)$ is the function of a probability distribution function
+- $x_i$ is the value associated to sample $i$ out of $n$ samples
+- $\theta$ is the parameter associated to the model
+:::
+
+. . . 
+
+::: {style="font-size: 0.7em"}
+In our example, 
+
+- $P(x_i \mid \theta)$ is the Binomial distribution function
+- $x_i$ is the reproductive success of each kākāpō ($i$) over the 20 year period
+- $\theta$ is the probability of reproductive success
+:::
+
+
+## Illustrative example
+
+**Likelihood**
+
+When writing the likelihood as 
+
+$$L(\theta \mid x) = \prod_{i=1}^n P(x_i \mid \theta)$$
+
+we make the assumption that each observation, each sample is **independent** from all the other observations.
+
+. . . 
+
+Later in this course, we will see how to work around this problem.
+
+## Illustrative example
+
+**Likelihood**
+
+We can thus write the likelihood conceptually as
+
+$$
+P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \theta)\times P(\text{Wendy} \mid \theta)\times P(\text{Nora} \mid \theta)
+$$
+
+. . . 
+
+and more formally as
+
+$$
+\begin{align*}
+    P\left(4, 5, 5 \mid p\right) = &\text{Binomial}\left(4 | p, 12\right)\times  \\
+                   &\text{Binomial}\left(5 | p, 10\right)\times\\
+                   &\text{Binomial}\left(5 | p, 16\right)
+\end{align*}
+$$
+
+## Illustrative example
+
+**Likelihood**
+
+Working directly with the likelihood is often problematic computationally because multiplication on probabilities can lead to technical problems
+
+. . . 
+
+It is thus common to work with a *log-*likelihood function. In doing so, laws of logarithms allows us to convert multiplications to additions 
+
+$$
+\begin{align*}
+    \log\left(P\left(4, 5, 5 \mid p\right)\right) =& \log\left(\text{Binomial}\left(4 | p, 12\right)\right) +  \\
+                   & \log\left(\text{Binomial}\left(5 | p, 10\right)\right)+\\
+                   & \log\left(\text{Binomial}\left(5 | p, 16\right)\right)
+\end{align*}
+$$
+
+## Illustrative example
+
+**Log-likelihood in R**
+
+::: {style="font-size: 0.8em"}
+```{r}
+#| output-location: column
+#| classes: custom3070
+#| fig-height: 12
+
+# Data
+hatch <- c(4, 5, 5)
+eggs <- c(12, 10, 5)
+
+# log-likelihood function
+calc_ll <- function(x, 
+                    hatch, eggs) {
+  # Quick check
+  if(length(hatch) != length(eggs)){
+    stop("hatch and eggs must have the same length")
+  }
+  
+  # log-likelihood
+  res <- sum(-dbinom(hatch,
+                     size = eggs,
+                     prob = x,
+                     log = TRUE))
+  return(res)
+}
+
+# Test a range of probability values
+prob_val <- seq(from = 0, 
+                to = 1,
+                length.out = 30)
+
+# Result object
+log_lik <- numeric(30L)
+
+for (i in 1:length(prob_val)) {
+  log_lik[i] <- calc_ll(prob_val[i],
+                        hatch = hatch,
+                        eggs = eggs)
+}
+
+par(cex = 3)
+plot(prob_val,
+     log_lik,
+     type = "b",
+     xlab = "Probability",
+     ylab = "Log-likelihood")
+```
+:::
+
+
+## Illustrative example
+
+**Let's make it Bayesian**
+
+Add a prior
+
+$$
+\begin{align*}
+    {P\left(4, 5, 5 \mid p \right)} = &\text{Binomial}\left(4 | p, 12\right)\times  \\
+                   &\text{Binomial}\left(5 | p, 10\right)\times\\
+                   &\text{Binomial}\left(5 | p, 16\right)\\
+                   p\sim & \text{Uniform}\left(\text{min}=0,\text{ max}=1\right)
+\end{align*}
+$$
+
+## Illustrative example
+
+**Let's make it Bayesian**
+
+If we combine the **likelihood** and the **prior** we get
+
+$$
+\begin{align*}
+    P\left(p \mid 4, 5, 5\right) =& \text{Binomial}\left(4 | p, 12\right) \times  \\
+                   & \text{Binomial}\left(5 | p, 10\right)\times\\
+                   & \text{Binomial}\left(5 | p, 16\right)\times\\
+                   & \text{Uniform}\left(\text{min}=0,\text{ max}=1\right)
+\end{align*}
+$$
+
+## Illustrative example
+
+**Let's make it Bayesian**
+
+If we rewrite this model using logs we get
+
+$$
+\begin{align*}
+    \log\left(P\left(p \mid 4, 5, 5\right)\right) =& \log\left(\text{Binomial}\left(4 | p, 12\right)\right) +  \\
+                   & \log\left(\text{Binomial}\left(5 | p, 10\right)\right)+\\
+                   & \log\left(\text{Binomial}\left(5 | p, 16\right)\right)+\\
+                   & \log\left(\text{Uniform}\left(\text{min}=0,\text{ max}=1\right)\right)
+\end{align*}
+$$
 
 ## A few words about the prior
 
@@ -234,7 +520,7 @@ curve(dunif(x,min = -2, max = 0), n=1000, -2.5, 0.5, xlab = "",
 . . .
 
 :::{style="font-size: 0.75em;"}
-As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan 
+As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan. 
 :::
 . . .
 
@@ -258,11 +544,26 @@ The goal of this course is **not** to learn the intricacies of MCMC or HMC, but 
 
 ## Markov Chain Monte Carlo (MCMC)
 
-:::{style="font-size: 0.75em;"}
-Historically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made during the Los Alamos projects.
+Historically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made in the early 1950's at the Los Alamos laboratory.
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Operators_in_front_of_the_MANIAC.jpg/1920px-Operators_in_front_of_the_MANIAC.jpg){fig-align="center"}
+
+**MANIAC I** is The first computer on which MCMC was implemented
+
+## Markov Chain Monte Carlo (MCMC)
+
+A key figure in the development of MCMC was Arianna W. Rosenbluth, who was the first to implement an MCMC.
+
+![](https://upload.wikimedia.org/wikipedia/commons/5/58/Arianna_W_Rosenbluth.jpg){fig-align="center"}
+
+::: r-stack
+Arianna W. Rosenbluth (1927 - 2020)
+:::
+
+
+## Markov Chain Monte Carlo (MCMC)
 
 To explain what is an MCMC, let's imagine that we are interested in understanding how the mallard (*Anas platyrhynchos*) grows from hatchling to adult.
-:::
 
 ![](https://upload.wikimedia.org/wikipedia/commons/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg){fig-align="center" width=10%}
 
@@ -380,11 +681,18 @@ MCMC relies on using many random samples to assess the structure of the distribu
 
 ![](../img/Drunken_walk.png){fig-align="center"}
 
+## Markov Chain Monte Carlo (MCMC)
+
+
+
 ## Hamiltonian Monte Carlo
 
 Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure of the distribution.
 
 ![](https://cdn.pixabay.com/photo/2014/07/31/00/27/skatepark-405864_1280.jpg){fig-align="center" width=80%}
+
+## Hamiltonian Monte Carlo
+
 
 ## Sampling the parameters
 

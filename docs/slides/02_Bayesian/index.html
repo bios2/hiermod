@@ -32,6 +32,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -181,36 +247,45 @@ Guillaume Blanchet
 <section id="bayesian" class="slide level2">
 <h2>Bayesian</h2>
 <div class="fragment">
-<div style="font-size: 0.75em">
 <p>Bayesians want to find how good the model parameter(s) are given some data</p>
 </div>
-</div>
 <div class="fragment">
-<div style="font-size: 0.75em">
 <p><span class="math display">\[\text{Posterior}\hspace{1.5cm}P(\text{Model}|\text{Data})\]</span></p>
 </div>
-</div>
 <div class="fragment">
-<div style="font-size: 0.75em">
 <p>They are interested in the <strong>posterior</strong> distribution</p>
 </div>
-</div>
 <div class="fragment">
-<div style="font-size: 0.75em">
 <p>They need <strong>data</strong> and <strong>prior</strong> information</p>
 </div>
+<div class="fragment">
+<p>The general framework used in Bayesian modelling is</p>
+<p><span class="math display">\[P(\text{Model}|\text{Data}) = \frac{P(\text{Data}|\text{Model})P(\text{Model})}{P(\text{Data})}\]</span></p>
 </div>
 <div class="fragment">
-<div style="font-size: 0.75em">
-<p>The general framework used in Bayesian modelling is</p>
+<p>This is known as Bayes’s theorm</p>
 </div>
-<div style="font-size: 0.75em">
-<p><span class="math display">\[\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}\]</span></p>
+</section>
+<section id="a-bit-of-history" class="slide level2">
+<h2>A bit of history</h2>
+<p>The figure behind Bayes’ theorem is a Presbyterian minister named Thomas Bayes</p>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" class="quarto-figure quarto-figure-center r-stretch"><p><strong>Note</strong> It is not clear whether this is actually a picture of him…</p>
+</section>
+<section id="bayesian-1" class="slide level2">
+<h2>Bayesian</h2>
+<div style="font-size: 0.85em">
+<p><span class="math display">\[P(\text{Model}|\text{Data}) = \frac{P(\text{Data}|\text{Model})P(\text{Model})}{P(\text{Data})}\]</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.85em">
+<p>However, it can be simplified to</p>
+<p><span class="math display">\[P(\text{Model}|\text{Data})\propto P(\text{Data}|\text{Model})P(\text{Model})\]</span></p>
 </div>
 </div>
 <div class="fragment">
 <h4 id="estimating-model-parameters-1">Estimating model parameters</h4>
-<div style="font-size: 0.75em">
+<div style="font-size: 0.85em">
 <ul>
 <li>Markov Chain Monte Carlo</li>
 <li>Hamiltonian Monte Carlo</li>
@@ -222,6 +297,268 @@ Guillaume Blanchet
 <section id="our-way-of-thinking-is-bayesian" class="slide level2">
 <h2>Our way of thinking is Bayesian</h2>
 <p><a href="https://youtu.be/uoEnGiG9aWA?t=34"><img data-src="../img/Fantastic_Beast.png" width="1000" height="500"></a></p>
+</section>
+<section id="the-different-parts-of-a-bayesian-model" class="slide level2">
+<h2><span style="font-size: 0.85em">The different parts of a Bayesian model</span></h2>
+<div style="font-size: 0.85em">
+<p><span class="math display">\[\underbrace{P(\text{Model}|\text{Data})}_\text{Posterior}\propto \underbrace{P(\text{Data}|\text{Model})}_\text{Likelihood}\underbrace{P(\text{Model})}_\text{Prior}\]</span></p>
+</div>
+<div class="fragment">
+<div style="font-size: 0.85em">
+<p>When we look at the equation above, it might be difficult to visualize exactly what are the</p>
+<ul>
+<li><strong>Posterior</strong></li>
+<li><strong>Likelihood</strong></li>
+<li><strong>Prior</strong></li>
+</ul>
+<p>Understanding this will be <em>essential</em> for the course.</p>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.85em">
+<p>Let’s use a small example to make sure we understand each part of the Bayesian model well.</p>
+</div>
+</div>
+</section>
+<section id="illustrative-example" class="slide level2">
+<h2>Illustrative example</h2>
+<div style="font-size: 0.65em">
+<p>For this example, we will be interested in building a model to study the breeding success of the kākāpō. The kākāpō (<em>Strigops habroptilus</em>) is a critically endangered large (fat!) flightless nocturnal parrot found solely on the islands of Whenua Hou, Pukenui and Te Kākahu-o-Tamatea in New-Zealand. There are currently only 236 adults kākāpō on Earth. So studying its breeding success can be very valuable for the survival of the species</p>
+</div>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Sirocco_full_length_portrait.jpg" class="quarto-figure quarto-figure-center r-stretch"><div style="font-size: 0.65em">
+<p><strong>Sirocco</strong> Probably the most popular kākāpō.</p>
+<p>If you wonder why Sirocco is popular, take a look at this <a href="https://www.youtube.com/watch?v=9T1vfsHYiKY">YouTube video</a></p>
+</div>
+</section>
+<section id="illustrative-example-1" class="slide level2">
+<h2>Illustrative example</h2>
+<div style="font-size: 0.85em">
+<p>For the sake of this example, let’s focus on three female kākāpō, the number of eggs they laid and the number of chicks that hatched. Typically a kākāpō lay 1 to 4 eggs every breeding period, which occur every 2 to 4 years. In this example, we will assume we have data for the past 20 years (so, let’s assume we have data for the past 6 breeding period).</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Kākāpō</th>
+<th style="text-align: center;">Eggs laid</th>
+<th style="text-align: center;">Chick hatched</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bella</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td>Wendy</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="odd">
+<td>Nora</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong> Kākāpō names and number of hatched chicks are real (see the <a href="https://handwiki.org/wiki/Biology:List_of_kakapo">List of kakapo</a>), while number of laid eggs were invented but follow what is expected from current research.</p>
+</div>
+</section>
+<section id="illustrative-example-2" class="slide level2">
+<h2>Illustrative example</h2>
+<div style="font-size: 0.85em">
+<p>Based on the available information</p>
+<ul>
+<li>Available data<br>
+</li>
+<li>Information provided</li>
+<li>Assumptions we made</li>
+</ul>
+</div>
+<div class="fragment">
+<div style="font-size: 0.85em">
+<p>We can assume rely on the Binomial distribution in this example.</p>
+</div>
+</div>
+<div class="fragment">
+<p>Do you know why ?</p>
+</div>
+</section>
+<section id="illustrative-example-3" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Likelihood</strong></p>
+<p>What is the probability distribution that a kākāpō will produce chicks during the 20-year period?<br>
+<span class="math display">\[
+\begin{align}
+\text{chick hatched} &amp;\sim \text{Binomial}(p, \text{eggs laid}) \\
+\end{align}
+\]</span></p>
+<div class="fragment">
+<p>This is the probability distribution associated to the kākāpō data.</p>
+<p>It is called the <em>likelihood</em>.</p>
+</div>
+</section>
+<section id="illustrative-example-4" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Likelihood</strong></p>
+<div style="font-size: 0.7em">
+<p>The likelihood is the product (<span class="math inline">\(\times\)</span>) of the probabilities associated to each data point</p>
+<p><span class="math display">\[L(\theta \mid x) = \prod_{i=1}^n P(x_i \mid \theta)\]</span> where</p>
+<ul>
+<li><span class="math inline">\(P(x_i \mid \theta)\)</span> is the function of a probability distribution function</li>
+<li><span class="math inline">\(x_i\)</span> is the value associated to sample <span class="math inline">\(i\)</span> out of <span class="math inline">\(n\)</span> samples</li>
+<li><span class="math inline">\(\theta\)</span> is the parameter associated to the model</li>
+</ul>
+</div>
+<div class="fragment">
+<div style="font-size: 0.7em">
+<p>In our example,</p>
+<ul>
+<li><span class="math inline">\(P(x_i \mid \theta)\)</span> is the Binomial distribution function</li>
+<li><span class="math inline">\(x_i\)</span> is the reproductive success of each kākāpō (<span class="math inline">\(i\)</span>) over the 20 year period</li>
+<li><span class="math inline">\(\theta\)</span> is the probability of reproductive success</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="illustrative-example-5" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Likelihood</strong></p>
+<p>When writing the likelihood as</p>
+<p><span class="math display">\[L(\theta \mid x) = \prod_{i=1}^n P(x_i \mid \theta)\]</span></p>
+<p>we make the assumption that each observation, each sample is <strong>independent</strong> from all the other observations.</p>
+<div class="fragment">
+<p>Later in this course, we will see how to work around this problem.</p>
+</div>
+</section>
+<section id="illustrative-example-6" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Likelihood</strong></p>
+<p>We can thus write the likelihood conceptually as</p>
+<p><span class="math display">\[
+P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \theta)\times P(\text{Wendy} \mid \theta)\times P(\text{Nora} \mid \theta)
+\]</span></p>
+<div class="fragment">
+<p>and more formally as</p>
+<p><span class="math display">\[
+\begin{align*}
+    P\left(4, 5, 5 \mid p\right) = &amp;\text{Binomial}\left(4 | p, 12\right)\times  \\
+                   &amp;\text{Binomial}\left(5 | p, 10\right)\times\\
+                   &amp;\text{Binomial}\left(5 | p, 16\right)
+\end{align*}
+\]</span></p>
+</div>
+</section>
+<section id="illustrative-example-7" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Likelihood</strong></p>
+<p>Working directly with the likelihood is often problematic computationally because multiplication on probabilities can lead to technical problems</p>
+<div class="fragment">
+<p>It is thus common to work with a <em>log-</em>likelihood function. In doing so, laws of logarithms allows us to convert multiplications to additions</p>
+<p><span class="math display">\[
+\begin{align*}
+    \log\left(P\left(4, 5, 5 \mid p\right)\right) =&amp; \log\left(\text{Binomial}\left(4 | p, 12\right)\right) +  \\
+                   &amp; \log\left(\text{Binomial}\left(5 | p, 10\right)\right)+\\
+                   &amp; \log\left(\text{Binomial}\left(5 | p, 16\right)\right)
+\end{align*}
+\]</span></p>
+</div>
+</section>
+<section id="illustrative-example-8" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Log-likelihood in R</strong></p>
+<div style="font-size: 0.8em">
+<div class="cell custom3070 columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="co"># Data</span></span>
+<span id="cb1-2"><a></a>hatch <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb1-3"><a></a>eggs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">10</span>, <span class="dv">5</span>)</span>
+<span id="cb1-4"><a></a></span>
+<span id="cb1-5"><a></a><span class="co"># log-likelihood function</span></span>
+<span id="cb1-6"><a></a>calc_ll <span class="ot">&lt;-</span> <span class="cf">function</span>(x, </span>
+<span id="cb1-7"><a></a>                    hatch, eggs) {</span>
+<span id="cb1-8"><a></a>  <span class="co"># Quick check</span></span>
+<span id="cb1-9"><a></a>  <span class="cf">if</span>(<span class="fu">length</span>(hatch) <span class="sc">!=</span> <span class="fu">length</span>(eggs)){</span>
+<span id="cb1-10"><a></a>    <span class="fu">stop</span>(<span class="st">"hatch and eggs must have the same length"</span>)</span>
+<span id="cb1-11"><a></a>  }</span>
+<span id="cb1-12"><a></a>  </span>
+<span id="cb1-13"><a></a>  <span class="co"># log-likelihood</span></span>
+<span id="cb1-14"><a></a>  res <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">-</span><span class="fu">dbinom</span>(hatch,</span>
+<span id="cb1-15"><a></a>                     <span class="at">size =</span> eggs,</span>
+<span id="cb1-16"><a></a>                     <span class="at">prob =</span> x,</span>
+<span id="cb1-17"><a></a>                     <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-18"><a></a>  <span class="fu">return</span>(res)</span>
+<span id="cb1-19"><a></a>}</span>
+<span id="cb1-20"><a></a></span>
+<span id="cb1-21"><a></a><span class="co"># Test a range of probability values</span></span>
+<span id="cb1-22"><a></a>prob_val <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, </span>
+<span id="cb1-23"><a></a>                <span class="at">to =</span> <span class="dv">1</span>,</span>
+<span id="cb1-24"><a></a>                <span class="at">length.out =</span> <span class="dv">30</span>)</span>
+<span id="cb1-25"><a></a></span>
+<span id="cb1-26"><a></a><span class="co"># Result object</span></span>
+<span id="cb1-27"><a></a>log_lik <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">30</span>L)</span>
+<span id="cb1-28"><a></a></span>
+<span id="cb1-29"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(prob_val)) {</span>
+<span id="cb1-30"><a></a>  log_lik[i] <span class="ot">&lt;-</span> <span class="fu">calc_ll</span>(prob_val[i],</span>
+<span id="cb1-31"><a></a>                        <span class="at">hatch =</span> hatch,</span>
+<span id="cb1-32"><a></a>                        <span class="at">eggs =</span> eggs)</span>
+<span id="cb1-33"><a></a>}</span>
+<span id="cb1-34"><a></a></span>
+<span id="cb1-35"><a></a><span class="fu">par</span>(<span class="at">cex =</span> <span class="dv">3</span>)</span>
+<span id="cb1-36"><a></a><span class="fu">plot</span>(prob_val,</span>
+<span id="cb1-37"><a></a>     log_lik,</span>
+<span id="cb1-38"><a></a>     <span class="at">type =</span> <span class="st">"b"</span>,</span>
+<span id="cb1-39"><a></a>     <span class="at">xlab =</span> <span class="st">"Probability"</span>,</span>
+<span id="cb1-40"><a></a>     <span class="at">ylab =</span> <span class="st">"Log-likelihood"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="illustrative-example-9" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Let’s make it Bayesian</strong></p>
+<p>Add a prior</p>
+<p><span class="math display">\[
+\begin{align*}
+    {P\left(4, 5, 5 \mid p \right)} = &amp;\text{Binomial}\left(4 | p, 12\right)\times  \\
+                   &amp;\text{Binomial}\left(5 | p, 10\right)\times\\
+                   &amp;\text{Binomial}\left(5 | p, 16\right)\\
+                   p\sim &amp; \text{Uniform}\left(\text{min}=0,\text{ max}=1\right)
+\end{align*}
+\]</span></p>
+</section>
+<section id="illustrative-example-10" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Let’s make it Bayesian</strong></p>
+<p>If we combine the <strong>likelihood</strong> and the <strong>prior</strong> we get</p>
+<p><span class="math display">\[
+\begin{align*}
+    P\left(p \mid 4, 5, 5\right) =&amp; \text{Binomial}\left(4 | p, 12\right) \times  \\
+                   &amp; \text{Binomial}\left(5 | p, 10\right)\times\\
+                   &amp; \text{Binomial}\left(5 | p, 16\right)\times\\
+                   &amp; \text{Uniform}\left(\text{min}=0,\text{ max}=1\right)
+\end{align*}
+\]</span></p>
+</section>
+<section id="illustrative-example-11" class="slide level2">
+<h2>Illustrative example</h2>
+<p><strong>Let’s make it Bayesian</strong></p>
+<p>If we rewrite this model using logs we get</p>
+<p><span class="math display">\[
+\begin{align*}
+    \log\left(P\left(p \mid 4, 5, 5\right)\right) =&amp; \log\left(\text{Binomial}\left(4 | p, 12\right)\right) +  \\
+                   &amp; \log\left(\text{Binomial}\left(5 | p, 10\right)\right)+\\
+                   &amp; \log\left(\text{Binomial}\left(5 | p, 16\right)\right)+\\
+                   &amp; \log\left(\text{Uniform}\left(\text{min}=0,\text{ max}=1\right)\right)
+\end{align*}
+\]</span></p>
 </section>
 <section id="a-few-words-about-the-prior" class="slide level2">
 <h2>A few words about the prior</h2>
@@ -274,7 +611,7 @@ Guillaume Blanchet
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
 </figure>
 </div>
 </div>
@@ -309,7 +646,7 @@ Guillaume Blanchet
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
 </figure>
 </div>
 </div>
@@ -320,7 +657,7 @@ Guillaume Blanchet
 <h2>Estimating Bayesian model</h2>
 <div class="fragment">
 <div style="font-size: 0.75em;">
-<p>As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan</p>
+<p>As I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.</p>
 </div>
 </div>
 <div class="fragment">
@@ -345,13 +682,24 @@ Guillaume Blanchet
 </section>
 <section id="markov-chain-monte-carlo-mcmc" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
-<div style="font-size: 0.75em;">
-<p>Historically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made during the Los Alamos projects.</p>
-<p>To explain what is an MCMC, let’s imagine that we are interested in understanding how the mallard (<em>Anas platyrhynchos</em>) grows from hatchling to adult.</p>
+<p>Historically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made in the early 1950’s at the Los Alamos laboratory.</p>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Operators_in_front_of_the_MANIAC.jpg/1920px-Operators_in_front_of_the_MANIAC.jpg" class="quarto-figure quarto-figure-center r-stretch"><p><strong>MANIAC I</strong> is The first computer on which MCMC was implemented</p>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-1" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<p>A key figure in the development of MCMC was Arianna W. Rosenbluth, who was the first to implement an MCMC.</p>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/5/58/Arianna_W_Rosenbluth.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="r-stack">
+<p>Arianna W. Rosenbluth (1927 - 2020)</p>
 </div>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-2" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+<p>To explain what is an MCMC, let’s imagine that we are interested in understanding how the mallard (<em>Anas platyrhynchos</em>) grows from hatchling to adult.</p>
 
 <img data-src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Anas_platyrhynchos_male_female_quadrat.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:10.0%"></section>
-<section id="markov-chain-monte-carlo-mcmc-1" class="slide level2">
+<section id="markov-chain-monte-carlo-mcmc-3" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p><strong>A simplistic statistical example</strong></p>
 <div class="fragment">
@@ -364,14 +712,14 @@ Guillaume Blanchet
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="markov-chain-monte-carlo-mcmc-2" class="slide level2">
+<section id="markov-chain-monte-carlo-mcmc-4" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p><strong>A simplistic statistical example</strong></p>
 <div class="fragment">
@@ -385,14 +733,14 @@ Guillaume Blanchet
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="markov-chain-monte-carlo-mcmc-3" class="slide level2">
+<section id="markov-chain-monte-carlo-mcmc-5" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p><strong>A simplistic statistical example</strong></p>
 <div style="font-size: 0.85em;">
@@ -420,7 +768,7 @@ Guillaume Blanchet
 </div>
 </div>
 </section>
-<section id="markov-chain-monte-carlo-mcmc-4" class="slide level2">
+<section id="markov-chain-monte-carlo-mcmc-6" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <div class="fragment">
 <p>When using an MCMC, we are interested in sampling distributions to estimate the parameters of the model.</p>
@@ -429,16 +777,22 @@ Guillaume Blanchet
 <p>Technically, MCMC and HMC rely on different approaches to assess the structure of the distributions.</p>
 </div>
 </section>
-<section id="markov-chain-monte-carlo-mcmc-5" class="slide level2">
+<section id="markov-chain-monte-carlo-mcmc-7" class="slide level2">
 <h2>Markov Chain Monte Carlo (MCMC)</h2>
 <p>MCMC relies on using many random samples to assess the structure of the distribution.</p>
 
 <img data-src="../img/Drunken_walk.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="markov-chain-monte-carlo-mcmc-8" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC)</h2>
+</section>
 <section id="hamiltonian-monte-carlo" class="slide level2">
 <h2>Hamiltonian Monte Carlo</h2>
 <p>Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure of the distribution.</p>
 
 <img data-src="https://cdn.pixabay.com/photo/2014/07/31/00/27/skatepark-405864_1280.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="hamiltonian-monte-carlo-1" class="slide level2">
+<h2>Hamiltonian Monte Carlo</h2>
+</section>
 <section id="sampling-the-parameters" class="slide level2">
 <h2>Sampling the parameters</h2>
 <div class="fragment">
