@@ -11,14 +11,14 @@
     "href": "index.html#day-1-introduction-data-simulation-discrete-models",
     "title": "Course content",
     "section": "Day 1: Introduction, data simulation, discrete models",
-    "text": "Day 1: Introduction, data simulation, discrete models\nCourse Syllabus\n\n\n\nTheory\n\nIntroduction to the course and location\nProbability Distributions\n\n\n\n\nExercices – data simulation & discrete models\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nImportantMonday night Stan installation session!\n\n\n\nTo use Stan in R, the rstan R package is needed. To install it, follow the steps in this vignette. Make sure you can run the example in the Verifying Installation\nIf you have not yet managed to install Stan and rstan, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
+    "text": "Day 1: Introduction, data simulation, discrete models\nCourse Syllabus\n\n\n\nTheory\n\nIntroduction to the course and location\nData we’ll be using\nProbability Distributions\n\n\n\n\nExercices – data simulation & discrete models\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nImportantMonday night Stan installation session!\n\n\n\nTo use Stan in R, the rstan R package is needed. To install it, follow the steps in this vignette. Make sure you can run the example in the Verifying Installation\nIf you have not yet managed to install Stan and rstan, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
   },
   {
     "objectID": "index.html#day-2-intro-to-stan-and-regression",
     "href": "index.html#day-2-intro-to-stan-and-regression",
     "title": "Course content",
     "section": "DAY 2: Intro to Stan and Regression",
-    "text": "DAY 2: Intro to Stan and Regression\n\n\n\nTheory\n\nBayesian and MCMC\nStan and HMC\nLinear models\nData we’ll be using\n\n\n\n\nPractice\n\nSimulation and model fitting in Stan\nDiscrete predictors"
+    "text": "DAY 2: Intro to Stan and Regression\n\n\n\nTheory\n\nBayesian and MCMC\nLinear models\n\n\n\n\nPractice\n\nSimulation and model fitting in Stan\nDiscrete predictors"
   },
   {
     "objectID": "index.html#day-3-hierarchical-models",
@@ -46,7 +46,7 @@
     "href": "slides/04_Linear_model/index.html#basic-regression-model-1",
     "title": "Linear models",
     "section": "Basic regression model",
-    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily.\n\nFor example if we are interested in knowing how a newly discovered plant species (Bidonia exemplaris) reacts to humidity, we can relate the biomass of B. exemplaris sampled at 100 sites with the soil humidity content and readily visual the data and the trend."
+    "text": "Basic regression model\nThe cool thing about the simple linear model is that it can be studied visually quite easily.\n\nFor example if we are interested in knowing how a newly discovered plant species (Bidonia exemplaris) reacts to humidity, we can relate the biomass of B. exemplaris sampled at 100 sites with the soil humidity content and readily visualise the data and the trend."
   },
   {
     "objectID": "slides/04_Linear_model/index.html#basic-regression-model-2",
@@ -480,14 +480,14 @@
     "href": "slides/01_Data/index.html#illustrative-datasets",
     "title": "Data used for this course",
     "section": "Illustrative datasets",
-    "text": "Illustrative datasets\nTo illustrate the different models and methods we will discuss in this course, we will rely on a few data sets, which are directly available in different R packages\n\n\nmite, mite.env and mite.xy available in the vegan R package\n\n\n\n\npenguins available in the palmerpenguins R package\n\n\n\nThese datasets are practical because they are manageable in size and will allow you to see how to work out the different example presented in this course.\n\n\nLet’s look at them in more details…"
+    "text": "Illustrative datasets\nTo illustrate the different models and methods we will discuss in this course, we will rely on a few data sets, which are directly available in different R packages.\n\n\nmite, mite.env and mite.xy available in the vegan R package\n\n\n\n\npenguins available in the palmerpenguins R package\n\n\n\nThese datasets are practical because they are manageable in size and will allow you to see how to work out the different example presented in this course.\n\n\nLet’s look at them in more details…"
   },
   {
     "objectID": "slides/01_Data/index.html#oribatid-mite-data",
     "href": "slides/01_Data/index.html#oribatid-mite-data",
     "title": "Data used for this course",
     "section": "Oribatid mite data",
-    "text": "Oribatid mite data\nAside from being very interesting, this dataset has been sampled at the Station biologique des Laurentides, so ~200 km north-west from here.\n\nSampling was carried out in June 1989 on the partially floating vegetation mat surrounding a lake, from the forest border to the free water by Daniel Borcard."
+    "text": "Oribatid mite data\nAside from being very interesting, this dataset has been sampled at the Station biologique des Laurentides, so ~110 km north-west from here.\n\nSampling was carried out in June 1989 on the partially floating vegetation mat surrounding a lake, from the forest border to the free water by Daniel Borcard."
   },
   {
     "objectID": "slides/01_Data/index.html#oribatid-mite-data-1",
@@ -529,14 +529,14 @@
     "href": "slides/01_Data/index.html#getting-the-data",
     "title": "Data used for this course",
     "section": "Getting the data",
-    "text": "Getting the data\n\n\nlibrary(vegan)\ndata(mite)\ndata(mite.env)\nView(mite)\nView(mite.env)"
+    "text": "Getting the data\n\n\nlibrary(vegan)\ndata(mite)\ndata(mite.env)\nView(mite)\nView(mite.env)\n\n\nA detailed description of the data is provided by Borcard and Legendre (1994)."
   },
   {
     "objectID": "slides/01_Data/index.html#palmer-penguins",
     "href": "slides/01_Data/index.html#palmer-penguins",
     "title": "Data used for this course",
     "section": "Palmer penguins",
-    "text": "Palmer penguins\n\nThe Palmer Archipelago penguins. Artwork by @allison_horst\nThese data were collected from 2007 to 2009 by Dr. Kristen Gorman with the Palmer Station Long Term Ecological Research Program, part of the US Long Term Ecological Research Network.\n\n\n\nThe data were imported directly from the Environmental Data Initiative (EDI) Data Portal, and are available for use by CC0 license (“No Rights Reserved”) in accordance with the Palmer Station Data Policy. (Gorman, Williams, and Fraser 2014; Horst, Hill, and Gorman 2020)"
+    "text": "Palmer penguins\n\nThe Palmer Archipelago penguins. Artwork by @allison_horst\nThese data were collected from 2007 to 2009 by Dr. Kristen Gorman with the Palmer Station Long Term Ecological Research Program, part of the US Long Term Ecological Research Network.\n\n\n\nThe data were imported directly from the Environmental Data Initiative (EDI) Data Portal, and are available for use by CC0 license (“No Rights Reserved”) in accordance with the Palmer Station Data Policy. (Gorman et al. 2014; Horst et al. 2020)"
   },
   {
     "objectID": "slides/01_Data/index.html#a-handy-dataset-of-three-groups",
@@ -564,7 +564,7 @@
     "href": "slides/01_Data/index.html#theres-lots-more",
     "title": "Data used for this course",
     "section": "There’s lots more!",
-    "text": "There’s lots more!\n\n\nlibrary(palmerpenguins)\nView(penguins)\nView(penguins_raw)\n\n\nand also see the official site: https://allisonhorst.github.io/palmerpenguins/\n\n\n\n\n\n\n\n\n\nGorman, Kristen B., Tony D. Williams, and William R. Fraser. 2014. “Ecological Sexual Dimorphism and Environmental Variability Within a Community of Antarctic Penguins (Genus Pygoscelis).” PLOS ONE 9 (3): e90081. https://doi.org/10.1371/journal.pone.0090081.\n\n\nHorst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data. https://doi.org/10.5281/zenodo.3960218."
+    "text": "There’s lots more!\n\n\nlibrary(palmerpenguins)\nView(penguins)\nView(penguins_raw)\n\n\nand also see the official site: https://allisonhorst.github.io/palmerpenguins/"
   },
   {
     "objectID": "slides/06_Simple_hierarchical_model/index.html#hierarchical-models",
@@ -1103,7 +1103,7 @@
     "href": "topics/discrete_predictor/index.html#load-packages-and-data",
     "title": "Palmer penguins and discrete predictors",
     "section": "Load packages and data",
-    "text": "Load packages and data\n\nlibrary(palmerpenguins)\n\n\nAttaching package: 'palmerpenguins'\n\n\nThe following objects are masked from 'package:datasets':\n\n    penguins, penguins_raw\n\n#library(tidyverse)\nlibrary(rstan)\n\nLoading required package: StanHeaders\n\n\n\nrstan version 2.32.7 (Stan version 2.32.2)\n\n\nFor execution on a local, multicore CPU with excess RAM we recommend calling\noptions(mc.cores = parallel::detectCores()).\nTo avoid recompilation of unchanged Stan programs, we recommend calling\nrstan_options(auto_write = TRUE)\nFor within-chain threading using `reduce_sum()` or `map_rect()` Stan functions,\nchange `threads_per_chain` option:\nrstan_options(threads_per_chain = 1)\n\nrstan_options(\"auto_write\" = TRUE)\noptions(mc.cores = parallel::detectCores())\n#library(tidybayes)"
+    "text": "Load packages and data\n\nlibrary(palmerpenguins)\n\n\nAttaching package: 'palmerpenguins'\n\n\nThe following objects are masked from 'package:datasets':\n\n    penguins, penguins_raw\n\nlibrary(rstan)\n\nLoading required package: StanHeaders\n\n\n\nrstan version 2.32.7 (Stan version 2.32.2)\n\n\nFor execution on a local, multicore CPU with excess RAM we recommend calling\noptions(mc.cores = parallel::detectCores()).\nTo avoid recompilation of unchanged Stan programs, we recommend calling\nrstan_options(auto_write = TRUE)\nFor within-chain threading using `reduce_sum()` or `map_rect()` Stan functions,\nchange `threads_per_chain` option:\nrstan_options(threads_per_chain = 1)\n\nrstan_options(\"auto_write\" = TRUE)\noptions(mc.cores = parallel::detectCores())"
   },
   {
     "objectID": "topics/discrete_predictor/index.html#data-exploration",
@@ -1117,7 +1117,7 @@
     "href": "topics/discrete_predictor/index.html#a-simple-model",
     "title": "Palmer penguins and discrete predictors",
     "section": "A simple model",
-    "text": "A simple model\n\\[\n\\begin{align}\n\\text{Bill depth} &\\sim \\text{Normal}(\\mu, \\sigma)\\\\\n\\mu &\\sim \\text{Normal}(17.5, 2) \\\\\n\\sigma &\\sim \\text{Exponential}(1) \\\\\n\\end{align}\n\\]\nLet’s express the same model in Stan:\n\nnormal_dist &lt;- stan_model(\"topics/discrete_predictor/normal_dist.stan\")\nnormal_dist\n\nS4 class stanmodel 'anon_model' coded as follows:\ndata {\n  int N;\n  vector[N] measurements;\n}\nparameters {\n  real mu;\n  real&lt;lower=0&gt; sigma;\n}\nmodel {\n  // priors\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n  // likelihood\n  measurements ~ normal(mu, sigma);\n} \n\n\nThe model section looks very much like the mathematics shown above. In particular, notice how the bottom block has three lines, each describing a probability distribution. Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian model separates the world into unmeasured or measured quantities. In this respect, in the Stan code we state which are observed (the data block) and which are unobserved (the parameters block).\nBefore we fit this model we need to get the data ready. We’ll drop NA values1, and set up the data in a list.\n\n# Remove all NA\npenguins_nobillNA &lt;- penguins[which(!is.na(penguins$bill_depth_mm)),]\n\n# Assemble the data as a list\n## I'm using the function with(),\n## it lets me use the variable name directly \n## without writing penguins_nobillNA$bill_depth_mm\n\nlist_bill_dep &lt;- with(penguins_nobillNA,\n     list(N = length(bill_depth_mm),\n          measurements = bill_depth_mm))\n     \n## sample 4 chains, suppress counting iterations\nnormal_bill_dep_samp &lt;- sampling(normal_dist,\n                               data = list_bill_dep, \n                               refresh = 0)\n\n## summarize the samples for each parameter into a nice table\ntableDraw &lt;- posterior::summarise_draws(normal_bill_dep_samp)\nknitr::kable(tableDraw)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nvariable\nmean\nmedian\nsd\nmad\nq5\nq95\nrhat\ness_bulk\ness_tail\n\n\n\n\nmu\n17.150721\n17.150854\n0.1079508\n0.1036721\n16.97213\n17.326867\n1.001632\n3941.978\n2628.141\n\n\nsigma\n1.975997\n1.973699\n0.0728249\n0.0726632\n1.85960\n2.099981\n1.000389\n3605.519\n3089.205\n\n\nlp__\n-405.488704\n-405.188419\n0.9939419\n0.6870655\n-407.45256\n-404.563054\n1.001979\n1903.022\n2266.144"
+    "text": "A simple model\n\\[\n\\begin{align}\n\\text{Bill depth} &\\sim \\text{Normal}(\\mu, \\sigma)\\\\\n\\mu &\\sim \\text{Normal}(17.5, 2) \\\\\n\\sigma &\\sim \\text{Exponential}(1) \\\\\n\\end{align}\n\\]\nLet’s express the same model in Stan:\n\nnormal_dist &lt;- stan_model(\"topics/discrete_predictor/normal_dist.stan\")\nnormal_dist\n\nS4 class stanmodel 'anon_model' coded as follows:\ndata {\n  int N;\n  vector[N] measurements;\n}\nparameters {\n  real mu;\n  real&lt;lower=0&gt; sigma;\n}\nmodel {\n  // priors\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n  // likelihood\n  measurements ~ normal(mu, sigma);\n} \n\n\nThe model section looks very much like the mathematics shown above. In particular, notice how the bottom block has three lines, each describing a probability distribution. Models are devices for putting together the probability of all the quantities we are looking for. Again, a Bayesian model separates the world into unmeasured or measured quantities. In this respect, in the Stan code we state which are observed (the data block) and which are unobserved (the parameters block).\nBefore we fit this model we need to get the data ready. We’ll drop NA values1, and set up the data in a list.\n\n# Remove all NA\npenguins_nobillNA &lt;- penguins[which(!is.na(penguins$bill_depth_mm)),]\n\n# Assemble the data as a list\n## I'm using the function with(),\n## it lets me use the variable name directly \n## without writing penguins_nobillNA$bill_depth_mm\n\nlist_bill_dep &lt;- with(penguins_nobillNA,\n     list(N = length(bill_depth_mm),\n          measurements = bill_depth_mm))\n     \n## sample 4 chains, suppress counting iterations\nnormal_bill_dep_samp &lt;- sampling(normal_dist,\n                               data = list_bill_dep, \n                               refresh = 0)\n\n## summarize the samples for each parameter into a nice table\ntableDraw &lt;- posterior::summarise_draws(normal_bill_dep_samp)\nknitr::kable(tableDraw)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nvariable\nmean\nmedian\nsd\nmad\nq5\nq95\nrhat\ness_bulk\ness_tail\n\n\n\n\nmu\n17.147807\n17.148848\n0.1088526\n0.1091700\n16.967299\n17.323387\n1.001149\n3052.578\n2050.755\n\n\nsigma\n1.975568\n1.973821\n0.0747435\n0.0742935\n1.858423\n2.101298\n1.003129\n2948.205\n2547.762\n\n\nlp__\n-405.521995\n-405.221358\n1.0144958\n0.7116143\n-407.537300\n-404.559105\n1.003590\n1603.613\n2379.084"
   },
   {
     "objectID": "topics/discrete_predictor/index.html#plotting-parameters.",
@@ -1159,7 +1159,7 @@
     "href": "topics/discrete_predictor/index.html#vector-indexing-in-stan",
     "title": "Palmer penguins and discrete predictors",
     "section": "Vector indexing in Stan",
-    "text": "Vector indexing in Stan\nWe can use this very same technique in Stan:\n\nnormal_dist_rng_spp &lt;- stan_model(file = \"topics/discrete_predictor/normal_dist_rng_spp.stan\")\nnormal_dist_rng_spp\n\nS4 class stanmodel 'anon_model' coded as follows:\ndata {\n  int N;\n  vector[N] measurements;\n  array[N] int&lt;lower=1,upper=3&gt; spp_id;\n}\nparameters {\n  vector[3] mu;\n  real&lt;lower=0&gt; sigma;\n}\nmodel {\n  measurements ~ normal(mu[spp_id], sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu[spp_id[i]], sigma);\n  }\n} \n\n\nThe only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However, it’s not always possible to use this trick.\n\nSampling the species model\n\n\n\n\n\n\nTipEXERCISE\n\n\n\nFit one (or both) of the species-specific models above. 1. What changes do you need to make to the input data? Remember we’ve added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species. There are many ways to do this (e.g. try using as.numeric after as.factor)\n2. Visualize the posterior with bayesplot. Does it look better than the model without species? How can you tell?\n\n\n\n\n\n\n\n\nNoteSOLUTION\n\n\n\n\n\n\nlist_bill_dep_spp &lt;- with(penguins_nobillNA,\n     list(\n       N = length(bill_depth_mm),\n       measurements = bill_depth_mm,\n       spp_id = as.numeric(as.factor(species))\n     )\n)\n     \nnormal_dist_rng_spp_samp &lt;- sampling(normal_dist_rng_spp,\n                                     data = list_bill_dep_spp, \n                                     refresh = 0)\n\nLet’s take a look at this in Shinystan\n\nshinystan::launch_shinystan(normal_dist_rng_spp_samp)\n\nand we can repeat the posterior checking from before:\n\n# Extract and convert draws\nspp_yrep_draws &lt;- extract(normal_dist_rng_spp_samp, pars = c(\"yrep\"))\n\n# Posterior predictive check\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = head(spp_yrep_draws$yrep, 50))\n\n\n\n\n\n\n\n\nThe predicted distribution is now much more like the real data!\n\n\n\n\n\nVisualizing species – using tidybayes\nWe can also make figures for each individual species. Here we will move away from using bayesplot and try to visualize our posterior using the handy functions in the tidybayes package.\nadelie &lt;- penguins_nobillNA$species == \"Adelie\"\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[adelie],\n                            yrep = head(spp_yrep_draws$yrep[,adelie], 50))\ngentoo &lt;- penguins_nobillNA$species == \"Gentoo\"\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[gentoo],\n                            yrep = head(spp_yrep_draws$yrep[,gentoo], 50))\nchinstrap &lt;- penguins_nobillNA$species == \"Chinstrap\"\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[chinstrap],\n                            yrep = head(spp_yrep_draws$yrep[,chinstrap], 50))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExercises\n\nLevel 1\n\nrepeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)\nuse bayesplot to examine the fit of body size to these data.\n\n\n\nLevel 2\n\ngenerate some random groups of your own, with known means. How well does the model fit these data\nThe present model is fixed for exactly 3 groups. how would you change it for any number of groups?\n\n\n\nLevel 3\n\nthe function tidybayes::compose_data is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of tidybayes::compose_data?\nAs you can see, the model assumes the same sigma for all species. what if you relax this?\n\n\n\n\nOptional!\nTry this on your own data!"
+    "text": "Vector indexing in Stan\nWe can use this very same technique in Stan:\n\nnormal_dist_rng_spp &lt;- stan_model(file = \"topics/discrete_predictor/normal_dist_rng_spp.stan\")\nnormal_dist_rng_spp\n\nS4 class stanmodel 'anon_model' coded as follows:\ndata {\n  int N;\n  vector[N] measurements;\n  array[N] int&lt;lower=1,upper=3&gt; spp_id;\n}\nparameters {\n  vector[3] mu;\n  real&lt;lower=0&gt; sigma;\n}\nmodel {\n  measurements ~ normal(mu[spp_id], sigma);\n  mu ~ normal(17,2);\n  sigma ~ exponential(1);\n}\ngenerated quantities{\n  vector[N] yrep;\n  for (i in 1:N){\n    yrep[i] = normal_rng(mu[spp_id[i]], sigma);\n  }\n} \n\n\nThe only difference to the previous model is in the line with the for-loop, which is now replaced with a vectorized expression. This is faster to write and will run faster in Stan. However, it’s not always possible to use this trick.\n\nSampling the species model\n\n\n\n\n\n\nTipEXERCISE\n\n\n\nFit one (or both) of the species-specific models above. 1. What changes do you need to make to the input data? Remember we’ve added a new input: a vector of numbers 1, 2, or 3 that tells us if we are working with the first, second, or third species. There are many ways to do this (e.g. try using as.numeric after as.factor)\n2. Visualize the posterior with bayesplot. Does it look better than the model without species? How can you tell?\n\n\n\n\n\n\n\n\nNoteSOLUTION\n\n\n\n\n\n\nlist_bill_dep_spp &lt;- with(penguins_nobillNA,\n     list(\n       N = length(bill_depth_mm),\n       measurements = bill_depth_mm,\n       spp_id = as.numeric(as.factor(species))\n     )\n)\n     \nnormal_dist_rng_spp_samp &lt;- sampling(normal_dist_rng_spp,\n                                     data = list_bill_dep_spp, \n                                     refresh = 0)\n\nLet’s take a look at this in Shinystan\n\nshinystan::launch_shinystan(normal_dist_rng_spp_samp)\n\nand we can repeat the posterior checking from before:\n\n# Extract and convert draws\nspp_yrep_draws &lt;- extract(normal_dist_rng_spp_samp, pars = c(\"yrep\"))\n\n# Posterior predictive check\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements,\n                            yrep = head(spp_yrep_draws$yrep, 50))\n\n\n\n\n\n\n\n\nThe predicted distribution is now much more like the real data!\n\n\n\n\n\nVisualizing species\nWe can also make figures for each individual species.\nadelie &lt;- penguins_nobillNA$species == \"Adelie\"\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[adelie],\n                            yrep = head(spp_yrep_draws$yrep[,adelie], 50))\ngentoo &lt;- penguins_nobillNA$species == \"Gentoo\"\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[gentoo],\n                            yrep = head(spp_yrep_draws$yrep[,gentoo], 50))\nchinstrap &lt;- penguins_nobillNA$species == \"Chinstrap\"\nbayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[chinstrap],\n                            yrep = head(spp_yrep_draws$yrep[,chinstrap], 50))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExercises\n\nLevel 1\n\nRepeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)\nUse bayesplot to examine the fit of body size to these data.\n\n\n\nLevel 2\n\nGenerate some random groups of your own, with known means. How well does the model fit these data\nThe present model is fixed for exactly 3 groups. how would you change it for any number of groups?\n\n\n\nLevel 3\n\nThe model assumes the same sigma for all species. what if you relax this?\n\n\n\n\nOptional!\nTry this on your own data!"
   },
   {
     "objectID": "topics/discrete_predictor/index.html#footnotes",
@@ -2839,14 +2839,14 @@
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-8",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)"
+    "text": "Markov Chain Monte Carlo (MCMC)\nProblems with Markov Chain Monte Carlo\n\nA lot of tuning is required to find the best step length (between long and short steps)\nInefficient in high-dimensional spaces\nCannot easily search the entire likelihood space and thus cannot easily isolate local minima"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo-1",
     "href": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo-1",
     "title": "Bayesian modelling",
     "section": "Hamiltonian Monte Carlo",
-    "text": "Hamiltonian Monte Carlo"
+    "text": "Hamiltonian Monte Carlo\nSolution brought by Hamiltonian Monte Carlo\n\nUses a gradient-based MCMC to reduce the random walk (hence reduce autocorrelation)\nIt is a “No-U-Turn Sampler” (NUTS)\n\nIf you do not fully get it (and even if you do), check out the Brilliantly wrong"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#what-is-the-point-of-this",
@@ -3029,5 +3029,75 @@
     "title": "Bayesian modelling",
     "section": "Illustrative example",
     "text": "Illustrative example\nLet’s make it Bayesian\nIf we rewrite this model using logs we get\n\\[\n\\begin{align*}\n    \\log\\left(P\\left(p \\mid 4, 5, 5\\right)\\right) =& \\log\\left(\\text{Binomial}\\left(4 | p, 12\\right)\\right) +  \\\\\n                   & \\log\\left(\\text{Binomial}\\left(5 | p, 10\\right)\\right)+\\\\\n                   & \\log\\left(\\text{Binomial}\\left(5 | p, 16\\right)\\right)+\\\\\n                   & \\log\\left(\\text{Uniform}\\left(\\text{min}=0,\\text{ max}=1\\right)\\right)\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/01_Data/index.html#references",
+    "href": "slides/01_Data/index.html#references",
+    "title": "Data used for this course",
+    "section": "References",
+    "text": "References\n\n\n\n\nBorcard, Daniel, and Pierre Legendre. 1994. “Environmental Control and Spatial Structure in Ecological Communities: An Example Using Oribatid Mites (Acari, Oribatei).” Environmental and Ecological Statistics 1 (1): 37–61.\n\n\nGorman, Kristen B., Tony D. Williams, and William R. Fraser. 2014. “Ecological Sexual Dimorphism and Environmental Variability Within a Community of Antarctic Penguins (Genus Pygoscelis).” PLOS ONE 9 (3): e90081. https://doi.org/10.1371/journal.pone.0090081.\n\n\nHorst, Allison Marie, Alison Presmanes Hill, and Kristen B Gorman. 2020. Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data. https://doi.org/10.5281/zenodo.3960218."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#problems-with-markov-chain-monte-carlo",
+    "href": "slides/02_Bayesian/index.html#problems-with-markov-chain-monte-carlo",
+    "title": "Bayesian modelling",
+    "section": "Problems with Markov Chain Monte Carlo",
+    "text": "Problems with Markov Chain Monte Carlo\n\nA lot of tuning is required to find the best step length (between long and short steps)\nInefficient in high-dimensional spaces\nCannot easily search the entire likelihood space and thus cannot easily isolate local minima"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#solution-brought-by-hamiltonian-monte-carlo",
+    "href": "slides/02_Bayesian/index.html#solution-brought-by-hamiltonian-monte-carlo",
+    "title": "Bayesian modelling",
+    "section": "Solution brought by Hamiltonian Monte Carlo",
+    "text": "Solution brought by Hamiltonian Monte Carlo\n\nUses a gradient-based MCMC to reduce the random walk (hence reduce autocorrelation)\nIt is a “No-U-Turn Sampler” (NUTS)\n\nIf you do not fully get it (and even if you do), check out the Brilliantly wrong"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#stan",
+    "href": "slides/02_Bayesian/index.html#stan",
+    "title": "Bayesian modelling",
+    "section": "Stan",
+    "text": "Stan\n\n\n\n\n\n\n\n\n\nStanisław Ulam"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#stan-1",
+    "href": "slides/02_Bayesian/index.html#stan-1",
+    "title": "Bayesian modelling",
+    "section": "Stan",
+    "text": "Stan\nhttps://mc-stan.org/\n\nA comprehensive software ecosystem aimed at facilitating the application of Bayesian inference\n\n\nFull Bayesian statistical inference with MCMC sampling (but not only)\n\n\nIntegrated with most data analysis languages (R, Python, MATLAB, Julia, Stata)"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#what-is-stan",
+    "href": "slides/02_Bayesian/index.html#what-is-stan",
+    "title": "Bayesian modelling",
+    "section": "What is Stan?",
+    "text": "What is Stan?\n\n\n\n\n\n\n\n\n\n\n\nStanisław Ulam"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#stan-stan",
+    "href": "slides/02_Bayesian/index.html#stan-stan",
+    "title": "Bayesian modelling",
+    "section": "Stan Stan?",
+    "text": "Stan Stan?\n\nOpen source\nExtensive documentation\nPowerful sampling algorithm\nLarge and active online community!"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#stan-2",
+    "href": "slides/02_Bayesian/index.html#stan-2",
+    "title": "Bayesian modelling",
+    "section": "Stan",
+    "text": "Stan\n\nOpen source\nPowerful sampling algorithm\nExtensive documentation : https://mc-stan.org/docs/\nLarge and active online community : https://discourse.mc-stan.org/"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#stan-3",
+    "href": "slides/02_Bayesian/index.html#stan-3",
+    "title": "Bayesian modelling",
+    "section": "Stan",
+    "text": "Stan\nStan is very flexible allowing you to adjust a model exactly the way you want"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#stan-4",
+    "href": "slides/02_Bayesian/index.html#stan-4",
+    "title": "Bayesian modelling",
+    "section": "Stan",
+    "text": "Stan\nStan makes it reasonably straight forward to implement models"
   }
 ]
