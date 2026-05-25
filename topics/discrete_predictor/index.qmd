@@ -1,7 +1,7 @@
 ---
 title:  Palmer penguins and discrete predictors
 description: |
-  fitting a model with discrete predictors.
+  Fitting a model with discrete predictors.
 execute:
   freeze: true
 format:
@@ -17,11 +17,9 @@ In this section we're going to look at models with one discrete predictor. These
 
 ```{r}
 library(palmerpenguins)
-#library(tidyverse)
 library(rstan)
 rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
-#library(tidybayes)
 ```
 
 ## Data exploration
@@ -407,10 +405,9 @@ The predicted distribution is now much more like the real data!
 
 :::
 
-### Visualizing species -- using `tidybayes`
+### Visualizing species
 
 We can also make figures for each individual species. 
-Here we will move away from using `bayesplot` and try to visualize our posterior using the handy functions in the [`tidybayes` package](https://mjskay.github.io/tidybayes/).
 
 ```{r}
 #| layout-ncol: 3
@@ -431,16 +428,15 @@ bayesplot::ppc_dens_overlay(y = list_bill_dep$measurements[chinstrap],
 ### Exercises
 
 #### Level 1
-* repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)
-* use bayesplot to examine the fit of body size to these data. 
+* Repeat this experience for another variable in the dataset. Does the same code work on bill length? What about body size? What would you change about the model (if anything)
+* Use `bayesplot` to examine the fit of body size to these data. 
 
 #### Level 2
-* generate some random groups of your own, with known means. How well does the model fit these data
+* Generate some random groups of your own, with known means. How well does the model fit these data
 * The present model is fixed for exactly 3 groups. how would you change it for any number of groups?
 
 #### Level 3
-* the function `tidybayes::compose_data` is a convenient way to set up your data for passing it into R. Try out this function. What does it produce for our dataset? How do you need to modify our Stan program so that it works for the output of `tidybayes::compose_data`?
-* As you can see, the model assumes the same sigma for all species. what if you relax this? 
+* The model assumes the same sigma for all species. what if you relax this? 
 
 ### Optional! 
 Try this on your own data! 
