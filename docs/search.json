@@ -2,35 +2,35 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Course contents",
+    "title": "Course content",
     "section": "",
     "text": "Daily schedule\nLink to Shared notes document"
   },
   {
     "objectID": "index.html#day-1-introduction-data-simulation-discrete-models",
     "href": "index.html#day-1-introduction-data-simulation-discrete-models",
-    "title": "Course contents",
+    "title": "Course content",
     "section": "Day 1: Introduction, data simulation, discrete models",
     "text": "Day 1: Introduction, data simulation, discrete models\nCourse Syllabus\n\n\n\nTheory\n\nIntroduction to the course and location\nProbability Distributions\n\n\n\n\nExercices – data simulation & discrete models\n\nCatch a wild Distribution\n\n\n\n\n\n\n\n\n\n\nImportantMonday night Stan installation session!\n\n\n\nTo use Stan in R, the rstan R package is needed. To install it, follow the steps in this vignette. Make sure you can run the example in the Verifying Installation\nIf you have not yet managed to install Stan and rstan, Andrew and Guillaume will be available on Monday evening. From Tuesday onwards we won’t have time to pause to fix installation issues!"
   },
   {
     "objectID": "index.html#day-2-intro-to-stan-and-regression",
     "href": "index.html#day-2-intro-to-stan-and-regression",
-    "title": "Course contents",
+    "title": "Course content",
     "section": "DAY 2: Intro to Stan and Regression",
     "text": "DAY 2: Intro to Stan and Regression\n\n\n\nTheory\n\nBayesian and MCMC\nStan and HMC\nLinear models\nData we’ll be using\n\n\n\n\nPractice\n\nSimulation and model fitting in Stan\nDiscrete predictors"
   },
   {
     "objectID": "index.html#day-3-hierarchical-models",
     "href": "index.html#day-3-hierarchical-models",
-    "title": "Course contents",
+    "title": "Course content",
     "section": "Day 3: Hierarchical models",
     "text": "Day 3: Hierarchical models\n\n\n\nTheory\n\nSimple hierarchical models\nComplex hierarchical models\n\n\n\n\nExercises\n\nLinear regression\nHierarchy on the intercept\nIntercept-Only Model (and tidybayes discussion)\nHierarchy on the slope"
   },
   {
     "objectID": "index.html#day-4-constrained-models-gaussian-processes",
     "href": "index.html#day-4-constrained-models-gaussian-processes",
-    "title": "Course contents",
+    "title": "Course content",
     "section": "Day 4: Constrained models: Gaussian processes",
     "text": "Day 4: Constrained models: Gaussian processes\n\n\n\nSlides\n\n\n\nA Practical demonstration in Stan\nPhylogeny"
   },
@@ -347,7 +347,7 @@
     "href": "slides/02_Bayesian/index.html#bayesian",
     "title": "Bayesian modelling",
     "section": "Bayesian",
-    "text": "Bayesian\n\n\nBayesians want to find how good the model parameter(s) are given some data\n\n\n\n\n\\[\\text{Posterior}\\hspace{1.5cm}P(\\text{Model}|\\text{Data})\\]\n\n\n\n\nThey are interested in the posterior distribution\n\n\n\n\nThey need data and prior information\n\n\n\n\nThe general framework used in Bayesian modelling is\n\n\n\\[\\underbrace{P(\\text{Model}|\\text{Data})}_\\text{Posterior}\\propto \\underbrace{P(\\text{Data}|\\text{Model})}_\\text{Likelihood}\\underbrace{P(\\text{Model})}_\\text{Prior}\\]\n\n\n\nEstimating model parameters\n\n\nMarkov Chain Monte Carlo\nHamiltonian Monte Carlo\n…"
+    "text": "Bayesian\n\nBayesians want to find how good the model parameter(s) are given some data\n\n\n\\[\\text{Posterior}\\hspace{1.5cm}P(\\text{Model}|\\text{Data})\\]\n\n\nThey are interested in the posterior distribution\n\n\nThey need data and prior information\n\n\nThe general framework used in Bayesian modelling is\n\\[P(\\text{Model}|\\text{Data}) = \\frac{P(\\text{Data}|\\text{Model})P(\\text{Model})}{P(\\text{Data})}\\]\n\n\nThis is known as Bayes’s theorm"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#our-way-of-thinking-is-bayesian",
@@ -361,7 +361,7 @@
     "href": "slides/02_Bayesian/index.html#a-few-words-about-the-prior",
     "title": "Bayesian modelling",
     "section": "A few words about the prior",
-    "text": "A few words about the prior\n\nDefinition of prior probability\n\n\n\nThe prior probability informes us about the probability of the model being true before considering any available data\n\n\n\nTypes of priors\n\n\n“Uninformative”\n\nThese priors are meant to bring very little information about the model\n\n\n\nInformative\n\nThese priors bring information about the model that is available"
+    "text": "A few words about the prior\n\nDefinition of prior probability\n\n\n\nThe prior probability informes us about the probability of the model being true before considering any available data\n\n\n\nTypes of priors\n\n\n“Uninformative”\n\nThese priors are meant to bring very little information to the model\n\n\n\nInformative\n\nThese priors bring information to the model that is available"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#a-few-words-about-the-prior-1",
@@ -382,49 +382,49 @@
     "href": "slides/02_Bayesian/index.html#estimating-bayesian-model",
     "title": "Bayesian modelling",
     "section": "Estimating Bayesian model",
-    "text": "Estimating Bayesian model\n\n\nAs I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan\n\n\n\nTypical reasons to favour MCMC\n\n\n\n\nIt is flexible\nIt can be applied to complex models such as models with multiple levels of hierarchy\n\n\n\n\nWhy should we learn about MCMC ?\n\n\n\nThe goal of this course is not to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how MCMC and HMC work."
+    "text": "Estimating Bayesian model\n\n\nAs I hinted earlier, there are a number of ways to estimate the parameters of a Bayesian model. A common way to estimate Bayesian models is to rely on Markov Chain Monte Carlo (MCMC) or variants of it, including Hamiltonian Monte Carlo (HMC), which is used in Stan.\n\n\n\nTypical reasons to favour MCMC\n\n\n\n\nIt is flexible\nIt can be applied to complex models such as models with multiple levels of hierarchy\n\n\n\n\nWhy should we learn about MCMC ?\n\n\n\nThe goal of this course is not to learn the intricacies of MCMC or HMC, but since we will play a lot with Stan, it is important to learn at least conceptually how MCMC and HMC work."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\n\nHistorically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made during the Los Alamos projects.\nTo explain what is an MCMC, let’s imagine that we are interested in understanding how the mallard (Anas platyrhynchos) grows from hatchling to adult."
+    "text": "Markov Chain Monte Carlo (MCMC)\nHistorically, the developments of MCMC have been intimately linked with the arrival of computers. Specifically, the first developments and applications of MCMC were made in the early 1950’s at the Los Alamos laboratory.\n\nMANIAC I is The first computer on which MCMC was implemented"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-1",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-1",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nLet’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA key figure in the development of MCMC was Arianna W. Rosenbluth, who was the first to implement an MCMC.\n\n\nArianna W. Rosenbluth (1927 - 2020)"
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-2",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-2",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nA growth model can be constructed using a simple linear regression\n\\[y = \\beta_0 + \\beta x + \\varepsilon\\] From this model we can infer that the average weight of a Mallard duck when it hatches is 107 grams (intercept), and the average daily growth of the Mallard is 13.5 grams (slope)."
+    "text": "Markov Chain Monte Carlo (MCMC)\nTo explain what is an MCMC, let’s imagine that we are interested in understanding how the mallard (Anas platyrhynchos) grows from hatchling to adult."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-3",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-3",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nEstimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling\n\n\n\\(\\beta_0\\) as\n\n\n\n\\[\\beta_0 \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n\n\n\nand \\(\\beta\\) as\n\n\n\n\n\\[\\beta \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n\nIn doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the distribution of best parameter values."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nLet’s say that we are interested in modelling how male Mallard weight changes as they grow from hatching to adult. Here are some data obtained from a local Mallard duck farm."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-4",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-4",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\n\nWhen using an MCMC, we are interested in sampling distributions to estimate the parameters of the model.\n\n\nTechnically, MCMC and HMC rely on different approaches to assess the structure of the distributions."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\n\nA growth model can be constructed using a simple linear regression\n\\[y = \\beta_0 + \\beta x + \\varepsilon\\] From this model we can infer that the average weight of a Mallard duck when it hatches is 107 grams (intercept), and the average daily growth of the Mallard is 13.5 grams (slope)."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-5",
     "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-5",
     "title": "Bayesian modelling",
     "section": "Markov Chain Monte Carlo (MCMC)",
-    "text": "Markov Chain Monte Carlo (MCMC)\nMCMC relies on using many random samples to assess the structure of the distribution."
+    "text": "Markov Chain Monte Carlo (MCMC)\nA simplistic statistical example\n\nEstimating the intercept and slope parameters of the simple linear regression can be done with an MCMC. This amount to sampling\n\n\n\\(\\beta_0\\) as\n\n\n\n\\[\\beta_0 \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n\n\n\nand \\(\\beta\\) as\n\n\n\n\n\\[\\beta \\sim \\mathcal{D}(\\text{mean}, \\text{variance}, \\text{skewness}, \\text{kurtosis}, \\dots)\\]\n\n\nIn doing so, we are not focusing on finding the ‘best’ parameter values. Rather, we are focused on finding the distribution of best parameter values."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo",
@@ -459,7 +459,7 @@
     "href": "slides/02_Bayesian/index.html#studying-convergence-2",
     "title": "Bayesian modelling",
     "section": "Studying convergence",
-    "text": "Studying convergence\n\nIf we ran the same MCMC as above but instead for 50000 steps, we obtain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote It is also possible to thin (record only the \\(n^{\\text{th}}\\) iteration), but it is better to keep all iterations when possible. Actually, thinning should only be carried out when there are too many iterations for you to keep them and manipulate them in the memory of your computer."
+    "text": "Studying convergence\n\nIf we ran the same MCMC as above but instead for 50000 steps, we obtain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote It is also possible to thin (record only the \\(n^{\\text{th}}\\) iteration), but it is better to keep all iterations when possible. Actually, thinning should only be carried out when there are too many iterations for you to keep them on your computer and manipulate them. In short, thinning should be carried out only when your computer does not have enough memory to work with all iterations."
   },
   {
     "objectID": "slides/02_Bayesian/index.html#studying-convergence-3",
@@ -1488,7 +1488,7 @@
     "href": "slides/03_Stan/index.html#sampling-the-uncalculable",
     "title": "Stan",
     "section": "Sampling the uncalculable",
-    "text": "Sampling the uncalculable\n\n\n\n\n\n\n\nMANIAC I, 1956 (top) Arianna W. Rosenbluth"
+    "text": "Sampling the uncalculable\n\n\n\n\nMANIAC I, 1956 (top) Arianna W. Rosenbluth"
   },
   {
     "objectID": "slides/03_Stan/index.html#sampling-the-uncalculable-1",
@@ -1502,7 +1502,7 @@
     "href": "slides/03_Stan/index.html#what-is-stan",
     "title": "Stan",
     "section": "What is Stan?",
-    "text": "What is Stan?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStanisław Ulam"
+    "text": "What is Stan?\n\n\n\n\n\n\n\n\n\n\n\nStanisław Ulam"
   },
   {
     "objectID": "slides/03_Stan/index.html#stan",
@@ -2819,5 +2819,215 @@
     "title": "Advanced Statistics and hierarchical models",
     "section": "Course Instructor",
     "text": "Course Instructor\n\n\n\n\n\n\nPr Guillaume Blanchet"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
+    "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-6",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\n\nWhen using an MCMC, we are interested in sampling distributions to estimate the parameters of the model.\n\n\nTechnically, MCMC and HMC rely on different approaches to assess the structure of the distributions."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-7",
+    "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-7",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)\nMCMC relies on using many random samples to assess the structure of the distribution."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-8",
+    "href": "slides/02_Bayesian/index.html#markov-chain-monte-carlo-mcmc-8",
+    "title": "Bayesian modelling",
+    "section": "Markov Chain Monte Carlo (MCMC)",
+    "text": "Markov Chain Monte Carlo (MCMC)"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo-1",
+    "href": "slides/02_Bayesian/index.html#hamiltonian-monte-carlo-1",
+    "title": "Bayesian modelling",
+    "section": "Hamiltonian Monte Carlo",
+    "text": "Hamiltonian Monte Carlo"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#what-is-the-point-of-this",
+    "href": "slides/02_Bayesian/index.html#what-is-the-point-of-this",
+    "title": "Bayesian modelling",
+    "section": "What is the point of this",
+    "text": "What is the point of this\n\\[\n\\begin{equation}\nP(\\boldsymbol{\\theta}|\\text{data}) = \\frac{P(\\boldsymbol{\\text{data}|\\theta}) \\cdot P(\\boldsymbol{\\theta})}{P(\\text{data})}\n\\end{equation}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#what-is-the-point-of-this-1",
+    "href": "slides/02_Bayesian/index.html#what-is-the-point-of-this-1",
+    "title": "Bayesian modelling",
+    "section": "What is the point of this",
+    "text": "What is the point of this\n\\[\n\\begin{equation}\nP(\\boldsymbol{\\theta}|\\text{data}) \\propto P(\\boldsymbol{\\text{data}|\\theta}) \\cdot P(\\boldsymbol{\\theta})\n\\end{equation}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta",
+    "href": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta",
+    "title": "Bayesian modelling",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\n\\[\n\\begin{align*}\n    P(3, 4, 5 | p) &= \\text{Binomial}(3 | p, 5) \\\\\n                   &\\quad \\times \\text{Binomial}(4 | p, 5) \\\\\n                   &\\quad \\times \\text{Binomial}(5 | p, 5)\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-1",
+    "href": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-1",
+    "title": "Bayesian modelling",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\n\\[\n\\begin{align*}\n    \\ln{P(3, 4, 5 | p)} &=  \\log(\\text{Binomial}(3 | p, 5)) \\\\\n                   &+  \\log(\\text{Binomial}(4 | p, 5)) \\\\\n                   &+ \\log(\\text{Binomial}(5 | p, 5))\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-2",
+    "href": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-2",
+    "title": "Bayesian modelling",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\n\\[\n\\begin{align*}\n    \\ln{P(3, 4, 5 | p)} &=  \\log(\\text{Binomial}(3 | p, 5)) \\\\\n                   &+  \\log(\\text{Binomial}(4 | p, 5)) \\\\\n                   &+ \\log(\\text{Binomial}(5 | p, 5))\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-3",
+    "href": "slides/02_Bayesian/index.html#what-we-talk-about-when-we-talk-about-pboldsymboltextdatatheta-3",
+    "title": "Bayesian modelling",
+    "section": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)",
+    "text": "What we talk about when we talk about \\(P(\\boldsymbol{\\text{data}|\\theta})\\)\n\\[\n\\begin{align*}\n    \\ln{P(3, 4, 5 | p)} &=  \\log(\\text{Binomial}(3 | p, 5)) \\\\\n                   &+  \\log(\\text{Binomial}(4 | p, 5)) \\\\\n                   &+ \\log(\\text{Binomial}(5 | p, 5))\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#log-likelihood-code-in-r",
+    "href": "slides/02_Bayesian/index.html#log-likelihood-code-in-r",
+    "title": "Bayesian modelling",
+    "section": "log-likelihood code in R",
+    "text": "log-likelihood code in R\n\n\nsurv &lt;- c(3, 4, 5)\n\ncalc_ll &lt;- function(x) {\n  res &lt;- sum(-dbinom(surv, 5,\n                     prob = x,\n                     log = TRUE))\n  return(res)\n}\n\nprob_val &lt;- seq(from = 0, to = 1,\n                length.out = 30)\nlog_lik &lt;- numeric(30L)\n\nfor (i in 1:length(prob_val)) {\n  log_lik[i] &lt;- calc_ll(prob_val[i])\n}\npar(cex = 3)\nplot(prob_val, log_lik, type = \"b\")"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#make-it-bayes-add-a-prior",
+    "href": "slides/02_Bayesian/index.html#make-it-bayes-add-a-prior",
+    "title": "Bayesian modelling",
+    "section": "Make it Bayes: add a prior",
+    "text": "Make it Bayes: add a prior\n\\[\n\\begin{align*}\nP(\\boldsymbol{\\theta}|\\text{data}) &\\propto P(\\boldsymbol{\\text{data}|\\theta}) \\cdot P(\\boldsymbol{\\theta}) \\\\[10pt]\n&\\propto \\text{Bin}(3|p,5) \\cdot \\text{Bin}(4|p,5) \\\\\n&\\qquad \\cdot \\text{Bin}(5|p,5)\\cdot \\text{Uniform}(p|0,1) \\\\[10pt]\n\\log(P(\\boldsymbol{\\theta}|\\text{data})) &\\propto \\log(\\text{Bin}(3|p,5)) + \\log(\\text{Bin}(4|p,5)) \\\\\n&\\qquad + \\log(\\text{Bin}(5|p,5)) + \\log(\\text{Uniform}(p|0,1)) \\\\\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#make-it-bayes-add-a-prior-1",
+    "href": "slides/02_Bayesian/index.html#make-it-bayes-add-a-prior-1",
+    "title": "Bayesian modelling",
+    "section": "Make it Bayes: add a prior",
+    "text": "Make it Bayes: add a prior\n\\[\n\\begin{align*}\nP(\\boldsymbol{\\theta}|\\text{data}) &\\propto P(\\boldsymbol{\\text{data}|\\theta}) \\cdot P(\\boldsymbol{\\theta}) \\\\[10pt]\n&\\propto \\text{Bin}(3|p,5) \\cdot \\text{Bin}(4|p,5) \\\\\n&\\qquad \\cdot \\text{Bin}(5|p,5)\\cdot \\text{Uniform}(p|0,1) \\\\[10pt]\n\\log(P(\\boldsymbol{\\theta}|\\text{data})) &\\propto \\log(\\text{Bin}(3|p,5)) + \\log(\\text{Bin}(4|p,5)) \\\\\n&\\qquad + \\log(\\text{Bin}(5|p,5)) + \\log(\\text{Uniform}(p|0,1)) \\\\\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#bayesian-1",
+    "href": "slides/02_Bayesian/index.html#bayesian-1",
+    "title": "Bayesian modelling",
+    "section": "Bayesian",
+    "text": "Bayesian\n\n\\[P(\\text{Model}|\\text{Data}) = \\frac{P(\\text{Data}|\\text{Model})P(\\text{Model})}{P(\\text{Data})}\\]\n\n\n\nHowever, it can be simplified to\n\\[P(\\text{Model}|\\text{Data})\\propto P(\\text{Data}|\\text{Model})P(\\text{Model})\\]\n\n\n\nEstimating model parameters\n\n\nMarkov Chain Monte Carlo\nHamiltonian Monte Carlo\n…"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#the-different-parts-of-a-bayesian-model",
+    "href": "slides/02_Bayesian/index.html#the-different-parts-of-a-bayesian-model",
+    "title": "Bayesian modelling",
+    "section": "The different parts of a Bayesian model",
+    "text": "The different parts of a Bayesian model\n\n\\[\\underbrace{P(\\text{Model}|\\text{Data})}_\\text{Posterior}\\propto \\underbrace{P(\\text{Data}|\\text{Model})}_\\text{Likelihood}\\underbrace{P(\\text{Model})}_\\text{Prior}\\]\n\n\n\nWhen we look at the equation above, it might be difficult to visualize exactly what are the\n\nPosterior\nLikelihood\nPrior\n\nUnderstanding this will be essential for the course.\n\n\n\n\nLet’s use a small example to make sure we understand each part of the Bayesian model well."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#a-bit-of-history",
+    "href": "slides/02_Bayesian/index.html#a-bit-of-history",
+    "title": "Bayesian modelling",
+    "section": "A bit of history",
+    "text": "A bit of history\nThe figure behind Bayes’ theorem is a Presbyterian minister named Thomas Bayes\n\nNote It is not clear whether this is actually a picture of him…"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example",
+    "href": "slides/02_Bayesian/index.html#illustrative-example",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\n\nFor this example, we will be interested in building a model to study the breeding success of the kākāpō. The kākāpō (Strigops habroptilus) is a critically endangered large (fat!) flightless nocturnal parrot found solely on the islands of Whenua Hou, Pukenui and Te Kākahu-o-Tamatea in New-Zealand. There are currently only 236 adults kākāpō on Earth. So studying its breeding success can be very valuable for the survival of the species\n\n\n\nSirocco Probably the most popular kākāpō.\nIf you wonder why Sirocco is popular, take a look at this YouTube video"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#tst",
+    "href": "slides/02_Bayesian/index.html#tst",
+    "title": "Bayesian modelling",
+    "section": "Tst",
+    "text": "Tst\nA concrete example\n\n\n\nLaid\nHatched\n\n\n\n\nEgg 1\nChick 1\n\n\nEgg 2\nChick 2\n\n\nEgg 3\nChick 3"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-1",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-1",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\n\nFor the sake of this example, let’s focus on three female kākāpō, the number of eggs they laid and the number of chicks that hatched. Typically a kākāpō lay 1 to 4 eggs every breeding period, which occur every 2 to 4 years. In this example, we will assume we have data for the past 20 years (so, let’s assume we have data for the past 6 breeding period).\n\n\n\nKākāpō\nEggs laid\nChick hatched\n\n\n\n\nBella\n12\n4\n\n\nWendy\n10\n5\n\n\nNora\n16\n5\n\n\n\nNote Kākāpō names and number of hatched chicks are real (see the List of kakapo), while number of laid eggs were invented but follow what is expected from current research."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-2",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-2",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\n\nBased on the available information\n\nAvailable data\n\nInformation provided\nAssumptions we made\n\n\n\n\nWe can assume rely on the Binomial distribution in this example.\n\n\n\nDo you know why ?"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#likelihood",
+    "href": "slides/02_Bayesian/index.html#likelihood",
+    "title": "Bayesian modelling",
+    "section": "Likelihood",
+    "text": "Likelihood\nWhat is the probability distribution that a kākāpō will produce a chick during a breeding period?\n\\[\n\\begin{align}\n\\text{hatch} &\\sim \\text{Binomial}(0.382, 4) \\\\\n\\end{align}\n\\]\n\nThis is the probability distribution associated to the kākāpō data\nIt is called the likelihood"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-3",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-3",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLikelihood\nWhat is the probability distribution that a kākāpō will produce chicks during the 20-year period?\n\\[\n\\begin{align}\n\\text{chick hatched} &\\sim \\text{Binomial}(p, \\text{eggs laid}) \\\\\n\\end{align}\n\\]\n\nThis is the probability distribution associated to the kākāpō data.\nIt is called the likelihood."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-4",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-4",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLikelihood\n\nThe likelihood is the product (\\(\\times\\)) of the probabilities associated to each data point\n\\[L(\\theta \\mid x) = \\prod_{i=1}^n P(x_i \\mid \\theta)\\] where\n\n\\(P(x_i \\mid \\theta)\\) is the function of a probability distribution function\n\\(x_i\\) is the value associated to sample \\(i\\) out of \\(n\\) samples\n\\(\\theta\\) is the parameter associated to the model\n\n\n\n\nIn our example,\n\n\\(P(x_i \\mid \\theta)\\) is the Binomial distribution function\n\\(x_i\\) is the reproductive success of each kākāpō (\\(i\\)) over the 20 year period\n\\(\\theta\\) is the probability of reproductive success"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-5",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-5",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLikelihood\nWhen writing the likelihood as\n\\[L(\\theta \\mid x) = \\prod_{i=1}^n P(x_i \\mid \\theta)\\]\nwe make the assumption that each observation, each sample is independent from all the other observations.\n\nLater in this course, we will see how to work around this problem."
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-6",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-6",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLikelihood\nWe can thus write the likelihood conceptually as\n\\[\nP(\\text{Bella},\\text{Wendy}, \\text{Nora} \\mid \\theta) = P(\\text{Bella} \\mid \\theta)\\times P(\\text{Wendy} \\mid \\theta)\\times P(\\text{Nora} \\mid \\theta)\n\\]\n\nand more formally as\n\\[\n\\begin{align*}\n    P\\left(4, 5, 5 \\mid p\\right) = &\\text{Binomial}\\left(4 | p, 12\\right)\\times  \\\\\n                   &\\text{Binomial}\\left(5 | p, 10\\right)\\times\\\\\n                   &\\text{Binomial}\\left(5 | p, 16\\right)\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-7",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-7",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLikelihood\nWorking directly with the likelihood is often problematic computationally because multiplication on probabilities can lead to technical problems\n\nIt is thus common to work with a log-likelihood function. In doing so, laws of logarithms allows us to convert multiplications to additions\n\\[\n\\begin{align*}\n    \\log\\left(P\\left(4, 5, 5 \\mid p\\right)\\right) =& \\log\\left(\\text{Binomial}\\left(4 | p, 12\\right)\\right) +  \\\\\n                   & \\log\\left(\\text{Binomial}\\left(5 | p, 10\\right)\\right)+\\\\\n                   & \\log\\left(\\text{Binomial}\\left(5 | p, 16\\right)\\right)\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-8",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-8",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLog-likelihood in R\n\n\n\n# Data\nhatch &lt;- c(4, 5, 5)\neggs &lt;- c(12, 10, 5)\n\n# log-likelihood function\ncalc_ll &lt;- function(x, \n                    hatch, eggs) {\n  # Quick check\n  if(length(hatch) != length(eggs)){\n    stop(\"hatch and eggs must have the same length\")\n  }\n  \n  # log-likelihood\n  res &lt;- sum(-dbinom(hatch,\n                     size = eggs,\n                     prob = x,\n                     log = TRUE))\n  return(res)\n}\n\n# Test a range of probability values\nprob_val &lt;- seq(from = 0, \n                to = 1,\n                length.out = 30)\n\n# Result object\nlog_lik &lt;- numeric(30L)\n\nfor (i in 1:length(prob_val)) {\n  log_lik[i] &lt;- calc_ll(prob_val[i],\n                        hatch = hatch,\n                        eggs = eggs)\n}\n\npar(cex = 3)\nplot(prob_val,\n     log_lik,\n     type = \"b\",\n     xlab = \"Probability\",\n     ylab = \"Log-likelihood\")"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-9",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-9",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLet’s make it Bayesian\nAdd a prior\n\\[\n\\begin{align*}\n    {P\\left(4, 5, 5 \\mid p \\right)} = &\\text{Binomial}\\left(4 | p, 12\\right)\\times  \\\\\n                   &\\text{Binomial}\\left(5 | p, 10\\right)\\times\\\\\n                   &\\text{Binomial}\\left(5 | p, 16\\right)\\\\\n                   p\\sim & \\text{Uniform}\\left(\\text{min}=0,\\text{ max}=1\\right)\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-10",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-10",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLet’s make it Bayesian\nIf we combine the likelihood and the prior we get\n\\[\n\\begin{align*}\n    P\\left(p \\mid 4, 5, 5\\right) =& \\text{Binomial}\\left(4 | p, 12\\right) \\times  \\\\\n                   & \\text{Binomial}\\left(5 | p, 10\\right)\\times\\\\\n                   & \\text{Binomial}\\left(5 | p, 16\\right)\\times\\\\\n                   & \\text{Uniform}\\left(\\text{min}=0,\\text{ max}=1\\right)\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/02_Bayesian/index.html#illustrative-example-11",
+    "href": "slides/02_Bayesian/index.html#illustrative-example-11",
+    "title": "Bayesian modelling",
+    "section": "Illustrative example",
+    "text": "Illustrative example\nLet’s make it Bayesian\nIf we rewrite this model using logs we get\n\\[\n\\begin{align*}\n    \\log\\left(P\\left(p \\mid 4, 5, 5\\right)\\right) =& \\log\\left(\\text{Binomial}\\left(4 | p, 12\\right)\\right) +  \\\\\n                   & \\log\\left(\\text{Binomial}\\left(5 | p, 10\\right)\\right)+\\\\\n                   & \\log\\left(\\text{Binomial}\\left(5 | p, 16\\right)\\right)+\\\\\n                   & \\log\\left(\\text{Uniform}\\left(\\text{min}=0,\\text{ max}=1\\right)\\right)\n\\end{align*}\n\\]"
   }
 ]
