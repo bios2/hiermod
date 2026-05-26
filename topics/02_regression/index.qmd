@@ -3,13 +3,13 @@ title: "Univariate regression"
 description: |
   The shortest route to science is a straight line.
 execute:
-  freeze: true
+  freeze: false
 comments:
   hypothesis: true
 format:
   html:
     code-tools: true
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -17,29 +17,42 @@ editor_options:
 
 ```{r}
 library(palmerpenguins)
-library(ggplot2)
-suppressPackageStartupMessages(library(dplyr))
-library(tidybayes)
-# library(cmdstanr)
-suppressPackageStartupMessages(library(rstan))
+library(rstan)
 rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
 ```
 
 ## Statistical models of Penguin bill morphology.
 
-We'll be studying the relationship between two numbers about penguin bills. 
-Specifically, we'll ask **"Are longer bills also deeper?"**. 
+We'll be studying the relationship between two numbers about penguin bills.
+Specifically, we'll ask **"Are longer bills also deeper?"**
+
 This question might not be the most interesting ecologically, but it is a great chance to practice some interesting stats.
 
-Let's begin with plotting the data: 
+Let's begin with plotting the data :
 
 ```{r}
 #| fig-cap: Bill depth (mm) as predicted by bill length (mm) across the entire `palmerpenguins` dataset.
-penguins |> 
-  ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) + 
-  geom_point() + 
-  stat_smooth(method = "lm")
+
+# Remove NAs
+penguins_clean <- na.omit(penguins[, c("bill_length_mm", "bill_depth_mm")])
+
+# Plot data
+plot(penguins_clean$bill_length_mm,
+     penguins_clean$bill_depth_mm,
+     xlab = "Bill length (mm)",
+     ylab = "Bill depth (mm)",
+     pch = 19, 
+     cex = 0.7)
+
+# Regression
+reg <- lm(bill_depth_mm ~ bill_length_mm,
+          data = penguins_clean)
+
+# Regression lines
+abline(reg, 
+       col = "steelblue",
+       lwd = 3)
 ```
 
 Let's write a simple statistical model for these data:
@@ -54,11 +67,13 @@ $$
 \end{align}
 $$
 
-What should our priors be? Before we can answer that, we have a more important question:
+What should our priors be? 
+
+Before we can answer that question, we have a more important question:
 
 :::{.callout-warning}
-# WHERE IS ZERO??
-It has to be somewhere. Does it make sense? take control and choose for yourself.
+# WHERE IS ZERO?
+Specifically, what does it mean *biologically* when bill lengths is at 0 ? Does it make sense? 
 :::
 
 If we fit a model like this **without** thinking about the location of zero, we get some pretty silly answers:
@@ -77,10 +92,10 @@ $$
 \end{align}
 $$
 
-But, if we take the data as we found it, we're going to be talking about $\beta_0$ as the depth of a penguin's bill _when the bill has 0 length!_ 
+But, if we take the data as we found it, we're going to be talking about $\beta_0$ as the depth of a penguin's bill _when the bill has 0 length!_
 Clearly that isn't a very meaningful value. From the point of view of setting priors and interpreting coefficients, it helps a lot to set a meaningful 0.
 
-A very common choice is to **subtract the average** from your independent variable, so that penguins with an average bill length now have an average of 0:
+A very common choice is to **subtract the average** from your independent variable, so that penguins with an average bill length now have a mean of 0:
 
 $$
 \begin{align}
@@ -91,7 +106,9 @@ $$
 \end{align}
 $$
 
-Now $\beta_0$ means the average _bill depth_ at the average _bill length_.  It becomes easier to think about priors:
+Now $\beta_0$ means the average _bill depth_ at the average _bill length_.
+
+Using this "new" data, it becomes easier to think about priors:
 
 $$
 \begin{align}
@@ -106,29 +123,26 @@ $$
 :::{.callout-note}
 ## Exercise
 
-What continuous predictors have you used in your analysis? How would you find a biologically meaningful zero? Think about how you would center time, age, mass, fitness etc.
+What continuous predictors have you used in your analysis? How would you find a biologically meaningful zero? Think about how you would centre time, age, mass, fitness etc.
 :::
 
 ## Prior predictive simulations
 
 Armed with this model, it becomes much easier to think about prior predictions.
 
-We'll make a bunch of lines implied by the equation above. There's two steps:
+We'll make a bunch of lines derived from the equation above. There's two steps:
 
-1. Center the predictor
+1. Centre the predictor
 2. Make up a vector that goes from the minimum to the maximum of the predictor. This is just for convenience!
 
 ```{r}
-bill_len_centered <- with(penguins,
-                          bill_length_mm - mean(bill_length_mm,
-                                                na.rm = TRUE))
+bill_len_centered <- with(penguins_clean,
+                          bill_length_mm - mean(bill_length_mm))
 
 ## make up a short vector
-some_bill_lengths <- seq(
-  from = min(bill_len_centered, na.rm = TRUE), 
-  to = max(bill_len_centered, na.rm = TRUE),
-  length.out = 10
-  )
+some_bill_lengths <- seq(from = min(bill_len_centered),
+                         to = max(bill_len_centered),
+                         length.out = 10)
 ```
 
 :::{.callout-warning}
@@ -136,26 +150,32 @@ some_bill_lengths <- seq(
 
 These tasks are so common that they are automated in helper functions.
 
-For centering predictors, see the base R function `?scale` (however, doing this by hand is often more convenient)
+For centering predictors, see the `?scale` function `?scale`
 
-For creating a short vector over the range of a predictor, see `modelr::seq_range`. The R package [`modelr`](https://modelr.tidyverse.org/) has many different functions to help with modelling.
+For creating a short vector over the range of a predictor, use `seq(min(x), max(x), length.out = n)`.
 :::
 
 To simulate, we'll use some matrix algebra, as we saw in lecture:
 
 ```{r}
+# Parameters to simulate
 slopes <- rnorm(7, 0, .5)
 inters <- rnorm(7, 17, 2)
 
+# Basis of the regression
 X <- cbind(1, some_bill_lengths)
 B <- rbind(inters, slopes)
 
+# Bill length
 knitr::kable(head(X))
+
+# Regression parameters
 knitr::kable(head(B))
 
-
+# Simulation for mu 
 prior_mus <- X %*% B
 
+# Draw results
 matplot(x = some_bill_lengths,
         y = prior_mus, type = "l")
 ```
@@ -163,82 +183,103 @@ matplot(x = some_bill_lengths,
 :::{.callout-note}
 ## Exercise
 
-Copy the code above. Increase the number of simulations. Which priors are too wide? Which are too narrow?
+Copy the code above. Increase the number of simulations and study the structure of the priors. Which prior are too wide? Which are too narrow?
 :::
 
 ### Simulating Observations
 
-There are always at least TWO kinds of predictions we can be thinking about: 
+There are always at least TWO kinds of predictions we can be thinking about:
 
 1. Predicted averages. This is often called a "confidence" interval for a regression line.
 2. Predicted observations. This is often called a "prediction" interval.
 
-We can use the full model to simulate observations! 
+We can use the full model to simulate observations!
 
 ```{r}
+# Simulate parameters
 slopes <- rnorm(7, 0, .5)
 inters <- rnorm(7, 17, 2)
 sigmas <- rexp(7, rate = 0.3)
 
+# Basis of the regression
 X <- cbind(1, some_bill_lengths)
 B <- rbind(inters, slopes)
 
+# Simulation for mu 
 prior_mus <- X %*% B
 
+# Result object for the simulated mu 
 prior_obs <- matrix(0, nrow = nrow(prior_mus), ncol = ncol(prior_mus))
 
+# Simulate observation
 for (j in 1:ncol(prior_obs)) {
   prior_obs[,j] <- rnorm(n = nrow(prior_mus),
                          mean = prior_mus[,j],
                          sd = sigmas[j])
 }
 
+# Plot results
 matplot(x = some_bill_lengths,
         y = prior_obs, type = "p")
 ```
 
-Tidyverse style for those who indulge:
+Base R version with small multiples:
 
 ```{r}
-tibble(
-  sim_id = 1:7,
-  slopes = rnorm(7, 0, .5),
-  inters = rnorm(7, 17, 2),
-  sigmas = rexp(7, rate = 0.2)
-  ) |> 
-  mutate(x = list(seq(from = -10, to = 10, length.out = 6))) |> 
-  rowwise() |> 
-  mutate(avg = list(x * slopes + inters),
-         obs = list(rnorm(length(avg), mean = avg, sd = sigmas)),
-         sim_id = as.factor(sim_id)) |> 
-  tidyr::unnest(cols = c("x", "avg", "obs")) |> 
-  ggplot(aes(x= x, y = avg, group = sim_id, fill = sim_id)) + 
-  geom_line(aes(colour = sim_id)) + 
-  geom_point(aes(y = obs, fill = sim_id), pch = 21, size = 3) + 
-  scale_fill_brewer(type = "qual") + 
-  scale_colour_brewer(type = "qual") + 
-  facet_wrap(~sim_id)
+set.seed(42)
+n_sim <- 7
 
+# Simulate parameters
+slopes <- rnorm(n_sim, 0, .5)
+inters <- rnorm(n_sim, 17, 2)
+sigmas <- rexp(n_sim, rate = 0.2)
+
+# Generate X
+x_sim  <- seq(-10, 10, length.out = 6)
+
+# Plot structure
+par(mfrow = c(2, 4), mar = c(3, 3, 2, 1))
+
+for (i in seq_len(n_sim)) {
+  # Build regression
+  avg <- inters[i] + slopes[i] * x_sim
+  
+  # Sample observations from regression average
+  obs <- rnorm(length(avg), mean = avg, sd = sigmas[i])
+  
+  # Plot regression result
+  plot(x_sim,
+       avg, 
+       type = "l",
+       col = i + 1,
+       lwd = 2,
+       ylim = range(c(avg, obs)), 
+       xlab = "x",
+       ylab = "value",
+       main = paste("Sim", i))
+  # Plot points
+  points(x_sim, obs, pch = 21, bg = i + 1, col = i + 1)
+}
 ```
 
 :::{.callout-tip}
 ### EXERCISE
 Pick one of the two simulations above and modify it. Here are some suggested modifications:
 
-* Experiment with priors that are "too narrow" or "too wide". 
+* Experiment with priors that are "too narrow" or "too wide".
 * Try a different distribution than the one used
 * Instead of bill size, imagine that we are applying this model to YOUR data. What would you change?
 :::
 
 ## Linear regression in Stan
 
-Now we write a Stan program for this model. 
+Now let's write this model with Stan.
 We'll begin with a simple model that has no posterior predictions:
 
 ```{r}
 #| class-output: stan
 normal_regression_no_prediction <- stan_model(
-  file = here::here("topics/02_regression/normal_regression_no_prediction.stan"),
+  file = "topics/02_regression/normal_regression_no_prediction.stan",
   model_name = "normal_regression_no_prediction")
 
 normal_regression_no_prediction
@@ -246,43 +287,44 @@ normal_regression_no_prediction
 
 In order to get the posterior, we need to put our data in Stan. We follow the same steps as previously:
 
-* Remember to remove NAs first!  
+* Remember to remove NAs first!
 * arrange the data in a list
 * pass the data to a Stan model to estimate.
 
 ```{r}
-## drop NAs
-penguins_no_NA <- penguins |> 
-  tidyr::drop_na(bill_depth_mm, bill_length_mm) |> 
-  dplyr::mutate(
-    bill_length_center = bill_length_mm - mean(bill_length_mm))
+penguins_no_NA <- na.omit(penguins[, c("bill_length_mm", "bill_depth_mm", "species")])
 
-## assemble data list
+penguins_no_NA$bill_length_center <- penguins_no_NA$bill_length_mm -
+                                     mean(penguins_no_NA$bill_length_mm)
+
+## Assemble data list
 data_list <- with(penguins_no_NA,
-     list(N = length(bill_length_center),
-          bill_len = bill_length_center,
-          bill_dep = bill_depth_mm
-          ))
+                  list(N = length(bill_length_center),
+                       bill_len = bill_length_center,
+                       bill_dep = bill_depth_mm))
 
-## run the sampler, using the compiled model.
+## Run the sampler, using the compiled model
 normal_reg_no_pred <- sampling(
   object = normal_regression_no_prediction,
-  data = data_list, 
+  data = data_list,
   refresh = 0)
 
 summary(normal_reg_no_pred)$summary
 ```
 
 ```{r}
-normal_reg_no_pred |> 
-  bayesplot::mcmc_areas(pars = c("slope", "intercept", "sigma"))
+bayesplot::mcmc_areas(normal_reg_no_pred,
+                      pars = c("slope", 
+                               "intercept", 
+                               "sigma"))
 ```
 
 :::{.callout-tip}
 ### EXERCISE
-**Discussion** : Look just at the posterior distribution of the slope right above. 
+**Discussion** : Look only at the posterior distribution of the slope above.
 Do we have evidence that there's a relationship between bill length and bill depth.
 :::
+
 
 ## Posterior predictions in R
 
@@ -290,62 +332,69 @@ We can calculate a posterior prediction line directly in R for these data.
 I'll show each step in this workflow separately:
 
 ```{r}
-normal_reg_no_pred |> 
-  spread_rvars(slope, intercept, sigma)
+draws_inspect <- rstan::extract(normal_reg_no_pred, 
+                                pars = c("slope", "intercept", "sigma"))
+str(draws_inspect)
 ```
 
-`tidybayes` helps us extract the posterior distribution of the parameters into a convenient object called an `rvar`. 
-Learn more about tidybayes [here](http://mjskay.github.io/tidybayes/articles/tidybayes.html) and about the rvar datatype [here](https://mc-stan.org/posterior/articles/rvar.html)
+`rstan::extract()` pulls the posterior draws for each parameter into a named list — e.g. `draws_inspect$slope`, `draws_inspect$intercept` are numeric vectors with one value per MCMC draw.
 
 Next we combine these posteriors with a vector of observations to make a posterior distribution of LINES:
 
 
 ```{r}
+draws_reg <- rstan::extract(normal_reg_no_pred, pars = c("slope", "intercept"))
+x_seq     <- seq(-15, 15, length.out = 5)
 
-normal_reg_predline <- normal_reg_no_pred |> 
-  tidybayes::spread_rvars(slope, intercept) |> 
-  tidyr::expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
-  mutate(mu = intercept + slope*x)
-
-normal_reg_predline
+# mu_draws: matrix (rows = MCMC draws, cols = x-values)
+mu_draws  <- outer(as.vector(draws_reg$slope), x_seq) + as.vector(draws_reg$intercept)
+str(mu_draws)
 ```
 
-Finally we'll plot these:
+Finally, let's plot these:
 
 ```{r}
+q <- apply(mu_draws, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 
-normal_reg_predline |> 
-  ggplot(aes(x = x, dist = mu)) + 
-  stat_lineribbon() + 
-  geom_point(aes(x = bill_length_center, y = bill_depth_mm),
-             inherit.aes = FALSE,
-             data = penguins_no_NA)
+plot(penguins_no_NA$bill_length_center, penguins_no_NA$bill_depth_mm,
+     xlab = "Bill length (centered, mm)", ylab = "Bill depth (mm)", pch = 19, cex = 0.5)
 
+# 95% Confidence intervals
+polygon(c(x_seq, rev(x_seq)), c(q[1,], rev(q[5,])),
+        col = adjustcolor("steelblue", 0.15), border = NA)
+
+# 50% Confidence intervals
+polygon(c(x_seq, rev(x_seq)), c(q[2,], rev(q[4,])),
+        col = adjustcolor("steelblue", 0.30), border = NA)
+
+# Model
+lines(x_seq, q[3,], col = "steelblue", lwd = 2)
 ```
 
 #### Using posterior draws individually
 
-The above workflow makes a nice figure, but perhaps it helps to see the individual lines to understand what is happening here. 
-We can get these with another tidybayes function `spread_draws`:
+The above workflow makes a nice figure, but perhaps it helps to see the individual lines to understand what is happening here.
+
+We can get these by sampling rows directly from the extracted draws:
 
 ```{r}
-normal_reg_predline_draws <- normal_reg_no_pred |> 
-  tidybayes::spread_draws(slope, intercept, ndraws = 12)
+set.seed(42)
+draw_idx <- sample(length(draws_reg$slope), 12)
+draws12 <- data.frame(.draw = draw_idx,
+                      slope = draws_reg$slope[draw_idx],
+                      intercept = draws_reg$intercept[draw_idx])
 
-knitr::kable(normal_reg_predline_draws)
+knitr::kable(draws12)
 ```
 
 ```{r}
-normal_reg_predline_draws |> 
-  tidyr::expand_grid(x = seq(from = -15, to = 15, length.out = 5)) |> 
-  mutate(mu = intercept + slope*x) |> 
-  ggplot(aes(x = x, y = mu, group = .draw)) + 
-  geom_line() + 
-  geom_point(aes(x = bill_length_center, y = bill_depth_mm),
-             inherit.aes = FALSE,
-             data = penguins_no_NA)
+plot(penguins_no_NA$bill_length_center, penguins_no_NA$bill_depth_mm,
+     xlab = "Bill length (centered, mm)", ylab = "Bill depth (mm)", pch = 19, cex = 0.5)
+for (i in seq_len(nrow(draws12))) {
+  lines(x_seq, draws12$intercept[i] + draws12$slope[i] * x_seq,
+        col = adjustcolor("steelblue", 0.6))
+}
 ```
-
 
 
 ## Posterior predictions in Stan
@@ -364,52 +413,88 @@ normal_regression
 Then prepare the data and feed it into the `sampling()` function.
 
 ```{r}
-penguins_no_NA <- penguins |> 
-  tidyr::drop_na(bill_depth_mm, bill_length_mm) |> 
-  dplyr::mutate(
-    bill_length_center = bill_length_mm - mean(bill_length_mm))
+penguins_no_NA <- na.omit(penguins[, c("bill_length_mm", 
+                                       "bill_depth_mm", 
+                                       "species")])
+
+penguins_no_NA$bill_length_center <- penguins_no_NA$bill_length_mm - 
+                                     mean(penguins_no_NA$bill_length_mm)
 
 data_list <- with(penguins_no_NA,
      list(N = length(bill_length_center),
           bill_len = bill_length_center,
           bill_dep = bill_depth_mm,
           npost = 6,
-          pred_values = modelr::seq_range(penguins_no_NA$bill_length_center, n = 6)
+          pred_values = seq(min(penguins_no_NA$bill_length_center),
+                            max(penguins_no_NA$bill_length_center), length.out = 6)
           ))
 
 bill_norm_reg <- sampling(normal_regression,
-                          data = data_list, 
+                          data = data_list,
                           refresh = 0)
 ```
 
 
 ```{r}
 #| layout-ncol: 2
-library(tidyverse)
+draws_avg <- rstan::extract(bill_norm_reg, "post_bill_dep_average")$post_bill_dep_average
+draws_obs <- rstan::extract(bill_norm_reg, "post_bill_dep_obs")$post_bill_dep_obs
+x_pred    <- data_list$pred_values
 
-bill_posterior <- bill_norm_reg |> 
-  tidybayes::spread_rvars(post_bill_dep_average[i],
-                          post_bill_dep_obs[i]) |>
-  mutate(bill_length = data_list$pred_values[i]) 
+q_avg <- apply(draws_avg, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+q_obs <- apply(draws_obs, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 
-bill_posterior |> 
-  ggplot(aes(x = bill_length, dist = post_bill_dep_average)) + 
-  tidybayes::stat_lineribbon() + 
-  geom_point(aes(x = bill_length_center, y = bill_depth_mm),
-             data = penguins_no_NA, 
-             inherit.aes = FALSE) + 
-  scale_fill_brewer(palette = "Greens", direction = -1, guide = "none") + 
-  labs(title = "Average response")
+y_range <- range(penguins_no_NA$bill_depth_mm)
 
-bill_posterior |> 
-  ggplot(aes(x = bill_length, dist = post_bill_dep_obs)) + 
-  tidybayes::stat_lineribbon() + 
-  geom_point(aes(x = bill_length_center, y = bill_depth_mm),
-             data = penguins_no_NA, 
-             inherit.aes = FALSE) + 
-  scale_fill_brewer(palette = "Greens", direction = -1, guide = "none") +
-  labs(title = "Predicted observations")
+# Average response ()
+plot(penguins_no_NA$bill_length_center,
+     penguins_no_NA$bill_depth_mm,
+     xlab = "Bill length (centered, mm)", 
+     ylab = "Bill depth (mm)",
+     main = "Average response", 
+     pch = 19, 
+     cex = 0.5, 
+     ylim = y_range)
 
+# 95 % interval
+polygon(c(x_pred, rev(x_pred)), 
+        c(q_avg[1,], rev(q_avg[5,])),
+        col = adjustcolor("darkgreen", 0.15),
+        border = NA)
+
+# 50 % interval
+polygon(c(x_pred, rev(x_pred)),
+        c(q_avg[2,], rev(q_avg[4,])),
+        col = adjustcolor("darkgreen", 0.30),
+        border = NA)
+
+lines(x_pred, q_avg[3,], 
+      col = "darkgreen",
+      lwd = 2)
+
+# Predicted observations
+plot(penguins_no_NA$bill_length_center,
+     penguins_no_NA$bill_depth_mm,
+     xlab = "Bill length (centered, mm)",
+     ylab = "Bill depth (mm)",
+     main = "Predicted observations",
+     pch = 19, 
+     cex = 0.5, 
+     ylim = y_range)
+
+# 95 % Interval
+polygon(c(x_pred, rev(x_pred)),
+        c(q_obs[1,], rev(q_obs[5,])),
+        col = adjustcolor("darkgreen", 0.15),
+        border = NA)
+
+# 50 % Interval
+polygon(c(x_pred, rev(x_pred)), 
+        c(q_obs[2,], rev(q_obs[4,])),
+        col = adjustcolor("darkgreen", 0.30),
+        border = NA)
+
+lines(x_pred, q_obs[3,], col = "darkgreen", lwd = 2)
 ```
 
 :::{.callout-tip}
@@ -417,7 +502,7 @@ bill_posterior |>
 Extend this model to include species. Specifically, let each species have its own value of the `intercept`. This involves combining this regression example with the previous activity on discrete predictors.
 
 When you're done, look at the resulting summary of coefficients. What do you notice that's different?
-::: 
+:::
 
 :::{.callout-note collapse="true"}
 ### SOLUTION
@@ -429,88 +514,130 @@ normal_regression_spp <- stan_model(file = here::here("topics/02_regression/norm
 normal_regression_spp
 ```
 
-We set up a list for this model just as we did before. 
+We set up a list for this model just as we did before.
 Note that this time we are using TRIPLE the `pred_values`, because we want to run independent predictions for each species.
 
 
 ```{r}
-bill_vec <- modelr::seq_range(penguins_no_NA$bill_length_center, n = 6)
+bill_vec <- seq(min(penguins_no_NA$bill_length_center),
+                max(penguins_no_NA$bill_length_center), 
+                length.out = 6)
 
 data_list_spp <- with(penguins_no_NA,
-     list(N = length(bill_length_center),
-          bill_len = bill_length_center,
-          bill_dep = bill_depth_mm,
-          spp_id = as.numeric(as.factor(species)),
-          npost = 3*6,
-          pred_values = rep(bill_vec, 3),
-          pred_spp_id = rep(1:3, each = 6)
-          ))
+                      list(N = length(bill_length_center),
+                           bill_len = bill_length_center,
+                           bill_dep = bill_depth_mm,
+                           spp_id = as.numeric(as.factor(species)),
+                           npost = 3*6,
+                           pred_values = rep(bill_vec, 3),
+                           pred_spp_id = rep(1:3, each = 6)))
 
 normal_reg_spp_post <- sampling(normal_regression_spp,
                                 data = data_list_spp, refresh = 0)
-
 ```
 
-Note that the sign of the slope is different now! 
+Note that the sign of the slope is different now!
 
 ```{r}
-summary(normal_reg_spp_post)$summary |> 
-  head(5) |>
-  knitr::kable()
+summaryReg <- summary(normal_reg_spp_post)$summary
+knitr::kable(summaryReg)
 ```
 
 :::
 
 ### Plotting posterior predictions
 
-Using `stat_lineribbon()`, let's plot the average and predicted intervals for this regression.
+Let's plot the posterior credible ribbons for this regression
 
 ```{r}
 #| layout-ncol: 2
 #| warning: false
-bill_posterior <- normal_reg_spp_post |> 
-  tidybayes::spread_rvars(post_bill_dep_average[i],
-                          post_bill_dep_obs[i]) |>
-  mutate(bill_length = data_list_spp$pred_values[i],
-         spp = data_list_spp$pred_spp_id) |> 
-  mutate(spp = as.factor(levels(penguins$species)[spp]))
+draws_avg_spp <- rstan::extract(normal_reg_spp_post, 
+                                "post_bill_dep_average")$post_bill_dep_average
 
-bill_posterior |> 
-  ggplot(aes(x = bill_length,
-             ydist = post_bill_dep_average,
-             fill = spp, 
-             colour = spp)) + 
-  tidybayes::stat_lineribbon() + 
-  geom_point(aes(x = bill_length_center,
-                 y = bill_depth_mm,
-                 fill = species, colour = species),
-             data = penguins_no_NA, 
-             inherit.aes = FALSE) +   
-  scale_fill_brewer(palette = "Set2") +
-  scale_color_brewer(palette = "Dark2") + 
-  labs(title = "Average response")
+draws_obs_spp <- rstan::extract(normal_reg_spp_post, 
+                                "post_bill_dep_obs")$post_bill_dep_obs
 
-bill_posterior |> 
-  ggplot(aes(x = bill_length,
-             dist = post_bill_dep_obs,
-             fill = spp,
-             colour = spp)) + 
-  tidybayes::stat_lineribbon() + 
-  geom_point(aes(x = bill_length_center,
-                 y = bill_depth_mm,
-                 colour = species),
-             data = penguins_no_NA, 
-             inherit.aes = FALSE) + 
-  scale_fill_brewer(palette = "Set2") +
-  scale_color_brewer(palette = "Dark2") + 
-  labs(title = "Predicted observations") + 
-  facet_wrap(~spp, ncol = 1)
+spp_levels <- levels(penguins$species)
+spp_colors <- c("#66C2A5", "#FC8D62", "#8DA0CB")
 
+n_pred     <- 6  # predictions per species
+x_range_spp <- range(data_list_spp$pred_values)
+y_range_spp <- range(penguins_no_NA$bill_depth_mm)
+
+# --- Average response (in one plot) --- 
+plot(0, 0, 
+     type = "n",
+     xlim = x_range_spp, ylim = y_range_spp,
+     xlab = "Bill length (centered, mm)",
+     ylab = "Bill depth (mm)",
+     main = "Average response")
+
+for (s in seq_along(spp_levels)) {
+  idx <- ((s - 1) * n_pred + 1):(s * n_pred)
+  x_s <- data_list_spp$pred_values[idx]
+  q_s <- apply(draws_avg_spp[, idx],
+               2,
+               quantile,
+               probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+  
+  polygon(c(x_s, rev(x_s)), 
+          c(q_s[1,], rev(q_s[5,])),
+          col = adjustcolor(spp_colors[s], 0.15), 
+          border = NA)
+  
+  polygon(c(x_s, rev(x_s)), 
+          c(q_s[2,], rev(q_s[4,])),
+          col = adjustcolor(spp_colors[s], 0.30),
+          border = NA)
+  
+  lines(x_s, q_s[3,], col = spp_colors[s], lwd = 2)
+  spp_pts <- penguins_no_NA[as.numeric(as.factor(penguins_no_NA$species)) == s, ]
+  points(spp_pts$bill_length_center, spp_pts$bill_depth_mm,
+         pch = 19, cex = 0.5, col = spp_colors[s])
+}
+legend("topright", legend = spp_levels, col = spp_colors, lwd = 2, bty = "n")
+
+# --- Predicted observations (one panel per species) ---
+par(mfrow = c(3, 1), mar = c(4, 4, 2, 1))
+for (s in seq_along(spp_levels)) {
+  idx <- ((s - 1) * n_pred + 1):(s * n_pred)
+  x_s <- data_list_spp$pred_values[idx]
+  q_s <- apply(draws_obs_spp[, idx], 2, quantile,
+               probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+  spp_pts <- penguins_no_NA[as.numeric(as.factor(penguins_no_NA$species)) == s, ]
+  
+  plot(spp_pts$bill_length_center, 
+       spp_pts$bill_depth_mm,
+       xlim = x_range_spp, 
+       ylim = y_range_spp,
+       xlab = "Bill length (centered, mm)", 
+       ylab = "Bill depth (mm)",
+       main = spp_levels[s], 
+       pch = 19, 
+       cex = 0.5, 
+       col = spp_colors[s])
+  
+  polygon(c(x_s, rev(x_s)), 
+          c(q_s[1,], rev(q_s[5,])),
+          col = adjustcolor(spp_colors[s], 0.15),
+          border = NA)
+  
+  polygon(c(x_s, rev(x_s)), 
+          c(q_s[2,], 
+            rev(q_s[4,])),
+          col = adjustcolor(spp_colors[s], 0.30), 
+          border = NA)
+  
+  lines(x_s, q_s[3,], 
+        col = spp_colors[s], 
+        lwd = 2)
+}
 ```
 
-## Exercise! 
+## Exercise!
 
-1. We have one model without species identity as an independent variable, and one which includes species. Look at the difference in $\sigma$ between these two models. Why did the value change? 
-2. **Posterior predictions** Edit the generated quantities blocks of `normal_regression.stan` and `normal_regression_spp.stan`  to create replicate observations for all N observations (that is, `yrep` as we did in the model of [bill depth previously](../discrete_predictor/index.qmd)). Use this to compare the models using `bayesplot::ppc_dens_overlay()` or another function from the bayesplot package.
+1. We have one model without species identity as an independent variable, and one which includes species. Look at the difference in $\sigma$ between these two models. Why did the value change?
+2. **Posterior predictions** Edit the generated quantities blocks of `normal_regression.stan` and `normal_regression_spp.stan` to create replicate observations for all N observations (that is, `yrep` as we did in the model of [bill depth previously](../discrete_predictor/index.qmd)). Use this to compare the models using `bayesplot::ppc_dens_overlay()` or another function from the `bayesplot` package.
 
 
