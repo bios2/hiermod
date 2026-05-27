@@ -3,13 +3,13 @@ title: "Models with one level of hierarchy"
 description: |
   Some of these things are somewhat like the others.
 execute:
-  freeze: true
+  freeze: false
 comments:
   hypothesis: true
 format:
   html:
     code-tools: true
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -24,20 +24,15 @@ editor_options:
 5. Plot model predictions to evaluate the fit / draw conclusions
 :::
 
-Today's goal is to look at a couple of different model structures that we saw yesterday. 
+Today's goal is to look at a couple of different model structures that we saw yesterday.
 
 ## Load packages and data
 
 ```{r}
 library(palmerpenguins)
-suppressPackageStartupMessages(library(dplyr))
-library(ggplot2)
-library(tidyr)
-# library(cmdstanr)
-suppressPackageStartupMessages(library(rstan))
+library(rstan)
 rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
-library(tidybayes)
 ```
 
 
@@ -49,44 +44,70 @@ The Palmer penguins are found on three different islands. Let's look at the dist
 
 ### Plot the data
 
-First a bit of data cleaning and preparation.
-First we select our variables. 
-For this section we'll drop NA values in the predictor^[dropping NA values is not always the best idea! I'm doing it here to create a focused example. Bayes gives us other options for working with missing values, including modelling them directly.].
-We'll create a new variable out of the union of the species and island names^[again, this is slightly contrived for the sake of making a clean example! normally you'd most likely treat these two variables separately.]
+First, let's do a bit of data cleaning and preparation. For this section we'll drop NA values in the predictor^[dropping NA values is not always the best idea! I'm doing it here to create a focused example. Bayesian gives us other options for working with missing values, including modelling them directly.].
+Following, we'll create a new variable out of the union of the species and island names^[again, this is slightly contrived for the sake of making a clean example! Normally you'd most likely treat these two variables separately.]
+
 We'll also change the units of body mass to kilograms.
-You can always transform a variable to more sensible units! 
+You can always transform a variable to more sensible units!
+
 
 ```{r gauss-inter-setup}
-penguin_mass_island <- penguins |> 
-  select(species, island, body_mass_g) |> 
-  tidyr::drop_na(body_mass_g) |> 
-  tidyr::unite(sp_island, species, island) |> 
-  ## center mass and change the units
-  mutate(mass_kg = (body_mass_g)/1000)
+penguin_mass_island <- na.omit(penguins[, c("species",
+                                            "island", 
+                                            "body_mass_g")])
+penguin_mass_island$sp_island <- paste(penguin_mass_island$species,
+                                       penguin_mass_island$island, 
+                                       sep = "_")
 
-knitr::kable(head(penguin_mass_island))
+penguin_mass_island$mass_kg <- penguin_mass_island$body_mass_g / 1000
+
+knitr::kable(head(penguin_mass_island[, c("sp_island", 
+                                          "mass_kg")]))
 ```
 
 Let's visualize the distribution of body sizes for these species+island combinations:
 
 ```{r gauss-inter-plot}
 #| fig-cap: Observations of the mass of penguins on five different species-island combinations.
-penguin_mass_island |> 
-  ggplot(aes(y = sp_island,
-             x = mass_kg,
-             colour = sp_island)) + 
-  geom_jitter(alpha = 0.8, height = 0.1, width = 0) + 
-  scale_color_brewer(palette = "Dark2") + 
-  labs(x = "Mass in kg", y = "Species_Island")
+
+spi_groups <- unique(penguin_mass_island$sp_island)
+
+spi_cols <- palette.colors(length(spi_groups),
+                           palette = "Dark2")
+
+names(spi_cols) <- spi_groups
+
+plot(0, 
+     0, 
+     type = "n",
+     xlim = range(penguin_mass_island$mass_kg),
+     ylim = c(0.5, length(spi_groups) + 0.5),
+     xlab = "Mass in kg",
+     ylab = "", 
+     yaxt = "n")
+
+for (i in seq_along(spi_groups)) {
+  pts <- penguin_mass_island$mass_kg[penguin_mass_island$sp_island == spi_groups[i]]
+  points(pts, 
+         jitter(rep(i, length(pts)),
+                factor = 0.4),
+         col = spi_cols[i],
+         pch = 19, 
+         cex = 0.7)
+}
+
+axis(2, 
+     at = seq_along(spi_groups),
+     labels = spi_groups, 
+     las = 1, 
+     cex.axis = 0.8)
 ```
 
-It's always good to ask some questions about the dataset. 
-Here is a simple one: are the sample sizes equal among the species-island combinations?
+It's always good to ask some questions about the dataset.
+Here is a classic one: are the sample sizes equal among the species-island combinations?
 
 ```{r}
-penguin_mass_island |> 
-  count(sp_island) |> 
-  knitr::kable()
+knitr::kable(as.data.frame(table(sp_island = penguin_mass_island$sp_island)))
 ```
 
 ### Decide on a model structure
@@ -118,13 +139,13 @@ group_numbers
 ```
 
 ```{r}
-penguin_groupid <- penguin_mass_island |> 
-  mutate(group_id = group_numbers[sp_island])
+penguin_groupid <- penguin_mass_island
+penguin_groupid$group_id <- group_numbers[penguin_groupid$sp_island]
 
-penguin_groupid
+head(penguin_groupid)
 ```
 
-As you can see, we're set up now with the names and the indexes we need. 
+As you can see, we're now set upwith the names and the indexes we need.
 
 Now we can simulate data and plot it:
 
@@ -134,24 +155,36 @@ overall_mean <- rnorm(1, mean = 5, sd = 2)
 group_diffs <- rnorm(n = ngroup, mean = 0, sd = 1)
 sigma_obs <- rexp(1, .5)
 
-penguin_pred_obs <- penguin_groupid |> 
-  mutate(fake_mass_avg = overall_mean + group_diffs[group_id],
-         fake_mass_obs = rnorm(length(fake_mass_avg), 
-                               mean = fake_mass_avg, 
-                               sd = sigma_obs))
+penguin_pred_obs <- penguin_groupid
+penguin_pred_obs$fake_mass_avg <- overall_mean + group_diffs[penguin_pred_obs$group_id]
+penguin_pred_obs$fake_mass_obs <- rnorm(nrow(penguin_pred_obs),
+                                        mean = penguin_pred_obs$fake_mass_avg,
+                                        sd = sigma_obs)
 
-penguin_pred_obs |> 
-  ggplot(aes(y = sp_island,
-             x = fake_mass_obs,
-             colour = sp_island)) + 
-  geom_jitter(alpha = 0.8, height = 0.1, width = 0) + 
-  scale_color_brewer(palette = "Dark2")
+plot(0, 0, type = "n",
+     xlim = range(penguin_pred_obs$fake_mass_obs),
+     ylim = c(0.5, length(spi_groups) + 0.5),
+     xlab = "Simulated mass (kg)", ylab = "", yaxt = "n")
+for (i in seq_along(spi_groups)) {
+  pts <- penguin_pred_obs$fake_mass_obs[penguin_pred_obs$sp_island == spi_groups[i]]
+  points(pts,
+         jitter(rep(i, length(pts)), 
+                factor = 0.4),
+         col = spi_cols[i],
+         pch = 19, 
+         cex = 0.7)
+}
+axis(2, 
+     at = seq_along(spi_groups),
+     labels = spi_groups, 
+     las = 1, 
+     cex.axis = 0.8)
 
 ```
 
 :::{.callout-tip}
 ### EXERCISE
-Run the above code a few times, trying different prior values. 
+Run the above code a few times, trying different prior values.
 :::
 
 ### Write it in Stan
@@ -169,18 +202,15 @@ fixed_groups
 Fitting the model requires arranging the data first, and creating a list which we then feed into Stan.
 
 ```{r}
-peng_group_list <- with(penguin_groupid, 
-         list(
-           N = length(mass_kg),
-           y = mass_kg,
-           Ngroup = max(group_id),
-           group_id = group_id
-         ))
+peng_group_list <- with(penguin_groupid,
+         list(N = length(mass_kg),
+              y = mass_kg,
+              Ngroup = max(group_id),
+              group_id = group_id))
 
 fixed_groups_samples <- sampling(fixed_groups,
-  data = peng_group_list,
-  refresh = 0L
-)
+                                 data = peng_group_list,
+                                 refresh = 0L)
 ```
 
 ### Plot predictions to evaluate results
@@ -188,31 +218,48 @@ fixed_groups_samples <- sampling(fixed_groups,
 Let's begin by plotting the averages for each group.
 
 ```{r}
-fixed_groups_samples |> 
-  gather_rvars(group_averages[group_id]) |> 
-  mutate(sp_island = names(group_numbers)[group_id]) |> 
-  ggplot(aes(y = sp_island, dist = .value)) + 
-  stat_pointinterval() + 
-  geom_jitter(data = penguin_mass_island,
-              aes(y = sp_island,
-                  x = mass_kg,
-                  colour = sp_island), 
-              pch = 21, inherit.aes = FALSE,
-              alpha = 0.8, height = 0.1, width = 0) + 
-  scale_colour_brewer(palette = "Dark2")
+draws_grp <- rstan::extract(fixed_groups_samples,
+                            "group_averages")$group_averages
+q_grp <- apply(draws_grp, 
+               2, 
+               quantile,
+               probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+
+spi_labels <- names(group_numbers)
+
+plot(0, 0, type = "n",
+     xlim = range(c(q_grp, penguin_mass_island$mass_kg)),
+     ylim = c(0.5, length(spi_labels) + 0.5),
+     xlab = "Mass (kg)", ylab = "", yaxt = "n",
+     main = "Group averages (fixed effects)")
+
+for (i in seq_along(spi_labels)) {
+  pts <- penguin_mass_island$mass_kg[penguin_mass_island$sp_island == spi_labels[i]]
+  points(pts, 
+         jitter(rep(i, length(pts)),factor = 0.4),
+         col = adjustcolor(spi_cols[i], 0.5), pch = 21)
+  
+  segments(q_grp[1, i], i, q_grp[5, i], i, col = "black", lwd = 1)
+  segments(q_grp[2, i], i, q_grp[4, i], i, col = "black", lwd = 3)
+  points(q_grp[3, i], i, pch = 19, col = "black", cex = 1.2)
+}
+axis(2, 
+     at = seq_along(spi_labels), 
+     labels = spi_labels, 
+     las = 1, 
+     cex.axis = 0.8)
 ```
 
-
-Some things to notice about the code above: 
+Some things to notice about the code above:
 
 * I'm using my named vector `group_numbers` to re-create the column `sp_island`. This is my technique for making sure I always use the correct label, but you can do this any way you want.
-* We use `tidybayes::stat_pointinterval()` to summarize the posterior distribution.
-* we're adding points from the original data (`penguin_mass_island`) with `geom_jitter()`. We're adding noise vertically to make the visualization better, but not adding any horizontal noise.
+* We use `quantile()` on the posterior draws to compute the 2.5%, 25%, 50%, 75%, and 97.5% quantiles, then draw them with `segments()` (thin line for the 95% credible interval, thick line for the 50% interval) and `points()` for the median — the base R equivalent of `stat_pointinterval()`.
+* We add points from the original data with a `for` loop calling `points()` with vertical `jitter()`, but no horizontal noise.
 
 :::{.callout-tip}
 ### EXERCISE: plot posterior predictions of _observations_
 
-Repeat the exercise above using the value of `one_obs_per_group`. 
+Repeat the exercise above using the value of `one_obs_per_group`.
 Why are the results different? What additional error is included in these predictions?
 
 :::
@@ -221,21 +268,39 @@ Why are the results different? What additional error is included in these predic
 ### SOLUTION
 
 ```{r}
-fixed_groups_samples |> 
-  tidybayes::gather_rvars(one_obs_per_group[group_id]) |> 
-  mutate(sp_island = group_names[group_id]) |> 
-  ggplot(aes(y = sp_island,
-             dist = .value,
-             colour = sp_island)) + 
-  stat_pointinterval(colour = "black") + 
-  geom_jitter(
-    aes(y = sp_island,
-        x = mass_kg,
-        colour = sp_island), 
-    inherit.aes = FALSE,
-    alpha = .2, data = penguin_groupid, height = .2, width = 0) + 
-  scale_colour_brewer(palette = "Dark2")
+draws_obs_grp <- rstan::extract(fixed_groups_samples,
+                                "one_obs_per_group")$one_obs_per_group
+q_obs_grp     <- apply(draws_obs_grp, 
+                       2, 
+                       quantile, 
+                       probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 
+plot(0, 
+     0, 
+     type = "n",
+     xlim = range(c(q_obs_grp, penguin_groupid$mass_kg)),
+     ylim = c(0.5, length(group_names) + 0.5),
+     xlab = "Mass (kg)", ylab = "", yaxt = "n",
+     main = "Predicted observations (fixed effects)")
+
+for (i in seq_along(group_names)) {
+  pts <- penguin_groupid$mass_kg[penguin_groupid$sp_island == group_names[i]]
+  points(pts,
+         jitter(rep(i, length(pts)), factor = 0.7),
+         col = adjustcolor(spi_cols[i], 0.3),
+         pch = 19, 
+         cex = 0.5)
+  
+  segments(q_obs_grp[1, i], i, q_obs_grp[5, i], i, col = "black", lwd = 1)
+  segments(q_obs_grp[2, i], i, q_obs_grp[4, i], i, col = "black", lwd = 3)
+  points(q_obs_grp[3, i], i, pch = 19, col = "black", cex = 1.2)
+}
+
+axis(2, 
+     at = seq_along(group_names), 
+     labels = group_names, 
+     las = 1,
+     cex.axis = 0.8)
 ```
 
 :::
@@ -275,7 +340,7 @@ $$
 \mu_i &= \bar\beta + \beta_{\text{group}[i]} \\
 \bar\beta &\sim \text{Normal}(5, 2) \\
 \beta_{\text{group}} &\sim \text{Normal}(0, \sigma_{\text{sp}}) \\
-\sigma_{\text{obs}} &\sim \text{Exponential}(.5) \\
+\sigma_{\text{obs}} &\sim \text{Exponential}(0.5) \\
 \sigma_{\text{sp}} &\sim \text{Exponential}(1)
 \end{align}
 $$
@@ -293,9 +358,10 @@ $$
 #### Simulation of a hierarchical model
 
 :::{.callout-tip}
-### EXERCISE 
-Simulate from the model above. Base your approach on the [code for simulation the non-hierarchical version](#sec-fixed-simulation). 
-Remember to simulate one additional number: the standard deviation of group differences
+### EXERCISE
+
+Simulate from the model above. Base your approach on the [code for simulation the non-hierarchical version](#sec-fixed-simulation).
+Remember to simulate the standard deviation of group differences
 :::
 
 :::{.callout-note collapse="true"}
@@ -303,30 +369,47 @@ Remember to simulate one additional number: the standard deviation of group diff
 ```{r}
 ngroup <- length(group_numbers)
 overall_mean <- rnorm(1, mean = 5, sd = 2)
-sigma_group <- rexp(1, .1)
-group_diffs <- rnorm(n = ngroup, mean = 0, sd = sigma_group)
-sigma_obs <- rexp(1, .5)
+sigma_group <- rexp(1, 0.1)
+group_diffs <- rnorm(n = ngroup, 
+                     mean = 0, 
+                     sd = sigma_group)
+sigma_obs <- rexp(1, 0.5)
 
-penguin_pred_obs <- penguin_groupid |> 
-  mutate(fake_mass_avg = overall_mean + group_diffs[group_id],
-         fake_mass_obs = rnorm(length(fake_mass_avg), 
-                               mean = fake_mass_avg, 
-                               sd = sigma_obs))
+penguin_pred_obs <- penguin_groupid
+penguin_pred_obs$fake_mass_avg <- overall_mean + group_diffs[penguin_pred_obs$group_id]
+penguin_pred_obs$fake_mass_obs <- rnorm(nrow(penguin_pred_obs),
+                                        mean = penguin_pred_obs$fake_mass_avg,
+                                        sd = sigma_obs)
 
-penguin_pred_obs |> 
-  ggplot(aes(y = sp_island,
-             x = fake_mass_obs,
-             colour = sp_island)) + 
-  geom_jitter(alpha = 0.8, height = 0.1, width = 0) + 
-  scale_color_brewer(palette = "Dark2")
+plot(0, 0, type = "n",
+     xlim = range(penguin_pred_obs$fake_mass_obs),
+     ylim = c(0.5, length(spi_groups) + 0.5),
+     xlab = "Simulated mass (kg)", 
+     ylab = "", 
+     yaxt = "n")
 
+for (i in seq_along(spi_groups)) {
+  pts <- penguin_pred_obs$fake_mass_obs[penguin_pred_obs$sp_island == spi_groups[i]]
+  points(pts, 
+         jitter(rep(i, length(pts)),
+                factor = 0.4),
+         col = spi_cols[i], 
+         pch = 19, 
+         cex = 0.7)
+}
+
+axis(2,
+     at = seq_along(spi_groups), 
+     labels = spi_groups, 
+     las = 1, 
+     cex.axis = 0.8)
 ```
 :::
 
 #### Stan
 
 
-Below I'm comparing the two Stan programs side-by-side. Compare them to the models above! 
+Below I'm comparing the two Stan programs side-by-side. Compare them to the models above!
 
 ```{r}
 hierarchical_groups <- stan_model(
@@ -382,56 +465,83 @@ hierarchical_groups_samples
 ```
 
 ```{r}
-hierarchical_groups_samples |> 
-  tidybayes::gather_rvars(b_group[group_id],
-                          new_b_group) |> 
-  mutate(sp_island = group_names[group_id],
-         sp_island = if_else(is.na(sp_island),
-                             true = "New Group",
-                             false = sp_island)) |> 
-  ggplot(aes(y = sp_island,
-             dist = .value,
-             colour = sp_island)) + 
-  stat_pointinterval()
+draws_bg  <- rstan::extract(hierarchical_groups_samples, "b_group")$b_group
+draws_new <- rstan::extract(hierarchical_groups_samples, "new_b_group")$new_b_group
+
+all_labels <- c(group_names, "New Group")
+n_all <- length(all_labels)
+q_bg <- apply(draws_bg, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+q_new <- quantile(draws_new, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+q_all <- cbind(q_bg, q_new)
+
+plot(0, 0, type = "n",
+     xlim = range(q_all),
+     ylim = c(0.5, n_all + 0.5),
+     xlab = "Group effect", ylab = "", yaxt = "n",
+     main = "Group effects (hierarchical)")
+
+for (i in seq_len(n_all)) {
+  segments(q_all[1, i], i, q_all[5, i], i, lwd = 1, col = "steelblue")
+  segments(q_all[2, i], i, q_all[4, i], i, lwd = 3, col = "steelblue")
+  points(q_all[3, i], i, pch = 19, col = "steelblue")
+}
+
+axis(2, at = seq_len(n_all), labels = all_labels, las = 1, cex.axis = 0.8)
 ```
 
 
 ```{r}
-hierarchical_groups_samples |> 
-  tidybayes::gather_rvars(one_obs_per_group[group_id],
-                          one_obs_new_group) |> 
-  mutate(sp_island = group_names[group_id],
-         sp_island = if_else(is.na(sp_island),
-                             true = "New Group",
-                             false = sp_island)) |> 
-  ggplot(aes(y = sp_island,
-             dist = .value,
-             colour = sp_island)) + 
-  stat_pointinterval() + 
-  geom_point(aes(y = sp_island,
-             x = mass_kg,
-             colour = sp_island), 
-             inherit.aes = FALSE,
-             alpha = .7,
-             data = penguin_groupid,
-             position = position_jitter(width = 0, height = .2))
-```
+draws_oopg <- rstan::extract(hierarchical_groups_samples, 
+                             "one_obs_per_group")$one_obs_per_group
+draws_ong  <- rstan::extract(hierarchical_groups_samples,
+                             "one_obs_new_group")$one_obs_new_group
 
+q_oopg <- apply(draws_oopg, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+q_ong  <- quantile(draws_ong, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+q_oall <- cbind(q_oopg, q_ong)
+
+plot(0, 0, type = "n",
+     xlim = range(c(q_oall, penguin_groupid$mass_kg)),
+     ylim = c(0.5, n_all + 0.5),
+     xlab = "Mass (kg)", ylab = "", yaxt = "n",
+     main = "Predicted observations (hierarchical)")
+
+for (i in seq_len(n_all)) {
+  if (i <= length(group_names)) {
+    pts <- penguin_groupid$mass_kg[penguin_groupid$sp_island == group_names[i]]
+    points(pts, 
+           jitter(rep(i, length(pts)),
+                  factor = 0.5),
+           col = adjustcolor(spi_cols[i], 0.5), 
+           pch = 19,
+           cex = 0.5)
+  }
+  segments(q_oall[1, i], i, q_oall[5, i], i, lwd = 1, col = "black")
+  segments(q_oall[2, i], i, q_oall[4, i], i, lwd = 3, col = "black")
+  points(q_oall[3, i], i, pch = 19, col = "black")
+}
+axis(2,
+     at = seq_len(n_all), 
+     labels = all_labels,
+     las = 1, 
+     cex.axis = 0.8)
+```
 
 ### Exercises
 
+
 1. Try leaving out a group and refitting the hierarchical model. Are the predictions for the missing group accurate?
 1. There are other categorical predictors in the dataset. Try including `year` as a part of the group-creating factor (i.e. in the call to `unite()` above). What changes?
-1. Modify the `generated quantities` block to simulate a fake observation for EVERY row of the dataset. This opens the possibility of using `bayesplot` to make predictions. Look back at the code from Day 1 and create a posterior predictive check for both models. (e.g. using `ppc_dens_overlay`)
+1. Modify the `generated quantities` block to simulate a fake observation for **every** row of the dataset. This opens the possibility of using `bayesplot` to make predictions. Look back at the code from Day 1 and create a posterior predictive check for both models. (e.g. using the `ppc_dens_overlay` function)
 1. We could perhaps have used `sex` as a grouping factor, but `sex` has missing values in it! Why is this a problem for this kind of model? What would it take to address that? (Discussion only; missing values are unfortunately outside the scope of the class!)
 
 ## Observation-level random effects: Mite abundance
 
-### What is the question? 
+### Biological question?
 
-Let's write a model to answer the question:  
+Let's write a model to answer the question:
 
-**How does the total abundance of the mite community change as water content increases?**  
+**How does the total abundance of the mite community change as water content increases?**
 
 ### Express this in Math
 
@@ -447,7 +557,7 @@ a &= \bar\beta + \beta_{\text{water}} \cdot \text{water}_i \\
 $$
 
 :::{.callout-tip}
-### EXERCISE 
+### EXERCISE
 Simulate from this model, and look at your simulations to decide on a reasonable prior for the data.
 :::
 
@@ -473,25 +583,34 @@ First we need to load and prepare the data:
 data(mite, package = "vegan")
 data("mite.env", package = "vegan")
 
-# combine data and environment
+# Combine data and environment
+mite_df <- mite
+mite_df$site_id <- rownames(mite)
+mite_df <- cbind(mite_df, mite.env)
 
-mite_data_long <- mite |> 
-  tibble::rownames_to_column(var = "site_id") |> 
-  bind_cols(mite.env) |> 
-  pivot_longer(Brachy:Trimalc2,
-               names_to = "spp", values_to = "abd")
+spp_cols_names <- colnames(mite)
+
+mite_data_long <- do.call(rbind, lapply(spp_cols_names, function(sp) {
+  data.frame(site_id = mite_df$site_id,
+             WatrCont = mite_df$WatrCont,
+             spp = sp,
+             abd = mite_df[[sp]])
+}))
+
+mite_data_long <- mite_data_long[order(mite_data_long$site_id), ]
+rownames(mite_data_long) <- NULL
 ```
 
-
-First let's transform the mite dataset into a dataframe of total community abundance (N) per site. 
-We'll also standardize the water content while we're at it:
+First let's transform the mite dataset into a data frame of total community abundance (N) per site. We'll also standardize the water content while we're at it:
 
 ```{r}
-mite_community_abd <- mite_data_long |> 
-  group_by(site_id, WatrCont) |> 
-  summarize(N = sum(abd)) |>
-  ungroup() |> 
-  mutate(water_c = (WatrCont - mean(WatrCont))/100)
+mite_community_abd <- aggregate(abd ~ site_id + WatrCont,
+                                data = mite_data_long, FUN = sum)
+
+names(mite_community_abd)[names(mite_community_abd) == "abd"] <- "N"
+
+mite_community_abd$water_c <- (mite_community_abd$WatrCont -
+                               mean(mite_community_abd$WatrCont)) / 100
 
 knitr::kable(head(mite_community_abd))
 ```
@@ -500,18 +619,19 @@ We get a nice histogram of community abundance, and a clear negative relationshi
 
 ```{r}
 #| layout-ncol: 2
-mite_community_abd |> 
-  ggplot(aes(x = N)) + 
-  geom_histogram()
+hist(mite_community_abd$N,
+     xlab = "Community abundance (N)",
+     main = "Histogram of N")
 
-mite_community_abd |> 
-  ggplot(aes(x = water_c, y = N)) + 
-  geom_point()
+plot(mite_community_abd$water_c, mite_community_abd$N,
+     xlab = "Water content (centered)",
+     ylab = "Community abundance (N)",
+     pch = 19, cex = 0.7)
 ```
 
 ### Write the model in Stan and estimate it
 
-This model will have a structure very similar to previous ones we've seen. 
+This model will have a structure very similar to previous ones we've seen.
 The main difference is the use of the `poisson_log` function:
 
 ```{r}
@@ -526,14 +646,13 @@ poisson_regression
 :::{.callout-note}
 ### Built in Stan functions
 
-Stan has a lot of built-in functions to facilitate modelling. 
-For example the log link function is so common that there is a specialized likelihood function just for that, `poisson_log`. And there's an even more efficient version called `poisson_log_glm`. I didn't use it here because I wanted to code to closely match the equations. You can read about these functions (and much more!) in the amazing [Stan manual](https://mc-stan.org/docs/functions-reference/unbounded_discrete_distributions.html#poisson)
+Stan has a lot of built-in functions to facilitate modelling.
+For example the log link function is so common that there is a specialized likelihood function just for that, `poisson_log`. And there's an even more efficient version called `poisson_log_glm`. I didn't use it here because I wanted the code to closely match the equations. You can read about these functions (and much more!) in the amazing [Stan manual](https://mc-stan.org/docs/functions-reference/unbounded_discrete_distributions.html#poisson)
 :::
 
 Using a now-familiar workflow, we feed the data into the model:
 
 ```{r}
-
 water_for_pred <- seq(from = -3, to = 4.5, length.out = 15)
 
 abd_data_list <- list(N = length(mite_community_abd$N),
@@ -552,15 +671,23 @@ poisson_regression_sample <- sampling(
 
 ```{r}
 #| layout-ncol: 2
-poisson_regression_sample |> 
-  tidybayes::gather_rvars(line_obs[i]) |> 
-  mutate(water = water_for_pred) |> 
-  ggplot(aes(x = water, dist = .value)) + 
-  stat_lineribbon() + 
-  geom_point(aes(x = water_c, y = N), 
-             data = mite_community_abd, 
-             inherit.aes = FALSE) + 
-  scale_fill_brewer(palette = "Greens")
+draws_lo <- rstan::extract(poisson_regression_sample, "line_obs")$line_obs
+q_lo <- apply(draws_lo, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+
+plot(mite_community_abd$water_c, mite_community_abd$N,
+     pch = 19, cex = 0.7,
+     xlab = "Water content (centered)", ylab = "Community abundance (N)",
+     main = "Poisson model — prediction interval")
+
+polygon(c(water_for_pred, rev(water_for_pred)),
+        c(q_lo[1,], rev(q_lo[5,])),
+        col = adjustcolor("forestgreen", 0.15), border = NA)
+
+polygon(c(water_for_pred, rev(water_for_pred)),
+        c(q_lo[2,], rev(q_lo[4,])),
+        col = adjustcolor("forestgreen", 0.30), border = NA)
+
+lines(water_for_pred, q_lo[3,], col = "forestgreen", lwd = 2)
 
 fake_obs_S <- rstan::extract(poisson_regression_sample, pars = "fake_obs")
 
@@ -568,19 +695,19 @@ bayesplot::ppc_dens_overlay(y = mite_community_abd$N,
                             yrep = head(fake_obs_S$fake_obs, 50))
 ```
 
-Remember, on the left we are plotting the _*Prediction interval*_ here: it's showing the distribution of probable observations according to the model. Notice that the the model predicts much narrower variation than we really find!   
+Remember, on the left we are plotting the _*Prediction interval*_ here: it's showing the distribution of probable observations according to the model. Notice that the model predicts much narrower variation than we really find!
 
-On the right hand side we have the posterior predictive check, which once again shows that the model is overconfident and predicts a range of observations that are far too narrow.  
+On the right hand side we have the posterior predictive check, which once again shows that the model is overconfident and predicts a range of observations that are far too narrow.
 
 
 :::{.callout-tip
 ### EXERCISE
 
-1) Discuss with your neighbours: would you trust this model? Would you publish it? The technical name for this phenomenon is "overdisperson". Have you checked for this in previous count models you've done?
+1) Discuss with your neighbours: Would you trust this model? Would you publish it? The technical name for this phenomenon is "overdispersion". Have you checked for this in previous count models you've done?
 
-2) Add a random effect for _every individual observation_ in the model. Begin by writing the mathematical notation for this new model! 
+2) Add a random effect for _every individual observation_ in the model. Begin by writing the mathematical notation for this new model!
 
-3) fit the model and re-create the two figures above. What do you notice? 
+3) Fit the model and re-create the two figures above. What do you notice?
 
 * Which model is more trustworthy?
 * look at the slope in the new model. Is it different?
@@ -604,22 +731,34 @@ a &= \bar\beta + \beta_{\text{water}} \cdot \text{water}_i + \text{site}_i\\
 \end{align}
 $$
 
-### Prior predictive checks -- DON'T skip
+### Prior predictive checks -- Important ! Do not skip !
 
 ```{r}
-
 prior_b0 <- rnorm(1, 4.5, .2)
 prior_b1 <- rnorm(1, 0, .2)
 
-mite_community_abd |> 
-  mutate(avg = exp(prior_b0 + prior_b1*water_c)) |> 
-  ggplot(aes(x = water_c, y = avg)) + geom_line() + 
-  coord_cartesian(ylim = c(0, 500))
-  
+mite_community_abd$avg_prior <- exp(prior_b0 + prior_b1 * mite_community_abd$water_c)
+
+plot(mite_community_abd$water_c,
+     mite_community_abd$N,
+     pch = 19, cex = 0.7,
+     xlab = "Water content (centered)",
+     ylab = "Community abundance (N)")
+
+lines(mite_community_abd$water_c,
+      mite_community_abd$avg_prior,
+      type = "l", 
+      lwd = 3, 
+      col = "blue")
+
+legend("topleft",
+       col = "blue",
+       lty = 1, 
+       lwd = 3, 
+       legend = "Expected N")
 ```
 
-
-#### Stan code 
+#### Stan code
 
 Write the model
 
@@ -635,29 +774,35 @@ poisson_regression_overdisp
 Sample it
 
 ```{r}
-poisson_regression_overdisp_sample <- sampling(
-  poisson_regression_overdisp, 
-  data = abd_data_list, refresh = 0
-  )
+poisson_regression_overdisp_sample <- sampling(poisson_regression_overdisp,
+                                               data = abd_data_list, 
+                                               refresh = 0,iter = 20000)
 ```
 
 
 ```{r}
 #| layout-ncol: 2
-#| 
-fake_obs_overdisp_S <- rstan::extract(poisson_regression_overdisp_sample, pars = "fake_obs")
+#|
+fake_obs_overdisp_S <- rstan::extract(poisson_regression_overdisp_sample,
+                                      pars = "fake_obs")
 
 bayesplot::ppc_dens_overlay(y = mite_community_abd$N,
                             yrep = head(fake_obs_overdisp_S$fake_obs, 50))
 
-poisson_regression_overdisp_sample |> 
-  tidybayes::gather_rvars(line_avg[i]) |> 
-  mutate(water = water_for_pred) |> 
-  ggplot(aes(x = water, dist = .value)) + 
-  stat_lineribbon() + 
-  geom_point(aes(x = water_c, y = N), 
-             data = mite_community_abd, 
-             inherit.aes = FALSE)
+draws_la  <- rstan::extract(poisson_regression_overdisp_sample, "line_avg")$line_avg
+q_la      <- apply(draws_la, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+
+plot(mite_community_abd$water_c, mite_community_abd$N,
+     pch = 19, cex = 0.7,
+     xlab = "Water content (centered)", ylab = "Community abundance (N)",
+     main = "Overdispersed model — mean trend")
+polygon(c(water_for_pred, rev(water_for_pred)),
+        c(q_la[1,], rev(q_la[5,])),
+        col = adjustcolor("steelblue", 0.15), border = NA)
+polygon(c(water_for_pred, rev(water_for_pred)),
+        c(q_la[2,], rev(q_la[4,])),
+        col = adjustcolor("steelblue", 0.30), border = NA)
+lines(water_for_pred, q_la[3,], col = "steelblue", lwd = 2)
 ```
 
 :::
@@ -669,5 +814,5 @@ Compare the slope estimates between the two poisson models above (possibly in th
 
 Another great way to model overdispersion is via the [Negative Binomial](https://en.wikipedia.org/wiki/Negative_binomial_distribution) distribution. Look at the Stan documentation for [neg_binomial_2_log](https://mc-stan.org/docs/functions-reference/neg-binom-2-log.html) and adapt your model to use it (don't forget to drop the random effect when you do!).
 
-EXPERIMENTAL: replace the normal distribution for the random observation-level effect with the student_t distribution, to help with that one extreme datapoint! how does the slope change?
+EXPERIMENTAL: replace the normal distribution for the random observation-level effect with the Student t distribution, to help with that one extreme data point! how does the slope change?
 :::
