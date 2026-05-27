@@ -446,7 +446,7 @@ rstan_options(threads_per_chain = 1)</code></pre>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 8%">
-<col style="width: 13%">
+<col style="width: 12%">
 <col style="width: 13%">
 <col style="width: 13%">
 <col style="width: 13%">
@@ -457,23 +457,23 @@ rstan_options(threads_per_chain = 1)</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">inters</td>
-<td style="text-align: right;">15.8511389</td>
-<td style="text-align: right;">14.7741032</td>
-<td style="text-align: right;">13.7985899</td>
-<td style="text-align: right;">17.7119238</td>
-<td style="text-align: right;">18.1284761</td>
-<td style="text-align: right;">18.657528</td>
-<td style="text-align: right;">17.2712611</td>
+<td style="text-align: right;">19.170348</td>
+<td style="text-align: right;">13.7062430</td>
+<td style="text-align: right;">18.8615390</td>
+<td style="text-align: right;">16.9928140</td>
+<td style="text-align: right;">17.7574422</td>
+<td style="text-align: right;">15.612315</td>
+<td style="text-align: right;">14.5494335</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">slopes</td>
-<td style="text-align: right;">-0.5596334</td>
-<td style="text-align: right;">0.0225342</td>
-<td style="text-align: right;">-0.3138255</td>
-<td style="text-align: right;">0.0977806</td>
-<td style="text-align: right;">-0.3379355</td>
-<td style="text-align: right;">-0.034965</td>
-<td style="text-align: right;">-0.2328474</td>
+<td style="text-align: right;">-0.447755</td>
+<td style="text-align: right;">0.0793149</td>
+<td style="text-align: right;">-0.2137636</td>
+<td style="text-align: right;">-0.4838215</td>
+<td style="text-align: right;">0.3335648</td>
+<td style="text-align: right;">-0.056673</td>
+<td style="text-align: right;">0.0088077</td>
 </tr>
 </tbody>
 </table>
@@ -714,13 +714,13 @@ lp__      -395.38407095 -394.79830318 -394.29751247 1968.939 1.0009826</code></p
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(draws_inspect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 3
- $ slope    : num [1:4000(1d)] -0.1073 -0.0646 -0.095 -0.1423 -0.0845 ...
+ $ slope    : num [1:4000(1d)] -0.0965 -0.0577 -0.1 -0.0807 -0.0914 ...
   ..- attr(*, "dimnames")=List of 1
   .. ..$ iterations: NULL
- $ intercept: num [1:4000(1d)] 17.1 17.2 17.3 17 17.1 ...
+ $ intercept: num [1:4000(1d)] 17.3 17 17 16.8 17 ...
   ..- attr(*, "dimnames")=List of 1
   .. ..$ iterations: NULL
- $ sigma    : num [1:4000(1d)] 1.97 1.79 1.93 2.07 1.93 ...
+ $ sigma    : num [1:4000(1d)] 2.04 1.91 2.03 1.94 1.82 ...
   ..- attr(*, "dimnames")=List of 1
   .. ..$ iterations: NULL</code></pre>
 </div>
@@ -735,7 +735,7 @@ lp__      -395.38407095 -394.79830318 -394.29751247 1968.939 1.0009826</code></p
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>mu_draws  <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">as.vector</span>(draws_reg<span class="sc">$</span>slope), x_seq) <span class="sc">+</span> <span class="fu">as.vector</span>(draws_reg<span class="sc">$</span>intercept)</span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mu_draws)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> num [1:4000, 1:5] 18.7 18.2 18.7 19.2 18.4 ...</code></pre>
+<pre><code> num [1:4000, 1:5] 18.8 17.9 18.5 18 18.4 ...</code></pre>
 </div>
 </div>
 <p>Finally, let’s plot these:</p>
@@ -787,63 +787,63 @@ lp__      -395.38407095 -394.79830318 -394.29751247 1968.939 1.0009826</code></p
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">2609</td>
-<td style="text-align: right;">-0.1163461</td>
-<td style="text-align: right;">17.18248</td>
+<td style="text-align: right;">-0.1084951</td>
+<td style="text-align: right;">17.08312</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2369</td>
-<td style="text-align: right;">-0.0960144</td>
-<td style="text-align: right;">17.09168</td>
+<td style="text-align: right;">-0.0990726</td>
+<td style="text-align: right;">17.03514</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1177</td>
-<td style="text-align: right;">-0.0840623</td>
-<td style="text-align: right;">17.08113</td>
+<td style="text-align: right;">-0.0716151</td>
+<td style="text-align: right;">17.11933</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1098</td>
-<td style="text-align: right;">-0.0594084</td>
-<td style="text-align: right;">17.18962</td>
+<td style="text-align: right;">-0.0804855</td>
+<td style="text-align: right;">17.22800</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1252</td>
-<td style="text-align: right;">-0.1271991</td>
-<td style="text-align: right;">17.12525</td>
+<td style="text-align: right;">-0.0980822</td>
+<td style="text-align: right;">17.20400</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">3218</td>
-<td style="text-align: right;">-0.0746462</td>
-<td style="text-align: right;">17.16340</td>
+<td style="text-align: right;">-0.1004108</td>
+<td style="text-align: right;">17.27400</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">634</td>
-<td style="text-align: right;">-0.0923442</td>
-<td style="text-align: right;">17.13620</td>
+<td style="text-align: right;">-0.0806283</td>
+<td style="text-align: right;">17.30834</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2097</td>
-<td style="text-align: right;">-0.0740694</td>
-<td style="text-align: right;">17.20312</td>
+<td style="text-align: right;">-0.0533362</td>
+<td style="text-align: right;">17.22336</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1152</td>
-<td style="text-align: right;">-0.1088110</td>
-<td style="text-align: right;">17.04835</td>
+<td style="text-align: right;">-0.1035335</td>
+<td style="text-align: right;">17.10023</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1327</td>
-<td style="text-align: right;">-0.1051824</td>
-<td style="text-align: right;">17.14150</td>
+<td style="text-align: right;">-0.0889499</td>
+<td style="text-align: right;">17.07135</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2072</td>
-<td style="text-align: right;">-0.0887113</td>
-<td style="text-align: right;">17.23696</td>
+<td style="text-align: right;">-0.1017803</td>
+<td style="text-align: right;">17.03660</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">3911</td>
-<td style="text-align: right;">-0.0922816</td>
-<td style="text-align: right;">17.17115</td>
+<td style="text-align: right;">-0.0722955</td>
+<td style="text-align: right;">17.01069</td>
 </tr>
 </tbody>
 </table>
