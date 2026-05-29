@@ -3,24 +3,26 @@ title:  Fitting an intercept-only model
 description: |
   Where is the variation?
 execute:
-  freeze: true
+  freeze: false
 format:
   html:
     code-tools: true
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
 ## Variance partitioning with hierarchical models
 
-Its very useful to have an idea of where the variation is in a dataset, as a guide to model building and future data collection. Before collecting information on independent variables that you think might explain variation -- first find out how much variation there is! 
+Its very useful to have an idea of where the variation is in a dataset, as a guide to model building and future data collection. Before collecting information on independent variables that you think might explain variation -- first find out how much variation there is!
 
-Random intercepts give us a very handy way to investigate this: the so-called "intercept only" model. 
-At this point in the course we now have all the tools needed to build it. There are two steps: first we build a model with no predictors at all, only a random intercept for every grouping variable in the data (e.g. species, sites, years, regions). Then we examine the relative magnitudes of the standard deviations to see which is relatively larger or smaller.
+Random intercept models give us a very handy way to investigate the variation in data: the so-called "intercept only" model. At this point in the course we now have all the tools needed to build such a model. This goal can be achieved in two steps:
+
+1. We build a model with no predictors at all, only a random intercept for every grouping variable in the data (e.g. species, sites, years, regions). 
+2. Then we examine the relative magnitudes of the standard deviations to see which is reasonably larger or smaller.
 
 ## Abundance of mites in different samples
 
-We're going to build this by extending the observation level random effect model from the previous section. Remember that observation-level random effects are mostly useful for Poisson distributions! If you want to extend this model to other kinds of data, remember to remove that part of it.
+We're going to build such a model by extending the observation level random effect model from the previous [Hierachy on the intercept](https://bios2.github.io/hiermod/topics/03_one_random_effect/) exercise. Note that observation-level random effects are useful for Poisson models because they can take help with overdispersion.
 
 ### Mathematical model
 
@@ -41,15 +43,9 @@ $$
 ### Load packages and prepare data
 
 ```{r}
-suppressPackageStartupMessages(library(dplyr))
-library(ggplot2)
-library(tidyr)
-# library(cmdstanr)
-suppressPackageStartupMessages(library(rstan))
+library(rstan)
 rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
-library(tidybayes)
-
 
 data("mite", package = "vegan")
 ```
@@ -58,13 +54,13 @@ data("mite", package = "vegan")
 spp_names <- colnames(mite)
 spp_names <- setNames(1:ncol(mite), colnames(mite))
 
-
-mite_long <- mite |> 
-  mutate(site_id = seq_len(nrow(mite))) |> 
-  tidyr::pivot_longer(-site_id,
-                      names_to = "spp",
-                      values_to = "abd") |> 
-  dplyr::mutate(spp_id = spp_names[spp])
+mite_mat  <- as.matrix(mite)
+mite_long <- data.frame(site_id = rep(seq_len(nrow(mite_mat)),
+                                      times = ncol(mite_mat)),
+                        spp = rep(colnames(mite_mat), 
+                                  each = nrow(mite_mat)),
+                        abd = as.vector(mite_mat))
+mite_long$spp_id <- spp_names[mite_long$spp]
 
 knitr::kable(head(mite_long))
 ```
@@ -79,31 +75,32 @@ spp_site_obs_intercepts <- stan_model(
 spp_site_obs_intercepts
 ```
 
-Now we can sample this model. 
+Now we can sample this model.
 
 :::{.callout-warning}
 ## Warning: irresponsible statistics
-I'm sampling only 2 chains below, for illustration purposes only! use more chains in your research.
+I'm sampling only 2 chains below, for illustration purposes and to make sure the code run in a reasonable amount of time. Use more chains in your research.
 :::
 
 ```{r eval=TRUE}
-spp_site_obs_intercepts_samp <- rstan::sampling(
-  spp_site_obs_intercepts,
-  data = list(
-    N = nrow(mite_long),
-    N_spp = max(mite_long$spp_id),
-    spp_id = mite_long$spp_id,
-    N_sites = max(mite_long$site_id),
-    site_id = mite_long$site_id,
-    abd = mite_long$abd
-  ),chains = 2)
-
-# spp_site_obs_intercepts_samp$save_object("topics/intercept_only/spp_site_obs_intercepts.rds")
+spp_site_obs_intercepts_samp <- sampling(spp_site_obs_intercepts,
+                                         data = list(N = nrow(mite_long),
+                                                     N_spp = max(mite_long$spp_id),
+                                                     spp_id = mite_long$spp_id,
+                                                     N_sites = max(mite_long$site_id),
+                                                     site_id = mite_long$site_id,
+                                                     abd = mite_long$abd),
+                                         chains = 2,
+                                         iter = 5000)
 ```
+
+:::{.callout-warning}
+When working a model that takes a long time to run, saving the sampling in an .rds object using the `saveRDS` function can be a valuable time saver.
+:::
 
 ## Exploring the model output
 
-The output is large, so rather than showing all the parameters, I'm just going to count them. 
+The output is large, so rather than showing all the parameters, I'm just going to count them.
 
 ```{r}
 nrow(summary(spp_site_obs_intercepts_samp)$summary)
@@ -120,7 +117,6 @@ Let's view the summary of only the standard deviations of the random effects (`s
 
 ```{r}
 ## let's look at the variance components
-
 summary(spp_site_obs_intercepts_samp,
         pars = c("sigma_spp", "sigma_sites", "sigma_obs"))$summary
 ```
@@ -130,7 +126,7 @@ And we can plot them also:
 ```{r}
 #| fig-cap: Standard deviations of the mite dataset
 bayesplot::mcmc_areas(spp_site_obs_intercepts_samp,
-                      regex_pars ='sigma', 
+                      regex_pars ='sigma',
                       border_size = 0.5)
 ```
 
@@ -140,70 +136,128 @@ Alternatively we can pull out posterior samples and make this figure ourselves:
 sigma_post <- rstan::extract(spp_site_obs_intercepts_samp,
   pars = c("sigma_spp", "sigma_sites", "sigma_obs"))
 
-sigma_post_df <- posterior::as_draws_df(sigma_post)
+sigma_df <- data.frame(
+  sigma_spp   = sigma_post$sigma_spp,
+  sigma_sites = sigma_post$sigma_sites,
+  sigma_obs   = sigma_post$sigma_obs)
 
-sigma_post_df |> 
-  pivot_longer(starts_with("sigma"), 
-               names_to = "sigma", 
-               values_to = "value") |> 
-  mutate(sigma = forcats::fct_reorder(sigma, value)) |> 
-  ggplot(aes(y = sigma, x = value)) + 
-  stat_dots()
+med_order <- order(sapply(sigma_df, median))
+sigma_ordered <- sigma_df[, med_order]
+cols <- c("steelblue", "darkorange", "forestgreen")
+dens_list <- lapply(sigma_ordered, density)
+y_max <- max(sapply(dens_list, function(d) max(d$y))) * 1.1
+
+plot(0,
+     0, 
+     type = "n",
+     xlim = range(unlist(sigma_df)), 
+     ylim = c(0, y_max),
+     xlab = "Value",
+     ylab = "Density",
+     main = "Standard deviations of random effects")
+
+for (i in seq_along(dens_list)) {
+  d <- dens_list[[i]]
+  
+  polygon(c(d$x, rev(d$x)),
+          c(d$y, rep(0, length(d$x))),
+          col = adjustcolor(cols[i], 0.3),
+          border = NA)
+  
+  lines(d$x, 
+        d$y, 
+        col = cols[i], 
+        lwd = 2)
+}
+
+legend("topright",
+       legend = colnames(sigma_ordered),
+       col = cols,
+       lwd = 2, 
+       bty = "n")
 ```
 
-This can be a useful guide to future model building -- perhaps collecting data on species traits would help to improve a model's predictive power.
+This can be a useful guide to future model building -- perhaps collecting data on species traits would help improve a model's predictive power.
 
 ### Calculate the posterior distribution of average abundance for each species
 
 We can conceptualize this as a kind of "averaged rank abundance plot" for the species.
 
-To do this we need to extract the average $mu$ and add it to the species effects, $\beta_{\text{species}}$
+To do this we need to extract the average $\mu$ and add it to the species effects, $\beta_{\text{species}}$
 
 ```{r eval=FALSE, include=FALSE}
-spp_avg_effects_df <- rstan::extract(spp_site_obs_intercepts_samp, 
-  pars = c("mu", "spp_effects")) |> 
-  posterior::as_draws_df()
+spp_avg_effects <- rstan::extract(spp_site_obs_intercepts_samp,
+                                  pars = c("mu", "spp_effects"))
 
-spp_avg_effects_df |> 
-  select(mu, starts_with("spp_effects")) |> 
-  mutate(row_id = seq_along(mu)) |> 
-  pivot_longer(-c("mu", "row_id"), 
-               names_to = "parname", 
-               values_to = "spp_effect") |> 
-  mutate(spp_avg = mu + spp_effect) |> 
-  ggplot(aes(x = spp_avg, group = parname)) + 
-  geom_density()
+nspp <- length(spp_names)
+muMat <- matrix(rep(spp_avg_effects$mu, nspp), ncol = nspp)
+spp_avg_mat <- muMat + spp_avg_effects$spp_effects
+
+plot(0, 0, type = "n",
+     xlim = range(spp_avg_mat), ylim = c(0, 3),
+     xlab = "log(average abundance)", ylab = "Density")
+for (s in seq_len(ncol(spp_avg_mat))) {
+  d <- density(spp_avg_mat[, s])
+  lines(d$x, d$y, col = adjustcolor("steelblue", 0.3))
+}
 ```
 
 
 ```{r}
-spp_mu_rvars <- spp_site_obs_intercepts_samp |> 
-  tidybayes::spread_rvars(mu, spp_effects[spp_id])
+spp_post <- rstan::extract(spp_site_obs_intercepts_samp,
+                           pars = c("mu", "spp_effects"))
+# spp_avg_draws: (n_draws x n_spp) matrix of species log-averages
+# sweep adds the mu vector (one value per draw) across all species columns
+spp_avg_draws <- sweep(spp_post$spp_effects, 1, as.vector(spp_post$mu), "+")
 ```
 
 ```{r}
-#| fig-cap: Two visualizations of species average abundances, as measured by a random effects model which included random effects for site and site-species combinations. 
+#| fig-cap: Two visualizations of species average abundances, as measured by a random effects model which included random effects for site and site-species combinations.
 #|   - species average abundances on the log scale
 #|   - species average abundances on the observation scale.
 #| layout-nrow: 2
-spp_effect_df <- spp_mu_rvars |> 
-  mutate(spp_avg = mu + spp_effects,
-         species = names(spp_names)[spp_id],
-         species = forcats::fct_reorder(species, spp_avg))
+n_spp     <- ncol(spp_avg_draws)
+spp_med   <- apply(spp_avg_draws, 2, median)
+spp_order <- order(spp_med)  # ascending order for log-scale slab
 
-spp_effect_df |> 
-  ggplot(aes(dist = spp_avg, y = species)) + 
-  tidybayes::stat_slab(col = "black") + 
-  # coord_flip() + 
-  theme_minimal()
+# --- Plot 1: density slab per species (log scale, sorted ascending) ---
+plot(0, 0, type = "n",
+     xlim = range(spp_avg_draws),
+     ylim = c(0.5, n_spp + 0.5),
+     xlab = "Species average (log scale)", ylab = "",
+     yaxt = "n",
+     main = "Species average abundances (log scale)")
+for (i in seq_along(spp_order)) {
+  s  <- spp_order[i]
+  d  <- density(spp_avg_draws[, s])
+  dsc <- d$y / max(d$y) * 0.45
+  polygon(c(d$x, rev(d$x)),
+          c(i + dsc, rep(i, length(d$x))),
+          col = adjustcolor("steelblue", 0.4), border = "black", lwd = 0.3)
+}
+axis(2, at = seq_len(n_spp),
+     labels = names(spp_names)[spp_order],
+     las = 1, cex.axis = 0.55)
 
-spp_effect_df |> 
-  mutate(spp_avg_count = exp(spp_avg),
-         species = forcats::fct_reorder(species, spp_avg, .desc = TRUE)) |> 
-  ggplot(aes(dist = exp(spp_avg), x = species)) + 
-  tidybayes::stat_pointinterval() + 
-  # coord_flip() + 
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 90))
+# --- Plot 2: point + interval per species (count scale, sorted descending) ---
+spp_avg_count  <- exp(spp_avg_draws)
+spp_order_desc <- order(apply(spp_avg_count, 2, median), decreasing = TRUE)
+spp_q <- apply(spp_avg_count[, spp_order_desc], 2,
+               quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+
+plot(0, 0, type = "n",
+     xlim = c(0.5, n_spp + 0.5),
+     ylim = c(0, max(spp_q[5, ])),
+     xlab = "", ylab = "Average count",
+     xaxt = "n",
+     main = "Species average abundances (count scale)")
+for (i in seq_len(n_spp)) {
+  segments(i, spp_q[1, i], i, spp_q[5, i], col = "steelblue", lwd = 1)
+  segments(i, spp_q[2, i], i, spp_q[4, i], col = "steelblue", lwd = 3)
+  points(i, spp_q[3, i], pch = 19, col = "steelblue", cex = 0.8)
+}
+axis(1, at = seq_len(n_spp),
+     labels = names(spp_names)[spp_order_desc],
+     las = 2, cex.axis = 0.55)
 ```
 
