@@ -3,17 +3,17 @@ title: "Summarizing many univariate models"
 description: |
   A secret weapon for when you're building hierarchical models.
 execute:
-  freeze: true
+  freeze: false
 format:
   html:
     code-tools: true
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
 We've already looked at univariate models. When we fit the same model to multiple different groups, we don't expect the same values for all the coefficients. Each thing we are studying will respond to the same variable in different ways.
 
-Hierarchial models represent a way to *model* this variation, in ways that range from simple to complex.
+Hierarchical models represent a way to *model* this variation, in ways that range from simple to complex.
 
 Before we dive in with hierarchical structure, let's build a bridge between these two approaches.
 
@@ -24,14 +24,9 @@ However it is also useful from a strict model-building perspective -- so useful 
 ## Loading models and data
 
 ```{r setup}
-suppressPackageStartupMessages(library(dplyr))
-library(ggplot2)
-library(tidyr)
-# library(cmdstanr)
-suppressPackageStartupMessages(library(rstan))
+library(rstan)
 rstan_options("auto_write" = TRUE)
 options(mc.cores = parallel::detectCores())
-library(tidybayes)
 
 data(mite, package = "vegan")
 data("mite.env", package = "vegan")
@@ -41,45 +36,90 @@ data("mite.xy", package = "vegan")
 And some quick data restructuring to combine both.
 
 ```{r datasetup}
-# combine data and environment
-mite_data_long <- bind_cols(mite.env, mite) |> 
-  pivot_longer(Brachy:Trimalc2, names_to = "spp", values_to = "abd")
+# Combine data and environment
+spp_cols_ce <- colnames(mite)
+mite_combined_ce <- cbind(mite.env, mite)
+
+mite_data_long <- do.call(rbind, lapply(spp_cols_ce, function(sp) {
+  data.frame(WatrCont = mite_combined_ce$WatrCont,
+             spp = sp,
+             abd = mite_combined_ce[[sp]])
+}))
+rownames(mite_data_long) <- NULL
 ```
 
 To keep things simple and univariate, let's consider only water concentration as an independent variable.
 
-First, a quick word about centering and scaling a predictor variable:
+First, a quick word about centring and scaling a predictor variable. In short, think of the biology of your system before transforming the data. Furthermore, make sure you understand how these transformation may influence the model parameters. 
 
-1.  I center the predictor by subtracting the mean. This changes the *intercept* of my linear predictor. it becomes the mean log-odds of occurrance when the water content is average
-2.  I divide water content by 100. The dataset has units of **grams per Litre** of water (see `?vegan::mite.env` for more details). This is fine, but I don't think mites are able to sense differences as precise as a millimeter of water either way. by dividing by 10 I transform this into centilitres, which is more informative.
+Here, I decide to centre the predictor by subtracting the mean. This changes the *intercept* of my linear predictor. It becomes the mean log-odds of occurrence when the water content is average.
+
+I decided not to perform additional transformation on the water content because I still want to retain the units associated to this explanatory variable. This may change if I want to build a model that include multiple explanatory variables with different units. In this case, we may want to apply a transformation on the explanatory variables that removes the effect of the units. 
 
 ```{r smoothglm}
-mite_data_long_transformed <- mite_data_long |> 
-  mutate(presabs = as.numeric(abd>0),
-         # center predictors
-         water = (WatrCont - mean(WatrCont)) / 100
-         )
+mite_data_long_transformed <- mite_data_long
+mite_data_long_transformed$presabs <- as.numeric(mite_data_long_transformed$abd > 0)
+mite_data_long_transformed$water <- (mite_data_long_transformed$WatrCont -
+                                     mean(mite_data_long_transformed$WatrCont))
 
-mite_data_long_transformed |> 
-  ggplot(aes(x = water, y = presabs)) + 
-  geom_point() + 
-  stat_smooth(method = "glm", method.args = list(family = "binomial")) + 
-  facet_wrap(~spp)
+u_spp_ce <- unique(mite_data_long_transformed$spp)
+
+nc_ce <- 5
+nr_ce <- ceiling(length(u_spp_ce) / nc_ce)
+
+par(mfrow = c(nr_ce, nc_ce), 
+    mar = c(2, 2, 1.5, 0.3))
+
+for (sp in u_spp_ce) {
+  df_sp <- mite_data_long_transformed[mite_data_long_transformed$spp == sp, ]
+  
+  plot(df_sp$water, 
+       df_sp$presabs,
+       pch = 19, 
+       cex = 0.4, 
+       col = adjustcolor("steelblue", 0.4),
+       xlab = "",
+       ylab = "", 
+       main = sp, 
+       cex.main = 0.7)
+  
+  fit_sp <- glm(presabs ~ water, 
+                data = df_sp, 
+                family = binomial)
+  
+  x_s    <- seq(min(df_sp$water), 
+                max(df_sp$water), 
+                length.out = 100)
+  
+  lines(x_s, predict(fit_sp, 
+                     newdata = data.frame(water = x_s), 
+                     type = "response"),
+        col = "steelblue", 
+        lwd = 1.5)
+}
 ```
 
-some things to notice about this figure:
-
--   the x-axis scale has been transformed from "grams per litre" to "centilitres away from average
--   there is a ton of variation in how different species respond to water!
+An important things to notice about this figure is that there is a ton of variation in how different species respond to water!
 
 ```{r make_mite_glms}
-mite_many_glms <- mite_data_long_transformed |> 
-  nest_by(spp) |> 
-  mutate(logistic_regressions = list(
-    glm(presabs ~ water,
-        family = "binomial",
-        data = data))) |> 
-  mutate(coefs = list(broom::tidy(logistic_regressions)))
+u_spp_glm <- unique(mite_data_long_transformed$spp)
+
+mite_many_glms_list <- lapply(u_spp_glm, function(s) {
+  df <- mite_data_long_transformed[mite_data_long_transformed$spp == s, ]
+  glm(presabs ~ water, family = "binomial", data = df)
+})
+
+names(mite_many_glms_list) <- u_spp_glm
+
+mite_many_glm_coefs <- do.call(rbind, lapply(u_spp_glm, function(s) {
+  cf <- coef(summary(mite_many_glms_list[[s]]))
+  data.frame(spp = s,
+             term = rownames(cf),
+             estimate = cf[, "Estimate"],
+             std.error = cf[, "Std. Error"],
+             stringsAsFactors = FALSE)
+}))
+rownames(mite_many_glm_coefs) <- NULL
 ```
 
 :::{.callout-note}
@@ -87,39 +127,65 @@ mite_many_glms <- mite_data_long_transformed |>
 
 To explore this kind of thinking, we are going to use an approach sometimes called ["split-apply-combine"](https://vita.had.co.nz/papers/plyr.pdf)
 
-There are many possible ways to do this in practice. We are using a technique here from the tidyverse, which you can [read more about](https://dplyr.tidyverse.org/articles/rowwise.html).
+There are many possible ways to do this in practice. Above, we used `lapply` to carry out the split-apply-combine pattern. That is, we loop over species, fit one GLM per species, and collect the coefficients with `coef(summary())`.
 :::
 
 ```{r coef_plot}
-mite_many_glm_coefs <- mite_many_glms |> 
-  select(-data, -logistic_regressions) |> 
-  unnest(coefs)
+int_df <- mite_many_glm_coefs[mite_many_glm_coefs$term == "(Intercept)", ]
+slp_df <- mite_many_glm_coefs[mite_many_glm_coefs$term == "water", ]
 
-mite_many_glm_coefs |> 
-  ggplot(aes(x = estimate, y = spp,
-             xmin = estimate - std.error,
-             xmax = estimate + std.error)) + 
-  geom_pointrange() + 
-  facet_wrap(~term, scales = "free")
+par(mfrow = c(1, 2), mar = c(4, 5, 2, 0.5))
+
+for (df_t in list(int_df, slp_df)) {
+  xlim_t <- range(c(df_t$estimate - 2*df_t$std.error, 
+                    df_t$estimate + 2*df_t$std.error))
+  
+  plot(df_t$estimate, 
+       seq_along(df_t$spp),
+       pch = 19, 
+       yaxt = "n",
+       xlim = xlim_t,
+       xlab = "Estimate", 
+       ylab = "",
+       cex = 0.75,
+       main = df_t$term[1])
+  
+  abline(v = 0, col = "red")
+  
+  segments(df_t$estimate - df_t$std.error, 
+           seq_along(df_t$spp),
+           df_t$estimate + df_t$std.error,
+           seq_along(df_t$spp))
+  
+  axis(2, at = seq_along(df_t$spp),
+       labels = df_t$spp, 
+       las = 1, 
+       cex.axis = 0.6)
+}
 ```
 
 As you can see, some of these estimates are high, others low. We could also plot these as histograms to see this distribution.
 
 ```{r secretweapon_hist}
-mite_many_glm_coefs |> 
-  ggplot(aes(x = estimate)) + 
-  geom_histogram(binwidth = .5) + 
-  facet_wrap(~term, scales = "free")
+par(mfrow = c(1, 2))
+
+hist(int_df$estimate, 
+     xlab = "Estimate",
+     main = "(Intercept)")
+
+hist(slp_df$estimate, 
+     xlab = "Estimate",
+     main = "water")
 ```
 
-Once again, the two parameters of this model represent:
+Once again, the two parameters of this model represent :
 
 -   *Intercept* The probability (in log-odds) of a species being present at the average water concentration. some species are common, others are rare.
 -   *water* this is the change in probability (in log-odds) as water increases by one centilitre per litre of substrate.
 
-## Say it in Stan
+## Let's do it in Stan
 
-The above tidyverse approach is very appealing and intuitive, but we can also do the same procedure in Stan.
+The above `lapply` approach is useful for quick exploration, but we can also do the same procedure in Stan.
 
 ```{r}
 #| class-output: stan
@@ -135,64 +201,113 @@ Let's fit this model by passing in the data:
 mite_bin <- mite
 mite_bin[mite_bin>0] <- 1
 
-mite_pa_list <- list(
-      Nsites = nrow(mite_bin),
-      S = ncol(mite_bin),
-      x = with(mite.env, (WatrCont - mean(WatrCont))/100),
-      y = as.matrix(mite_bin)
-    )
+mite_pa_list <- list(Nsites = nrow(mite_bin),
+                     S = ncol(mite_bin),
+                     x = with(mite.env, 
+                              (WatrCont - mean(WatrCont))),
+                     y = as.matrix(mite_bin))
 
-all_species_unpooled_posterior <- 
-  rstan::sampling(
-    all_species_unpooled,
-    data = mite_pa_list, 
-    refresh = 1000, chains = 4
-  )
+all_species_unpooled_posterior <- rstan::sampling(all_species_unpooled,
+                                                  data = mite_pa_list,
+                                                  refresh = 1000, 
+                                                  chains = 4)
 ```
 
-now let's try to plot this:
+Now let's try to plot this:
 
 ```{r}
 #| warning: false
 # start by looking at the names of variables
-# get_variables(all_species_unpooled_posterior)
 
-post_pred <- tidybayes::spread_rvars(all_species_unpooled_posterior, 
-             intercept[spp_id], slope[spp_id]) |> 
-  expand_grid(water = seq(from = -4, to = 4, length.out = 10)) |> 
-  mutate(prob = posterior::rfun(plogis)(intercept + slope*water),
-         spp = colnames(mite_bin)[spp_id]) |> 
-  ggplot(aes(x = water, dist = prob)) + 
-  tidybayes::stat_lineribbon() + 
-  facet_wrap(~spp) + 
-  scale_fill_brewer(palette = "Greens")
-
-post_pred
-```
-
-We can imitate the original figure by adding the observed data in orange:
-
-```{r stan_secret_weapon_fig}
-#| warning: false
-#| fig-height: 9
-#| fig-width: 7
-post_pred + 
-  geom_point(aes(x = water, y = presabs), 
-             inherit.aes = FALSE, 
-             data = mite_data_long_transformed,
+# Helper: draw per-species ribbon plots from a Stan fit
+draw_spp_ribbons <- function(fit, water_seq = seq(-300, 400, length.out = 100),
+                             spp_names = colnames(mite_bin),
+                             fill_col = "green4",
+                             add_data = FALSE) {
+  
+  draws_int <- rstan::extract(fit, "intercept")$intercept
+  draws_slp <- rstan::extract(fit, "slope")$slope
+  
+  n_spp <- ncol(draws_int)
+  nc <- 5
+  nr <- ceiling(n_spp / nc)
+  
+  par(mfrow = c(nr, nc), 
+      mar = c(2, 2, 1.5, 0.3))
+  
+  for (j in seq_len(n_spp)) {
+    
+    pm <- matrix(0, nrow(draws_int), length(water_seq))
+    
+    for (wi in seq_along(water_seq)){
+      pm[, wi] <- plogis(draws_int[, j] + draws_slp[, j] * water_seq[wi])
+    }
+    
+    q_pp <- apply(pm, 
+                  2, 
+                  quantile, 
+                  probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+    
+    plot(0,
+         0, 
+         type = "n", 
+         xlim = range(water_seq), 
+         ylim = c(-0.05, 1.05),
+         xlab = "", 
+         ylab = "", 
+         main = spp_names[j], 
+         cex.main = 0.8)
+    
+    polygon(c(water_seq, 
+              rev(water_seq)), 
+            c(q_pp[1,], 
+              rev(q_pp[5,])),
+            col = adjustcolor(fill_col, 0.15), 
+            border = NA)
+    
+    polygon(c(water_seq,
+              rev(water_seq)), 
+            c(q_pp[2,], 
+              rev(q_pp[4,])),
+            col = adjustcolor(fill_col, 0.30),
+            border = NA)
+    
+    lines(water_seq, 
+          q_pp[3,], 
+          col = fill_col, 
+          lwd = 1.5)
+    
+    if (add_data) {
+      sp_df <- mite_data_long_transformed[mite_data_long_transformed$spp == spp_names[j], ]
+      
+      colo <- col2rgb(fill_col)
+      colPts <- rgb(colo[1]/255,
+                    colo[2]/255,
+                    colo[3]/255,
+                    alpha = 0.3)
+      
+      points(sp_df$water, 
+             sp_df$presabs,
              pch = 21, 
-             fill = "orange")
+             cex = 0.5,
+             bg = colPts,
+             col = colPts)
+    }
+  }
+}
+
+draw_spp_ribbons(all_species_unpooled_posterior, 
+                 fill_col = "green4",
+                 add_data = TRUE)
 ```
 
 :::{.callout-tip}
 ### EXERCISE
-1) Add hierarchy to both the slope AND the intercept of this model. 
-Do not try to model them as correlated: the `lmer` syntax would be `y ~ 1 + water + (1 | species) + (0 + water | species)`  
+1) Add hierarchy to both the slope **and** the intercept of this model. Note that the `lme4` syntax would be `y ~ 1 + water + (1 | species) + (0 + water | species)`
 
-2) Make a plot of the slope coefficients from both models, with and without hierarchy. 
-Are they the same? How are they different?
+2) Make a plot of the slope coefficients from both models, with and without hierarchy. Are they the same? How are they different?
 
-2) Make a posterior prediction of species richness in these communities.
+3) Make a posterior prediction of species richness in these communities.
 :::
 
 :::{.callout-note collapse="true"}
@@ -211,81 +326,154 @@ all_species_partpooled
 Sample the model
 
 ```{r}
-all_species_partpooled_posterior <- 
-  sampling(
-    all_species_partpooled,
-    data = mite_pa_list, 
-    refresh = 1000, chains = 4
-    )
+all_species_partpooled_posterior <- sampling(all_species_partpooled,
+                                             data = mite_pa_list,
+                                             refresh = 1000, # What is reported
+                                             chains = 4)
 ```
 
-Plot posterior predictions of trendlines, just as before:
+Plot posterior predictions of trend lines, just as before:
 
 ```{r}
 #| fig-height: 9
 #| fig-width: 7
-post_pred_partpooled <- tidybayes::spread_rvars(all_species_partpooled_posterior, 
-             intercept[spp_id], slope[spp_id]) |> 
-  expand_grid(water = seq(from = -4, to = 4, length.out = 10)) |> 
-  mutate(prob = posterior::rfun(plogis)(intercept + slope*water),
-         spp = colnames(mite_bin)[spp_id]) |> 
-  ggplot(aes(x = water, dist = prob)) + 
-  tidybayes::stat_lineribbon() + 
-  facet_wrap(~spp) + 
-  scale_fill_brewer(palette = "Reds") +
-  geom_point(aes(x = water, y = presabs), 
-             inherit.aes = FALSE, 
-             data = mite_data_long_transformed,
-             pch = 21, 
-             fill = "blue")
-
-post_pred_partpooled
+draw_spp_ribbons(all_species_partpooled_posterior,
+                 fill_col = "red3",
+                 add_data = TRUE)
 ```
 
 #### Comparing slope estimates of both models
 
 
 ```{r}
-unpooled_slopes <- tidybayes::spread_rvars(all_species_unpooled_posterior, 
-              slope[spp_id]) |> 
-  mutate(type = "non-hierarchical")
+draws_slp_up <- rstan::extract(all_species_unpooled_posterior, 
+                               "slope")$slope
+draws_slp_pp <- rstan::extract(all_species_partpooled_posterior,
+                               "slope")$slope
+spp_names_ce <- colnames(mite_bin)
 
-partpooled_slopes <- tidybayes::spread_rvars(all_species_partpooled_posterior, 
-              slope[spp_id]) |> 
-  mutate(type = "hierarchical")
+q_up <- apply(draws_slp_up, 
+              2, 
+              quantile,
+              probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 
+q_pp <- apply(draws_slp_pp, 
+              2, 
+              quantile,
+              probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 
-partpooled_slopes |> 
-  bind_rows(unpooled_slopes) |> 
-  mutate(species = colnames(mite_bin)[spp_id],
-         med_slope = median(slope),
-         species = forcats::fct_reorder(species, med_slope)) |> 
-  ggplot(aes(x = species, dist = slope, colour = type)) + 
-  stat_pointinterval(position = position_dodge(width = .5)) + 
-  # facet_wrap(~type)
-  NULL
+ord <- order(q_pp[3, ])
+n_sp <- length(spp_names_ce)
+
+plot(0,
+     0, 
+     type = "n",
+     xlim = c(0.5, n_sp + 0.5), 
+     ylim = range(c(q_up, q_pp)),
+     xlab = "",
+     ylab = "Slope (water)",
+     xaxt = "n")
+
+axis(1,
+     at = seq_len(n_sp), 
+     labels = spp_names_ce[ord], 
+     las = 2, 
+     cex.axis = 0.6)
+
+abline(h = 0, 
+       lty = 2, 
+       col = "grey60")
+
+for (j in seq_len(n_sp)) {
+  oj <- ord[j]
+  for (xoff in list(list(x = j - 0.15, q = q_up[, oj], col = "steelblue"),
+                    list(x = j + 0.15, q = q_pp[, oj], col = "orange"))) {
+    
+    segments(xoff$x, 
+             xoff$q[1], 
+             xoff$x, 
+             xoff$q[5], 
+             col = xoff$col, 
+             lwd = 1)
+    
+    segments(xoff$x, 
+             xoff$q[2],
+             xoff$x, 
+             xoff$q[4], 
+             col = xoff$col,
+             lwd = 3)
+    
+    points(xoff$x,
+           xoff$q[3],
+           pch = 19,
+           col = xoff$col)
+  }
+}
+
+legend("topleft",
+       legend = c("non-hierarchical", "hierarchical"),
+       col = c("steelblue", 
+               "orange"), 
+       pch = 19)
 
 ```
-
 
 #### Posterior distribution of species richness
 
-We can always calculate things out of the posterior distribution, and get a new distribution which reflects the uncertainty in all our parameter estimates.  
+We can always calculate things out of the posterior distribution, and get a new distribution which reflects the uncertainty in all our parameter estimates.
 Here I'm suggesting we calculate the relationship between **species richness** and water concentration
 
 ```{r}
-tidybayes::spread_draws(all_species_partpooled_posterior, 
-             intercept[spp_id], slope[spp_id], ndraws = 700) |> 
-  expand_grid(water = seq(from = -8, to = 6, length.out = 10)) |> 
-  mutate(prob = plogis(intercept + slope*water),
-         spp = colnames(mite_bin)[spp_id]) |> 
-  nest_by(water, .draw) |> 
-  mutate(S = sum(data$prob)) |> 
-  select(-data) |> unnest() |> 
-  ggplot(aes(x = water, y = S)) + 
-  tidybayes::stat_lineribbon() + 
-  scale_fill_brewer(palette = "Blues", direction = -1)
-```
+draws_int_pp_S <- rstan::extract(all_species_partpooled_posterior, 
+                                 "intercept")$intercept
 
+draws_slp_pp_S <- rstan::extract(all_species_partpooled_posterior, 
+                                 "slope")$slope
+
+water_seq_S <- seq(-8, 6, length.out = 10)
+idx_S <- sample(nrow(draws_int_pp_S), 
+                min(700, 
+                    nrow(draws_int_pp_S)))
+
+S_mat <- matrix(0, 
+                length(idx_S), 
+                length(water_seq_S))
+
+for (ki in seq_along(idx_S)) {
+  k <- idx_S[ki]
+  for (wi in seq_along(water_seq_S))
+    S_mat[ki, wi] <- sum(plogis(draws_int_pp_S[k, ] + draws_slp_pp_S[k, ] *
+                                  water_seq_S[wi]))
+}
+
+q_S <- apply(S_mat, 
+             2, 
+             quantile, 
+             probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+
+plot(0,
+     0,
+     type = "n",
+     xlim = range(water_seq_S), 
+     ylim = range(q_S),
+     xlab = "Water (centered)",
+     ylab = "Expected species richness")
+
+polygon(c(water_seq_S, rev(water_seq_S)), 
+        c(q_S[1,], rev(q_S[5,])),
+        col = adjustcolor("steelblue",
+                          0.15),
+        border = NA)
+
+polygon(c(water_seq_S, rev(water_seq_S)), 
+        c(q_S[2,], rev(q_S[4,])),
+        col = adjustcolor("steelblue", 0.30),
+        border = NA)
+
+lines(water_seq_S, 
+      q_S[3,],
+      col = "steelblue", 
+      lwd = 2)
+```
 
 :::
