@@ -282,7 +282,7 @@ poisson_simulation_samp <- rstan::sampling(poisson_simulation,
 This generates a large number of simulated datasets -- the default is 4000 datasets! 
 Each time the model samples, it draws a new value for the unobserved average (`avg_birds_per_person`) and for the number of birds seen by each person. 
 
-Let's look at a 12 of these datasets and visualize them.
+Let's look at 12 of these datasets and visualize them.
 
 ```{r}
 # Extract the simulations
@@ -501,19 +501,15 @@ bayesplot::ppc_dens_overlay(y = bird_count,
 ```
 
 
-### tidybayes again
-
-As we see above, `bayesplot` offers many out-of-the-box figures. Sometimes however, you'll want to control exactly what your figures look like, and for this `tidybayes` is an excellent tool. 
-
-Let's use the flexibility of `tidybayes` to show how the prior and posterior differ between our two models
+### Using histograms
 
 ```{r}
 #| layout-ncol: 2
 
 
 # Define breaks to compare the two model results using histogram
-brCompare <- seq(min(pois_simul$avg_birds_per_person),
-                 max(pois_simul$avg_birds_per_person),
+brCompare <- seq(round(min(pois_simul$avg_birds_per_person)),
+                 round(max(pois_simul$avg_birds_per_person)),
                  length = 60)
 
 # Draw histogram of simulated prior
