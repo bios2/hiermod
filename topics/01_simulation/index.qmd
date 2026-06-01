@@ -28,7 +28,7 @@ rstan_options("auto_write" = TRUE)
 
 ### The process
 
-To practice our first models in Stan, we'll being with an imaginary example based on [yesterday's activity](topics/00_distributions). We'll imagine we're conducting a particularly pleasant study: counting birds! 
+To practice our first models in Stan, we'll develop an imaginary example based on [yesterday's activity](topics/00_distributions). We'll imagine we're conducting a particularly pleasant study: counting birds! 
 
 **Question** How many birds will each person in the class find? For the purposes of this example, let's say there are 22 people.
 
@@ -78,13 +78,12 @@ Are they integers, or are they decimal numbers, or something else?
 1. Where do the numbers come from? This could be anything, from simple linear approximations (i.e. the models we're looking at in this course) to ordinary differential equations, mathematical models, generalized additive models, etc. 
 1. How many observations will we be making?
 
-One of the most useful particularities of Bayesian models is that they are _generative_: they can be used to make a simulated dataset. 
-We'll do that now for our bird example.
+One of the most useful particularities of Bayesian models is that they are _generative_: they can be used to make a simulated dataset. We'll do that now for our bird example.
 
 Let's simulate from a Poisson distribution:
 
 ```{r, collapse=TRUE}
-set.seed(525600)
+set.seed(42)
 n_people <- 22
 avg_birds_per_person <- runif(1, min = 0, max = 60)
 bird_count <- rpois(n_people, lambda = avg_birds_per_person)
@@ -92,7 +91,7 @@ bird_count <- rpois(n_people, lambda = avg_birds_per_person)
 
 Some things to note in the code above: 
 
-Every statistical distribution that is in R (which is a lot! almost all! ) has four different functions. 
+Every statistical distribution that is in R (which is a lot! almost all!) has four different functions. 
 If the distribution is called `distr`, then they are:
 
 * `rdistr` : Draw random numbers from the distribution
@@ -217,7 +216,7 @@ Before we run it, let's look at the parts of a Stan model:
 
 ### Parts of a Stan model
 
-This Stan program has two parts. Each part is separated with curly braces, `{}`. The are they `data` block and the `generated quantities` block:
+This Stan program has two parts. Each part is separated with curly braces, `{}`. There are they `data` block:
 
 ```Stan
 data {
@@ -225,7 +224,7 @@ data {
 }
 ``` 
 
-And the generated quantities block.
+and the generated quantities block.
 
 ```Stan
 generated quantities {
