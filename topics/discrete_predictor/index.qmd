@@ -28,6 +28,7 @@ Let's start by taking a look at the Palmer Penguin dataset by looking at the dis
 
 ```{r}
 #| fig-cap: Histogram of bill depth for all the penguins in the Palmer Penguin dataset.
+
 library(palmerpenguins)
 hist(penguins$bill_depth_mm)
 ```
@@ -126,9 +127,11 @@ Here is the procedure for generating posterior predictions:
 
 1. Select some posterior posterior draws
 2. For each draw
+
   a. Extract all the model parameters
   b. Use the model parameters into the model. In doing so, make sure that all the same explanatory variables are **EXACTLY** the same as the original model.
-  c. Draw a random dataset that is the _same size and shape_ as your original data. 
+  c. Draw a random dataset that is the _same size and shape_ as your original data.
+  
 3. Overlay the simulated datasets on the observed data.
 
 ### Posterior prediction in R
