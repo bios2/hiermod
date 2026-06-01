@@ -1,0 +1,705 @@
+---
+title: "Phylogeny"
+author: "Andrew MacDonald - Guillaume Blanchet"
+description: |
+  it is that (evolutionary) time.
+date: 31 May 2026
+editor: source
+categories: [UdeS, stan]
+draft: false
+editor_options: 
+  chunk_output_type: console
+bibliography: references.bib
+---
+
+```{r setup, eval=TRUE, message=FALSE, warning=FALSE}
+#library(targets)
+library(ggplot2)
+#library(tidyverse)
+#library(tidybayes)
+library(rstan)
+library(ape)
+library(dplyr)
+library(tidyr)
+
+rstan_options("auto_write" = TRUE)
+options(mc.cores = parallel::detectCores())
+```
+
+:::{.callout-note}
+### Some background and references
+
+I've always wanted to learn more about phylogenetic regressions, and thanks to my colleague Alex Fuster, I recently had the opportunity to sit down and work on them. The literature on the topic is *confusing*, large, and not always clear about what model is being fit. I relied heavily on two resources:
+
+-   A free online book from Anthony Ives [@ives]
+-   A preprint, an excellent review of the use and misuse of Pagel's Lambda by @pearse
+:::
+
+## Why a phylogenetic regression?
+
+Suppose we have two traits, measured across many different species – say, social group size (Trait X) and brain size (Trait Y). Our objective is to test the biological hypothesis that larger social groups is associated to larger brain size. However there's a catch: some of the species are closely related, while others are not (e.g. some species mammals and other are insects). Its entirely possible that any apparent correlation between social group size and brain size is a result of chance, that is both traits change randomly along evolutionary time. That means that distantly related species have more time to become different to each other, and close relatives have less "time apart" and are therefore less likely to be different in their two traits.
+
+Because every kind of cross-species comparison involves a group of species with a phylogenetic structure, "controlling for phylogeny" has become very common in these kinds of studies. Also, because we are usually missing traits for at least some species in our studies, people often use phylogeny as a guide for guessing what trait values are present in the animals that we have not measured.
+
+## Recipe for phylogeny
+
+I love the large and flexible toolbox of Bayesian methods because it can be adapted to fit such a huge array of models – virtually all the models that ecologists want to fit! However, there's a catch: to fit a model using Stan you have to know *exactly* what model you're fitting. However, because these regressions are usually fit using custom software, it can be a challenge to dig to find the exact equations being fit!
+
+Using the two resources mentioned above, I was able to write down (I hope!) the equation for the model like this:
+
+$$
+\begin{align}
+y_i &= \bar{y} + \beta_1 x_i + a_{s[i]} \\
+a_{s} &\sim \text{MVNormal}(0, \Sigma_a)\\
+\Sigma_a &= \begin{bmatrix}
+\sigma_a^2 & \lambda_a \cdot \sigma_{12} & \cdots & \lambda_a \cdot \sigma_{1,s} \\
+\lambda_a \cdot \sigma_{21} & \sigma_a^2 & \cdots & \lambda_a \cdot \sigma_{2,s} \\
+\vdots & \vdots & \ddots & \vdots \\
+\lambda_a \cdot \sigma_{s,1} & \lambda_a \cdot \sigma_{s,2} & \cdots & \sigma_a^2
+\end{bmatrix} \\
+x_i &= \bar{x} + b_{s[i]} \\
+b_{s} &\sim \text{MVNormal}(0, \Sigma_b)\\
+\Sigma_b &= \begin{bmatrix}
+\sigma_b^2 & \lambda_b \cdot \sigma_{12} & \cdots & \lambda_b \cdot \sigma_{1,s} \\
+\lambda_b \cdot \sigma_{21} & \sigma_b^2 & \cdots & \lambda_b \cdot \sigma_{2,s} \\
+\vdots & \vdots & \ddots & \vdots \\
+\lambda_b \cdot \sigma_{s,1} & \lambda_b \cdot \sigma_{s,2} & \cdots & \sigma_b^2
+\end{bmatrix}
+\end{align}
+$$ {#eq-phyloreg}
+
+:::{.callout-note}
+You can see that there is no likelihood for the $y_i$ and $x_i$ values. That's because I'm starting from a simplistic case where we know the true values for each species. The only thing to estimate is how variable these traits are among species, and how much of that variation correlates with phylogeny. Later I'll show an example that is closer to reality.
+:::
+
+You can see that there are two big variance-covariance matrices here, for the effects of phylogeny on $y$ and $x$. Note that in phylogeny analyses, it is common for trees to be converted to square matrices. These covariance matrices have three ingredients that are all put together: 
+
+1. _The base_ How far apart are species on the phylogeny? Many ecologists work with trees where all the tips end at the present day -- so all species have the same amount of time going back to their last common ancestor. For trees like this, when converted to a matrix, the diagonal of the matrix is 1 (i.e., 100% of the evolutionary time), while the off-diagonals are the proportion of this total time which is shared between species.
+2. _The flavour_ This is a model of species averages. If there were no effect of phylogeny at all, we would still expect species to be a little different. But how different are species from each other? These differences are controlled by a standard deviation, $\sigma$, with which we multiply the whole matrix to scale it. 
+3. _The secret sauce_ The off-diagonal elements of $\Sigma$ are multiplied by **another** number between 0 and 1: this is "Pagel's Lambda". It acts like a tuning knob, adjusting the amount of phylogenetic flavour that makes it into the model. When $\lambda$ is 1, we have the maximum amount of covariance coming from the phylogeny. When $\lambda$ is 0, we are back to an identity matrix and the species are considered independent. 
+
+There's another way to write this equation that makes these three parts clearer to see. First we have to make $V_{phy}$, which is the _phylogenetic variance-covariance matrix_. This has variances and covariances for each species on our tree. For example, for 3 species the phylogenetic variance-covariance matrix is:
+
+$$
+V_{phy} = \begin{bmatrix}
+\sigma_1^2 & \sigma_{12} & \sigma_{1,3} \\
+\sigma_{2,1} & \sigma_2^2 & \sigma_{2,3} \\
+\sigma_{3,1} & \sigma_{3,2} & \sigma_3^2
+\end{bmatrix}
+$$
+The covariances are equal to the proportion of the tree that is shared between two species. The diagonal is the amount of time between the tree's root and each species. This means that, for a tree where all the tips end at the present day, the diagonal must be 1 and the off-diagonal elements range between 0 and 1.
+
+Then, we can write the expression for $\Sigma$ like this:
+
+$$
+\Sigma = \sigma^2 \lambda V_{phy} + \sigma^2 (1 - \lambda) \mathbf{I}
+$$
+This is equation 4 in @pearse. 
+
+
+I can rewrite @eq-phyloreg in this style:
+
+$$ 
+\begin{align}
+y_i &= \bar{y} + \beta_1 x_i + a_{s[i]} \\
+a_{s} &\sim \text{MVNormal}(0, \Sigma_a)\\
+\Sigma_a &= \sigma_a^2 \lambda_a V_{phy} + \sigma_a^2 (1 - \lambda_a) \mathbf{I} \\
+x_i &= \bar{x} + b_{s[i]} \\
+b_{s} &\sim \text{MVNormal}(0, \Sigma_b)\\
+\Sigma_b &= \sigma_b^2 \lambda_b V_{phy} + \sigma_b^2 (1 - \lambda_b) \mathbf{I} \\
+\end{align}
+$$ {#eq-lambda-decomp}
+
+
+
+You can see I'm using two different trait variances ($\sigma_a$ and $\sigma_b$) and two different amounts of phylogenetic signal ($\lambda_a$ and $\lambda_b$), one for each trait.
+
+## Data simulation
+
+Here is simulation code from @ives, which generates a dataset where there is a signal for phylogeny and also a relationship between two traits of interest. I will use this code to generate a dataset and then estimate the known parameters with a Stan model:
+
+
+```{r}
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - a simulated phylogeny
+#|   - simulated data, with both a phylogenetic signal and a causal relationship between trait X and trait Y.
+## simulate data
+set.seed(42)
+n <- 20
+b0 <- 0
+b1 <- 0
+lambda_x <- .98
+lambda_y <- .8
+sigma_y <- .2
+sigma_x <- .2
+
+phy <- ape::compute.brlen(ape::rtree(n=n),
+                          method = "Grafen",
+                          power = 1)
+
+plot(phy)
+
+phy.x <- phylolm::transf.branch.lengths(phy=phy, 
+                                        model="lambda",
+                                        parameters=list(lambda = lambda_x))$tree
+
+phy.e <- phylolm::transf.branch.lengths(phy=phy, 
+                                        model="lambda",
+                                        parameters=list(lambda = lambda_y))$tree
+
+x <- ape::rTraitCont(phy.x,
+                     model = "BM",
+                     sigma = sigma_x)
+
+e <- ape::rTraitCont(phy.e, 
+                     model = "BM", 
+                     sigma = sigma_y)
+
+x <- x[match(names(e), names(x))]
+Y <- b0 + b1 * x + e
+Y <- array(Y)
+rownames(Y) <- phy$tip.label
+
+plot(x, Y)
+```
+
+Here's a Stan program which fits the model in @eq-lambda-decomp to these simulated data.
+
+```{r}
+#| class-output: stan
+phylo <- stan_model("topics/04-phylo/phylo.stan")
+phylo
+```
+
+Now we'll sample the model and plot the posterior distribution of some parameters against the truth:
+
+```{r, warning=FALSE, message=FALSE}
+phylo_sample <- sampling(phylo,data = list(n = n,
+                                           s = n,
+                                           x = x,
+                                           y = Y,
+                                           phyvcv = ape::vcv(phy)),
+                         chains = 4,
+                         refresh = 1000)
+```
+
+
+```{r}
+make_rvar_df <- function(post_draws){
+  # assume post_draws is already a matrix or data.frame
+  df <- as.data.frame(post_draws)
+
+  # ensure columns are not matrices/arrays
+  df <- lapply(df, function(x) {
+    if (is.matrix(x) || is.array(x)) as.vector(x) else x
+  })
+  as.data.frame(df, optional = TRUE)
+}
+
+
+plot_true_post <- function(truth_df, post_draws_df){
+
+  true_post_df <- merge(truth_df, post_draws_df, by = "name", all.x = TRUE)
+
+  params <- unique(true_post_df$name)
+  n <- length(params)
+
+  # layout similar to facet_wrap
+  ncol <- ceiling(sqrt(n))
+  nrow <- ceiling(n / ncol)
+
+  old_par <- par(mfrow = c(nrow, ncol))
+
+  for (p in params) {
+    sub <- true_post_df[true_post_df$name == p, ]
+
+    post <- unlist(sub$posterior)
+
+    dens <- density(post)
+
+    plot(dens, main = p, xlab = "", ylab = "Density")
+    abline(v = sub$value[1], col = "red", lty = 2, lwd = 2)
+  }
+
+  par(old_par)
+}
+
+# ----- truth (pivot_longer equivalent) -----
+truth_wide <- data.frame(sigma_x, sigma_y, b0, b1, lambda_x, lambda_y)
+
+truth <- data.frame(
+  name = names(truth_wide),
+  value = as.vector(as.matrix(truth_wide))
+)
+
+# ----- posterior processing -----
+posterior_df <- make_rvar_df(phylo_sample)
+
+# select columns b0:lambda_y
+start <- which(names(posterior_df) == "b0")
+end   <- which(names(posterior_df) == "lambda_y")
+
+posterior_subset <- posterior_df[, start:end, drop = FALSE]
+
+# reshape to long format
+posterior_dist_long <- data.frame(
+  name = rep(names(posterior_subset), each = nrow(posterior_subset)),
+  posterior = unlist(posterior_subset, use.names = FALSE)
+)
+
+plot_true_post(truth, posterior_dist_long)
+```
+
+We can see that, at least for these values, parameter recovery isn't bad, especially for the coefficients $\beta_0$ and $\beta_1$. However, at least in this simulation, the parameters describing the phylogenetic signal are all underestimated.
+
+## Tips from the forum
+
+Andrew posted about this model in the [Stan Discourse](https://discourse.mc-stan.org/t/phylogenetic-regression-in-stan-can-this-model-be-improved/36748/2) forum and had the good luck to get feedback from Bob Carpenter (one of the core Stan developers)! Here is the model after including those suggested changes:
+
+```{r}
+#| class-output: stan
+phylo_forum <- stan_model("topics/04-phylo/phylo_forum.stan")
+
+phylo_forum
+```
+
+```{r}
+#| warning: false
+#| message: false
+phylo_forum_sample <- sampling(phylo_forum,
+                               data = list(n = n,
+                                           s = n,
+                                           x = x,
+                                           y = Y,
+                                           phyvcv = ape::vcv(phy)),
+                               chains = 4,
+                               refresh = 1000)
+
+
+# ----- truth (pivot_longer equivalent) -----
+truth_wide <- data.frame(sigma_x, sigma_y, b0, b1, lambda_x, lambda_y)
+
+truth <- data.frame(
+  name = names(truth_wide),
+  value = as.vector(as.matrix(truth_wide))
+)
+
+
+# ----- posterior processing -----
+posterior_df <- make_rvar_df(phylo_forum_sample)
+
+# select columns b0:lambda_y
+start <- which(names(posterior_df) == "b0")
+end   <- which(names(posterior_df) == "lambda_y")
+
+posterior_subset <- posterior_df[, start:end, drop = FALSE]
+
+# pivot_longer equivalent
+phylo_forum_sample_long <- data.frame(
+  name = rep(names(posterior_subset), each = nrow(posterior_subset)),
+  posterior = unlist(posterior_subset, use.names = FALSE)
+)
+
+# ----- plotting -----
+plot_true_post(truth, post_draws_df = phylo_forum_sample_long)
+```
+
+We get get pretty similar results to the above!
+
+and an even simpler strategy, replacing the lambda parameter on the logit scale with a beta:
+
+```{r}
+#| class-output: stan
+phylo_beta <- stan_model("topics/04-phylo/phylo_beta.stan")
+
+phylo_beta
+```
+
+```{r}
+#| warning: false
+phylo_beta_sample <- sampling(phylo_beta,
+                              data = list(n = n,
+                                          s = n,
+                                          x = x,
+                                          y = Y,
+                                          phyvcv = ape::vcv(phy)),
+                              chains = 4, refresh = 1000)
+
+phylo_beta_sample
+```
+
+```{r}
+# ----- posterior processing -----
+posterior_df <- make_rvar_df(phylo_beta_sample)
+
+# select columns b0:lambda_y
+start <- which(names(posterior_df) == "b0")
+end   <- which(names(posterior_df) == "lambda_y")
+
+posterior_subset <- posterior_df[, start:end, drop = FALSE]
+
+# pivot_longer equivalent
+phylo_beta_sample_long <- data.frame(
+  name = rep(names(posterior_subset), each = nrow(posterior_subset)),
+  posterior = unlist(posterior_subset, use.names = FALSE)
+)
+
+
+# ----- plotting -----
+plot_true_post(truth, post_draws_df = phylo_beta_sample_long)
+```
+
+## Repeated sampling of these traits
+
+The simulation above is giving species *means*. However, in our study we have more than one measurement per species. Measurements of "Trait X" and "Trait Y" are measured on different individuals. In fact, they are coming from two completely different datasets! Of course, in the real-world application there will be all kinds of quirky differences between the two datasets: different amounts of effort per species and different species measured in each dataset.
+
+```{r message=FALSE, warning=FALSE}
+set.seed(42)
+
+# set true parameter values
+n <- 20
+b0_x <- 4
+b0_y <- .5
+b_xy <- -.1
+lam.x <- .98
+lam.e <- .5
+sigma_x <- .4
+sigma_y <- .3
+
+# simulate phylogeny
+phy <- ape::compute.brlen(ape::rtree(n=n),
+                          method = "Grafen",
+                          power = 1.5)
+
+plot(phy)
+
+# get names from this matrix! needs to line up perfectly
+phyvcv <- ape::vcv(phy)
+
+distmat_names <- dimnames(phyvcv)[[1]]
+
+# observations per species
+n_obs <- 15
+
+phy.x <- phylolm::transf.branch.lengths(phy=phy,
+                                        model="lambda",
+                                        parameters=list(lambda = lam.x))$tree
+
+phy.e <- phylolm::transf.branch.lengths(phy=phy, 
+                                        model="lambda",
+                                        parameters=list(lambda = lam.e))$tree
+
+x <- ape::rTraitCont(phy.x, model = "BM", sigma = sigma_x)
+e <- ape::rTraitCont(phy.e, model = "BM", sigma = sigma_y)
+x <- x[match(names(e), names(x))]
+
+## calculate Y
+Y <- b0_y + b_xy * x + e
+## calculate X
+X <- b0_x + x
+
+# Y <- array(Y)
+names(Y) <- phy$tip.label
+
+plot(X, Y)
+
+# ----- create obs_xy_df -----
+obs_xy_df <- data.frame(X = X,
+                        Y = Y,
+                        sp_name = names(x),
+                        stringsAsFactors = FALSE)
+
+# create sp_id using factor levels
+obs_xy_df$sp_id <- as.numeric(factor(obs_xy_df$sp_name, 
+                                     levels = distmat_names))
+
+# generate list-columns manually
+obs_xy_df$obs_x <- lapply(obs_xy_df$X,
+                          function(mu) {
+  rnorm(n_obs, mean = mu, sd = 0.3)
+})
+
+obs_xy_df$obs_y <- lapply(obs_xy_df$Y,
+                          function(mu) {
+  rnorm(n_obs, mean = mu, sd = 0.3)
+})
+
+
+# ----- unnest obs_x -----
+x_obs_df <- data.frame(sp_id = rep(obs_xy_df$sp_id, 
+                                   times = sapply(obs_xy_df$obs_x,
+                                                  length)),
+                       obs_x = unlist(obs_xy_df$obs_x, 
+                                      use.names = FALSE))
+
+
+# ----- unnest obs_y -----
+y_obs_df <- data.frame(sp_id = rep(obs_xy_df$sp_id,
+                                   times = sapply(obs_xy_df$obs_y,
+                                                  length)),
+  obs_y = unlist(obs_xy_df$obs_y, use.names = FALSE))
+
+
+
+
+
+
+
+obs_xy_df <- tibble(X, Y, sp_name = names(x)) |> 
+  mutate(
+    sp_id = as.numeric(
+      factor(sp_name, 
+             levels = distmat_names))) |> 
+  rowwise() |> 
+  mutate(obs_x = list(
+    rnorm(n_obs, mean = X, sd = .3)),
+    obs_y = list(rnorm(n_obs, mean = Y, sd = .3)))
+
+
+x_obs_df <- obs_xy_df |> 
+  select(sp_id, obs_x) |> unnest(obs_x)
+
+
+y_obs_df <- obs_xy_df |> 
+  select(sp_id, obs_y) |> unnest(obs_y)
+```
+
+Fit a model that is ready for replication per species:
+
+```{r}
+#| class-output: stan
+phylo_obs_cen <- stan_model("topics/04-phylo/phylo_obs_cen.stan")
+
+phylo_obs_cen
+```
+
+Sampling the model -- this produces some warnings that are safe to ignore at this point.
+
+```{r warning=FALSE, message=FALSE}
+phylo_obs_cen_samp <- sampling(phylo_obs_cen,
+                               data = list(s = n,
+                                           # trait x
+                                           n_x = nrow(x_obs_df),
+                                           x_obs = x_obs_df$obs_x,
+                                           sp_id_x = x_obs_df$sp_id,
+    
+                                           # trait y
+                                           n_y = nrow(y_obs_df),
+                                           y_obs = y_obs_df$obs_y,
+                                           sp_id_y = y_obs_df$sp_id,
+                                           
+                                           # phylogeny
+                                           phyvcv = phyvcv), 
+                               chains = 4, 
+                               refresh = 1000)
+
+knitr::kable(summary(phylo_obs_cen_samp, pars = c("b0_x", 
+                                     "b0_y", 
+                                     "b_xy", 
+                                     "sigma_x", 
+                                     "sigma_y", 
+                                     "lambda_x", 
+                                     "lambda_y", 
+                                     "sigma_x_obs", 
+                                     "sigma_y_obs"
+))$summary)
+```
+
+
+```{r}
+# ----- truth_df (tribble equivalent) -----
+truth_df <- data.frame(name = c("b0_x", 
+                                "b0_y", 
+                                "b_xy", 
+                                "sigma_x", 
+                                "sigma_y", 
+                                "lambda_x", 
+                                "lambda_y"),
+                       value = c(b0_x, 
+                                 b0_y, 
+                                 b_xy, 
+                                 sigma_x, 
+                                 sigma_y, 
+                                 lambda_x, 
+                                 lambda_y),
+  stringsAsFactors = FALSE)
+
+
+# ----- posterior processing -----
+posterior_df <- make_rvar_df(phylo_obs_cen_samp)
+
+# remove columns x_avg and y_avg
+posterior_subset <- posterior_df[, !(names(posterior_df) %in% c("x_avg",
+                                                                "y_avg")),
+                                 drop = FALSE]
+
+# pivot_longer equivalent
+phylo_obs_cen_samp_long <- data.frame(name = rep(names(posterior_subset), 
+                                                 each = nrow(posterior_subset)),
+                                      posterior = unlist(posterior_subset, 
+                                                         use.names = FALSE))
+
+# ----- plotting -----
+plot_true_post(truth_df = truth_df, 
+               post_draws_df = phylo_obs_cen_samp_long)
+```
+
+Species averages
+
+```{r, eval = FALSE}
+# ----- extract "b0_x" column (pluck equivalent) -----
+rvar_list <- phylo_obs_cen_samp[, "b0_x"]
+
+# ----- build x_avg_post_long -----
+posterior_df <- make_rvar_df(phylo_obs_cen_samp)
+
+# select x_avg column
+x_avg_col <- posterior_df[, "x_avg", drop = FALSE]
+
+# unnest x_avg (assumed list-column or vector per row)
+x_avg_values <- unlist(x_avg_col, use.names = FALSE)
+
+# create sp_id (rownames_to_column + parse_number equivalent)
+sp_id <- rep(seq_len(nrow(x_avg_col)), times = sapply(x_avg_col, length))
+
+# compute x_total_avg
+x_total_avg <- rvar_list[sp_id] + x_avg_values
+
+x_avg_post_long <- data.frame(
+  sp_id = sp_id,
+  x_avg = x_avg_values,
+  x_total_avg = x_total_avg
+)
+
+
+# ----- merge with obs_xy_df -----
+merged_df <- merge(obs_xy_df, x_avg_post_long, by = "sp_id", all.x = TRUE)
+
+
+# ----- base R plotting (approximation of slab + points) -----
+sp_names <- unique(merged_df$sp_name)
+n <- length(sp_names)
+
+ncol <- ceiling(sqrt(n))
+nrow <- ceiling(n / ncol)
+
+old_par <- par(mfrow = c(nrow, ncol))
+
+for (sp in sp_names) {
+  sub <- merged_df[merged_df$sp_name == sp, ]
+
+  dens <- density(sub$x_total_avg)
+
+  plot(dens, main = sp, xlab = "", ylab = "Density")
+  
+  # observed point (mean X per species)
+  points(x = sub$X[1], y = 0, col = "red", pch = 16)
+}
+
+
+
+
+
+
+
+
+rvar_list <- phylo_obs_cen_samp |> posterior::as_draws_rvars() |> 
+  pluck("b0_x")
+
+x_avg_post_long <- make_rvar_df(phylo_obs_cen_samp) |> 
+  # calculate averages
+  select(x_avg) |> 
+  unnest(x_avg) |> 
+  rownames_to_column(var = "sp_id") |> 
+  mutate(sp_id = readr::parse_number(sp_id),
+         x_total_avg = rvar_list + x_avg )
+
+  
+  
+obs_xy_df |> 
+  left_join(x_avg_post_long) |> 
+  ggplot(aes(x = sp_name, dist = x_total_avg))+ 
+  tidybayes::stat_dist_slab() + 
+    geom_point(aes(x = sp_name, y = X))
+
+
+```
+
+
+### Missing data
+
+Many people use phylogenetic information to help when a dataset is missing a lot of traits.
+
+Here I'm using the same model as above but imagining that a few species are never measured for trait X, but *are* measured for trait y. There's also phylogenetic information on both traits. 
+
+Notice that there's no need to rewrite the model for this! all I need to do is take out some observations from the dataset:
+
+```{r warning=FALSE, message=FALSE, eval = FALSE}
+# remove some from the output
+
+absent_sp <- sample(x_obs_df$sp_id |> unique(), size = 7, replace = FALSE)
+  
+x_obs_NA_df <- x_obs_df |> 
+  filter(!(sp_id %in% absent_sp))
+
+
+phylo_obs_NA_samp <- sampling(
+  phylo_obs_cen,
+  data = list(
+    s = n,
+    # trait x
+    n_x = nrow(x_obs_NA_df),
+    x_obs = x_obs_NA_df$obs_x,
+    sp_id_x = x_obs_NA_df$sp_id,
+    # trait y
+    n_y = nrow(y_obs_df),
+    y_obs = y_obs_df$obs_y,
+    sp_id_y = y_obs_df$sp_id,
+    # phylogeny
+    phyvcv = phyvcv
+  ), chains = 4, refresh = 0)
+
+
+rvar_list <- phylo_obs_NA_samp |> 
+  posterior::as_draws_rvars() |> 
+  pluck("b0_x")
+
+
+x_avg_post_long <- make_rvar_df(phylo_obs_NA_samp) |> 
+  # calculate averages
+  select(x_avg) |> 
+  unnest(x_avg) |> 
+  rownames_to_column(var = "sp_id") |> 
+  mutate(sp_id = readr::parse_number(sp_id),
+         x_total_avg = rvar_list + x_avg )
+
+  
+  
+obs_xy_df |> 
+  left_join(x_avg_post_long) |> 
+  mutate(absent = sp_id %in% absent_sp) |> 
+  ggplot(aes(x = sp_name, dist = x_total_avg))+ 
+  tidybayes::stat_dist_slab() + 
+    geom_point(aes(x = sp_name, y = X, col = absent))
+
+
+## scalar parameters
+phylo_obs_NA_samp_long <- make_rvar_df(phylo_obs_NA_samp) |> 
+  select(-x_avg, -y_avg) |> 
+  pivot_longer(cols = everything(), values_to = "posterior")
+
+plot_true_post(truth_df = truth_df, 
+               post_draws_df = phylo_obs_NA_samp_long)
+
+
+```
+
+The model estimates latent parameters for species averages, which are then measured with error. 
+This makes it easy to model unmeasured values. 
+In Bayesian inference, unmeasured quantities are all treated the same, and called "parameters". 
+So here, we're modelling _all_ species averages as latent parameters, and saying that most, but not all, actually get measured.
+The result is posterior samples, not only for slopes and other values of interest, but also for the unmeasured species averages.
+
+
+You can see that the distributions are much flatter for these unmeasured species averages, compared to those that were measured. However, you can also see that the unmeasured averages are moving around, influenced by information coming from Pagel's Lambda and the other parameters of the model as well. 
