@@ -28,7 +28,6 @@ Let's start by taking a look at the Palmer Penguin dataset by looking at the dis
 
 ```{r}
 #| fig-cap: Histogram of bill depth for all the penguins in the Palmer Penguin dataset.
-#library(tidyverse)
 library(palmerpenguins)
 hist(penguins$bill_depth_mm)
 ```
@@ -122,8 +121,6 @@ In my experience, ecologists (rightly!) care a great deal about model diagnostic
 And with good reason: you need to know how much to trust a model before using it to make a scientific claim. 
 Bayesian models offer a straightforward way to show how well a model is doing: plot model predictions and compare them to the observed data. 
 This involves using the model as a data generating machine, which we'll look at next.
-
-### Pseudocode
 
 Here is the procedure for generating posterior predictions:
 

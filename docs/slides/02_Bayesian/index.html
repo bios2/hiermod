@@ -320,8 +320,8 @@ Guillaume Blanchet
 </div>
 </div>
 </section>
-<section id="illustrative-example" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <div style="font-size: 0.65em">
 <p>For this example, we will be interested in building a model to study the breeding success of the kākāpō. The kākāpō (<em>Strigops habroptilus</em>) is a critically endangered large (fat!) flightless nocturnal parrot found solely on the islands of Whenua Hou, Pukenui and Te Kākahu-o-Tamatea in New-Zealand. There are currently only 236 adults kākāpō on Earth. So studying its breeding success can be very valuable for the survival of the species</p>
 </div>
@@ -331,8 +331,8 @@ Guillaume Blanchet
 <p>If you wonder why Sirocco is popular, take a look at this <a href="https://www.youtube.com/watch?v=9T1vfsHYiKY">YouTube video</a></p>
 </div>
 </section>
-<section id="illustrative-example-1" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-1" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <div style="font-size: 0.85em">
 <p>For the sake of this example, let’s focus on three female kākāpō, the number of eggs they laid and the number of chicks that hatched. Typically a kākāpō lay 1 to 4 eggs every breeding period, which occur every 2 to 4 years. In this example, we will assume we have data for the past 20 years (so, let’s assume we have data for the past 6 breeding period).</p>
 <table class="caption-top">
@@ -364,8 +364,8 @@ Guillaume Blanchet
 <p><strong>Note</strong> Kākāpō names and number of hatched chicks are real (see the <a href="https://handwiki.org/wiki/Biology:List_of_kakapo">List of kakapo</a>), while number of laid eggs were invented but follow what is expected from current research.</p>
 </div>
 </section>
-<section id="illustrative-example-2" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-2" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <div style="font-size: 0.85em">
 <p>Based on the available information</p>
 <ul>
@@ -377,15 +377,15 @@ Guillaume Blanchet
 </div>
 <div class="fragment">
 <div style="font-size: 0.85em">
-<p>We can assume rely on the Binomial distribution in this example.</p>
+<p>We can assume the Binomial distribution is a good choice in this example.</p>
 </div>
 </div>
 <div class="fragment">
 <p>Do you know why ?</p>
 </div>
 </section>
-<section id="illustrative-example-3" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-3" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Likelihood</strong></p>
 <p>What is the probability distribution that a kākāpō will produce chicks during the 20-year period?<br>
 <span class="math display">\[
@@ -398,8 +398,8 @@ Guillaume Blanchet
 <p>It is called the <em>likelihood</em>.</p>
 </div>
 </section>
-<section id="illustrative-example-4" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-4" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Likelihood</strong></p>
 <div style="font-size: 0.7em">
 <p>The likelihood is the product (<span class="math inline">\(\times\)</span>) of the probabilities associated to each data point</p>
@@ -407,7 +407,7 @@ Guillaume Blanchet
 <ul>
 <li><span class="math inline">\(P(x_i \mid \theta)\)</span> is the function of a probability distribution function</li>
 <li><span class="math inline">\(x_i\)</span> is the value associated to sample <span class="math inline">\(i\)</span> out of <span class="math inline">\(n\)</span> samples</li>
-<li><span class="math inline">\(\theta\)</span> is the parameter associated to the model</li>
+<li><span class="math inline">\(\theta\)</span> represent the parameter(s) associated to the model</li>
 </ul>
 </div>
 <div class="fragment">
@@ -421,8 +421,8 @@ Guillaume Blanchet
 </div>
 </div>
 </section>
-<section id="illustrative-example-5" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-5" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Likelihood</strong></p>
 <p>When writing the likelihood as</p>
 <p><span class="math display">\[L(\theta \mid x) = \prod_{i=1}^n P(x_i \mid \theta)\]</span></p>
@@ -431,8 +431,8 @@ Guillaume Blanchet
 <p>Later in this course, we will see how to work around this problem.</p>
 </div>
 </section>
-<section id="illustrative-example-6" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-6" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Likelihood</strong></p>
 <p>We can thus write the likelihood conceptually as</p>
 <p><span class="math display">\[
@@ -449,8 +449,8 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 \]</span></p>
 </div>
 </section>
-<section id="illustrative-example-7" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-7" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Likelihood</strong></p>
 <p>Working directly with the likelihood is often problematic computationally because multiplication on probabilities can lead to technical problems</p>
 <div class="fragment">
@@ -464,8 +464,8 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 \]</span></p>
 </div>
 </section>
-<section id="illustrative-example-8" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-8" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Log-likelihood in R</strong></p>
 <div style="font-size: 0.8em">
 <div class="cell custom3070 columns column-output-location">
@@ -521,8 +521,8 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 </div></div>
 </div>
 </section>
-<section id="illustrative-example-9" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-9" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Let’s make it Bayesian</strong></p>
 <p>Add a prior</p>
 <p><span class="math display">\[
@@ -534,8 +534,8 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 \end{align*}
 \]</span></p>
 </section>
-<section id="illustrative-example-10" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-10" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Let’s make it Bayesian</strong></p>
 <p>If we combine the <strong>likelihood</strong> and the <strong>prior</strong> we get</p>
 <p><span class="math display">\[
@@ -547,8 +547,8 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 \end{align*}
 \]</span></p>
 </section>
-<section id="illustrative-example-11" class="slide level2">
-<h2>Illustrative example</h2>
+<section id="kākāpō-breeding-success-11" class="slide level2">
+<h2>Kākāpō breeding success</h2>
 <p><strong>Let’s make it Bayesian</strong></p>
 <p>If we rewrite this model using logs we get</p>
 <p><span class="math display">\[
@@ -803,7 +803,7 @@ P(\text{Bella},\text{Wendy}, \text{Nora} \mid \theta) = P(\text{Bella} \mid \the
 <li>Uses a gradient-based MCMC to reduce the random walk (hence reduce autocorrelation)</li>
 <li>It is a “No-U-Turn Sampler” (NUTS)</li>
 </ul>
-<p>If you do not fully get it (and even if you do), check out the <a href="https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">Brilliantly wrong</a></p>
+<p>If you do not fully get it (and even if you do), check out this <a href="https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">Brilliantly wrong</a> blog post.</p>
 </section>
 <section id="sampling-the-parameters" class="slide level2">
 <h2>Sampling the parameters</h2>

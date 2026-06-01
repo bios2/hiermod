@@ -143,7 +143,7 @@ Understanding this will be *essential* for the course.
 Let's use a small example to make sure we understand each part of the Bayesian model well.
 :::
 
-## Illustrative example
+## Kākāpō breeding success
 
 ::: {style="font-size: 0.65em"}
 For this example, we will be interested in building a model to study the breeding success of the kākāpō. The kākāpō (*Strigops habroptilus*) is a critically endangered large (fat!) flightless nocturnal parrot found solely on the islands of Whenua Hou, Pukenui and Te Kākahu-o-Tamatea in New-Zealand. There are currently only 236 adults kākāpō on Earth. So studying its breeding success can be very valuable for the survival of the species
@@ -152,13 +152,14 @@ For this example, we will be interested in building a model to study the breedin
 ![](https://upload.wikimedia.org/wikipedia/commons/a/aa/Sirocco_full_length_portrait.jpg){fig-align="center"}
 
 ::: {style="font-size: 0.65em"}
-**Sirocco** Probably the most popular kākāpō. 
+
+**Sirocco** Probably the most popular kākāpō.
 
 If you wonder why Sirocco is popular, take a look at this [YouTube video](https://www.youtube.com/watch?v=9T1vfsHYiKY)
 :::
 
 
-## Illustrative example
+## Kākāpō breeding success
 
 ::: {style="font-size: 0.85em"}
 For the sake of this example, let's focus on three female kākāpō, the number of eggs they laid and the number of chicks that hatched. Typically a kākāpō lay 1 to 4 eggs every breeding period, which occur every 2 to 4 years. In this example, we will assume we have data for the past 20 years (so, let's assume we have data for the past 6 breeding period).
@@ -173,7 +174,7 @@ For the sake of this example, let's focus on three female kākāpō, the number 
 :::
 
 
-## Illustrative example
+## Kākāpō breeding success
 
 ::: {style="font-size: 0.85em"}
 Based on the available information 
@@ -185,14 +186,14 @@ Based on the available information
 . . . 
 
 ::: {style="font-size: 0.85em"}
-We can assume rely on the Binomial distribution in this example.
+We can assume the Binomial distribution is a good choice in this example.
 :::
 
 . . . 
 
 Do you know why ?
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Likelihood**
 
@@ -211,7 +212,7 @@ This is the probability distribution associated to the kākāpō data.
 It is called the _likelihood_.
 
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Likelihood**
 
@@ -223,7 +224,7 @@ where
 
 - $P(x_i \mid \theta)$ is the function of a probability distribution function
 - $x_i$ is the value associated to sample $i$ out of $n$ samples
-- $\theta$ is the parameter associated to the model
+- $\theta$ represent the parameter(s) associated to the model
 :::
 
 . . . 
@@ -237,7 +238,7 @@ In our example,
 :::
 
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Likelihood**
 
@@ -251,7 +252,7 @@ we make the assumption that each observation, each sample is **independent** fro
 
 Later in this course, we will see how to work around this problem.
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Likelihood**
 
@@ -273,7 +274,7 @@ $$
 \end{align*}
 $$
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Likelihood**
 
@@ -291,7 +292,7 @@ $$
 \end{align*}
 $$
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Log-likelihood in R**
 
@@ -345,7 +346,7 @@ plot(prob_val,
 :::
 
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Let's make it Bayesian**
 
@@ -360,7 +361,7 @@ $$
 \end{align*}
 $$
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Let's make it Bayesian**
 
@@ -375,7 +376,7 @@ $$
 \end{align*}
 $$
 
-## Illustrative example
+## Kākāpō breeding success
 
 **Let's make it Bayesian**
 
@@ -702,7 +703,7 @@ Hamiltonial Monte Carlo relies on Hamiltonian dynamics to assess the structure o
 - Uses a gradient-based MCMC to reduce the random walk (hence reduce autocorrelation)
 - It is a "No-U-Turn Sampler" (NUTS)
 
-If you do not fully get it (and even if you do), check out the [Brilliantly wrong](https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html)
+If you do not fully get it (and even if you do), check out this [Brilliantly wrong](https://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html) blog post.
 
 
 ## Sampling the parameters
