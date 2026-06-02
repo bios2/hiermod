@@ -2,9 +2,11 @@ data {
   int<lower=0> n_people;
   array[n_people] int<lower=0> bird_count_observed;
 }
+
 parameters {
   real<lower=0> avg_birds_per_person;
 }
+
 model {
   bird_count_observed ~ poisson(avg_birds_per_person);
   avg_birds_per_person ~ uniform(0, 18);
