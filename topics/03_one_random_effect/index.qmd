@@ -77,6 +77,8 @@ spi_cols <- palette.colors(length(spi_groups),
 
 names(spi_cols) <- spi_groups
 
+par(mar = c(5,9,2,2))
+
 plot(0, 
      0, 
      type = "n",
@@ -99,8 +101,7 @@ for (i in seq_along(spi_groups)) {
 axis(2, 
      at = seq_along(spi_groups),
      labels = spi_groups, 
-     las = 1, 
-     cex.axis = 0.8)
+     las = 1)
 ```
 
 It's always good to ask some questions about the dataset.
@@ -145,9 +146,9 @@ penguin_groupid$group_id <- group_numbers[penguin_groupid$sp_island]
 head(penguin_groupid)
 ```
 
-As you can see, we're now set upwith the names and the indexes we need.
+As you can see, we're now set up with the names and the indices we need.
 
-Now we can simulate data and plot it:
+Now we can simulate data and plot them:
 
 ```{r}
 ngroup <- length(group_numbers)
@@ -161,10 +162,13 @@ penguin_pred_obs$fake_mass_obs <- rnorm(nrow(penguin_pred_obs),
                                         mean = penguin_pred_obs$fake_mass_avg,
                                         sd = sigma_obs)
 
+par(mar = c(5,9,2,2))
+
 plot(0, 0, type = "n",
      xlim = range(penguin_pred_obs$fake_mass_obs),
      ylim = c(0.5, length(spi_groups) + 0.5),
      xlab = "Simulated mass (kg)", ylab = "", yaxt = "n")
+
 for (i in seq_along(spi_groups)) {
   pts <- penguin_pred_obs$fake_mass_obs[penguin_pred_obs$sp_island == spi_groups[i]]
   points(pts,
@@ -174,12 +178,12 @@ for (i in seq_along(spi_groups)) {
          pch = 19, 
          cex = 0.7)
 }
+
 axis(2, 
      at = seq_along(spi_groups),
      labels = spi_groups, 
      las = 1, 
-     cex.axis = 0.8)
-
+     cex.axis = 1)
 ```
 
 :::{.callout-tip}
@@ -191,7 +195,7 @@ Run the above code a few times, trying different prior values.
 
 ```{r}
 #| class-output: stan
-fixed_groups <- stan_model(file = here::here("topics/03_one_random_effect/fixed_groups.stan"),
+fixed_groups <- stan_model(file = "topics/03_one_random_effect/fixed_groups.stan",
                            model_name = "fixed_groups")
 
 fixed_groups
@@ -203,10 +207,10 @@ Fitting the model requires arranging the data first, and creating a list which w
 
 ```{r}
 peng_group_list <- with(penguin_groupid,
-         list(N = length(mass_kg),
-              y = mass_kg,
-              Ngroup = max(group_id),
-              group_id = group_id))
+                        list(N = length(mass_kg),
+                             y = mass_kg,
+                             Ngroup = max(group_id),
+                             group_id = group_id))
 
 fixed_groups_samples <- sampling(fixed_groups,
                                  data = peng_group_list,
@@ -227,6 +231,8 @@ q_grp <- apply(draws_grp,
 
 spi_labels <- names(group_numbers)
 
+par(mar = c(5,9,2,2))
+
 plot(0, 0, type = "n",
      xlim = range(c(q_grp, penguin_mass_island$mass_kg)),
      ylim = c(0.5, length(spi_labels) + 0.5),
@@ -243,17 +249,17 @@ for (i in seq_along(spi_labels)) {
   segments(q_grp[2, i], i, q_grp[4, i], i, col = "black", lwd = 3)
   points(q_grp[3, i], i, pch = 19, col = "black", cex = 1.2)
 }
+
 axis(2, 
      at = seq_along(spi_labels), 
      labels = spi_labels, 
-     las = 1, 
-     cex.axis = 0.8)
+     las = 1)
 ```
 
 Some things to notice about the code above:
 
 * I'm using my named vector `group_numbers` to re-create the column `sp_island`. This is my technique for making sure I always use the correct label, but you can do this any way you want.
-* We use `quantile()` on the posterior draws to compute the 2.5%, 25%, 50%, 75%, and 97.5% quantiles, then draw them with `segments()` (thin line for the 95% credible interval, thick line for the 50% interval) and `points()` for the median — the base R equivalent of `stat_pointinterval()`.
+* We use `quantile()` on the posterior draws to compute the 2.5%, 25%, 50%, 75%, and 97.5% quantiles, then draw them with `segments()` (thin line for the 95% credible interval, thick line for the 50% interval) and `points()` for the median.
 * We add points from the original data with a `for` loop calling `points()` with vertical `jitter()`, but no horizontal noise.
 
 :::{.callout-tip}
@@ -270,10 +276,13 @@ Why are the results different? What additional error is included in these predic
 ```{r}
 draws_obs_grp <- rstan::extract(fixed_groups_samples,
                                 "one_obs_per_group")$one_obs_per_group
-q_obs_grp     <- apply(draws_obs_grp, 
-                       2, 
-                       quantile, 
-                       probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+
+q_obs_grp <- apply(draws_obs_grp, 
+                   2, 
+                   quantile, 
+                   probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+
+par(mar = c(5,9,2,2))
 
 plot(0, 
      0, 
@@ -299,8 +308,7 @@ for (i in seq_along(group_names)) {
 axis(2, 
      at = seq_along(group_names), 
      labels = group_names, 
-     las = 1,
-     cex.axis = 0.8)
+     las = 1)
 ```
 
 :::
@@ -381,6 +389,8 @@ penguin_pred_obs$fake_mass_obs <- rnorm(nrow(penguin_pred_obs),
                                         mean = penguin_pred_obs$fake_mass_avg,
                                         sd = sigma_obs)
 
+par(mar = c(5,9,2,2))
+
 plot(0, 0, type = "n",
      xlim = range(penguin_pred_obs$fake_mass_obs),
      ylim = c(0.5, length(spi_groups) + 0.5),
@@ -401,19 +411,16 @@ for (i in seq_along(spi_groups)) {
 axis(2,
      at = seq_along(spi_groups), 
      labels = spi_groups, 
-     las = 1, 
-     cex.axis = 0.8)
+     las = 1)
 ```
 :::
 
 #### Stan
 
-
 Below I'm comparing the two Stan programs side-by-side. Compare them to the models above!
 
 ```{r}
-hierarchical_groups <- stan_model(
-  file = "topics/03_one_random_effect/hierarchical_groups.stan")
+hierarchical_groups <- stan_model(file = "topics/03_one_random_effect/hierarchical_groups.stan")
 ```
 
 :::{.column-screen}
@@ -457,7 +464,8 @@ hierarchical_groups
 
 ```{r}
 hierarchical_groups_samples <- sampling(hierarchical_groups,
-  data = peng_group_list, refresh = 0)
+                                        data = peng_group_list,
+                                        refresh = 0)
 ```
 
 ```{r}
@@ -474,6 +482,8 @@ q_bg <- apply(draws_bg, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 q_new <- quantile(draws_new, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 q_all <- cbind(q_bg, q_new)
 
+par(mar = c(5,9,2,2))
+
 plot(0, 0, type = "n",
      xlim = range(q_all),
      ylim = c(0.5, n_all + 0.5),
@@ -486,7 +496,10 @@ for (i in seq_len(n_all)) {
   points(q_all[3, i], i, pch = 19, col = "steelblue")
 }
 
-axis(2, at = seq_len(n_all), labels = all_labels, las = 1, cex.axis = 0.8)
+axis(2,
+     at = seq_len(n_all),
+     labels = all_labels, 
+     las = 1)
 ```
 
 
