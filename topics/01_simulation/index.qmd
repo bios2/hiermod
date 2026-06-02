@@ -83,7 +83,7 @@ One of the most useful particularities of Bayesian models is that they are _gene
 Let's simulate from a Poisson distribution:
 
 ```{r, collapse=TRUE}
-set.seed(42)
+set.seed(43)
 n_people <- 22
 avg_birds_per_person <- runif(1, min = 0, max = 60)
 bird_count <- rpois(n_people, lambda = avg_birds_per_person)
@@ -100,6 +100,7 @@ If the distribution is called `distr`, then they are:
 * `ddistr` : The density function -- draws the "shape" of a distribution. How probable are specific values?
 
 The other thing to note is that there are **TWO** simulation steps here: 
+ 
  1. Simulating a value of the average ($\lambda$).
  2. Simulating observations.
  
@@ -112,7 +113,7 @@ Let's take a look at our simulated values:
 ```{r}
 #| fig-cap: Histogram of simulated counts of birds
 
-hist(bird_count, col = "lightblue", xlim = c(0, 50), main = "Histogram of bird count")
+hist(bird_count, col = "lightblue", xlim = range(0,bird_count+5), main = "Histogram of bird count")
 ```
 
 This is pretty great, and represents one possible realization of sampling. 
@@ -379,8 +380,6 @@ exp(coef(bird_glm))
 You can see that in all cases we are getting close to the value of `avg_birds_per_person`, which in these simulations is the true value.
 
 ### Sampling the posterior distribution in Stan
-
-Time for the [HMC Slides!](slides/03_Stan)
 
 We will be doing a lot of Stan models this week, and we will begin by replicating the above GLM in Stan.
 
