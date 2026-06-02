@@ -315,7 +315,7 @@ calc_ll <- function(x,
   }
   
   # log-likelihood
-  res <- sum(-dbinom(hatch,
+  res <- sum(dbinom(hatch,
                      size = eggs,
                      prob = x,
                      log = TRUE))

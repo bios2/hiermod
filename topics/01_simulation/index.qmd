@@ -41,7 +41,7 @@ We're Bayesian, so we need to write a probability distribution for all the possi
 $$
 \begin{align}
 \text{Number of Birds}_{\text{seen by person i}} &\sim \text{Poisson}(\lambda) \\
-\lambda &\sim \text{Uniform}(0, 60)
+\lambda &\sim \text{Uniform}(0, 30)
 \end{align}
 $$
 
@@ -85,7 +85,7 @@ Let's simulate from a Poisson distribution:
 ```{r, collapse=TRUE}
 set.seed(43)
 n_people <- 22
-avg_birds_per_person <- runif(1, min = 0, max = 60)
+avg_birds_per_person <- runif(1, min = 0, max = 18)
 bird_count <- rpois(n_people, lambda = avg_birds_per_person)
 ```
 
@@ -113,11 +113,14 @@ Let's take a look at our simulated values:
 ```{r}
 #| fig-cap: Histogram of simulated counts of birds
 
-hist(bird_count, col = "lightblue", xlim = range(0,bird_count+5), main = "Histogram of bird count")
+hist(bird_count,
+     col = "lightblue", 
+     xlim = range(0,bird_count+5),
+     main = "Histogram of bird count")
 ```
 
 This is pretty great, and represents one possible realization of sampling. 
-However, one sample isn't enough to tell us about what our $\text{Uniform}(0, 60)$ prior really means. 
+However, one sample isn't enough to tell us about what our $\text{Uniform}(0, 30)$ prior really means. 
 
 :::{.callout-tip}
 ### EXERCISE
@@ -133,7 +136,7 @@ set.seed(42)
 
 # Simulate birds
 simulate_some_birds <- function() {
-  lambda <- runif(1, min = 0, max = 60)
+  lambda <- runif(1, min = 0, max = 18)
   data.frame(obs = rpois(22, lambda = lambda))
 }
 
@@ -191,7 +194,7 @@ Let's look back at the equation:
 $$
 \begin{align}
 \text{Number of Birds}_{\text{seen by person i}} &\sim \text{Poisson}(\lambda) \\
-\lambda &\sim \text{Uniform}(0, 60)
+\lambda &\sim \text{Uniform}(0, 18)
 \end{align}
 $$
 

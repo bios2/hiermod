@@ -13,10 +13,11 @@ bibliography: references.bib
 ---
 
 ```{r setup, eval=TRUE, message=FALSE, warning=FALSE}
-#library(targets)
+#
+library(targets)
 library(ggplot2)
-#library(tidyverse)
-#library(tidybayes)
+library(tidyverse)
+library(tidybayes)
 library(rstan)
 library(ape)
 library(dplyr)
@@ -439,30 +440,6 @@ y_obs_df <- data.frame(sp_id = rep(obs_xy_df$sp_id,
                                    times = sapply(obs_xy_df$obs_y,
                                                   length)),
   obs_y = unlist(obs_xy_df$obs_y, use.names = FALSE))
-
-
-
-
-
-
-
-obs_xy_df <- tibble(X, Y, sp_name = names(x)) |> 
-  mutate(
-    sp_id = as.numeric(
-      factor(sp_name, 
-             levels = distmat_names))) |> 
-  rowwise() |> 
-  mutate(obs_x = list(
-    rnorm(n_obs, mean = X, sd = .3)),
-    obs_y = list(rnorm(n_obs, mean = Y, sd = .3)))
-
-
-x_obs_df <- obs_xy_df |> 
-  select(sp_id, obs_x) |> unnest(obs_x)
-
-
-y_obs_df <- obs_xy_df |> 
-  select(sp_id, obs_y) |> unnest(obs_y)
 ```
 
 Fit a model that is ready for replication per species:
@@ -549,33 +526,32 @@ Species averages
 
 ```{r, eval = FALSE}
 # ----- extract "b0_x" column (pluck equivalent) -----
-rvar_list <- phylo_obs_cen_samp[, "b0_x"]
+rvar_list <- posterior::as_draws_rvars(phylo_obs_cen_samp)$b0_x
 
 # ----- build x_avg_post_long -----
 posterior_df <- make_rvar_df(phylo_obs_cen_samp)
 
 # select x_avg column
-x_avg_col <- posterior_df[, "x_avg", drop = FALSE]
+x_avg_col <- posterior_df[, grep(pattern = "x_avg", colnames(posterior_df))]
 
 # unnest x_avg (assumed list-column or vector per row)
 x_avg_values <- unlist(x_avg_col, use.names = FALSE)
 
 # create sp_id (rownames_to_column + parse_number equivalent)
-sp_id <- rep(seq_len(nrow(x_avg_col)), times = sapply(x_avg_col, length))
+sp_id <- rep(seq_len(nrow(x_avg_col)), times = ncol(x_avg_col))
 
 # compute x_total_avg
 x_total_avg <- rvar_list[sp_id] + x_avg_values
 
-x_avg_post_long <- data.frame(
-  sp_id = sp_id,
-  x_avg = x_avg_values,
-  x_total_avg = x_total_avg
-)
-
+x_avg_post_long <- data.frame(sp_id = sp_id,
+                              x_avg = x_avg_values,
+                              x_total_avg = x_total_avg)
 
 # ----- merge with obs_xy_df -----
-merged_df <- merge(obs_xy_df, x_avg_post_long, by = "sp_id", all.x = TRUE)
-
+merged_df <- merge(obs_xy_df, 
+                   x_avg_post_long, 
+                   by = "sp_id", 
+                   all.x = TRUE)
 
 # ----- base R plotting (approximation of slab + points) -----
 sp_names <- unique(merged_df$sp_name)
@@ -589,7 +565,7 @@ old_par <- par(mfrow = c(nrow, ncol))
 for (sp in sp_names) {
   sub <- merged_df[merged_df$sp_name == sp, ]
 
-  dens <- density(sub$x_total_avg)
+  dens <- density(sub$x_avg)
 
   plot(dens, main = sp, xlab = "", ylab = "Density")
   
