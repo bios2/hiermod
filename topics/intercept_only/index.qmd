@@ -196,6 +196,7 @@ spp_avg_mat <- muMat + spp_avg_effects$spp_effects
 plot(0, 0, type = "n",
      xlim = range(spp_avg_mat), ylim = c(0, 3),
      xlab = "log(average abundance)", ylab = "Density")
+
 for (s in seq_len(ncol(spp_avg_mat))) {
   d <- density(spp_avg_mat[, s])
   lines(d$x, d$y, col = adjustcolor("steelblue", 0.3))
@@ -227,6 +228,7 @@ plot(0, 0, type = "n",
      xlab = "Species average (log scale)", ylab = "",
      yaxt = "n",
      main = "Species average abundances (log scale)")
+
 for (i in seq_along(spp_order)) {
   s  <- spp_order[i]
   d  <- density(spp_avg_draws[, s])
@@ -235,12 +237,15 @@ for (i in seq_along(spp_order)) {
           c(i + dsc, rep(i, length(d$x))),
           col = adjustcolor("steelblue", 0.4), border = "black", lwd = 0.3)
 }
+
 axis(2, at = seq_len(n_spp),
      labels = names(spp_names)[spp_order],
      las = 1, cex.axis = 0.55)
 
+
+
 # --- Plot 2: point + interval per species (count scale, sorted descending) ---
-spp_avg_count  <- exp(spp_avg_draws)
+spp_avg_count <- exp(spp_avg_draws)
 spp_order_desc <- order(apply(spp_avg_count, 2, median), decreasing = TRUE)
 spp_q <- apply(spp_avg_count[, spp_order_desc], 2,
                quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
@@ -251,11 +256,13 @@ plot(0, 0, type = "n",
      xlab = "", ylab = "Average count",
      xaxt = "n",
      main = "Species average abundances (count scale)")
+
 for (i in seq_len(n_spp)) {
   segments(i, spp_q[1, i], i, spp_q[5, i], col = "steelblue", lwd = 1)
   segments(i, spp_q[2, i], i, spp_q[4, i], col = "steelblue", lwd = 3)
   points(i, spp_q[3, i], pch = 19, col = "steelblue", cex = 0.8)
 }
+
 axis(1, at = seq_len(n_spp),
      labels = names(spp_names)[spp_order_desc],
      las = 2, cex.axis = 0.55)
