@@ -5,9 +5,11 @@ data {
   int<lower=1> N;
   array[N] real x;
 }
+
 transformed data {
   real delta = 1e-9;
 }
+
 parameters {
   real<lower=0> rho;
   real<lower=0> alpha;
@@ -15,6 +17,7 @@ parameters {
   vector[N] eta;
   vector[N] y;
 }
+
 transformed parameters {
   vector[N] f;
   {
@@ -30,6 +33,7 @@ transformed parameters {
     f = L_K * eta;
   }
 }
+
 model {
   rho ~ inv_gamma(5, 14);
   alpha ~ normal(0, .8);

@@ -40,7 +40,7 @@ Gaussian processes are surprisingly common, and there are lots of resources on t
 
 ### Reorganizing the mite data
 
-Let's begin by (once again!) loading and reorganizing the mite data. This time we'll also use `mite.xy`, which gives the coordinates of each one of the 70 samples.
+Let's begin by (once again!) loading and reorganizing the mite data. This time we'll also use `mite.xy`, which gives the coordinates of each one of the 70 samples. For the sack of this example, let's focus on the PWIL species because it has a rather strong relationship with water and for which presence and absence are roughly balanced. This is just to make the illustration clear.
 
 #### Loading models and data
 
@@ -57,48 +57,44 @@ data(mite.env, package = "vegan")
 data(mite.xy, package = "vegan")
 ```
 
-```{r reorganize-mites-again}
-# combine data and environment
-spp_cols_gp        <- colnames(mite)
-mite_combined_gp   <- cbind(mite.env, mite)
-mite_combined_gp$plot_id <- seq_len(nrow(mite_combined_gp))
-
-mite_data_long <- do.call(rbind, lapply(spp_cols_gp, function(sp) {
-  data.frame(plot_id  = mite_combined_gp$plot_id,
-             WatrCont = mite_combined_gp$WatrCont,
-             spp      = sp,
-             abd      = mite_combined_gp[[sp]])
-}))
-mite_data_long <- mite_data_long[order(mite_data_long$plot_id), ]
-rownames(mite_data_long) <- NULL
-
-mite_data_long_transformed            <- mite_data_long
-mite_data_long_transformed$presabs    <- as.numeric(mite_data_long_transformed$abd > 0)
-mite_data_long_transformed$water      <- (mite_data_long_transformed$WatrCont -
-                                           mean(mite_data_long_transformed$WatrCont)) / 100
-
-# pick a species that has about 50/50 chance
-freq_gp <- aggregate(presabs ~ spp, data = mite_data_long_transformed, FUN = mean)
-freq_gp[freq_gp$presabs > 0.4 & freq_gp$presabs < 0.6, ]
-
-## how about: PWIL
+```{r pick-sp}
+pwil_data <- data.frame(plot_id = 1:nrow(mite),
+                        WatrCont = mite.env$WatrCont, 
+                        abd = mite$PWIL,
+                        presabs = ifelse(mite$PWIL>0, 1, 0),
+                        water = (mite.env$WatrCont - mean(mite.env$WatrCont))/100)
 ```
 
-Let's choose just one species as an example.
-I've chosen one where the relationship with water is rather strong, and for which presence and absence are roughly balanced. This is just to make the example clear.
+Let's focus on a species with a rather strong relationship with water and for which presence and absence are roughly balanced. This is just to make the example clear.
 
 ```{r}
 #| fig-cap: Probability of occurrance of one mite species, as a fuction of water content of the soil
 
-pwil_data <- mite_data_long_transformed[mite_data_long_transformed$spp == "PWIL", ]
+# Plot data
+plot(pwil_data$water, 
+     pwil_data$presabs,
+     pch = 19, 
+     cex = 0.6, 
+     col = adjustcolor("steelblue", 0.5),
+     xlab = "Water (centered)",
+     ylab = "Presence / Absence")
 
-plot(pwil_data$water, pwil_data$presabs,
-     pch = 19, cex = 0.6, col = adjustcolor("steelblue", 0.5),
-     xlab = "Water (centered)", ylab = "Presence / Absence")
-fit_pwil <- glm(presabs ~ water, data = pwil_data, family = binomial)
-x_seq_pwil <- seq(min(pwil_data$water), max(pwil_data$water), length.out = 100)
-lines(x_seq_pwil, predict(fit_pwil, newdata = data.frame(water = x_seq_pwil),
-                          type = "response"), col = "steelblue", lwd = 2)
+# Logistic regression
+fit_pwil <- glm(presabs ~ water, 
+                data = pwil_data, 
+                family = binomial(link = "logit"))
+
+# Draw prediction line
+x_seq_pwil <- seq(min(pwil_data$water),
+                  max(pwil_data$water), 
+                  length.out = 100)
+
+lines(x_seq_pwil, 
+      predict(fit_pwil, 
+              newdata = data.frame(water = x_seq_pwil),
+              type = "response"), 
+      col = "steelblue", 
+      lwd = 2)
 ```
 
 ```{r}
@@ -107,20 +103,22 @@ lines(x_seq_pwil, predict(fit_pwil, newdata = data.frame(water = x_seq_pwil),
 pwil_spatial <- cbind(pwil_data, mite.xy)
 
 pa_cols <- palette.colors(2, "Dark2")
+
 plot(pwil_spatial$x, pwil_spatial$y,
      col  = pa_cols[pwil_spatial$presabs + 1],
      bg   = pa_cols[pwil_spatial$presabs + 1],
      pch  = 21, cex = 1.5,
      xlab = "x", ylab = "y",
      asp  = 1)
+
 legend("topright", legend = c("Absent", "Present"),
        pch = 21, pt.bg = pa_cols, col = pa_cols)
 ```
 
-We'll look at two possibilities in turn:
+In this exercise, we will use a Gaussian process from two different angles: 
 
-1. A nonlinear function of one variable
-1. A smooth function of distance
+1. To build a nonlinear function of one variable to study how it relates to the abundance of one species
+1. To build a model characterizing spatial autocorrelation in the distribution of one species
 
 # Smooth function of one variable
 
@@ -140,7 +138,7 @@ f_i &\sim \mathsf{multivariate\ normal}(0, K(x | \theta)) \\
 \end{align}
 $$
 
-That's the general notation for D dimensions. In our case we're looking at something much simpler.
+That equation above presents the general notation for a model with $D$ dimensions that relies on the exponentiated quadratic function to account for the spatial constraints. In this first case study, we will focus on the univariate version of this equation.
 
 $$
 \begin{align}
@@ -238,8 +236,6 @@ gp_example_pwil_samp <- sampling(gp_example_pred,
                                  chains = 4, 
                                  iter = 2000, 
                                  refresh = 1000)
-
-# gp_example_samp$save_object("topics/04_gp/gp_example_samp_pwil.rds")
 ```
 
 ```{r eval=TRUE}
@@ -309,7 +305,7 @@ for (k in draw_idx_63) {
 
 To make a prediction of a function on one X variable, we needed a sequence of points to predict along.
 
-To make spatial predictions, we need a _grid_ of points to predict along.
+To make spatial predictions, we need a _grid_ of points to predict along. 
 
 ```{r}
 grid_points <- expand.grid(x = seq(min(mite.xy$x), max(mite.xy$x), by = 0.25),
@@ -325,7 +321,23 @@ plot(grid_points$x,
      xlim = range(grid_points$x) + c(-0.25, 0.25))
 ```
 
-Other than a change in the `data {}` block, the Stan code is unchanged!
+Mathematically, the model is slightly different than for the previous case because the exponentiated quadratic function now needs to account for two dimensions. So, our model looks like this: 
+
+$$
+\begin{align}
+\mathsf{Pr}(y_i = 1) &\sim \mathsf{Bernoulli}(p_i)\\
+\mathsf{logit}(p_i) &= a + f_i\\
+f_i &\sim \mathsf{multivariate\ normal}(0, K(x | \theta)) \\
+  K(x | \alpha, \rho, \sigma)_{i, j}
+&= \alpha^2
+\exp \left(
+- \dfrac{1}{2 \rho^2} \sum_{d=1}^2 (x_{i,d} - x_{j,d})^2
+\right)
++ \delta_{i, j} \sigma^2,
+\end{align}
+$$
+
+However, from a coding standpoint, other than a change in the `data {}` block, the Stan code is unchanged! This is because the `gp_exp_quad_cov` Stan function was designed to work for any dimensions.
 
 ### Prior predictive simulations
 

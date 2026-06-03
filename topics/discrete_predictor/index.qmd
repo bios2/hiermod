@@ -78,7 +78,8 @@ list_bill_dep <- with(penguins_nobillNA,
 ## sample 4 chains, suppress counting iterations
 normal_bill_dep_samp <- sampling(normal_dist,
                                data = list_bill_dep, 
-                               refresh = 0)
+                               refresh = 0,
+                               iter = 20000)
 
 ## summarize the samples for each parameter into a nice table
 tableDraw <- posterior::summarise_draws(normal_bill_dep_samp)
