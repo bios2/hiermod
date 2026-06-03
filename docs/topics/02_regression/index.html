@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-6033a600180109c3731f6a886c29932c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -446,34 +446,34 @@ rstan_options(threads_per_chain = 1)</code></pre>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 8%">
-<col style="width: 12%">
 <col style="width: 13%">
 <col style="width: 13%">
 <col style="width: 13%">
 <col style="width: 13%">
-<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 13%">
 <col style="width: 13%">
 </colgroup>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">inters</td>
-<td style="text-align: right;">19.170348</td>
-<td style="text-align: right;">13.7062430</td>
-<td style="text-align: right;">18.8615390</td>
-<td style="text-align: right;">16.9928140</td>
-<td style="text-align: right;">17.7574422</td>
-<td style="text-align: right;">15.612315</td>
-<td style="text-align: right;">14.5494335</td>
+<td style="text-align: right;">18.9027502</td>
+<td style="text-align: right;">15.2282070</td>
+<td style="text-align: right;">17.8883197</td>
+<td style="text-align: right;">18.7581161</td>
+<td style="text-align: right;">14.5632473</td>
+<td style="text-align: right;">16.0044291</td>
+<td style="text-align: right;">19.1166971</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">slopes</td>
-<td style="text-align: right;">-0.447755</td>
-<td style="text-align: right;">0.0793149</td>
-<td style="text-align: right;">-0.2137636</td>
-<td style="text-align: right;">-0.4838215</td>
-<td style="text-align: right;">0.3335648</td>
-<td style="text-align: right;">-0.056673</td>
-<td style="text-align: right;">0.0088077</td>
+<td style="text-align: right;">-0.1639202</td>
+<td style="text-align: right;">-0.2784706</td>
+<td style="text-align: right;">0.4558587</td>
+<td style="text-align: right;">0.7220384</td>
+<td style="text-align: right;">-0.4276481</td>
+<td style="text-align: right;">0.1922879</td>
+<td style="text-align: right;">-0.1729108</td>
 </tr>
 </tbody>
 </table>
@@ -714,13 +714,13 @@ lp__      -395.38407095 -394.79830318 -394.29751247 1968.939 1.0009826</code></p
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(draws_inspect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 3
- $ slope    : num [1:4000(1d)] -0.0965 -0.0577 -0.1 -0.0807 -0.0914 ...
+ $ slope    : num [1:4000(1d)] -0.0914 -0.0773 -0.0612 -0.0543 -0.0798 ...
   ..- attr(*, "dimnames")=List of 1
   .. ..$ iterations: NULL
- $ intercept: num [1:4000(1d)] 17.3 17 17 16.8 17 ...
+ $ intercept: num [1:4000(1d)] 17 17.1 17.3 17.3 17.2 ...
   ..- attr(*, "dimnames")=List of 1
   .. ..$ iterations: NULL
- $ sigma    : num [1:4000(1d)] 2.04 1.91 2.03 1.94 1.82 ...
+ $ sigma    : num [1:4000(1d)] 1.82 1.91 2.04 1.85 1.86 ...
   ..- attr(*, "dimnames")=List of 1
   .. ..$ iterations: NULL</code></pre>
 </div>
@@ -735,7 +735,7 @@ lp__      -395.38407095 -394.79830318 -394.29751247 1968.939 1.0009826</code></p
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>mu_draws  <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="fu">as.vector</span>(draws_reg<span class="sc">$</span>slope), x_seq) <span class="sc">+</span> <span class="fu">as.vector</span>(draws_reg<span class="sc">$</span>intercept)</span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mu_draws)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> num [1:4000, 1:5] 18.8 17.9 18.5 18 18.4 ...</code></pre>
+<pre><code> num [1:4000, 1:5] 18.4 18.2 18.2 18.1 18.4 ...</code></pre>
 </div>
 </div>
 <p>Finally, let’s plot these:</p>
@@ -787,63 +787,63 @@ lp__      -395.38407095 -394.79830318 -394.29751247 1968.939 1.0009826</code></p
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">2609</td>
-<td style="text-align: right;">-0.1084951</td>
-<td style="text-align: right;">17.08312</td>
+<td style="text-align: right;">-0.1076529</td>
+<td style="text-align: right;">17.27391</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2369</td>
-<td style="text-align: right;">-0.0990726</td>
-<td style="text-align: right;">17.03514</td>
+<td style="text-align: right;">-0.0791291</td>
+<td style="text-align: right;">17.27044</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1177</td>
-<td style="text-align: right;">-0.0716151</td>
-<td style="text-align: right;">17.11933</td>
+<td style="text-align: right;">-0.0725736</td>
+<td style="text-align: right;">17.17579</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1098</td>
-<td style="text-align: right;">-0.0804855</td>
-<td style="text-align: right;">17.22800</td>
+<td style="text-align: right;">-0.0733291</td>
+<td style="text-align: right;">17.13559</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1252</td>
-<td style="text-align: right;">-0.0980822</td>
-<td style="text-align: right;">17.20400</td>
+<td style="text-align: right;">-0.1043205</td>
+<td style="text-align: right;">17.27141</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">3218</td>
-<td style="text-align: right;">-0.1004108</td>
-<td style="text-align: right;">17.27400</td>
+<td style="text-align: right;">-0.0601288</td>
+<td style="text-align: right;">17.15296</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">634</td>
-<td style="text-align: right;">-0.0806283</td>
-<td style="text-align: right;">17.30834</td>
+<td style="text-align: right;">-0.0913952</td>
+<td style="text-align: right;">17.19645</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2097</td>
-<td style="text-align: right;">-0.0533362</td>
-<td style="text-align: right;">17.22336</td>
+<td style="text-align: right;">-0.0831697</td>
+<td style="text-align: right;">17.08917</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1152</td>
-<td style="text-align: right;">-0.1035335</td>
-<td style="text-align: right;">17.10023</td>
+<td style="text-align: right;">-0.0980643</td>
+<td style="text-align: right;">17.17255</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1327</td>
-<td style="text-align: right;">-0.0889499</td>
-<td style="text-align: right;">17.07135</td>
+<td style="text-align: right;">-0.0579180</td>
+<td style="text-align: right;">17.00336</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2072</td>
-<td style="text-align: right;">-0.1017803</td>
-<td style="text-align: right;">17.03660</td>
+<td style="text-align: right;">-0.0640845</td>
+<td style="text-align: right;">17.07069</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">3911</td>
-<td style="text-align: right;">-0.0722955</td>
-<td style="text-align: right;">17.01069</td>
+<td style="text-align: right;">-0.0804396</td>
+<td style="text-align: right;">17.19871</td>
 </tr>
 </tbody>
 </table>

@@ -35,7 +35,7 @@ hist(penguins$bill_depth_mm)
 
 There's quite a lot of variation in these measurements, with a suggestion of perhaps more than one peak in this distribution.
 
-## A simple model
+## A simplistic model
 
 $$
 \begin{align}
@@ -45,7 +45,7 @@ $$
 \end{align}
 $$
 
-Let's express the same model in Stan:
+Let's express the model in Stan:
 
 ```{r}
 #| class-output: stan
@@ -87,10 +87,9 @@ knitr::kable(tableDraw)
 
 ## Plotting parameters
 
-After we sampled from our model, we don't have one value for each of our unknown numbers; we have thousands. 
-To get a sense of what these possible values mean scientifically, the best way to do this is to draw as many pictures as possible. We will start with making plots of specific parameters. 
+After we sampled from our model, we don't have one value for each of our unknown numbers; we have thousands. To get a sense of what these possible values mean scientifically, the best way to do this is to draw as many pictures as possible. We will start with making plots of specific parameters. 
 
-We can look at the distributions easily using the `bayesplot` package.
+We can look at the distributions easily using histogram (`hist` function) or the `bayesplot` package.
 
 ```{r}
 #| layout-ncol: 2
