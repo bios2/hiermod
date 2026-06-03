@@ -45,6 +45,7 @@ mite_data_long <- do.call(rbind, lapply(spp_cols_ce, function(sp) {
              spp = sp,
              abd = mite_combined_ce[[sp]])
 }))
+
 rownames(mite_data_long) <- NULL
 ```
 
