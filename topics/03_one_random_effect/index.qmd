@@ -55,6 +55,7 @@ You can always transform a variable to more sensible units!
 penguin_mass_island <- na.omit(penguins[, c("species",
                                             "island", 
                                             "body_mass_g")])
+
 penguin_mass_island$sp_island <- paste(penguin_mass_island$species,
                                        penguin_mass_island$island, 
                                        sep = "_")
@@ -265,7 +266,7 @@ Some things to notice about the code above:
 :::{.callout-tip}
 ### EXERCISE: plot posterior predictions of _observations_
 
-Repeat the exercise above using the value of `one_obs_per_group`.
+Repeat the exercise above using the value of `one_obs_per_group` calculated in the fixed_groups stan model.
 Why are the results different? What additional error is included in these predictions?
 
 :::
@@ -466,9 +467,7 @@ hierarchical_groups
 hierarchical_groups_samples <- sampling(hierarchical_groups,
                                         data = peng_group_list,
                                         refresh = 0)
-```
 
-```{r}
 hierarchical_groups_samples
 ```
 
@@ -513,6 +512,8 @@ q_oopg <- apply(draws_oopg, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975
 q_ong  <- quantile(draws_ong, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 q_oall <- cbind(q_oopg, q_ong)
 
+par(mar = c(5,9,2,2))
+
 plot(0, 0, type = "n",
      xlim = range(c(q_oall, penguin_groupid$mass_kg)),
      ylim = c(0.5, n_all + 0.5),
@@ -536,8 +537,7 @@ for (i in seq_len(n_all)) {
 axis(2,
      at = seq_len(n_all), 
      labels = all_labels,
-     las = 1, 
-     cex.axis = 0.8)
+     las = 1)
 ```
 
 ### Exercises
@@ -623,7 +623,7 @@ mite_community_abd <- aggregate(abd ~ site_id + WatrCont,
 names(mite_community_abd)[names(mite_community_abd) == "abd"] <- "N"
 
 mite_community_abd$water_c <- (mite_community_abd$WatrCont -
-                               mean(mite_community_abd$WatrCont)) / 100
+                               mean(mite_community_abd$WatrCont))/100
 
 knitr::kable(head(mite_community_abd))
 ```
@@ -789,7 +789,8 @@ Sample it
 ```{r}
 poisson_regression_overdisp_sample <- sampling(poisson_regression_overdisp,
                                                data = abd_data_list, 
-                                               refresh = 0,iter = 20000)
+                                               refresh = 0,
+                                               iter = 20000)
 ```
 
 
