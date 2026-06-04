@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrew MacDonald - Guillaume Blanchet">
-<meta name="dcterms.date" content="2026-05-31">
-<meta name="description" content="it is that (evolutionary) time.">
+<meta name="dcterms.date" content="2026-06-05">
+<meta name="description" content="It is that (evolutionary) time.">
 
 <title>Phylogeny – Modèles hiérarchiques pour les sciences de la vie</title>
 <style>
@@ -213,7 +213,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    <p>it is that (evolutionary) time.</p>
+    <p>It is that (evolutionary) time.</p>
   </div>
 </div>
 
@@ -230,7 +230,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 31, 2026</p>
+      <p class="date">June 5, 2026</p>
     </div>
   </div>
   
@@ -243,17 +243,18 @@ window.Quarto = {
 
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(targets)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#library(tidyverse)</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#library(tidybayes)</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstan)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rstan_options</span>(<span class="st">"auto_write"</span> <span class="ot">=</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstan)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rstan_options</span>(<span class="st">"auto_write"</span> <span class="ot">=</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -805,31 +806,7 @@ b_{s} &amp;\sim \text{MVNormal}(0, \Sigma_b)\\
 <span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>y_obs_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sp_id =</span> <span class="fu">rep</span>(obs_xy_df<span class="sc">$</span>sp_id,</span>
 <span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">times =</span> <span class="fu">sapply</span>(obs_xy_df<span class="sc">$</span>obs_y,</span>
 <span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>                                                  length)),</span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_y =</span> <span class="fu">unlist</span>(obs_xy_df<span class="sc">$</span>obs_y, <span class="at">use.names =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>obs_xy_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(X, Y, <span class="at">sp_name =</span> <span class="fu">names</span>(x)) <span class="sc">|&gt;</span> </span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">sp_id =</span> <span class="fu">as.numeric</span>(</span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(sp_name, </span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>             <span class="at">levels =</span> distmat_names))) <span class="sc">|&gt;</span> </span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">obs_x =</span> <span class="fu">list</span>(</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rnorm</span>(n_obs, <span class="at">mean =</span> X, <span class="at">sd =</span> .<span class="dv">3</span>)),</span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">obs_y =</span> <span class="fu">list</span>(<span class="fu">rnorm</span>(n_obs, <span class="at">mean =</span> Y, <span class="at">sd =</span> .<span class="dv">3</span>)))</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>x_obs_df <span class="ot">&lt;-</span> obs_xy_df <span class="sc">|&gt;</span> </span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sp_id, obs_x) <span class="sc">|&gt;</span> <span class="fu">unnest</span>(obs_x)</span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>y_obs_df <span class="ot">&lt;-</span> obs_xy_df <span class="sc">|&gt;</span> </span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sp_id, obs_y) <span class="sc">|&gt;</span> <span class="fu">unnest</span>(obs_y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_y =</span> <span class="fu">unlist</span>(obs_xy_df<span class="sc">$</span>obs_y, <span class="at">use.names =</span> <span class="cn">FALSE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Fit a model that is ready for replication per species:</p>
 <div class="cell">
@@ -931,7 +908,7 @@ b_{s} &amp;\sim \text{MVNormal}(0, \Sigma_b)\\
 <col style="width: 8%">
 <col style="width: 8%">
 <col style="width: 8%">
-<col style="width: 7%">
+<col style="width: 8%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -951,120 +928,120 @@ b_{s} &amp;\sim \text{MVNormal}(0, \Sigma_b)\\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">b0_x</td>
-<td style="text-align: right;">4.0828864</td>
-<td style="text-align: right;">0.0120427</td>
-<td style="text-align: right;">0.1855522</td>
-<td style="text-align: right;">3.6554040</td>
-<td style="text-align: right;">3.9862333</td>
-<td style="text-align: right;">4.0899546</td>
-<td style="text-align: right;">4.1927864</td>
-<td style="text-align: right;">4.4402460</td>
-<td style="text-align: right;">237.4009</td>
-<td style="text-align: right;">1.011838</td>
+<td style="text-align: right;">4.0743605</td>
+<td style="text-align: right;">0.0119175</td>
+<td style="text-align: right;">0.2034081</td>
+<td style="text-align: right;">3.6642441</td>
+<td style="text-align: right;">3.9471957</td>
+<td style="text-align: right;">4.0736774</td>
+<td style="text-align: right;">4.2031110</td>
+<td style="text-align: right;">4.4768585</td>
+<td style="text-align: right;">291.3181</td>
+<td style="text-align: right;">1.0043431</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">b0_y</td>
-<td style="text-align: right;">0.4538681</td>
-<td style="text-align: right;">0.0092012</td>
-<td style="text-align: right;">0.1410086</td>
-<td style="text-align: right;">0.1859136</td>
-<td style="text-align: right;">0.3584584</td>
-<td style="text-align: right;">0.4522184</td>
-<td style="text-align: right;">0.5464703</td>
-<td style="text-align: right;">0.7314909</td>
-<td style="text-align: right;">234.8570</td>
-<td style="text-align: right;">1.030898</td>
+<td style="text-align: right;">0.4337311</td>
+<td style="text-align: right;">0.0070445</td>
+<td style="text-align: right;">0.1285565</td>
+<td style="text-align: right;">0.1601965</td>
+<td style="text-align: right;">0.3567724</td>
+<td style="text-align: right;">0.4377441</td>
+<td style="text-align: right;">0.5149513</td>
+<td style="text-align: right;">0.6763421</td>
+<td style="text-align: right;">333.0360</td>
+<td style="text-align: right;">1.0182377</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">b_xy</td>
-<td style="text-align: right;">0.0712597</td>
-<td style="text-align: right;">0.0046942</td>
-<td style="text-align: right;">0.1874526</td>
-<td style="text-align: right;">-0.3035423</td>
-<td style="text-align: right;">-0.0535571</td>
-<td style="text-align: right;">0.0755233</td>
-<td style="text-align: right;">0.1978897</td>
-<td style="text-align: right;">0.4221472</td>
-<td style="text-align: right;">1594.6572</td>
-<td style="text-align: right;">1.001291</td>
+<td style="text-align: right;">0.0318639</td>
+<td style="text-align: right;">0.0038650</td>
+<td style="text-align: right;">0.1734806</td>
+<td style="text-align: right;">-0.3090723</td>
+<td style="text-align: right;">-0.0839857</td>
+<td style="text-align: right;">0.0314868</td>
+<td style="text-align: right;">0.1493511</td>
+<td style="text-align: right;">0.3740281</td>
+<td style="text-align: right;">2014.6969</td>
+<td style="text-align: right;">0.9995147</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma_x</td>
-<td style="text-align: right;">0.3036293</td>
-<td style="text-align: right;">0.0033654</td>
-<td style="text-align: right;">0.0914188</td>
-<td style="text-align: right;">0.1630913</td>
-<td style="text-align: right;">0.2391561</td>
-<td style="text-align: right;">0.2903482</td>
-<td style="text-align: right;">0.3529927</td>
-<td style="text-align: right;">0.5274148</td>
-<td style="text-align: right;">737.9086</td>
-<td style="text-align: right;">1.003583</td>
+<td style="text-align: right;">0.3461016</td>
+<td style="text-align: right;">0.0025171</td>
+<td style="text-align: right;">0.0944096</td>
+<td style="text-align: right;">0.2023538</td>
+<td style="text-align: right;">0.2805912</td>
+<td style="text-align: right;">0.3331004</td>
+<td style="text-align: right;">0.3976993</td>
+<td style="text-align: right;">0.5757480</td>
+<td style="text-align: right;">1406.7453</td>
+<td style="text-align: right;">1.0015928</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma_y</td>
-<td style="text-align: right;">0.3063907</td>
-<td style="text-align: right;">0.0019422</td>
-<td style="text-align: right;">0.0667946</td>
-<td style="text-align: right;">0.2019975</td>
-<td style="text-align: right;">0.2594783</td>
-<td style="text-align: right;">0.2976170</td>
-<td style="text-align: right;">0.3424217</td>
-<td style="text-align: right;">0.4625765</td>
-<td style="text-align: right;">1182.7427</td>
-<td style="text-align: right;">1.000871</td>
+<td style="text-align: right;">0.2886592</td>
+<td style="text-align: right;">0.0015497</td>
+<td style="text-align: right;">0.0641706</td>
+<td style="text-align: right;">0.1897961</td>
+<td style="text-align: right;">0.2434776</td>
+<td style="text-align: right;">0.2792976</td>
+<td style="text-align: right;">0.3229529</td>
+<td style="text-align: right;">0.4398490</td>
+<td style="text-align: right;">1714.6919</td>
+<td style="text-align: right;">1.0029161</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">lambda_x</td>
-<td style="text-align: right;">0.9215286</td>
-<td style="text-align: right;">0.0018680</td>
-<td style="text-align: right;">0.0721307</td>
-<td style="text-align: right;">0.7339981</td>
-<td style="text-align: right;">0.8909676</td>
-<td style="text-align: right;">0.9416525</td>
-<td style="text-align: right;">0.9741136</td>
-<td style="text-align: right;">0.9975787</td>
-<td style="text-align: right;">1491.0758</td>
-<td style="text-align: right;">1.001365</td>
+<td style="text-align: right;">0.9215109</td>
+<td style="text-align: right;">0.0015183</td>
+<td style="text-align: right;">0.0665869</td>
+<td style="text-align: right;">0.7491182</td>
+<td style="text-align: right;">0.8918968</td>
+<td style="text-align: right;">0.9397683</td>
+<td style="text-align: right;">0.9699105</td>
+<td style="text-align: right;">0.9959951</td>
+<td style="text-align: right;">1923.2920</td>
+<td style="text-align: right;">1.0004604</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">lambda_y</td>
-<td style="text-align: right;">0.4682270</td>
-<td style="text-align: right;">0.0038639</td>
-<td style="text-align: right;">0.1436845</td>
-<td style="text-align: right;">0.1990242</td>
-<td style="text-align: right;">0.3654698</td>
-<td style="text-align: right;">0.4674929</td>
-<td style="text-align: right;">0.5679515</td>
-<td style="text-align: right;">0.7530407</td>
-<td style="text-align: right;">1382.8172</td>
-<td style="text-align: right;">1.000193</td>
+<td style="text-align: right;">0.4775243</td>
+<td style="text-align: right;">0.0029204</td>
+<td style="text-align: right;">0.1416453</td>
+<td style="text-align: right;">0.2065620</td>
+<td style="text-align: right;">0.3775318</td>
+<td style="text-align: right;">0.4767226</td>
+<td style="text-align: right;">0.5758509</td>
+<td style="text-align: right;">0.7547554</td>
+<td style="text-align: right;">2352.4624</td>
+<td style="text-align: right;">1.0014143</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma_x_obs</td>
-<td style="text-align: right;">0.3189685</td>
-<td style="text-align: right;">0.0003251</td>
-<td style="text-align: right;">0.0136825</td>
-<td style="text-align: right;">0.2935201</td>
-<td style="text-align: right;">0.3094945</td>
-<td style="text-align: right;">0.3186073</td>
-<td style="text-align: right;">0.3279615</td>
-<td style="text-align: right;">0.3466548</td>
-<td style="text-align: right;">1771.6140</td>
-<td style="text-align: right;">1.001937</td>
+<td style="text-align: right;">0.2844852</td>
+<td style="text-align: right;">0.0002452</td>
+<td style="text-align: right;">0.0124285</td>
+<td style="text-align: right;">0.2613678</td>
+<td style="text-align: right;">0.2759932</td>
+<td style="text-align: right;">0.2840757</td>
+<td style="text-align: right;">0.2924185</td>
+<td style="text-align: right;">0.3103437</td>
+<td style="text-align: right;">2568.9757</td>
+<td style="text-align: right;">1.0012868</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma_y_obs</td>
-<td style="text-align: right;">0.2971051</td>
-<td style="text-align: right;">0.0002893</td>
-<td style="text-align: right;">0.0127343</td>
-<td style="text-align: right;">0.2734557</td>
-<td style="text-align: right;">0.2881534</td>
-<td style="text-align: right;">0.2966924</td>
-<td style="text-align: right;">0.3054138</td>
-<td style="text-align: right;">0.3234233</td>
-<td style="text-align: right;">1937.7164</td>
-<td style="text-align: right;">1.000785</td>
+<td style="text-align: right;">0.3068323</td>
+<td style="text-align: right;">0.0002533</td>
+<td style="text-align: right;">0.0130139</td>
+<td style="text-align: right;">0.2819648</td>
+<td style="text-align: right;">0.2979376</td>
+<td style="text-align: right;">0.3065049</td>
+<td style="text-align: right;">0.3154338</td>
+<td style="text-align: right;">0.3330654</td>
+<td style="text-align: right;">2639.7340</td>
+<td style="text-align: right;">1.0005784</td>
 </tr>
 </tbody>
 </table>
@@ -1117,53 +1094,53 @@ b_{s} &amp;\sim \text{MVNormal}(0, \Sigma_b)\\
 <p>Species averages</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----- extract "b0_x" column (pluck equivalent) -----</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>rvar_list <span class="ot">&lt;-</span> phylo_obs_cen_samp[, <span class="st">"b0_x"</span>]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>rvar_list <span class="ot">&lt;-</span> posterior<span class="sc">::</span><span class="fu">as_draws_rvars</span>(phylo_obs_cen_samp)<span class="sc">$</span>b0_x</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ----- build x_avg_post_long -----</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>posterior_df <span class="ot">&lt;-</span> <span class="fu">make_rvar_df</span>(phylo_obs_cen_samp)</span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># select x_avg column</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>x_avg_col <span class="ot">&lt;-</span> posterior_df[, <span class="st">"x_avg"</span>, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>x_avg_col <span class="ot">&lt;-</span> posterior_df[, <span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">"x_avg"</span>, <span class="fu">colnames</span>(posterior_df))]</span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># unnest x_avg (assumed list-column or vector per row)</span></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>x_avg_values <span class="ot">&lt;-</span> <span class="fu">unlist</span>(x_avg_col, <span class="at">use.names =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create sp_id (rownames_to_column + parse_number equivalent)</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>sp_id <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(x_avg_col)), <span class="at">times =</span> <span class="fu">sapply</span>(x_avg_col, length))</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>sp_id <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(x_avg_col)), <span class="at">times =</span> <span class="fu">ncol</span>(x_avg_col))</span>
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># compute x_total_avg</span></span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>x_total_avg <span class="ot">&lt;-</span> rvar_list[sp_id] <span class="sc">+</span> x_avg_values</span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>x_avg_post_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sp_id =</span> sp_id,</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">x_avg =</span> x_avg_values,</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">x_total_avg =</span> x_total_avg</span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ----- merge with obs_xy_df -----</span></span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>merged_df <span class="ot">&lt;-</span> <span class="fu">merge</span>(obs_xy_df, x_avg_post_long, <span class="at">by =</span> <span class="st">"sp_id"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>x_avg_post_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sp_id =</span> sp_id,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>                              <span class="at">x_avg =</span> x_avg_values,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>                              <span class="at">x_total_avg =</span> x_total_avg)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co"># ----- merge with obs_xy_df -----</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>merged_df <span class="ot">&lt;-</span> <span class="fu">merge</span>(obs_xy_df, </span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>                   x_avg_post_long, </span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>                   <span class="at">by =</span> <span class="st">"sp_id"</span>, </span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>                   <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ----- base R plotting (approximation of slab + points) -----</span></span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>sp_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(merged_df<span class="sc">$</span>sp_name)</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(sp_names)</span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>ncol <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">sqrt</span>(n))</span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>nrow <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(n <span class="sc">/</span> ncol)</span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>old_par <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(nrow, ncol))</span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (sp <span class="cf">in</span> sp_names) {</span>
-<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>  sub <span class="ot">&lt;-</span> merged_df[merged_df<span class="sc">$</span>sp_name <span class="sc">==</span> sp, ]</span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>  dens <span class="ot">&lt;-</span> <span class="fu">density</span>(sub<span class="sc">$</span>x_total_avg)</span>
-<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(dens, <span class="at">main =</span> sp, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"Density"</span>)</span>
-<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># observed point (mean X per species)</span></span>
-<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="at">x =</span> sub<span class="sc">$</span>X[<span class="dv">1</span>], <span class="at">y =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co"># ----- base R plotting (approximation of slab + points) -----</span></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>sp_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(merged_df<span class="sc">$</span>sp_name)</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(sp_names)</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>ncol <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">sqrt</span>(n))</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>nrow <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(n <span class="sc">/</span> ncol)</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>old_par <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(nrow, ncol))</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (sp <span class="cf">in</span> sp_names) {</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>  sub <span class="ot">&lt;-</span> merged_df[merged_df<span class="sc">$</span>sp_name <span class="sc">==</span> sp, ]</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>  dens <span class="ot">&lt;-</span> <span class="fu">density</span>(sub<span class="sc">$</span>x_avg)</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(dens, <span class="at">main =</span> sp, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"Density"</span>)</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># observed point (mean X per species)</span></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="at">x =</span> sub<span class="sc">$</span>X[<span class="dv">1</span>], <span class="at">y =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a></span>
@@ -1171,25 +1148,24 @@ b_{s} &amp;\sim \text{MVNormal}(0, \Sigma_b)\\
 <span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>rvar_list <span class="ot">&lt;-</span> phylo_obs_cen_samp <span class="sc">|&gt;</span> posterior<span class="sc">::</span><span class="fu">as_draws_rvars</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="st">"b0_x"</span>)</span>
-<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>x_avg_post_long <span class="ot">&lt;-</span> <span class="fu">make_rvar_df</span>(phylo_obs_cen_samp) <span class="sc">|&gt;</span> </span>
-<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate averages</span></span>
-<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(x_avg) <span class="sc">|&gt;</span> </span>
-<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(x_avg) <span class="sc">|&gt;</span> </span>
-<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"sp_id"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sp_id =</span> readr<span class="sc">::</span><span class="fu">parse_number</span>(sp_id),</span>
-<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>         <span class="at">x_total_avg =</span> rvar_list <span class="sc">+</span> x_avg )</span>
-<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>rvar_list <span class="ot">&lt;-</span> phylo_obs_cen_samp <span class="sc">|&gt;</span> posterior<span class="sc">::</span><span class="fu">as_draws_rvars</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="st">"b0_x"</span>)</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>x_avg_post_long <span class="ot">&lt;-</span> <span class="fu">make_rvar_df</span>(phylo_obs_cen_samp) <span class="sc">|&gt;</span> </span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate averages</span></span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(x_avg) <span class="sc">|&gt;</span> </span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(x_avg) <span class="sc">|&gt;</span> </span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"sp_id"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sp_id =</span> readr<span class="sc">::</span><span class="fu">parse_number</span>(sp_id),</span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>         <span class="at">x_total_avg =</span> rvar_list <span class="sc">+</span> x_avg )</span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>obs_xy_df <span class="sc">|&gt;</span> </span>
-<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(x_avg_post_long) <span class="sc">|&gt;</span> </span>
-<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sp_name, <span class="at">dist =</span> x_total_avg))<span class="sc">+</span> </span>
-<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_dist_slab</span>() <span class="sc">+</span> </span>
-<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> sp_name, <span class="at">y =</span> X))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>obs_xy_df <span class="sc">|&gt;</span> </span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(x_avg_post_long) <span class="sc">|&gt;</span> </span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sp_name, <span class="at">dist =</span> x_total_avg))<span class="sc">+</span> </span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a>  tidybayes<span class="sc">::</span><span class="fu">stat_dist_slab</span>() <span class="sc">+</span> </span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> sp_name, <span class="at">y =</span> X))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="missing-data" class="level3">
 <h3 class="anchored" data-anchor-id="missing-data">Missing data</h3>
