@@ -244,11 +244,12 @@ for (i in seq_along(spi_labels)) {
   pts <- penguin_mass_island$mass_kg[penguin_mass_island$sp_island == spi_labels[i]]
   points(pts, 
          jitter(rep(i, length(pts)),factor = 0.4),
-         col = adjustcolor(spi_cols[i], 0.5), pch = 21)
+         col = adjustcolor(spi_cols[i], 0.5),
+         pch = 21)
   
   segments(q_grp[1, i], i, q_grp[5, i], i, col = "black", lwd = 1)
   segments(q_grp[2, i], i, q_grp[4, i], i, col = "black", lwd = 3)
-  points(q_grp[3, i], i, pch = 19, col = "black", cex = 1.2)
+  points(q_grp[3, i], i, pch = 19, col = "black", cex = 1)
 }
 
 axis(2, 
@@ -590,40 +591,17 @@ plot(water, S)
 
 ### Data preparation & visualization
 
-First we need to load and prepare the data:
+
+Let's transform the mite dataset into a data frame of total community abundance (N) per site. We'll also standardize the water content while we're at it:
 
 ```{r}
 data(mite, package = "vegan")
 data("mite.env", package = "vegan")
 
-# Combine data and environment
-mite_df <- mite
-mite_df$site_id <- rownames(mite)
-mite_df <- cbind(mite_df, mite.env)
-
-spp_cols_names <- colnames(mite)
-
-mite_data_long <- do.call(rbind, lapply(spp_cols_names, function(sp) {
-  data.frame(site_id = mite_df$site_id,
-             WatrCont = mite_df$WatrCont,
-             spp = sp,
-             abd = mite_df[[sp]])
-}))
-
-mite_data_long <- mite_data_long[order(mite_data_long$site_id), ]
-rownames(mite_data_long) <- NULL
-```
-
-First let's transform the mite dataset into a data frame of total community abundance (N) per site. We'll also standardize the water content while we're at it:
-
-```{r}
-mite_community_abd <- aggregate(abd ~ site_id + WatrCont,
-                                data = mite_data_long, FUN = sum)
-
-names(mite_community_abd)[names(mite_community_abd) == "abd"] <- "N"
-
-mite_community_abd$water_c <- (mite_community_abd$WatrCont -
-                               mean(mite_community_abd$WatrCont))/100
+mite_community_abd <- data.frame(site_id = 1:nrow(mite),
+                                 WatrCont = mite.env$WatrCont,
+                                 N = rowSums(mite),
+                                 water_c = (mite.env$WatrCont - mean(mite.env$WatrCont))/100)
 
 knitr::kable(head(mite_community_abd))
 ```
@@ -669,10 +647,10 @@ Using a now-familiar workflow, we feed the data into the model:
 water_for_pred <- seq(from = -3, to = 4.5, length.out = 15)
 
 abd_data_list <- list(N = length(mite_community_abd$N),
-              water = mite_community_abd$water_c,
-              y = mite_community_abd$N,
-              Npred = 15,
-              water_pred = water_for_pred)
+                      water = mite_community_abd$water_c,
+                      y = mite_community_abd$N,
+                      Npred = 15,
+                      water_pred = water_for_pred)
 
 poisson_regression_sample <- sampling(
   poisson_regression,
@@ -803,8 +781,8 @@ fake_obs_overdisp_S <- rstan::extract(poisson_regression_overdisp_sample,
 bayesplot::ppc_dens_overlay(y = mite_community_abd$N,
                             yrep = head(fake_obs_overdisp_S$fake_obs, 50))
 
-draws_la  <- rstan::extract(poisson_regression_overdisp_sample, "line_avg")$line_avg
-q_la      <- apply(draws_la, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
+draws_la <- rstan::extract(poisson_regression_overdisp_sample, "line_avg")$line_avg
+q_la <- apply(draws_la, 2, quantile, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 
 plot(mite_community_abd$water_c, mite_community_abd$N,
      pch = 19, cex = 0.7,
